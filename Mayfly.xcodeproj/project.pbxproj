@@ -14,6 +14,7 @@
 		4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4886C9EB1B0BBAA900909747 /* Images.xcassets */; };
 		4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4886C9ED1B0BBAA900909747 /* LaunchScreen.xib */; };
 		4886C9FB1B0BBAA900909747 /* MayflyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9FA1B0BBAA900909747 /* MayflyTests.m */; };
+		4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA071B0BBBF700909747 /* QSAzureService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		4886C9F41B0BBAA900909747 /* MayflyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MayflyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4886C9F91B0BBAA900909747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4886C9FA1B0BBAA900909747 /* MayflyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MayflyTests.m; sourceTree = "<group>"; };
+		4886CA061B0BBBF700909747 /* QSAzureService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureService.h; sourceTree = "<group>"; };
+		4886CA071B0BBBF700909747 /* QSAzureService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAzureService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 		4886C9DD1B0BBAA900909747 /* Mayfly */ = {
 			isa = PBXGroup;
 			children = (
+				4886CA051B0BBB3D00909747 /* Services */,
 				4886C9E21B0BBAA900909747 /* AppDelegate.h */,
 				4886C9E31B0BBAA900909747 /* AppDelegate.m */,
 				4886C9E51B0BBAA900909747 /* ViewController.h */,
@@ -117,6 +121,15 @@
 				4886C9F91B0BBAA900909747 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4886CA051B0BBB3D00909747 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4886CA061B0BBBF700909747 /* QSAzureService.h */,
+				4886CA071B0BBBF700909747 /* QSAzureService.m */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +235,7 @@
 				4886C9E71B0BBAA900909747 /* ViewController.m in Sources */,
 				4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
+				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +428,7 @@
 				4886CA001B0BBAA900909747 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4886CA011B0BBAA900909747 /* Build configuration list for PBXNativeTarget "MayflyTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +437,7 @@
 				4886CA031B0BBAA900909747 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
