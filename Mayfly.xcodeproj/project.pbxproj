@@ -19,6 +19,7 @@
 		4886CA191B0BC0CC00909747 /* MFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA181B0BC0CC00909747 /* MFView.m */; };
 		4886CA1C1B0BC41100909747 /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA1B1B0BC41100909747 /* Session.m */; };
 		4886CA1F1B0BCB7000909747 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA1E1B0BCB7000909747 /* Event.m */; };
+		488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488E57B11B0E400B00E2DA64 /* MFDetailView.m */; };
 		4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890BB9A1B0D074800F2DE8D /* MFEventsView.m */; };
 		48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A82A491B0D203000A8E978 /* MFCreateView.m */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,8 @@
 		4886CA1B1B0BC41100909747 /* Session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Session.m; sourceTree = "<group>"; };
 		4886CA1D1B0BCB7000909747 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		4886CA1E1B0BCB7000909747 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		488E57B01B0E400B00E2DA64 /* MFDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDetailView.h; sourceTree = "<group>"; };
+		488E57B11B0E400B00E2DA64 /* MFDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDetailView.m; sourceTree = "<group>"; };
 		4890BB991B0D074800F2DE8D /* MFEventsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFEventsView.h; sourceTree = "<group>"; };
 		4890BB9A1B0D074800F2DE8D /* MFEventsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFEventsView.m; sourceTree = "<group>"; };
 		48A82A481B0D203000A8E978 /* MFCreateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateView.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				4890BB9A1B0D074800F2DE8D /* MFEventsView.m */,
 				48A82A481B0D203000A8E978 /* MFCreateView.h */,
 				48A82A491B0D203000A8E978 /* MFCreateView.m */,
+				488E57B01B0E400B00E2DA64 /* MFDetailView.h */,
+				488E57B11B0E400B00E2DA64 /* MFDetailView.m */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
 				4886C9ED1B0BBAA900909747 /* LaunchScreen.xib */,
@@ -284,6 +289,7 @@
 				48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
+				488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */,
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,

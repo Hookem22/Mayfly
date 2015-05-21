@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MFDetailView.h"
 #import "Event.h"
 
 @interface MFEventsView : UIScrollView

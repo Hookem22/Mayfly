@@ -11,7 +11,7 @@
 @interface Event : NSObject
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *eventDesciption;
+@property (nonatomic, copy) NSString *eventDescription;
 @property (nonatomic, copy) NSString *location;
 @property (nonatomic, assign) BOOL isPrivate;
 @property (nonatomic, assign) NSUInteger minParticipants;

@@ -38,16 +38,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mayfly/MFEventsView.m"
-            timestampString = "453846424.43659"
+            filePath = "Mayfly/MFDetailView.m"
+            timestampString = "453920614.293203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "-eventClicked:"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "-open:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

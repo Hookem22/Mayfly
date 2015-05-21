@@ -11,7 +11,7 @@
 @implementation Event
 
 @synthesize name;
-@synthesize eventDesciption;
+@synthesize eventDescription;
 @synthesize location;
 @synthesize isPrivate;
 @synthesize minParticipants;
@@ -23,7 +23,7 @@
     self = [super init];
     if (self) {
         self.name = [event valueForKey:@"name"];
-        self.eventDesciption = [event valueForKey:@"eventDesciption"];
+        self.eventDescription = [event valueForKey:@"eventDescription"];
         self.location = [event valueForKey:@"location"];
         self.isPrivate = [event valueForKey:@"isPrivate"];
         self.minParticipants = [[event valueForKey:@"minParticipants"] isMemberOfClass:[NSNull class]] ? 0 : [[event valueForKey:@"minParticipants"] longLongValue];

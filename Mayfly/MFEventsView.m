@@ -8,6 +8,12 @@
 
 #import "MFEventsView.h"
 
+@interface MFEventsView ()
+
+@property (nonatomic, strong) NSMutableArray *Events;
+
+@end
+
 @implementation MFEventsView
 
 - (id)initWithFrame:(CGRect)frame
@@ -15,6 +21,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        self.Events = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -24,10 +31,10 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    NSMutableArray *events = [[NSMutableArray alloc] init];
+    //NSMutableArray *events = [[NSMutableArray alloc] init];
     NSDictionary *dict1 = [[NSDictionary alloc]
                            initWithObjectsAndKeys:@"Disc?",@"name",
-                           @"Desc", @"eventDescription",
+                           @"We will be meeting at Zilker at 3pm to play disc. Please RSVP if you want to attend. Blah blah blah. Blah blah blah. Blah blah blah. Blah blah blah. ", @"eventDescription",
                            nil];
     NSDictionary *dict2 = [[NSDictionary alloc]
                            initWithObjectsAndKeys:@"Monopoly?",@"name",
@@ -57,18 +64,18 @@
                            initWithObjectsAndKeys:@"Soccer?",@"name",
                            @"Desc", @"eventDescription",
                            nil];
-    [events addObject:[[Event alloc]init:dict1]];
-    [events addObject:[[Event alloc]init:dict2]];
-    [events addObject:[[Event alloc]init:dict3]];
-    [events addObject:[[Event alloc]init:dict4]];
-    [events addObject:[[Event alloc]init:dict5]];
-    [events addObject:[[Event alloc]init:dict6]];
-    [events addObject:[[Event alloc]init:dict7]];
-    [events addObject:[[Event alloc]init:dict8]];
+    [self.Events addObject:[[Event alloc]init:dict1]];
+    [self.Events addObject:[[Event alloc]init:dict2]];
+    [self.Events addObject:[[Event alloc]init:dict3]];
+    [self.Events addObject:[[Event alloc]init:dict4]];
+    [self.Events addObject:[[Event alloc]init:dict5]];
+    [self.Events addObject:[[Event alloc]init:dict6]];
+    [self.Events addObject:[[Event alloc]init:dict7]];
+    [self.Events addObject:[[Event alloc]init:dict8]];
     
-    for(int i = 0; i < [events count]; i++)
+    for(int i = 0; i < [self.Events count]; i++)
     {
-        Event *event = [events objectAtIndex:i];
+        Event *event = [self.Events objectAtIndex:i];
         
         UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, (i * 80), wd, 80)];
         
@@ -107,9 +114,23 @@
 
 -(void) eventClicked:(id)sender
 {
-    UIControl *event = (UIControl *)sender;
-    long tagId = event.tag;
-
+    UIControl *button = (UIControl *)sender;
+    long tagId = button.tag;
+    
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    MFDetailView *detailView = [[MFDetailView alloc] initWithFrame:CGRectMake(0, ht, wd, ht - 120)];
+    [detailView open:(Event *)[self.Events objectAtIndex:tagId]];
+    [self.superview addSubview:detailView];
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         detailView.frame = CGRectMake(0, 0, wd, ht);
+                     }
+                     completion:^(BOOL finished){
+                         
+                     }];
 }
 
 @end
