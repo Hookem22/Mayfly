@@ -14,8 +14,27 @@
 
 @implementation ViewController
 
+@synthesize mainView = _mainView;
+
+- (void)loadView {
+    
+    self.mainView = [[MFView alloc] init];
+    self.view = self.mainView;
+    
+    //debugging only
+    //if (TARGET_IPHONE_SIMULATOR)
+    //{
+        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(30.2500, -97.7500);
+        CLLocation *location = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil];
+        [[Session sessionVariables] setObject:location forKey:@"location"];
+        
+        [self.mainView setup];
+    //}
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view, typically from a nib.
 }
 
