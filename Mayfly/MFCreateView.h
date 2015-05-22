@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "MFLoginView.h"
+#import "MFAddressBook.h"
 #import "Event.h"
 
 @interface MFCreateView : UIScrollView <UITextViewDelegate>
 
 -(void)create;
+-(void)invite:(NSArray *)contactsList;
 
 @end

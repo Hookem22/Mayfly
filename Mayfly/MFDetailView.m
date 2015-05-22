@@ -78,12 +78,11 @@
     [joinButton addSubview:topBorder];
     
     
-    if (![FBSDKAccessToken currentAccessToken])
+    if(![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
         [self addSubview:loginView];
-    }
-    
+    }    
 }
 
 -(void)joinButtonClick:(id)sender

@@ -8,6 +8,12 @@
 
 #import "MFCreateView.h"
 
+@interface MFCreateView()
+
+@property (nonatomic, strong) NSArray *contactsList;
+
+@end
+
 @implementation MFCreateView
 
 - (id)initWithFrame:(CGRect)frame
@@ -107,13 +113,47 @@
     addFriendsButton.frame = CGRectMake(30, 380, wd-60, 30);
     [self addSubview:addFriendsButton];
     
-
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+        [self addSubview:loginView];
+    }
 }
 
 -(void)addFriendsButtonClick:(id)sender
 {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    MFAddressBook *addressBook = [[MFAddressBook alloc] initWithFrame:CGRectMake(0, ht, wd, ht) invited:self.contactsList];
+    [self addSubview:addressBook];
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         addressBook.frame = CGRectMake(0, 0, wd, ht);
+                     }
+                     completion:^(BOOL finished){
+                         
+                     }];
 }
+-(void)invite:(NSArray *)contactsList
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    self.contactsList = contactsList;
+    NSString *people = [(NSDictionary *)[contactsList objectAtIndex:0] objectForKey:@"name"];
+    for(int i = 1; i < [contactsList count]; i++)
+    {
+        NSDictionary *contact = [contactsList objectAtIndex:i];
+        people = [NSString stringWithFormat:@"%@, %@", people, [contact objectForKey:@"name"]];
+    }
+    
+    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 420, wd - 60, 80)];
+    participantsLabel.text = people;
+    [self addSubview:participantsLabel];
+}
+
+
 -(void)cancelButtonClick:(id)sender
 {
     [self close];

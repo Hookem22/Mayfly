@@ -12,8 +12,6 @@
 
 @implementation MFView
 
-
-
 - (id)init
 {
     self = [super init];
@@ -76,7 +74,7 @@
              }
          }];
     }*/
-    
+    /*
     NSMutableString *facebookRequest = [NSMutableString new];
     [facebookRequest appendString:@"/me/friends"];
     [facebookRequest appendString:@"?limit=100"];
@@ -92,7 +90,7 @@
     }];
     
     return;
-    
+    */
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
@@ -107,20 +105,6 @@
                      completion:^(BOOL finished){
                          
                      }];
-
-    if (![FBSDKAccessToken currentAccessToken])
-    {
-        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, ht, wd, ht - 120)];
-        [self addSubview:loginView];
-        
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             loginView.frame = CGRectMake(0, 0, wd, ht);
-                         }
-                         completion:^(BOOL finished){
-                             [self bringSubviewToFront:loginView];
-                         }];
-    }
     
 }
 
