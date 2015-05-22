@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */; };
+		48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */; };
+		48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */; };
+		48214FCF1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCC1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework */; };
+		48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48214FD11B0E6B6100B4E54D /* MFLoginView.m */; };
+		4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */; };
 		4886C9E11B0BBAA900909747 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E01B0BBAA900909747 /* main.m */; };
 		4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E31B0BBAA900909747 /* AppDelegate.m */; };
 		4886C9E71B0BBAA900909747 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E61B0BBAA900909747 /* ViewController.m */; };
@@ -35,6 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		48214FCC1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = ../Documents/FacebookSDK/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
+		48214FD01B0E6B6100B4E54D /* MFLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFLoginView.h; sourceTree = "<group>"; };
+		48214FD11B0E6B6100B4E54D /* MFLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFLoginView.m; sourceTree = "<group>"; };
+		4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fbLoginButton@2x.png"; sourceTree = "<group>"; };
 		4886C9DB1B0BBAA900909747 /* Mayfly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mayfly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4886C9DF1B0BBAA900909747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4886C9E01B0BBAA900909747 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -70,6 +83,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */,
+				48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */,
+				48214FCF1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework in Frameworks */,
+				48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */,
 				4886CA0C1B0BBE1C00909747 /* WindowsAzureMobileServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +101,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4843EA181B0F952D00C510B4 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		4886C9D21B0BBAA900909747 = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +145,9 @@
 				48A82A491B0D203000A8E978 /* MFCreateView.m */,
 				488E57B01B0E400B00E2DA64 /* MFDetailView.h */,
 				488E57B11B0E400B00E2DA64 /* MFDetailView.m */,
+				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
+				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
+				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
 				4886C9ED1B0BBAA900909747 /* LaunchScreen.xib */,
@@ -177,6 +205,10 @@
 		4886CA0A1B0BBDC600909747 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */,
+				48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */,
+				48214FCC1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework */,
+				48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */,
 				4886CA0B1B0BBE1C00909747 /* WindowsAzureMobileServices.framework */,
 			);
 			name = Frameworks;
@@ -265,6 +297,7 @@
 			files = (
 				4886C9EA1B0BBAA900909747 /* Main.storyboard in Resources */,
 				4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */,
+				4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */,
 				4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +323,7 @@
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
 				488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */,
+				48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */,
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,
@@ -420,6 +454,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/Users/willparks/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -436,6 +471,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/Users/willparks/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFDetailView.h"
+#import "MFLoginView.h"
 #import "Event.h"
 
 @interface MFEventsView : UIScrollView

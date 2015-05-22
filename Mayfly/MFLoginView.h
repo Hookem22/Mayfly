@@ -1,5 +1,5 @@
 //
-//  MFDetailView.h
+//  MFLoginView.h
 //  Mayfly
 //
 //  Created by Will Parks on 5/21/15.
@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import "MFLoginView.h"
-#import "Event.h"
 
-@interface MFDetailView : UIScrollView
-
--(void)open:(Event*)event;
+@interface MFLoginView : UIView
 
 @end

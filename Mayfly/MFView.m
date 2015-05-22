@@ -43,11 +43,56 @@
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 120)];
     [eventsView loadEvents];
     [self addSubview:eventsView];
+     
+    
+    /*
+    if ([FBSDKAccessToken currentAccessToken]) {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
+         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+             if (!error) {
+                 NSLog(@"fetched user:%@", result);
+             }
+         }];
+    }
+    */
+    
+    
+    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
+    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+    //loginButton.center = self.center;
+    [self addSubview:loginButton];
+    
 }
 
 
 -(void) addButtonClick:(id)sender
 {
+    /*
+    if ([FBSDKAccessToken currentAccessToken]) {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends" parameters:nil]
+         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+             if (!error) {
+                 NSLog(@"fetched user:%@", result);
+             }
+         }];
+    }*/
+    
+    NSMutableString *facebookRequest = [NSMutableString new];
+    [facebookRequest appendString:@"/me/friends"];
+    [facebookRequest appendString:@"?limit=100"];
+    
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
+                                  initWithGraphPath:facebookRequest
+                                  parameters:nil
+                                  HTTPMethod:@"GET"];
+    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            NSLog(@"fetched user:%@", result);
+        }
+    }];
+    
+    return;
+    
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
@@ -62,6 +107,21 @@
                      completion:^(BOOL finished){
                          
                      }];
+
+    if (![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, ht, wd, ht - 120)];
+        [self addSubview:loginView];
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             loginView.frame = CGRectMake(0, 0, wd, ht);
+                         }
+                         completion:^(BOOL finished){
+                             [self bringSubviewToFront:loginView];
+                         }];
+    }
+    
 }
 
 

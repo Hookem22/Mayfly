@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFEventsView.h"
 #import "MFCreateView.h"
+#import "MFLoginView.h"
 #import "Event.h"
 
 @interface MFView : UIView

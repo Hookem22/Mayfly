@@ -76,6 +76,14 @@
     UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 1.0f, wd, 1)];
     topBorder.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     [joinButton addSubview:topBorder];
+    
+    
+    if (![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+        [self addSubview:loginView];
+    }
+    
 }
 
 -(void)joinButtonClick:(id)sender
