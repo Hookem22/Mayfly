@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSArray *contactsList;
 @property (nonatomic, strong) UITextField *locationText;
+@property (nonatomic, strong) UITextField *startText;
 
 @end
 
@@ -68,13 +69,17 @@
     descText.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     [self addSubview:descText];
     
-    //TODO: Add clock
     UITextField *startText = [[UITextField alloc] initWithFrame:CGRectMake(30, 210, wd - 60, 30)];
+    [startText addTarget:self action:@selector(showClock:) forControlEvents:UIControlEventEditingDidBegin];
+    [startText addTarget:self action:@selector(hideClock:) forControlEvents:UIControlEventEditingDidEnd];
     startText.borderStyle = UITextBorderStyleRoundedRect;
     startText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     startText.font = [UIFont systemFontOfSize:15];
     startText.placeholder = @"Start Time";
-    [self addSubview:startText];
+    UIView* dummyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    startText.inputView = dummyView;
+    self.startText = startText;
+    [self addSubview:self.startText];
     
     UITextField *locationText = [[UITextField alloc] initWithFrame:CGRectMake(30, 250, wd - 60, 30)];
     [locationText addTarget:self action:@selector(openLocationSelect:) forControlEvents:UIControlEventEditingDidBegin];
@@ -82,6 +87,7 @@
     locationText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     locationText.font = [UIFont systemFontOfSize:15];
     locationText.placeholder = @"Location";
+    locationText.inputView = dummyView;
     self.locationText = locationText;
     [self addSubview:self.locationText];
     
@@ -124,6 +130,56 @@
         MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
         [self addSubview:loginView];
     }
+}
+
+-(void)showClock:(id)sender
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    UIView *clockView = [[UIView alloc] initWithFrame:CGRectMake(0, ht, wd, 220)];
+    clockView.tag = 2;
+    [self addSubview:clockView];
+    
+    UIDatePicker  *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 20, wd, 200)];
+    datePicker.datePickerMode = UIDatePickerModeTime;
+    NSDate *in30min = [NSDate dateWithTimeIntervalSinceNow:30*60];
+    [datePicker setDate:in30min];
+    [datePicker addTarget:self action:@selector(didChangePickerDate:) forControlEvents:UIControlEventValueChanged];
+    [clockView addSubview:datePicker];
+
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         clockView.frame = CGRectMake(0, ht - 200, wd, 220);
+                     }
+                     completion:^(BOOL finished){
+                             [self setStartDate:in30min];
+                     }];
+    
+}
+
+-(void)hideClock:(id)sender
+{
+    for(UIView *view in self.subviews)
+    {
+        if(view.tag == 2)
+            [self remove:view];
+    }
+}
+
+-(void)didChangePickerDate:(id)sender
+{
+    UIDatePicker *datePicker = (UIDatePicker *)sender;
+    [self setStartDate:datePicker.date];
+}
+
+-(void)setStartDate:(NSDate *)date
+{
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    [outputFormatter setDateFormat:@"h:mm a"];
+    
+    NSString *start = [outputFormatter stringFromDate:date];
+    self.startText.text = start;
 }
 
 -(void)addFriendsButtonClick:(id)sender
@@ -232,6 +288,18 @@
                      }
                      completion:^(BOOL finished){
                          [self removeFromSuperview];
+                     }];
+}
+-(void)remove:(UIView *)view
+{
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         view.frame = CGRectMake(0, ht, view.frame.size.width, view.frame.size.height);
+                     }
+                     completion:^(BOOL finished){
+                         [view removeFromSuperview];
                      }];
 }
 
