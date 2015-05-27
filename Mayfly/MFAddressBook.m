@@ -142,7 +142,7 @@
     if([invited count] == 0)
         headerLabel.text = @"Recipients";
     else
-        headerLabel.text = [NSString stringWithFormat:@"Recipients (%d)", [invited count]];
+        headerLabel.text = [NSString stringWithFormat:@"Recipients (%lu)", (unsigned long)[invited count]];
     self.headerLabel = headerLabel;
     [self addSubview:self.headerLabel];
     

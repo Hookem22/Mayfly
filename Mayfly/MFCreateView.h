@@ -11,11 +11,14 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFLoginView.h"
 #import "MFAddressBook.h"
+#import "MFLocationSelectView.h"
+#import "MFMapView.h"
 #import "Event.h"
 
 @interface MFCreateView : UIScrollView <UITextViewDelegate>
 
 -(void)create;
 -(void)invite:(NSArray *)contactsList;
+-(void)locationReturn:(Location *)location;
 
 @end

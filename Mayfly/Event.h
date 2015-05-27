@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Location.h"
 
 @interface Event : NSObject
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *eventDescription;
-@property (nonatomic, copy) NSString *location;
+@property (nonatomic, strong) Location *location;
 @property (nonatomic, assign) BOOL isPrivate;
 @property (nonatomic, assign) NSUInteger minParticipants;
 @property (nonatomic, assign) NSUInteger maxParticipants;

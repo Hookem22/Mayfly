@@ -11,6 +11,7 @@
 @interface MFCreateView()
 
 @property (nonatomic, strong) NSArray *contactsList;
+@property (nonatomic, strong) UITextField *locationText;
 
 @end
 
@@ -54,7 +55,7 @@
     nameText.placeholder = @"Event Name";
     [self addSubview:nameText];
     
-    UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 120, wd - 60, 100)];
+    UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 120, wd - 60, 80)];
     [descText.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor]];
     [descText.layer setBorderWidth:1.0];
     [descText.layer setBackgroundColor:[[[UIColor grayColor] colorWithAlphaComponent:0.1] CGColor]];
@@ -67,50 +68,55 @@
     descText.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     [self addSubview:descText];
     
-    
-    //TODO: Get location
-    UITextField *locationText = [[UITextField alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 30)];
-    locationText.borderStyle = UITextBorderStyleRoundedRect;
-    locationText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-    locationText.font = [UIFont systemFontOfSize:15];
-    locationText.placeholder = @"Location";
-    [self addSubview:locationText];
-    
     //TODO: Add clock
-    UITextField *startText = [[UITextField alloc] initWithFrame:CGRectMake(30, 270, wd - 100, 30)];
+    UITextField *startText = [[UITextField alloc] initWithFrame:CGRectMake(30, 210, wd - 60, 30)];
     startText.borderStyle = UITextBorderStyleRoundedRect;
     startText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     startText.font = [UIFont systemFontOfSize:15];
     startText.placeholder = @"Start Time";
     [self addSubview:startText];
     
-    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 310, wd, 30)];
+    UITextField *locationText = [[UITextField alloc] initWithFrame:CGRectMake(30, 250, wd - 60, 30)];
+    [locationText addTarget:self action:@selector(openLocationSelect:) forControlEvents:UIControlEventEditingDidBegin];
+    locationText.borderStyle = UITextBorderStyleRoundedRect;
+    locationText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
+    locationText.font = [UIFont systemFontOfSize:15];
+    locationText.placeholder = @"Location";
+    self.locationText = locationText;
+    [self addSubview:self.locationText];
+    
+    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 290, wd, 30)];
     participantsLabel.text = @"Participants";
+    participantsLabel.tag = 1;
     [self addSubview:participantsLabel];
     
-    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd / 2), 310, (wd / 4) - 20, 30)];
+    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd / 2), 290, (wd / 4) - 20, 30)];
     minText.borderStyle = UITextBorderStyleRoundedRect;
     minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     minText.font = [UIFont systemFontOfSize:15];
     minText.placeholder = @"Min";
+    minText.tag = 1;
     [self addSubview:minText];
     
-    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 4 - 10, 310, (wd / 4) - 20, 30)];
+    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 4 - 10, 290, (wd / 4) - 20, 30)];
     maxText.borderStyle = UITextBorderStyleRoundedRect;
     maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     maxText.font = [UIFont systemFontOfSize:15];
     maxText.placeholder = @"Max";
+    maxText.tag = 1;
     [self addSubview:maxText];
     
     //TODO: Add IsPublic
-    UILabel *isPublic = [[UILabel alloc] initWithFrame:CGRectMake(30, 340, wd-60, 30)];
+    UILabel *isPublic = [[UILabel alloc] initWithFrame:CGRectMake(30, 320, wd-60, 30)];
     isPublic.text = @"Event is public";
+    isPublic.tag = 1;
     [self addSubview:isPublic];
     
     UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
     [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    addFriendsButton.frame = CGRectMake(30, 380, wd-60, 30);
+    addFriendsButton.frame = CGRectMake(30, 360, wd-60, 30);
+    addFriendsButton.tag = 1;
     [self addSubview:addFriendsButton];
     
     if(![FBSDKAccessToken currentAccessToken])
@@ -163,18 +169,38 @@
     [self close];
 }
 
--(void)close
+-(void)openLocationSelect:(id)sender
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    MFLocationSelectView *locationView = [[MFLocationSelectView alloc] initWithFrame:CGRectMake(0, ht, wd, ht)];
+    [self addSubview:locationView];
+    
     [UIView animateWithDuration:0.3
                      animations:^{
-                         self.frame = CGRectMake(0, ht, wd, ht - 60);
+                         locationView.frame = CGRectMake(0, 0, wd, ht);
                      }
                      completion:^(BOOL finished){
-                         [self removeFromSuperview];
+                         
                      }];
+}
+
+-(void)locationReturn:(Location *)location
+{
+    self.locationText.text = location.name;
+    
+    for (UIView *view in self.subviews)
+    {
+        if(view.tag == 1)
+            view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y + 170, view.frame.size.width, view.frame.size.height);
+    }
+    
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 290, wd - 60, 160)];
+    [map loadMap:location];
+    [self addSubview:map];
+    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -193,6 +219,20 @@
         textView.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     }
     [textView resignFirstResponder];
+}
+
+-(void)close
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.frame = CGRectMake(0, ht, wd, ht - 60);
+                     }
+                     completion:^(BOOL finished){
+                         [self removeFromSuperview];
+                     }];
 }
 
 @end
