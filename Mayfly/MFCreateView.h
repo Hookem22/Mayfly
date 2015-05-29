@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "ViewController.h"
 #import "MFLoginView.h"
 #import "MFAddressBook.h"
 #import "MFLocationSelectView.h"

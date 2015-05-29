@@ -42,7 +42,7 @@
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 40, 60, 20);
+    cancelButton.frame = CGRectMake(25, 30, 80, 40);
     [self addSubview:cancelButton];
     
     UITextField *searchText = [[UITextField alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 30)];
@@ -163,7 +163,7 @@
         else if(i - skip > 0)
         {
             NSDictionary *prevPlace = [places objectAtIndex:i - skip - 1];
-            NSString *prevName = [prevPlace valueForKey:@"name"];
+            //NSString *prevName = [prevPlace valueForKey:@"name"];
             location = [prevPlace valueForKey:@"location"];
             double prevLatitude = [[location valueForKey:@"latitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location valueForKey:@"latitude"] doubleValue];
             double prevLongitude = [[location valueForKey:@"longitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location valueForKey:@"longitude"] doubleValue];

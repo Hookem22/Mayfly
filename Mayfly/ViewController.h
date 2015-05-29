@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "MFView.h"
+#import <MessageUI/MessageUI.h>
 #import "Session.h"
 
-@interface ViewController : UIViewController <CLLocationManagerDelegate>
+@interface ViewController : UIViewController <CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate>
 
-@property(nonatomic, strong) MFView *mainView;
-
+-(void)sendTextMessage:(NSArray *)phoneNumbers message:(NSString *)message;
 
 @end
 

@@ -40,13 +40,13 @@
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 40, 60, 20);
+    cancelButton.frame = CGRectMake(25, 30, 80, 40);
     [self addSubview:cancelButton];
     
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [saveButton setTitle:@"Done" forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    saveButton.frame = CGRectMake(wd - 85, 40, 60, 20);
+    saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
     [self addSubview:saveButton];
     
     UITextField *nameText = [[UITextField alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 30)];
@@ -222,7 +222,23 @@
 }
 -(void)saveButtonClick:(id)sender
 {
-    [self close];
+    if([self.contactsList count] > 0)
+    {
+        NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+        for(NSDictionary *contact in self.contactsList)
+        {
+            NSString *phone = [contact valueForKey:@"Phone"];
+            if(phone != nil)
+                [phoneNumbers addObject:phone];
+        }
+        ViewController *vc = (ViewController *)self.window.rootViewController;
+        [vc sendTextMessage:phoneNumbers message:@"You have been invited to an event"];
+    }
+    else
+    {
+        [self close];
+    }
+
 }
 
 -(void)openLocationSelect:(id)sender

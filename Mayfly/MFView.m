@@ -27,6 +27,9 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    for(UIView *subview in self.subviews)
+        [subview removeFromSuperview];
+    
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 60)];
     headerLabel.text = @"Mayfly";
     headerLabel.textAlignment = NSTextAlignmentCenter;

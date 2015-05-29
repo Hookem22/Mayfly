@@ -33,7 +33,7 @@
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 40, 60, 20);
+    cancelButton.frame = CGRectMake(25, 30, 80, 40);
     [self addSubview:cancelButton];
     
     UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 20)];
