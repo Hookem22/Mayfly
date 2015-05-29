@@ -64,7 +64,7 @@
 -(void)queryFacebookPlaces
 {
     CLLocationCoordinate2D currentCentre = CLLocationCoordinate2DMake(30.2500, -97.7500);
-    int radius = 3000;
+    int radius = 5000;
     NSString *placeName = [self.searchText.text stringByReplacingOccurrencesOfString:@" " withString:@"%22"];
     if([placeName length] < 3)
     {
@@ -114,7 +114,6 @@
     if(responseData == nil)
         return;
     
-    //parse out the json data
     NSError* error;
     NSDictionary* json = [NSJSONSerialization
                           JSONObjectWithData:responseData
@@ -122,11 +121,10 @@
                           options:kNilOptions
                           error:&error];
     
-    //The results from Google will be an array obtained from the NSDictionary object with the key "results".
     NSArray* places = [json objectForKey:@"data"];
     
     //Write out the data to the console.
-    NSLog(@"FB Data: %@", places);
+    //NSLog(@"FB Data: %@", places);
     [self populateFacebookData:places];
 }
 
@@ -238,7 +236,7 @@
     address = [address stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
     
     NSString *url = [NSString stringWithFormat:@"http://maps.google.com/maps/api/geocode/json?address=%@&sensor=false", address];
-
+    
     dispatch_async(kBgQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL: [NSURL URLWithString:url]];
         [self performSelectorOnMainThread:@selector(fetchedGeoData:) withObject:data waitUntilDone:YES];

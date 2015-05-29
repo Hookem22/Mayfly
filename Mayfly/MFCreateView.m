@@ -147,13 +147,13 @@
     [datePicker setDate:in30min];
     [datePicker addTarget:self action:@selector(didChangePickerDate:) forControlEvents:UIControlEventValueChanged];
     [clockView addSubview:datePicker];
-
+    
     [UIView animateWithDuration:0.3
                      animations:^{
                          clockView.frame = CGRectMake(0, ht - 200, wd, 220);
                      }
                      completion:^(BOOL finished){
-                             [self setStartDate:in30min];
+                         [self setStartDate:in30min];
                      }];
     
 }

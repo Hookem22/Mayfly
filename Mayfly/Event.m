@@ -25,9 +25,9 @@
         self.name = [event valueForKey:@"name"];
         self.eventDescription = [event valueForKey:@"eventDescription"];
         self.location = [[Location alloc] init:[event valueForKey:@"location"]];
-        self.isPrivate = [event valueForKey:@"isPrivate"];
-        self.minParticipants = [[event valueForKey:@"minParticipants"] isMemberOfClass:[NSNull class]] ? 0 : [[event valueForKey:@"minParticipants"] longLongValue];
-        self.maxParticipants = [[event valueForKey:@"maxParticipants"] isMemberOfClass:[NSNull class]] ? 0 : [[event valueForKey:@"maxParticipants"] longLongValue];
+        self.isPrivate = [[event valueForKey:@"isPrivate"] isMemberOfClass:[NSNull class]] ? YES : [[event valueForKey:@"isPrivate"] boolValue];
+        self.minParticipants = [[event valueForKey:@"minParticipants"] isMemberOfClass:[NSNull class]] ? 0 : [[event valueForKey:@"minParticipants"] intValue];
+        self.maxParticipants = [[event valueForKey:@"maxParticipants"] isMemberOfClass:[NSNull class]] ? 0 : [[event valueForKey:@"maxParticipants"] intValue];
         self.startTime = [event valueForKey:@"startTime"];
         self.cutoffTime = [event valueForKey:@"cutoffTime"];
     }

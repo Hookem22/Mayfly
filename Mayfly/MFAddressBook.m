@@ -10,6 +10,7 @@
 
 @interface MFAddressBook ()
 
+@property (nonatomic, strong) NSArray *friendList;
 @property (nonatomic, strong) NSArray *contactList;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UITextField *searchText;
@@ -23,32 +24,68 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-
-        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
         
-        __block BOOL accessGranted = NO;
-        
-        if (ABAddressBookRequestAccessWithCompletion != NULL) { // We are on iOS 6
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-            
-            ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-                accessGranted = granted;
-                dispatch_semaphore_signal(semaphore);
-            });
-            
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        if ([FBSDKAccessToken currentAccessToken]) {
+            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends?fields=id,name" parameters:nil]
+             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                 if (!error) {
+                     NSArray *fbList = [result objectForKey:@"data"];
+                     NSMutableArray *friendList = [[NSMutableArray alloc] init];
+                     for(int i = 0; i < [fbList count]; i++)
+                     {
+                         NSDictionary *dict = [fbList objectAtIndex:i];
+                         NSMutableDictionary *friend = [[NSMutableDictionary alloc] init];
+                         [friend setObject:[dict objectForKey:@"id"] forKey:@"id"];
+                         [friend setObject:[dict objectForKey:@"name"] forKey:@"name"];
+                         [friend setObject:@"NO" forKey:@"invited"];
+                         [friendList addObject:friend];
+                         for(NSDictionary *contact in invited)
+                         {
+                             if([[contact objectForKey:@"id"] isEqualToString:[friend objectForKey:@"id"]])
+                                 [friend setObject:@"YES" forKey:@"invited"];
+                         }
+                     }
+                     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
+                     self.friendList = [friendList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+                 }
+                 
+                 [self loadAddressBook:invited];
+             }];
+        }
+        else
+        {
+            [self loadAddressBook:invited];
         }
         
-        else { // We are on iOS 5 or Older
-            accessGranted = YES;
-            [self getContactsWithAddressBook:addressBook invited:invited];
-        }
-        
-        if (accessGranted) {
-            [self getContactsWithAddressBook:addressBook invited:invited];
-        }
     }
     return self;
+}
+
+-(void)loadAddressBook:(NSArray *)invited
+{
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+    
+    __block BOOL accessGranted = NO;
+    
+    if (ABAddressBookRequestAccessWithCompletion != NULL) { // We are on iOS 6
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            accessGranted = granted;
+            dispatch_semaphore_signal(semaphore);
+        });
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    
+    else { // We are on iOS 5 or Older
+        accessGranted = YES;
+        [self getContactsWithAddressBook:addressBook invited:invited];
+    }
+    
+    if (accessGranted) {
+        [self getContactsWithAddressBook:addressBook invited:invited];
+    }
 }
 
 - (void)getContactsWithAddressBook:(ABAddressBookRef )addressBook invited:(NSArray *)invited {
@@ -187,8 +224,57 @@
     [self addSubview:scrollView];
     
     NSString *search = [self.searchText.text uppercaseString];
+    
+    //Friend List
     int skipCt = 0;
-    int invitedCt = 0;
+    int friendHt = 0;
+    
+    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, wd, 30)];
+    friendHeader.text = @"    Friends";
+    friendHeader.textColor = [UIColor whiteColor];
+    friendHeader.backgroundColor = [UIColor grayColor];
+    [scrollView addSubview:friendHeader];
+    
+    for(int i = 0; i < [self.friendList count]; i++)
+    {
+        NSMutableDictionary *contact = [self.friendList objectAtIndex:i];
+        NSString *name = [contact objectForKey:@"name"];
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            name = [NSString stringWithFormat:@"%@ - Invited", name];
+        }
+        
+        if(![search isEqualToString:@""] && ![[name uppercaseString] hasPrefix:search])
+        {
+            skipCt++;
+            continue;
+        }
+        
+        UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [nameButton setTitle:name forState:UIControlStateNormal];
+        [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 40, wd - 60, 30);
+        nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        nameButton.tag = i;
+        [scrollView addSubview:nameButton];
+        
+        
+        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, nameButton.frame.size.height - 1.0f, nameButton.frame.size.width, 1)];
+        bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+        [nameButton addSubview:bottomBorder];
+        
+        friendHt = ((i - skipCt) + 2) * 30;
+    }
+    
+    //Contact List
+    UILabel *contactHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 20 + friendHt, wd, 30)];
+    contactHeader.text = @"    Address Book";
+    contactHeader.textColor = [UIColor whiteColor];
+    contactHeader.backgroundColor = [UIColor grayColor];
+    [scrollView addSubview:contactHeader];
+    
+    skipCt = 0;
     for(int i = 0; i < [self.contactList count]; i++)
     {
         NSMutableDictionary *contact = [self.contactList objectAtIndex:i];
@@ -196,7 +282,6 @@
         NSString *invited = [contact objectForKey:@"invited"];
         if(![invited isEqualToString:@"NO"]) {
             name = [NSString stringWithFormat:@"%@ - Invited", name];
-            invitedCt++;
         }
         //NSString *number = [contact objectForKey:@"Phone"];
         
@@ -215,10 +300,10 @@
         UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [nameButton setTitle:name forState:UIControlStateNormal];
         [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 10, wd - 60, 30);
+        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 50 + friendHt, wd - 60, 30);
         nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
-        nameButton.tag = i;
+        nameButton.tag = i + 1000;
         [scrollView addSubview:nameButton];
         
         
@@ -226,14 +311,22 @@
         bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
         [nameButton addSubview:bottomBorder];
         
-        scrollView.contentSize = CGSizeMake(wd, (((i + skipCt) + 2) * 30));
+        scrollView.contentSize = CGSizeMake(wd, (((i - skipCt) + 4) * 30) + friendHt);
     }
 }
 
 -(void)nameButtonClick:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    NSDictionary *contact = [self.contactList objectAtIndex:button.tag];
+    NSDictionary *contact = [[NSDictionary alloc] init];
+    if(button.tag < 1000)
+    {
+        contact = [self.friendList objectAtIndex:button.tag];
+    }
+    else
+    {
+        contact = [self.contactList objectAtIndex:button.tag - 1000];
+    }
     NSString *invited = [contact objectForKey:@"invited"];
     if([invited isEqualToString:@"NO"])
     {
@@ -247,6 +340,14 @@
     }
     
     int invitedCt = 0;
+    for(int i = 0; i < [self.friendList count]; i++)
+    {
+        contact = [self.friendList objectAtIndex:i];
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            invitedCt++;
+        }
+    }
     for(int i = 0; i < [self.contactList count]; i++)
     {
         contact = [self.contactList objectAtIndex:i];
@@ -270,6 +371,14 @@
 -(void)saveButtonClick:(id)sender
 {
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
+    for(int i = 0; i < [self.friendList count]; i++)
+    {
+        NSDictionary *contact = [self.friendList objectAtIndex:i];
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            [contacts addObject:contact];
+        }
+    }
     for(int i = 0; i < [self.contactList count]; i++)
     {
         NSDictionary *contact = [self.contactList objectAtIndex:i];
