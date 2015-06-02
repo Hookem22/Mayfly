@@ -60,8 +60,8 @@
     if (self)
     {
         // Initialize the Mobile Service client with your URL and key
-        MSClient *client = [MSClient clientWithApplicationURLString:@"https://dishwishes.azure-mobile.net/"
-                                                     applicationKey:@"ttjXxmFBCjMSMnxYlgutYahHQHOMXB15"];
+        MSClient *client = [MSClient clientWithApplicationURLString:@"https://mayflyapp.azure-mobile.net/"
+                                                     applicationKey:@"NzEvHltvEcuInDmQsnXqReEIitsWIa99"];
         
         // Add a Mobile Service filter to enable the busy indicator
         self.client = [client clientWithFilter:self];
@@ -118,92 +118,18 @@
     
 }
 
-
-- (void)getAllPlaces:(NSDictionary *)params completion:(QSCompletionBlock)completion
+- (void)getByProc:(NSString *)procName params:(NSDictionary *)params completion:(QSCompletionBlock)completion
 {
-    [self.client invokeAPI:@"getallplaces" body:params HTTPMethod:@"POST" parameters:nil
-           headers:nil completion:^(NSArray *results, NSHTTPURLResponse *response, NSError *error) {
-               [self logErrorIfNotNil:error];
-               //NSLog([NSString stringWithFormat:@"%@", results]);
-               items = [results mutableCopy];
-               
-               completion(items);
-           }];
-}
-
-
-- (void)getSavedListByUser:(NSDictionary *)params completion:(QSCompletionBlock)completion
-{
-    [self.client invokeAPI:@"getsavedlist" body:params HTTPMethod:@"POST" parameters:nil
-           headers:nil completion:^(NSArray *results, NSHTTPURLResponse *response, NSError *error) {
-               [self logErrorIfNotNil:error];
-               
-               items = [results mutableCopy];
-               
-               completion(results);
-               
-           }];
-}
-
-- (void)getSavedListByXrefId:(NSDictionary *)params completion:(QSCompletionBlock)completion
-{
-    [self.client invokeAPI:@"getsavedlistbyxrefid" body:params HTTPMethod:@"POST" parameters:nil
+    [self.client invokeAPI:procName body:params HTTPMethod:@"POST" parameters:nil
                    headers:nil completion:^(NSArray *results, NSHTTPURLResponse *response, NSError *error) {
                        [self logErrorIfNotNil:error];
-                       
+                       NSLog([NSString stringWithFormat:@"%@", results]);
                        items = [results mutableCopy];
                        
-                       completion(results);
-                       
+                       completion(items);
                    }];
 }
 
-- (void)getPlacesByIds:(NSString *)placeIds completion:(QSCompletionBlock)completion
-{
-    // Create a predicate that finds items where complete is false
-    NSPredicate * predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"id in {%@}", placeIds]];
-    
-    // Query the TodoItem table and update the items property with the results from the service
-    [self.table readWithPredicate:predicate completion:^(NSArray *results, NSInteger totalCount, NSError *error)
-     {
-         [self logErrorIfNotNil:error];
-         
-         items = [results mutableCopy];
-         
-         // Let the caller know that we finished
-         completion(results);
-     }];
-    
-}
-
-- (void)getMessages:(NSDictionary *)params completion:(QSCompletionBlock)completion
-{
-    [self.client invokeAPI:@"getmessages" body:params HTTPMethod:@"POST" parameters:nil
-                   headers:nil completion:^(NSArray *results, NSHTTPURLResponse *response, NSError *error) {
-                       [self logErrorIfNotNil:error];
-                       
-                       items = [results mutableCopy];
-                       
-                       completion(results);
-                       
-                   }];
-}
-
--(void)updateList:(NSDictionary *)params
-{
-    [self.client invokeAPI:@"updatelist" body:params HTTPMethod:@"POST" parameters:nil
-            headers:nil completion:^(NSString *results, NSHTTPURLResponse *response, NSError *error) {
-                [self logErrorIfNotNil:error];
-            }];
-}
-
--(void)vote:(NSDictionary *)params
-{
-    [self.client invokeAPI:@"vote" body:params HTTPMethod:@"POST" parameters:nil
-           headers:nil completion:^(NSString *results, NSHTTPURLResponse *response, NSError *error) {
-               [self logErrorIfNotNil:error];
-           }];
-}
 
 - (void)sendPushMessage:(NSDictionary *)params
 {

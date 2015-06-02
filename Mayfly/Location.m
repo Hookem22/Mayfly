@@ -15,13 +15,24 @@
 @synthesize latitude;
 @synthesize longitude;
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.name = @"";
+        self.address = @"";
+        self.latitude = 0;
+        self.longitude = 0;
+    }
+    return self;
+}
+
 - (id)init:(NSDictionary *)location {
     self = [super init];
     if (self) {
-        self.name = [location valueForKey:@"name"];
-        self.address = [location valueForKey:@"address"];
-        self.latitude = [[location valueForKey:@"latitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location valueForKey:@"latitude"] doubleValue];
-        self.longitude = [[location valueForKey:@"longitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location valueForKey:@"longitude"] doubleValue];
+        self.name = [location objectForKey:@"name"];
+        self.address = [location objectForKey:@"address"];
+        self.latitude = [[location objectForKey:@"latitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location objectForKey:@"latitude"] doubleValue];
+        self.longitude = [[location objectForKey:@"longitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location objectForKey:@"longitude"] doubleValue];
     }
     return self;
 }

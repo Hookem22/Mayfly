@@ -31,6 +31,14 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    [Event get:^(NSArray *events)
+     {
+         for(Event *ev in events)
+         {
+             NSLog(@"%@", ev);
+         }
+     }];
+    
     //NSMutableArray *events = [[NSMutableArray alloc] init];
     NSDictionary *dict1 = [[NSDictionary alloc]
                            initWithObjectsAndKeys:@"Disc?",@"name",

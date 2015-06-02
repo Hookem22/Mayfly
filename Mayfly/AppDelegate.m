@@ -22,6 +22,12 @@
          startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
              if (!error) {
                  NSLog(@"fetched user:%@", result);
+                 self.facebookId = [result objectForKey:@"id"];
+                 self.name = [result objectForKey:@"name"];
+                 
+                 [User login:^(User *user) {
+                     //NSLog(@"%@", user);
+                 }];
              }
          }];
     }
@@ -40,6 +46,23 @@
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
+}
+
+// We are registered, so now store the device token (as a string) on the AppDelegate instance
+// taking care to remove the angle brackets first.
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:
+(NSData *)deviceToken {
+    NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+    self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
+    NSLog(@"%@", self.deviceToken);
+}
+
+// Handle any failure to register. In this case we set the deviceToken to an empty
+// string to prevent the insert from failing.
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:
+(NSError *)error {
+    NSLog(@"Failed to register for remote notifications: %@", error);
+    self.deviceToken = @"";
 }
 
 

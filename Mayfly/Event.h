@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QSAzureService.h"
 #import "Location.h"
 
 @interface Event : NSObject
 
+@property (nonatomic, copy) NSString *eventId;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *eventDescription;
 @property (nonatomic, strong) Location *location;
@@ -21,5 +23,8 @@
 @property (nonatomic, copy) NSDate *cutoffTime;
 
 -(id)init:(NSDictionary *)event;
++(void)get:(QSCompletionBlock)completion;
++(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
+-(void)save:(QSCompletionBlock)completion;
 
 @end

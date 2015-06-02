@@ -11,7 +11,13 @@
 @interface MFCreateView()
 
 @property (nonatomic, strong) NSArray *contactsList;
+@property (nonatomic, strong) UITextField *nameText;
+@property (nonatomic, strong) UITextView *descText;
 @property (nonatomic, strong) UITextField *locationText;
+@property (nonatomic, strong) Location *location;
+//TODO add isPrivate
+@property (nonatomic, strong) UITextField *minText;
+@property (nonatomic, strong) UITextField *maxText;
 @property (nonatomic, strong) UITextField *startText;
 
 @end
@@ -28,7 +34,7 @@
 }
 
 -(void)create
-{
+{   
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
@@ -54,6 +60,7 @@
     nameText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     nameText.font = [UIFont systemFontOfSize:15];
     nameText.placeholder = @"Event Name";
+    self.nameText = nameText;
     [self addSubview:nameText];
     
     UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 120, wd - 60, 80)];
@@ -67,6 +74,7 @@
     descText.delegate = self;
     descText.text = @"Details";
     descText.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
+    self.descText = descText;
     [self addSubview:descText];
     
     UITextField *startText = [[UITextField alloc] initWithFrame:CGRectMake(30, 210, wd - 60, 30)];
@@ -79,7 +87,7 @@
     UIView* dummyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     startText.inputView = dummyView;
     self.startText = startText;
-    [self addSubview:self.startText];
+    [self addSubview:startText];
     
     UITextField *locationText = [[UITextField alloc] initWithFrame:CGRectMake(30, 250, wd - 60, 30)];
     [locationText addTarget:self action:@selector(openLocationSelect:) forControlEvents:UIControlEventEditingDidBegin];
@@ -89,7 +97,7 @@
     locationText.placeholder = @"Location";
     locationText.inputView = dummyView;
     self.locationText = locationText;
-    [self addSubview:self.locationText];
+    [self addSubview:locationText];
     
     UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 290, wd, 30)];
     participantsLabel.text = @"Participants";
@@ -102,6 +110,7 @@
     minText.font = [UIFont systemFontOfSize:15];
     minText.placeholder = @"Min";
     minText.tag = 1;
+    self.minText = minText;
     [self addSubview:minText];
     
     UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 4 - 10, 290, (wd / 4) - 20, 30)];
@@ -110,6 +119,7 @@
     maxText.font = [UIFont systemFontOfSize:15];
     maxText.placeholder = @"Max";
     maxText.tag = 1;
+    self.maxText = maxText;
     [self addSubview:maxText];
     
     //TODO: Add IsPublic
@@ -222,6 +232,27 @@
 }
 -(void)saveButtonClick:(id)sender
 {
+    Location *loc = [[Location alloc] init];
+    
+    Event *event = [[Event alloc] init];
+    event.name = self.nameText.text;
+    event.eventDescription = self.descText.text;
+    event.location = self.location != nil ? self.location : [[Location alloc] init];
+    event.minParticipants = [self.minText.text doubleValue];
+    event.maxParticipants = [self.maxText.text doubleValue];
+    
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    [outputFormatter setDateFormat:@"h:mm a"];
+    event.startTime = [outputFormatter dateFromString:self.startText.text];
+    
+    NSTimeInterval plus30 = 30 * 60;
+    event.cutoffTime = [event.startTime dateByAddingTimeInterval:plus30];
+    
+    [event save:^(Event *event)
+     {
+         NSLog(@"%@", event.eventId);
+     }];
+    
     if([self.contactsList count] > 0)
     {
         NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
@@ -260,6 +291,7 @@
 
 -(void)locationReturn:(Location *)location
 {
+    self.location = location;
     self.locationText.text = location.name;
     
     for (UIView *view in self.subviews)
