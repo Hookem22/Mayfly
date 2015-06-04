@@ -11,6 +11,8 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFLoginView.h"
 #import "Event.h"
+#import "User.h"
+#import "Session.h"
 
 @interface MFDetailView : UIScrollView
 

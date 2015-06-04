@@ -13,6 +13,7 @@
 
 @interface ViewController : UIViewController <CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate>
 
+@property (strong, nonatomic) CLLocationManager *locationManager;
 -(void)sendTextMessage:(NSArray *)phoneNumbers message:(NSString *)message;
 
 @end

@@ -65,6 +65,10 @@
                 completion(addedUser);
             }];
         }
+        else
+        {
+            [[Session sessionVariables] setObject:deviceUser forKey:@"currentUser"];
+        }
     }];
 }
 

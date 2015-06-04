@@ -232,8 +232,6 @@
 }
 -(void)saveButtonClick:(id)sender
 {
-    Location *loc = [[Location alloc] init];
-    
     Event *event = [[Event alloc] init];
     event.name = self.nameText.text;
     event.eventDescription = self.descText.text;
@@ -243,10 +241,26 @@
     
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
     [outputFormatter setDateFormat:@"h:mm a"];
-    event.startTime = [outputFormatter dateFromString:self.startText.text];
+    NSDate *time = [outputFormatter dateFromString:self.startText.text];
     
-    NSTimeInterval plus30 = 30 * 60;
-    event.cutoffTime = [event.startTime dateByAddingTimeInterval:plus30];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
+    NSDateComponents *timeComponents = [calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:time];
+    [components setHour:timeComponents.hour];
+    [components setMinute:timeComponents.minute];
+    event.startTime = [calendar dateFromComponents:components];
+    
+    NSTimeInterval minus30 = -30 * 60;
+    event.cutoffTime = [event.startTime dateByAddingTimeInterval:minus30];
+    
+    event.invited = @"";
+    
+    User *user = (User *)[Session sessionVariables][@"currentUser"];
+    event.going = user.facebookId;
+
+    //TODO: Validation
+    
+    
     
     [event save:^(Event *event)
      {
@@ -267,6 +281,8 @@
     }
     else
     {
+        MFView *view = (MFView *)[self superview];
+        [view setup];
         [self close];
     }
 

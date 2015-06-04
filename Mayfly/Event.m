@@ -19,6 +19,8 @@
 @synthesize maxParticipants;
 @synthesize startTime;
 @synthesize cutoffTime;
+@synthesize invited;
+@synthesize going;
 
 - (id)init:(NSDictionary *)event {
     self = [super init];
@@ -38,6 +40,8 @@
         self.maxParticipants = [[event objectForKey:@"maxparticipants"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"maxparticipants"] intValue];
         self.startTime = [event objectForKey:@"starttime"];
         self.cutoffTime = [event objectForKey:@"cutofftime"];
+        self.invited = [event objectForKey:@"invited"];
+        self.going = [event objectForKey:@"going"];
     }
     return self;
 }
@@ -61,12 +65,13 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
     
-    //CLLocation *location = (CLLocation *)[Session sessionVariables][@"location"];
+    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
-    [params setValue:[NSString stringWithFormat:@"%f", 30.2] forKey:@"latitude"];
-    [params setValue:[NSString stringWithFormat:@"%f", -97.8] forKey:@"longitude"];
+    [params setValue:[NSString stringWithFormat:@"%f", location.latitude] forKey:@"latitude"];
+    [params setValue:[NSString stringWithFormat:@"%f", location.longitude] forKey:@"longitude"];
+    //[params setValue:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"now"];
     
     [service getByProc:@"getevents" params:params completion:^(NSArray *results) {
         NSMutableArray *events = [[NSMutableArray alloc] init];
@@ -81,11 +86,13 @@
 -(void)save:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
-    NSDictionary *event = @{@"name": self.name, @"eventdescription": self.eventDescription, @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude],  @"isprivate": [NSNumber numberWithBool:self.isPrivate], @"minparticipants": [NSNumber numberWithInt:self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:self.maxParticipants], @"starttime": self.startTime, @"cutofftime": self.cutoffTime };
+       
+    NSDictionary *event = @{@"name": self.name, @"eventdescription": self.eventDescription, @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude],  @"isprivate": [NSNumber numberWithBool:self.isPrivate], @"minparticipants": [NSNumber numberWithInt:self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:self.maxParticipants], @"starttime": self.startTime, @"cutofftime": self.cutoffTime, @"invited": self.invited, @"going": self.going };
     
     if([self.eventId length] > 0) { //Update
-        [event setValue:self.eventId forKey:@"id"];
-        [service updateItem:event completion:^(NSDictionary *item)
+        NSMutableDictionary *mutableEvent = [event mutableCopy];
+        [mutableEvent setObject:self.eventId forKey:@"id"];
+        [service updateItem:mutableEvent completion:^(NSDictionary *item)
          {
              completion(self);
          }];
@@ -101,7 +108,61 @@
 
 }
 
+-(void)addGoing:(NSString *)facebookId
+{
+    if(self.going == nil || [self.going isEqualToString:@""])
+        self.going = facebookId;
+    else
+        self.going = [NSString stringWithFormat:@"%@|%@", self.going, facebookId];
+    
+    [self save:^(Event *event)
+     {
+         
+     }];
+}
 
+-(void)removeGoing:(NSString *)facebookId
+{
+    NSMutableArray *list = [self stringToList:self.going];
+    NSMutableArray *newList = [[NSMutableArray alloc] init];
+    self.going = @"";
+    for(int i = 0; i < [list count]; i++)
+    {
+        NSString *string = (NSString *)[list objectAtIndex:i];
+        if([string isEqualToString:facebookId])
+            continue;
+        
+        if([newList count] == 0)
+            self.going = string;
+        else
+            self.going = [NSString stringWithFormat:@"%@|%@", self.going, string];
+    }
+    
+    [self save:^(Event *event)
+     {
+         
+     }];
+}
+
+-(NSString *)listToString:(NSMutableArray *)list
+{
+    NSString *string = @"";
+    for(int i = 0; i < [list count]; i++)
+    {
+        if(i > 0)
+            string = [NSString stringWithFormat:@"%@|", string];
+        
+        NSString *item = (NSString *)[list objectAtIndex:i];
+        string = [NSString stringWithFormat:@"%@%@", string, item];
+    }
+    return string;
+}
+
+-(NSMutableArray *)stringToList:(NSString *)string
+{
+    NSArray *list = [string componentsSeparatedByString:@"|"];
+    return [list mutableCopy];
+}
 
 
 @end

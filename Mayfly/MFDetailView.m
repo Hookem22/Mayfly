@@ -8,8 +8,13 @@
 
 #import "MFDetailView.h"
 
-@implementation MFDetailView
+@interface MFDetailView ()
 
+@property (nonatomic, strong) Event *event;
+
+@end
+
+@implementation MFDetailView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -22,6 +27,8 @@
 
 -(void)open:(Event*)event
 {
+    self.event = event;
+    
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
@@ -67,8 +74,13 @@
     addFriendsButton.frame = CGRectMake(30, 350 + descriptionLabel.frame.size.height, wd-60, 30);
     [self addSubview:addFriendsButton];
     
+    User *user = (User *)[Session sessionVariables][@"currentUser"];
+    NSString *title = @"Join Event";
+    if([event.going rangeOfString:user.facebookId].location != NSNotFound)
+        title = @"Unjoin Event";
+        
     UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [joinButton setTitle:@"Join Event" forState:UIControlStateNormal];
+    [joinButton setTitle:title forState:UIControlStateNormal];
     [joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     joinButton.frame = CGRectMake(0, ht - 60, wd, 60);
     [self addSubview:joinButton];
@@ -87,7 +99,20 @@
 
 -(void)joinButtonClick:(id)sender
 {
+    User *user = (User *)[Session sessionVariables][@"currentUser"];
     
+    UIButton *button = (UIButton *)sender;
+    if([button.titleLabel.text isEqualToString:@"Join Event"])
+    {
+        [self.event addGoing:user.facebookId];
+        [button setTitle:@"Unjoin Event" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.event removeGoing:user.facebookId];
+        [button setTitle:@"Join Event" forState:UIControlStateNormal];
+    }
+        
 }
 -(void)addFriendsButtonClick:(id)sender
 {

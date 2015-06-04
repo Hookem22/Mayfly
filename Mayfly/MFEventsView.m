@@ -33,91 +33,59 @@
     
     [Event get:^(NSArray *events)
      {
-         for(Event *ev in events)
+         self.Events = (NSMutableArray *)events;
+         
+         int skip = 0;
+         for(int i = 0; i < [self.Events count]; i++)
          {
-             NSLog(@"%@", ev);
+             Event *event = [self.Events objectAtIndex:i];
+             UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i - skip) * 80), wd, 80)];
+             
+             //UIButton *eventView = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+             [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
+             //eventView.frame = CGRectMake(0, (i * 80), wd, 80);
+             eventView.tag = i;
+             
+             
+             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, wd, 20)];
+             nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
+             [eventView addSubview:nameLabel];
+             
+             UILabel *timeLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/5, 40, (wd*2)/5, 20)];
+             timeLabelContainer.textAlignment = NSTextAlignmentRight;
+             [eventView addSubview:timeLabelContainer];
+             
+             UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, timeLabelContainer.frame.size.width, 20)];
+             timeLabel.textAlignment = NSTextAlignmentLeft;
+             
+             NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+             [outputFormatter setDateFormat:@"h:mm a"];
+             timeLabel.text = [outputFormatter stringFromDate:event.startTime];
+             [timeLabelContainer addSubview:timeLabel];
+             
+             if([event.going isMemberOfClass:[NSNull class]]) {
+                 skip++;
+                 continue;
+             }
+             
+             NSArray *going = [event.going isEqualToString:@""] ? [[NSArray alloc] init] : [event.going componentsSeparatedByString:@"|"];
+             if([going count] >= event.maxParticipants) {
+                 skip++;
+                 continue;
+             }
+             UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, wd, 20)];
+             manyLabel.text = [NSString stringWithFormat:@"%d out of %d people", [going count], event.maxParticipants];
+             [eventView addSubview:manyLabel];
+             
+             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
+             bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+             [eventView addSubview:bottomBorder];
+             
+             [self addSubview:eventView];
+             self.contentSize = CGSizeMake(wd, (((i - skip) + 1) * 80));
          }
      }];
-    
-    //NSMutableArray *events = [[NSMutableArray alloc] init];
-    NSDictionary *dict1 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Disc?",@"name",
-                           @"We will be meeting at Zilker at 3pm to play disc. Please RSVP if you want to attend. Blah blah blah. Blah blah blah. Blah blah blah. Blah blah blah. ", @"eventDescription",
-                           nil];
-    NSDictionary *dict2 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Monopoly?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    NSDictionary *dict3 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Tennis?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    NSDictionary *dict4 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Soccer?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    NSDictionary *dict5 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Disc?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    NSDictionary *dict6 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Who wants to play monpoly tonight?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    NSDictionary *dict7 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Tennis?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    NSDictionary *dict8 = [[NSDictionary alloc]
-                           initWithObjectsAndKeys:@"Soccer?",@"name",
-                           @"Desc", @"eventDescription",
-                           nil];
-    [self.Events addObject:[[Event alloc]init:dict1]];
-    [self.Events addObject:[[Event alloc]init:dict2]];
-    [self.Events addObject:[[Event alloc]init:dict3]];
-    [self.Events addObject:[[Event alloc]init:dict4]];
-    [self.Events addObject:[[Event alloc]init:dict5]];
-    [self.Events addObject:[[Event alloc]init:dict6]];
-    [self.Events addObject:[[Event alloc]init:dict7]];
-    [self.Events addObject:[[Event alloc]init:dict8]];
-    
-    for(int i = 0; i < [self.Events count]; i++)
-    {
-        Event *event = [self.Events objectAtIndex:i];
-        
-        UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, (i * 80), wd, 80)];
-        
-        //UIButton *eventView = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
-        //eventView.frame = CGRectMake(0, (i * 80), wd, 80);
-        eventView.tag = i;
-        [self addSubview:eventView];
-        
-        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, wd, 20)];
-        nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
-        [eventView addSubview:nameLabel];
-        
-        UILabel *timeLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/5, 40, (wd*2)/5, 20)];
-        timeLabelContainer.textAlignment = NSTextAlignmentRight;
-        [eventView addSubview:timeLabelContainer];
-        
-        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, timeLabelContainer.frame.size.width, 20)];
-        timeLabel.textAlignment = NSTextAlignmentLeft;
-        timeLabel.text = [NSString stringWithFormat:@"%d minutes left", (i + 1) * 5];
-        [timeLabelContainer addSubview:timeLabel];
-        
-        UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, wd, 20)];
-        //manyLabel.textAlignment = NSTextAlignmentCenter;
-        manyLabel.text = [NSString stringWithFormat:@"%d out of 10 members", 9 - i];
-        [eventView addSubview:manyLabel];
-        
-        
-        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
-        bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
-        [eventView addSubview:bottomBorder];
-        
-        self.contentSize = CGSizeMake(wd, ((i + 1) * 80));
-    }
+
 }
 
 -(void) eventClicked:(id)sender

@@ -23,19 +23,78 @@
     self.view = self.mainView;
     
     //debugging only
-    //if (TARGET_IPHONE_SIMULATOR)
-    //{
+    if (TARGET_IPHONE_SIMULATOR)
+    {
         CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(30.2500, -97.7500);
         CLLocation *location = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil];
         [[Session sessionVariables] setObject:location forKey:@"location"];
         
         [self.mainView setup];
-    //}
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    if ([CLLocationManager locationServicesEnabled] &&
+        [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied) {
+        _locationManager = [[CLLocationManager alloc] init];
+        
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _locationManager.delegate = self;
+        //_locationManager.pausesLocationUpdatesAutomatically = NO;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
+        [_locationManager startUpdatingLocation];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No GPS"
+                                                        message:@"Turn on Location"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    /*
+    UIAlertView *errorAlert = [[UIAlertView alloc]
+                               initWithTitle:@"No GPS"
+                               message:@"Turn on Location"
+                               delegate:nil
+                               cancelButtonTitle:@"OK"
+                               otherButtonTitles:nil];
+    [errorAlert show];
+     */
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    // If it's a relatively recent event, turn off updates to save power.
+    CLLocation* cllocation = [locations lastObject];
+    
+    [_locationManager stopUpdatingLocation];
+    
+    Location *ckLocation = (Location *)[Session sessionVariables][@"currentLocation"];
+    if(ckLocation != nil)
+        return;
+    
+    Location *location = [[Location alloc] init];
+    location.latitude = cllocation.coordinate.latitude;
+    location.longitude = cllocation.coordinate.longitude;
+
+    [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+    
+    /*for(id subview in self.mainView.subviews) { //Bug for loading cards twice
+        if([subview isMemberOfClass:[DWDraggableView class]] || [subview isMemberOfClass:[DWLeftSideBar class]] )
+            return;
+    }*/
+    
+    [self.mainView setup];
+    
 }
 
 -(void)sendTextMessage:(NSArray *)phoneNumbers message:(NSString *)message
