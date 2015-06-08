@@ -16,6 +16,7 @@
 #import "MFLocationSelectView.h"
 #import "MFMapView.h"
 #import "Event.h"
+#import "PushMessage.h"
 
 @interface MFCreateView : UIScrollView <UITextViewDelegate>
 

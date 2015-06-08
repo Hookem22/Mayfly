@@ -49,18 +49,19 @@
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSString *pushDeviceToken = appDelegate.deviceToken == nil ? @"" : appDelegate.deviceToken;
-    NSString *referralId = appDelegate.queryValue;
+    NSString *referenceId = appDelegate.queryValue;
+
+    //TODO get referenced Event if referenceId
     
     [self get:deviceId pushDeviceToken:pushDeviceToken completion:^(User *deviceUser) {
-        //0 Users
-        if((deviceUser == nil || deviceUser.deviceId.length <= 0) && [referralId length] <= 0) {
+        if((deviceUser == nil || deviceUser.deviceId.length <= 0)) {
             User *newUser = [[User alloc] init];
             newUser.deviceId = deviceId;
             newUser.pushDeviceToken = pushDeviceToken;
             newUser.name = appDelegate.name;
             newUser.facebookId = appDelegate.facebookId;
             
-            [newUser add:^(User *addedUser) {
+            [newUser save:^(User *addedUser) {
                 [[Session sessionVariables] setObject:addedUser forKey:@"currentUser"];
                 completion(addedUser);
             }];
@@ -70,6 +71,7 @@
             [[Session sessionVariables] setObject:deviceUser forKey:@"currentUser"];
         }
     }];
+
 }
 
 +(void)get:(id)deviceId pushDeviceToken:(NSString *)pushDeviceToken completion:(QSCompletionBlock)completion
@@ -91,16 +93,45 @@
     }];
 }
 
--(void)add:(QSCompletionBlock)completion
++(void)getByFacebookId:(NSString *)facebookId completion:(QSCompletionBlock)completion
 {
+    QSAzureService *service = [QSAzureService defaultService:@"Users"];
+    NSString *whereStatement = [NSString stringWithFormat:@"facebookid = '%@'", facebookId];
+
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        for(id item in results) {
+            User *user = [[User alloc] init:item];
+            completion(user);
+            return;
+        }
+        completion(nil);
+    }];
+}
+
+-(void)save:(QSCompletionBlock)completion
+{
+    
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
     NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId /*, @"lastsignedin" : self.lastSignedIn */};
-    [service addItem:user completion:^(NSDictionary *item)
-     {
-         User *user = [[User alloc] init:item];
-         completion(user);
-     }];
+    
+    if([self.userId length] <= 0)
+    {
+        [service addItem:user completion:^(NSDictionary *item)
+         {
+             User *user = [[User alloc] init:item];
+             completion(user);
+         }];
+    }
+    else
+    {
+        NSMutableDictionary *mutableUser = [user mutableCopy];
+        [mutableUser setObject:self.userId forKey:@"id"];
+        [service updateItem:[mutableUser copy] completion:^(NSDictionary *item) {
+            User *user = [[User alloc] init:item];
+            completion(user);
+        }];
+    }
 }
 
 @end

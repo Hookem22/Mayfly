@@ -20,7 +20,7 @@
 @property (nonatomic, copy) NSString *facebookId;
 @property (nonatomic, copy) NSDate *lastSignedIn;
 
-
 +(void)login:(QSCompletionBlock)completion;
++(void)getByFacebookId:(NSString *)facebookId completion:(QSCompletionBlock)completion;
 
 @end

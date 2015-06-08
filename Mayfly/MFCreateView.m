@@ -236,8 +236,8 @@
     event.name = self.nameText.text;
     event.eventDescription = self.descText.text;
     event.location = self.location != nil ? self.location : [[Location alloc] init];
-    event.minParticipants = [self.minText.text doubleValue];
-    event.maxParticipants = [self.maxText.text doubleValue];
+    event.minParticipants = [self.minText.text integerValue];
+    event.maxParticipants = [self.maxText.text integerValue];
     
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
     [outputFormatter setDateFormat:@"h:mm a"];
@@ -258,33 +258,50 @@
     User *user = (User *)[Session sessionVariables][@"currentUser"];
     event.going = user.facebookId;
 
+    event.referenceId = 0;
+    
     //TODO: Validation
     
     
+    if([self.contactsList count] > 0)
+    {
+        NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
+        for(NSDictionary *contact in self.contactsList)
+        {
+            NSString *fb = [contact valueForKey:@"id"];
+            if(fb != nil)
+            {
+                [facebookIds addObject:@"10106153174286280"];
+                if([event.invited length] <= 0)
+                    event.invited = fb;
+                else
+                    event.invited = [NSString stringWithFormat:@"%@|%@", event.invited, fb];
+            }
+        }
+        if([facebookIds count] > 0)
+            [PushMessage inviteFriends:facebookIds from:user.name message:event.name];
+    }
     
     [event save:^(Event *event)
      {
-         NSLog(@"%@", event.eventId);
-     }];
-    
-    if([self.contactsList count] > 0)
-    {
-        NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
-        for(NSDictionary *contact in self.contactsList)
+         NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+         for(NSDictionary *contact in self.contactsList)
+         {
+             NSString *phone = [contact valueForKey:@"Phone"];
+             if(phone != nil)
+                 [phoneNumbers addObject:phone];
+         }
+         if([phoneNumbers count] > 0) {
+             ViewController *vc = (ViewController *)self.window.rootViewController;
+             [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://getmayfly.com?%lu", event.name, (unsigned long)event.referenceId]];
+         }
+        else
         {
-            NSString *phone = [contact valueForKey:@"Phone"];
-            if(phone != nil)
-                [phoneNumbers addObject:phone];
+            MFView *view = (MFView *)[self superview];
+            [view setup];
+            [self close];
         }
-        ViewController *vc = (ViewController *)self.window.rootViewController;
-        [vc sendTextMessage:phoneNumbers message:@"You have been invited to an event"];
-    }
-    else
-    {
-        MFView *view = (MFView *)[self superview];
-        [view setup];
-        [self close];
-    }
+     }];
 
 }
 

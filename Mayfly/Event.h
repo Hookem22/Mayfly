@@ -24,13 +24,16 @@
 @property (nonatomic, copy) NSDate *cutoffTime;
 @property (nonatomic, copy) NSString *invited;
 @property (nonatomic, copy) NSString *going;
+@property (nonatomic, assign) NSUInteger referenceId;
 
 -(id)init:(NSDictionary *)event;
 +(void)get:(QSCompletionBlock)completion;
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
++(void)getByReferenceId:(NSString *)referenceId completion:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 
 -(void)addGoing:(NSString *)facebookId;
 -(void)removeGoing:(NSString *)facebookId;
+-(void)addInvited:(NSMutableArray *)invitedList;
 
 @end

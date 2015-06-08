@@ -21,6 +21,7 @@
 @synthesize cutoffTime;
 @synthesize invited;
 @synthesize going;
+@synthesize referenceId;
 
 - (id)init:(NSDictionary *)event {
     self = [super init];
@@ -42,6 +43,7 @@
         self.cutoffTime = [event objectForKey:@"cutofftime"];
         self.invited = [event objectForKey:@"invited"];
         self.going = [event objectForKey:@"going"];
+        self.referenceId = [[event objectForKey:@"referenceid"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"referenceid"] intValue];
     }
     return self;
 }
@@ -83,11 +85,26 @@
     }];
 }
 
++(void)getByReferenceId:(NSString *)referenceId completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"Event"];
+    NSString *whereStatement = [NSString stringWithFormat:@"referenceid = '%@'", referenceId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        for(id item in results) {
+            Event *event = [[Event alloc] init:item];
+            completion(event);
+            return;
+        }
+        completion(nil);
+    }];
+}
+
 -(void)save:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
        
-    NSDictionary *event = @{@"name": self.name, @"eventdescription": self.eventDescription, @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude],  @"isprivate": [NSNumber numberWithBool:self.isPrivate], @"minparticipants": [NSNumber numberWithInt:self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:self.maxParticipants], @"starttime": self.startTime, @"cutofftime": self.cutoffTime, @"invited": self.invited, @"going": self.going };
+    NSDictionary *event = @{@"name": self.name, @"eventdescription": self.eventDescription, @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude],  @"isprivate": [NSNumber numberWithBool:self.isPrivate], @"minparticipants": [NSNumber numberWithInt:self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:self.maxParticipants], @"starttime": self.startTime, @"cutofftime": self.cutoffTime, @"invited": self.invited, @"going": self.going, @"referenceid": [NSNumber numberWithInt:self.referenceId] };
     
     if([self.eventId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [event mutableCopy];
@@ -102,6 +119,7 @@
         [service addItem:event completion:^(NSDictionary *item)
          {
              self.eventId = [item objectForKey:@"id"];
+             self.referenceId = [[item objectForKey:@"referenceid"] isMemberOfClass:[NSNull class]] ? 0 : [[item objectForKey:@"referenceid"] intValue];
              completion(self);
          }];
     }
@@ -138,6 +156,15 @@
             self.going = [NSString stringWithFormat:@"%@|%@", self.going, string];
     }
     
+    [self save:^(Event *event)
+     {
+         
+     }];
+}
+
+-(void)addInvited:(NSMutableArray *)invitedList
+{
+    self.invited = [self listToString:invitedList];
     [self save:^(Event *event)
      {
          
