@@ -18,7 +18,7 @@
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *deviceId;
 @property (strong, nonatomic) NSString *facebookId;
-@property (strong, nonatomic) NSString *queryValue;
+@property (strong, nonatomic) NSString *referenceId;
 
 @end
 

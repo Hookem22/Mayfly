@@ -49,10 +49,7 @@
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSString *pushDeviceToken = appDelegate.deviceToken == nil ? @"" : appDelegate.deviceToken;
-    NSString *referenceId = appDelegate.queryValue;
 
-    //TODO get referenced Event if referenceId
-    
     [self get:deviceId pushDeviceToken:pushDeviceToken completion:^(User *deviceUser) {
         if((deviceUser == nil || deviceUser.deviceId.length <= 0)) {
             User *newUser = [[User alloc] init];
@@ -71,7 +68,6 @@
             [[Session sessionVariables] setObject:deviceUser forKey:@"currentUser"];
         }
     }];
-
 }
 
 +(void)get:(id)deviceId pushDeviceToken:(NSString *)pushDeviceToken completion:(QSCompletionBlock)completion

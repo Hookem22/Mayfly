@@ -84,8 +84,41 @@
              [self addSubview:eventView];
              self.contentSize = CGSizeMake(wd, (((i - skip) + 1) * 80));
          }
+         
+         [self loadUserEvents];
      }];
 
+}
+
+-(void)loadUserEvents
+{
+    User *user = (User *)[Session sessionVariables][@"currentUser"];
+    NSMutableArray *going = [[NSMutableArray alloc] init];
+    NSMutableArray *invited = [[NSMutableArray alloc] init];
+    for(Event *event in self.Events)
+    {
+        if([event.going rangeOfString:user.facebookId].location != NSNotFound)
+            [going addObject:event];
+        if([event.invited rangeOfString:user.facebookId].location != NSNotFound)
+            [invited addObject:event];
+    }
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSString *referenceId = appDelegate.referenceId;
+    
+    if(referenceId != nil && [referenceId length] > 0)
+    {
+        [Event getByReferenceId:referenceId completion:^(Event *event){
+            NSMutableArray *currentInvited = (NSMutableArray *)[Session sessionVariables][@"currentInvited"];
+            if(currentInvited == nil)
+                currentInvited = [[NSMutableArray alloc] init];
+            
+            [currentInvited addObject:event];
+            [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
+        }];
+    }
+    [[Session sessionVariables] setObject:going forKey:@"currentGoing"];
+    [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
 }
 
 -(void) eventClicked:(id)sender
