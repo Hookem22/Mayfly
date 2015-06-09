@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D0B1B262DB600B4EE08 /* PushMessage.m */; };
+		48185D0E1B2760F000B4EE08 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D0D1B2760F000B4EE08 /* add@2x.png */; };
 		48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */; };
 		48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */; };
 		48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		48185D0A1B262DB600B4EE08 /* PushMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushMessage.h; sourceTree = "<group>"; };
 		48185D0B1B262DB600B4EE08 /* PushMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushMessage.m; sourceTree = "<group>"; };
+		48185D0D1B2760F000B4EE08 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add@2x.png"; path = "../../Downloads/add@2x.png"; sourceTree = "<group>"; };
 		48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48185D0D1B2760F000B4EE08 /* add@2x.png */,
 				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
 			);
 			name = images;
@@ -326,6 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4886C9EA1B0BBAA900909747 /* Main.storyboard in Resources */,
+				48185D0E1B2760F000B4EE08 /* add@2x.png in Resources */,
 				4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */,
 				4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */,
 				4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */,

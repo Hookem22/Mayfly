@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "MFDetailView.h"
 #import "MFLoginView.h"
 #import "Event.h"

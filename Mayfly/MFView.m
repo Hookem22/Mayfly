@@ -30,21 +30,21 @@
     for(UIView *subview in self.subviews)
         [subview removeFromSuperview];
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 60)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 80)];
     headerLabel.text = @"Mayfly";
     headerLabel.textAlignment = NSTextAlignmentCenter;
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
     [self addSubview:headerLabel];
     
-    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, ht-40, wd, 40)];
-    addButton.backgroundColor = [UIColor colorWithRed:79.0/255.0 green:180.0/255.0 blue:114.0/255.0 alpha:1.0];
-    [addButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
-    [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:addButton];
-    
-    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 120)];
+    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [eventsView loadEvents];
     [self addSubview:eventsView];
-     
+    
+    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
+    [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+    [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:addButton];
     
     /*
     if ([FBSDKAccessToken currentAccessToken]) {
@@ -57,11 +57,12 @@
     }
     */
     
-    
+    /*
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     //loginButton.center = self.center;
     [self addSubview:loginButton];
+    */
     
 }
 
