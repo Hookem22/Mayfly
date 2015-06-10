@@ -46,6 +46,7 @@
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:addButton];
     
+    
     /*
     if ([FBSDKAccessToken currentAccessToken]) {
         [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]

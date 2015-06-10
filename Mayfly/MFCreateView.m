@@ -10,15 +10,15 @@
 
 @interface MFCreateView()
 
+@property (nonatomic, strong) UIScrollView *createView;
 @property (nonatomic, strong) NSArray *contactsList;
 @property (nonatomic, strong) UITextField *nameText;
 @property (nonatomic, strong) UITextView *descText;
-@property (nonatomic, strong) UITextField *locationText;
-@property (nonatomic, strong) Location *location;
-//TODO add isPrivate
+@property (nonatomic, strong) MFLocationView *locationView;
+@property (nonatomic, strong) MFPillButton *publicButton;
 @property (nonatomic, strong) UITextField *minText;
 @property (nonatomic, strong) UITextField *maxText;
-@property (nonatomic, strong) UITextField *startText;
+@property (nonatomic, strong) MFClockView *startText;
 
 @end
 
@@ -50,20 +50,24 @@
     [self addSubview:cancelButton];
     
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [saveButton setTitle:@"Done" forState:UIControlStateNormal];
+    [saveButton setTitle:@"Create" forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
     [self addSubview:saveButton];
     
-    UITextField *nameText = [[UITextField alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 30)];
+    UIScrollView *createView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+    self.createView = createView;
+    [self addSubview:createView];
+    
+    UITextField *nameText = [[UITextField alloc] initWithFrame:CGRectMake(30, 20, wd - 60, 30)];
     nameText.borderStyle = UITextBorderStyleRoundedRect;
     nameText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     nameText.font = [UIFont systemFontOfSize:15];
     nameText.placeholder = @"Event Name";
     self.nameText = nameText;
-    [self addSubview:nameText];
+    [createView addSubview:nameText];
     
-    UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 120, wd - 60, 80)];
+    UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 60, wd - 60, 80)];
     [descText.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor]];
     [descText.layer setBorderWidth:1.0];
     [descText.layer setBackgroundColor:[[[UIColor grayColor] colorWithAlphaComponent:0.1] CGColor]];
@@ -75,121 +79,48 @@
     descText.text = @"Details";
     descText.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     self.descText = descText;
-    [self addSubview:descText];
+    [createView addSubview:descText];
     
-    UITextField *startText = [[UITextField alloc] initWithFrame:CGRectMake(30, 210, wd - 60, 30)];
-    [startText addTarget:self action:@selector(showClock:) forControlEvents:UIControlEventEditingDidBegin];
-    [startText addTarget:self action:@selector(hideClock:) forControlEvents:UIControlEventEditingDidEnd];
-    startText.borderStyle = UITextBorderStyleRoundedRect;
-    startText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-    startText.font = [UIFont systemFontOfSize:15];
-    startText.placeholder = @"Start Time";
-    UIView* dummyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    startText.inputView = dummyView;
-    self.startText = startText;
-    [self addSubview:startText];
+    self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 150, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 455)];
+    [createView addSubview:self.locationView];
     
-    UITextField *locationText = [[UITextField alloc] initWithFrame:CGRectMake(30, 250, wd - 60, 30)];
-    [locationText addTarget:self action:@selector(openLocationSelect:) forControlEvents:UIControlEventEditingDidBegin];
-    locationText.borderStyle = UITextBorderStyleRoundedRect;
-    locationText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-    locationText.font = [UIFont systemFontOfSize:15];
-    locationText.placeholder = @"Location";
-    locationText.inputView = dummyView;
-    self.locationText = locationText;
-    [self addSubview:locationText];
+    self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 150, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
+    [createView addSubview:self.startText];
     
-    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 290, wd, 30)];
+    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
     participantsLabel.text = @"Participants";
-    participantsLabel.tag = 1;
-    [self addSubview:participantsLabel];
+    [createView addSubview:participantsLabel];
     
-    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd / 2), 290, (wd / 4) - 20, 30)];
+    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd / 2), 190, (wd / 4) - 20, 30)];
     minText.borderStyle = UITextBorderStyleRoundedRect;
     minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     minText.font = [UIFont systemFontOfSize:15];
     minText.placeholder = @"Min";
-    minText.tag = 1;
     self.minText = minText;
-    [self addSubview:minText];
+    [createView addSubview:minText];
     
-    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 4 - 10, 290, (wd / 4) - 20, 30)];
+    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 4 - 10, 190, (wd / 4) - 20, 30)];
     maxText.borderStyle = UITextBorderStyleRoundedRect;
     maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     maxText.font = [UIFont systemFontOfSize:15];
     maxText.placeholder = @"Max";
-    maxText.tag = 1;
     self.maxText = maxText;
-    [self addSubview:maxText];
+    [createView addSubview:maxText];
     
-    //TODO: Add IsPublic
-    UILabel *isPublic = [[UILabel alloc] initWithFrame:CGRectMake(30, 320, wd-60, 30)];
-    isPublic.text = @"Event is public";
-    isPublic.tag = 1;
-    [self addSubview:isPublic];
+    self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
+    [createView addSubview:self.publicButton];
     
     UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
     [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    addFriendsButton.frame = CGRectMake(30, 360, wd-60, 30);
-    addFriendsButton.tag = 1;
-    [self addSubview:addFriendsButton];
+    addFriendsButton.frame = CGRectMake(30, 275, wd-60, 30);
+    [createView addSubview:addFriendsButton];
     
     if(![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
         [self addSubview:loginView];
     }
-}
-
--(void)showClock:(id)sender
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    UIView *clockView = [[UIView alloc] initWithFrame:CGRectMake(0, ht, wd, 220)];
-    clockView.tag = 2;
-    [self addSubview:clockView];
-    
-    UIDatePicker  *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 20, wd, 200)];
-    datePicker.datePickerMode = UIDatePickerModeTime;
-    NSDate *in30min = [NSDate dateWithTimeIntervalSinceNow:30*60];
-    [datePicker setDate:in30min];
-    [datePicker addTarget:self action:@selector(didChangePickerDate:) forControlEvents:UIControlEventValueChanged];
-    [clockView addSubview:datePicker];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         clockView.frame = CGRectMake(0, ht - 200, wd, 220);
-                     }
-                     completion:^(BOOL finished){
-                         [self setStartDate:in30min];
-                     }];
-    
-}
-
--(void)hideClock:(id)sender
-{
-    for(UIView *view in self.subviews)
-    {
-        if(view.tag == 2)
-            [self remove:view];
-    }
-}
-
--(void)didChangePickerDate:(id)sender
-{
-    UIDatePicker *datePicker = (UIDatePicker *)sender;
-    [self setStartDate:datePicker.date];
-}
-
--(void)setStartDate:(NSDate *)date
-{
-    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"h:mm a"];
-    
-    NSString *start = [outputFormatter stringFromDate:date];
-    self.startText.text = start;
 }
 
 -(void)addFriendsButtonClick:(id)sender
@@ -212,17 +143,46 @@
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
-    self.contactsList = contactsList;
-    NSString *people = [(NSDictionary *)[contactsList objectAtIndex:0] objectForKey:@"name"];
-    for(int i = 1; i < [contactsList count]; i++)
+    for(id subview in self.createView.subviews)
     {
-        NSDictionary *contact = [contactsList objectAtIndex:i];
-        people = [NSString stringWithFormat:@"%@, %@", people, [contact objectForKey:@"name"]];
+        if([subview isMemberOfClass:[UIScrollView class]])
+            [subview removeFromSuperview];
     }
     
-    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 420, wd - 60, 80)];
-    participantsLabel.text = people;
-    [self addSubview:participantsLabel];
+    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 305, wd - 60, 80)];
+    
+    self.contactsList = contactsList;
+
+    for(int i = 0; i < [contactsList count]; i++)
+    {
+        NSDictionary *contact = [contactsList objectAtIndex:i];
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
+        
+        NSString *facebookId = [contact objectForKey:@"id"];
+        if(facebookId != nil)
+        {
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
+            [personView addSubview:pic];
+        }
+        else
+        {
+            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(-5, -5, 60, 60)];
+            int faceNumber = (arc4random() % 8);
+            [pic setImage:[UIImage imageNamed:[NSString stringWithFormat:@"face%d", faceNumber]]];
+            [personView addSubview:pic];
+        }
+
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+        label.text = [contact objectForKey:@"firstName"];
+        label.textAlignment = NSTextAlignmentCenter;
+        [personView addSubview:label];
+        
+        [peopleView addSubview:personView];
+        peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
+    }
+    
+    [self.createView addSubview:peopleView];
+
 }
 
 
@@ -234,14 +194,12 @@
 {
     Event *event = [[Event alloc] init];
     event.name = self.nameText.text;
-    event.eventDescription = self.descText.text;
-    event.location = self.location != nil ? self.location : [[Location alloc] init];
+    event.eventDescription = [self.descText.text isEqualToString:@"Details"] ? @"" : self.descText.text;
+    event.location = self.locationView.location != nil ? self.locationView.location : [[Location alloc] init];
     event.minParticipants = [self.minText.text integerValue];
     event.maxParticipants = [self.maxText.text integerValue];
     
-    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"h:mm a"];
-    NSDate *time = [outputFormatter dateFromString:self.startText.text];
+    NSDate *time = self.startText.getTime;
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
@@ -252,6 +210,8 @@
     
     NSTimeInterval minus30 = -30 * 60;
     event.cutoffTime = [event.startTime dateByAddingTimeInterval:minus30];
+    
+    event.isPrivate = !self.publicButton.isYes; //isYes == Public
     
     event.invited = @"";
     
@@ -271,7 +231,7 @@
             NSString *fb = [contact valueForKey:@"id"];
             if(fb != nil)
             {
-                [facebookIds addObject:@"10106153174286280"];
+                [facebookIds addObject:fb];
                 if([event.invited length] <= 0)
                     event.invited = fb;
                 else
@@ -305,40 +265,7 @@
 
 }
 
--(void)openLocationSelect:(id)sender
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    MFLocationSelectView *locationView = [[MFLocationSelectView alloc] initWithFrame:CGRectMake(0, ht, wd, ht)];
-    [self addSubview:locationView];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         locationView.frame = CGRectMake(0, 0, wd, ht);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
-}
 
--(void)locationReturn:(Location *)location
-{
-    self.location = location;
-    self.locationText.text = location.name;
-    
-    for (UIView *view in self.subviews)
-    {
-        if(view.tag == 1)
-            view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y + 170, view.frame.size.width, view.frame.size.height);
-    }
-    
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 290, wd - 60, 160)];
-    [map loadMap:location];
-    [self addSubview:map];
-    
-}
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {

@@ -11,9 +11,10 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "MFCreateView.h"
 #import "MFDetailView.h"
+#import "MFInviteFriendsView.h"
 
 @interface MFAddressBook : UIView
 
-- (id)initWithFrame:(CGRect)frame invited:(NSArray *)invited;
+-(id)initWithFrame:(CGRect)frame invited:(NSArray *)invited;
 
 @end

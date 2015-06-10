@@ -26,7 +26,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         if ([FBSDKAccessToken currentAccessToken]) {
-            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends?fields=id,name" parameters:nil]
+            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends?fields=id,name,first_name" parameters:nil]
              startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                  if (!error) {
                      NSArray *fbList = [result objectForKey:@"data"];
@@ -37,6 +37,7 @@
                          NSMutableDictionary *friend = [[NSMutableDictionary alloc] init];
                          [friend setObject:[dict objectForKey:@"id"] forKey:@"id"];
                          [friend setObject:[dict objectForKey:@"name"] forKey:@"name"];
+                         [friend setObject:[dict objectForKey:@"first_name"] forKey:@"firstName"];
                          [friend setObject:@"NO" forKey:@"invited"];
                          [friendList addObject:friend];
                          for(NSDictionary *contact in invited)
@@ -239,10 +240,6 @@
     {
         NSMutableDictionary *contact = [self.friendList objectAtIndex:i];
         NSString *name = [contact objectForKey:@"name"];
-        NSString *invited = [contact objectForKey:@"invited"];
-        if(![invited isEqualToString:@"NO"]) {
-            name = [NSString stringWithFormat:@"%@ - Invited", name];
-        }
         
         if(![search isEqualToString:@""] && ![[name uppercaseString] hasPrefix:search])
         {
@@ -259,6 +256,13 @@
         nameButton.tag = i;
         [scrollView addSubview:nameButton];
         
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 5, 20, 20)];
+            [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+            [nameButton addSubview:invitedButton];
+        }
+        
         
         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, nameButton.frame.size.height - 1.0f, nameButton.frame.size.width, 1)];
         bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
@@ -268,7 +272,7 @@
     }
     
     //Contact List
-    UILabel *contactHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 20 + friendHt, wd, 30)];
+    UILabel *contactHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 10 + friendHt, wd, 30)];
     contactHeader.text = @"    Address Book";
     contactHeader.textColor = [UIColor whiteColor];
     contactHeader.backgroundColor = [UIColor grayColor];
@@ -279,11 +283,6 @@
     {
         NSMutableDictionary *contact = [self.contactList objectAtIndex:i];
         NSString *name = [contact objectForKey:@"name"];
-        NSString *invited = [contact objectForKey:@"invited"];
-        if(![invited isEqualToString:@"NO"]) {
-            name = [NSString stringWithFormat:@"%@ - Invited", name];
-        }
-        //NSString *number = [contact objectForKey:@"Phone"];
         
         if(![search isEqualToString:@""])
         {
@@ -300,11 +299,18 @@
         UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [nameButton setTitle:name forState:UIControlStateNormal];
         [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 50 + friendHt, wd - 60, 30);
+        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 40 + friendHt, wd - 60, 30);
         nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
         nameButton.tag = i + 1000;
         [scrollView addSubview:nameButton];
+        
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 5, 20, 20)];
+            [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+            [nameButton addSubview:invitedButton];
+        }
         
         
         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, nameButton.frame.size.height - 1.0f, nameButton.frame.size.width, 1)];
@@ -331,12 +337,18 @@
     if([invited isEqualToString:@"NO"])
     {
         [contact setValue:@"YES" forKey:@"invited"];
-        [button setTitle:[NSString stringWithFormat:@"%@ - Invited", [contact objectForKey:@"name"]] forState:UIControlStateNormal];
+        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+        UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 5, 20, 20)];
+        [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+        [button addSubview:invitedButton];
     }
     else
     {
         [contact setValue:@"NO" forKey:@"invited"];
-        [button setTitle:[NSString stringWithFormat:@"%@", [contact objectForKey:@"name"]] forState:UIControlStateNormal];
+        for(UIView *subview in button.subviews) {
+            if([subview isMemberOfClass:[UIButton class]])
+               [subview removeFromSuperview];
+        }
     }
     
     int invitedCt = 0;

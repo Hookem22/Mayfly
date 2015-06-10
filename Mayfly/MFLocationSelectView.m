@@ -13,15 +13,17 @@
 
 @property (nonatomic, strong) UITextField *searchText;
 @property (nonatomic, strong) NSArray *places;
+@property (nonatomic, strong) UIView *returnView;
 
 @end
 
 @implementation MFLocationSelectView
 
-- (id)initWithFrame:(CGRect)frame
+-(id)initWithFrame:(CGRect)frame returnView:(UIView *)returnView
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.returnView = returnView;
         self.backgroundColor = [UIColor whiteColor];
         
         [self setup];
@@ -32,7 +34,6 @@
 -(void)setup
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
@@ -224,8 +225,8 @@
 
 -(void)returnPlace:(Location *)location
 {
-    MFCreateView *createView = (MFCreateView *)[self superview];
-    [createView locationReturn:location];
+    MFLocationView *locationView = (MFLocationView *)self.returnView;
+    [locationView locationReturn:location];
     
     [self close];
 }

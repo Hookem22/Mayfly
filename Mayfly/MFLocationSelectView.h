@@ -13,4 +13,6 @@
 
 @interface MFLocationSelectView : UIView <MKMapViewDelegate>
 
+-(id)initWithFrame:(CGRect)frame returnView:(UIView *)returnView;
+
 @end

@@ -9,6 +9,20 @@
 /* Begin PBXBuildFile section */
 		48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D0B1B262DB600B4EE08 /* PushMessage.m */; };
 		48185D0E1B2760F000B4EE08 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D0D1B2760F000B4EE08 /* add@2x.png */; };
+		48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D101B277BAE00B4EE08 /* MFProfilePicView.m */; };
+		48185D1C1B28BF8F00B4EE08 /* face1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D141B28BF8F00B4EE08 /* face1@2x.png */; };
+		48185D1D1B28BF8F00B4EE08 /* face2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D151B28BF8F00B4EE08 /* face2@2x.png */; };
+		48185D1E1B28BF8F00B4EE08 /* face3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D161B28BF8F00B4EE08 /* face3@2x.png */; };
+		48185D1F1B28BF8F00B4EE08 /* face4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D171B28BF8F00B4EE08 /* face4@2x.png */; };
+		48185D201B28BF8F00B4EE08 /* face5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D181B28BF8F00B4EE08 /* face5@2x.png */; };
+		48185D211B28BF8F00B4EE08 /* face6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D191B28BF8F00B4EE08 /* face6@2x.png */; };
+		48185D221B28BF8F00B4EE08 /* face7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D1A1B28BF8F00B4EE08 /* face7@2x.png */; };
+		48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D1B1B28BF8F00B4EE08 /* face0@2x.png */; };
+		48185D251B28C2B600B4EE08 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D241B28C2B600B4EE08 /* check@2x.png */; };
+		48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D271B28D34600B4EE08 /* MFPillButton.m */; };
+		48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D2B1B28D81200B4EE08 /* MFClockView.m */; };
+		48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D2E1B28DF0600B4EE08 /* MFLocationView.m */; };
+		48185D321B28E70500B4EE08 /* MFInviteFriendsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D311B28E70500B4EE08 /* MFInviteFriendsView.m */; };
 		48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */; };
 		48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */; };
 		48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */; };
@@ -51,6 +65,25 @@
 		48185D0A1B262DB600B4EE08 /* PushMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushMessage.h; sourceTree = "<group>"; };
 		48185D0B1B262DB600B4EE08 /* PushMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushMessage.m; sourceTree = "<group>"; };
 		48185D0D1B2760F000B4EE08 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add@2x.png"; path = "../../Downloads/add@2x.png"; sourceTree = "<group>"; };
+		48185D0F1B277BAE00B4EE08 /* MFProfilePicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFProfilePicView.h; sourceTree = "<group>"; };
+		48185D101B277BAE00B4EE08 /* MFProfilePicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFProfilePicView.m; sourceTree = "<group>"; };
+		48185D141B28BF8F00B4EE08 /* face1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face1@2x.png"; path = "../../Downloads/face1@2x.png"; sourceTree = "<group>"; };
+		48185D151B28BF8F00B4EE08 /* face2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face2@2x.png"; path = "../../Downloads/face2@2x.png"; sourceTree = "<group>"; };
+		48185D161B28BF8F00B4EE08 /* face3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face3@2x.png"; path = "../../Downloads/face3@2x.png"; sourceTree = "<group>"; };
+		48185D171B28BF8F00B4EE08 /* face4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face4@2x.png"; path = "../../Downloads/face4@2x.png"; sourceTree = "<group>"; };
+		48185D181B28BF8F00B4EE08 /* face5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face5@2x.png"; path = "../../Downloads/face5@2x.png"; sourceTree = "<group>"; };
+		48185D191B28BF8F00B4EE08 /* face6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face6@2x.png"; path = "../../Downloads/face6@2x.png"; sourceTree = "<group>"; };
+		48185D1A1B28BF8F00B4EE08 /* face7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face7@2x.png"; path = "../../Downloads/face7@2x.png"; sourceTree = "<group>"; };
+		48185D1B1B28BF8F00B4EE08 /* face0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "face0@2x.png"; path = "../../Downloads/face0@2x.png"; sourceTree = "<group>"; };
+		48185D241B28C2B600B4EE08 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "check@2x.png"; path = "../../Downloads/check@2x.png"; sourceTree = "<group>"; };
+		48185D261B28D34600B4EE08 /* MFPillButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFPillButton.h; sourceTree = "<group>"; };
+		48185D271B28D34600B4EE08 /* MFPillButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFPillButton.m; sourceTree = "<group>"; };
+		48185D2A1B28D81200B4EE08 /* MFClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFClockView.h; sourceTree = "<group>"; };
+		48185D2B1B28D81200B4EE08 /* MFClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFClockView.m; sourceTree = "<group>"; };
+		48185D2D1B28DF0600B4EE08 /* MFLocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFLocationView.h; sourceTree = "<group>"; };
+		48185D2E1B28DF0600B4EE08 /* MFLocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFLocationView.m; sourceTree = "<group>"; };
+		48185D301B28E70500B4EE08 /* MFInviteFriendsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFInviteFriendsView.h; sourceTree = "<group>"; };
+		48185D311B28E70500B4EE08 /* MFInviteFriendsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFInviteFriendsView.m; sourceTree = "<group>"; };
 		48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -121,9 +154,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48185D291B28D7AF00B4EE08 /* Contols */ = {
+			isa = PBXGroup;
+			children = (
+				4843EA1D1B0FA78100C510B4 /* MFAddressBook.h */,
+				4843EA1E1B0FA78100C510B4 /* MFAddressBook.m */,
+				4843EA251B14ECE700C510B4 /* MFMapView.h */,
+				4843EA261B14ECE700C510B4 /* MFMapView.m */,
+				48185D0F1B277BAE00B4EE08 /* MFProfilePicView.h */,
+				48185D101B277BAE00B4EE08 /* MFProfilePicView.m */,
+				48185D261B28D34600B4EE08 /* MFPillButton.h */,
+				48185D271B28D34600B4EE08 /* MFPillButton.m */,
+				48185D2A1B28D81200B4EE08 /* MFClockView.h */,
+				48185D2B1B28D81200B4EE08 /* MFClockView.m */,
+				48185D2D1B28DF0600B4EE08 /* MFLocationView.h */,
+				48185D2E1B28DF0600B4EE08 /* MFLocationView.m */,
+				4843EA2B1B163D6F00C510B4 /* MFLocationSelectView.h */,
+				4843EA2C1B163D6F00C510B4 /* MFLocationSelectView.m */,
+				48185D301B28E70500B4EE08 /* MFInviteFriendsView.h */,
+				48185D311B28E70500B4EE08 /* MFInviteFriendsView.m */,
+			);
+			name = Contols;
+			sourceTree = "<group>";
+		};
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48185D241B28C2B600B4EE08 /* check@2x.png */,
+				48185D141B28BF8F00B4EE08 /* face1@2x.png */,
+				48185D151B28BF8F00B4EE08 /* face2@2x.png */,
+				48185D161B28BF8F00B4EE08 /* face3@2x.png */,
+				48185D171B28BF8F00B4EE08 /* face4@2x.png */,
+				48185D181B28BF8F00B4EE08 /* face5@2x.png */,
+				48185D191B28BF8F00B4EE08 /* face6@2x.png */,
+				48185D1A1B28BF8F00B4EE08 /* face7@2x.png */,
+				48185D1B1B28BF8F00B4EE08 /* face0@2x.png */,
 				48185D0D1B2760F000B4EE08 /* add@2x.png */,
 				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
 			);
@@ -154,6 +219,7 @@
 			children = (
 				4886CA051B0BBB3D00909747 /* Services */,
 				4886CA091B0BBCB200909747 /* Models */,
+				48185D291B28D7AF00B4EE08 /* Contols */,
 				4886C9E21B0BBAA900909747 /* AppDelegate.h */,
 				4886C9E31B0BBAA900909747 /* AppDelegate.m */,
 				4886C9E51B0BBAA900909747 /* ViewController.h */,
@@ -168,12 +234,6 @@
 				488E57B11B0E400B00E2DA64 /* MFDetailView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
 				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
-				4843EA1D1B0FA78100C510B4 /* MFAddressBook.h */,
-				4843EA1E1B0FA78100C510B4 /* MFAddressBook.m */,
-				4843EA251B14ECE700C510B4 /* MFMapView.h */,
-				4843EA261B14ECE700C510B4 /* MFMapView.m */,
-				4843EA2B1B163D6F00C510B4 /* MFLocationSelectView.h */,
-				4843EA2C1B163D6F00C510B4 /* MFLocationSelectView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
@@ -329,10 +389,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				4886C9EA1B0BBAA900909747 /* Main.storyboard in Resources */,
+				48185D211B28BF8F00B4EE08 /* face6@2x.png in Resources */,
+				48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */,
 				48185D0E1B2760F000B4EE08 /* add@2x.png in Resources */,
+				48185D221B28BF8F00B4EE08 /* face7@2x.png in Resources */,
 				4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */,
+				48185D1E1B28BF8F00B4EE08 /* face3@2x.png in Resources */,
 				4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */,
 				4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */,
+				48185D1D1B28BF8F00B4EE08 /* face2@2x.png in Resources */,
+				48185D1F1B28BF8F00B4EE08 /* face4@2x.png in Resources */,
+				48185D1C1B28BF8F00B4EE08 /* face1@2x.png in Resources */,
+				48185D201B28BF8F00B4EE08 /* face5@2x.png in Resources */,
+				48185D251B28C2B600B4EE08 /* check@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,17 +420,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				4843EA731B1CE36A00C510B4 /* User.m in Sources */,
+				48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */,
 				4886C9E71B0BBAA900909747 /* ViewController.m in Sources */,
 				48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */,
 				4843EA301B1653FD00C510B4 /* Location.m in Sources */,
 				4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */,
 				4886CA1C1B0BC41100909747 /* Session.m in Sources */,
+				48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */,
 				48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */,
 				4843EA2D1B163D6F00C510B4 /* MFLocationSelectView.m in Sources */,
+				48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */,
+				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
 				488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */,
 				48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */,
+				48185D321B28E70500B4EE08 /* MFInviteFriendsView.m in Sources */,
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,

@@ -12,16 +12,17 @@
 #import "ViewController.h"
 #import "MFView.h"
 #import "MFLoginView.h"
-#import "MFAddressBook.h"
-#import "MFLocationSelectView.h"
-#import "MFMapView.h"
+#import "MFLocationView.h"
 #import "Event.h"
 #import "PushMessage.h"
+#import "MFPillButton.h"
+#import "MFClockView.h"
+#import "MFInviteFriendsView.h"
+#import "MFAddressBook.h"
 
-@interface MFCreateView : UIScrollView <UITextViewDelegate>
+@interface MFCreateView : UIView <UITextViewDelegate>
 
 -(void)create;
 -(void)invite:(NSArray *)contactsList;
--(void)locationReturn:(Location *)location;
 
 @end
