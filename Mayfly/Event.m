@@ -126,12 +126,14 @@
 
 }
 
--(void)addGoing:(NSString *)facebookId
+-(void)addGoing
 {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSString *person = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
     if(self.going == nil || [self.going isEqualToString:@""])
-        self.going = facebookId;
+        self.going = person;
     else
-        self.going = [NSString stringWithFormat:@"%@|%@", self.going, facebookId];
+        self.going = [NSString stringWithFormat:@"%@|%@", self.going, person];
     
     [self save:^(Event *event)
      {
@@ -139,21 +141,23 @@
      }];
 }
 
--(void)removeGoing:(NSString *)facebookId
+-(void)removeGoing
 {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
     NSMutableArray *list = [self stringToList:self.going];
     NSMutableArray *newList = [[NSMutableArray alloc] init];
     self.going = @"";
     for(int i = 0; i < [list count]; i++)
     {
-        NSString *string = (NSString *)[list objectAtIndex:i];
-        if([string isEqualToString:facebookId])
+        NSString *person = (NSString *)[list objectAtIndex:i];
+        if([person rangeOfString:appDelegate.facebookId].location != NSNotFound)
             continue;
         
         if([newList count] == 0)
-            self.going = string;
+            self.going = person;
         else
-            self.going = [NSString stringWithFormat:@"%@|%@", self.going, string];
+            self.going = [NSString stringWithFormat:@"%@|%@", self.going, person];
     }
     
     [self save:^(Event *event)

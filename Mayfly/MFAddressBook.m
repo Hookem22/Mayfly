@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSArray *contactList;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UITextField *searchText;
+@property (nonatomic, strong) Event *event;
 
 @end
 
@@ -24,6 +25,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        
+        if([invited count] == 1 && [[invited objectAtIndex:0] isMemberOfClass:[Event class]])
+            self.event = [invited objectAtIndex:0];
         
         if ([FBSDKAccessToken currentAccessToken]) {
             [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends?fields=id,name,first_name" parameters:nil]
@@ -42,7 +46,7 @@
                          [friendList addObject:friend];
                          for(NSDictionary *contact in invited)
                          {
-                             if([[contact objectForKey:@"id"] isEqualToString:[friend objectForKey:@"id"]])
+                             if(self.event == nil && [[contact objectForKey:@"id"] isEqualToString:[friend objectForKey:@"id"]])
                                  [friend setObject:@"YES" forKey:@"invited"];
                          }
                      }
@@ -150,7 +154,7 @@
         NSString *isInvited = @"NO";
         for(NSDictionary *contact in invited)
         {
-            if([[contact objectForKey:@"Phone"] isEqualToString:[dOfPerson objectForKey:@"Phone"]])
+            if(self.event == nil && [[contact objectForKey:@"Phone"] isEqualToString:[dOfPerson objectForKey:@"Phone"]])
             {
                 isInvited = @"YES";
                 break;
@@ -177,7 +181,7 @@
     
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
-    if([invited count] == 0)
+    if([invited count] == 0 || self.event != nil)
         headerLabel.text = @"Recipients";
     else
         headerLabel.text = [NSString stringWithFormat:@"Recipients (%lu)", (unsigned long)[invited count]];
@@ -190,12 +194,22 @@
     cancelButton.frame = CGRectMake(25, 30, 80, 40);
     [self addSubview:cancelButton];
     
-    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [saveButton setTitle:@"Done" forState:UIControlStateNormal];
-    [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
-    [self addSubview:saveButton];
-    
+    if(self.event != nil)
+    {
+        UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [saveButton setTitle:@"Invite" forState:UIControlStateNormal];
+        [saveButton addTarget:self action:@selector(inviteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
+        [self addSubview:saveButton];
+    }
+    else
+    {
+        UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [saveButton setTitle:@"Add" forState:UIControlStateNormal];
+        [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
+        [self addSubview:saveButton];
+    }
     UITextField *searchText = [[UITextField alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 30)];
     [searchText addTarget:self action:@selector(refresh) forControlEvents:UIControlEventEditingChanged];
     searchText.borderStyle = UITextBorderStyleRoundedRect;
@@ -403,6 +417,62 @@
     MFCreateView *createView = (MFCreateView *)[self superview];
     [createView invite:contacts];
     [self close];
+}
+
+-(void)inviteButtonClick:(id)sender
+{
+    
+    NSMutableArray *contacts = [[NSMutableArray alloc] init];
+    NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
+    NSString *pushMessageContacts = @"";
+    for(int i = 0; i < [self.friendList count]; i++)
+    {
+        NSDictionary *contact = [self.friendList objectAtIndex:i];
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            [contacts addObject:contact];
+            [facebookIds addObject:[contact objectForKey:@"id"]];
+            pushMessageContacts = [NSString stringWithFormat:@"%@, ", [contact objectForKey:@"firstName"]];
+        }
+    }
+    if([contacts count] > 0)
+    {
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [PushMessage inviteFriends:facebookIds from:appDelegate.name message:self.event.name];
+        
+        pushMessageContacts = [pushMessageContacts substringToIndex:[pushMessageContacts length] - 2];
+        
+        NSString *message = [NSString stringWithFormat:@"%@ have been invited to %@", pushMessageContacts, self.event.name];
+        if([contacts count] == 1)
+            message = [NSString stringWithFormat:@"%@ has been invited to %@", pushMessageContacts, self.event.name];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invites Sent"
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+    for(int i = 0; i < [self.contactList count]; i++)
+    {
+        NSDictionary *contact = [self.contactList objectAtIndex:i];
+        NSString *invited = [contact objectForKey:@"invited"];
+        if(![invited isEqualToString:@"NO"]) {
+            NSString *phone = [contact valueForKey:@"Phone"];
+            if(phone != nil)
+                [phoneNumbers addObject:phone];
+        }
+    }
+    if([phoneNumbers count] > 0) {
+        ViewController *vc = (ViewController *)self.window.rootViewController;
+        [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://getmayfly.com?%lu", self.event.name, (unsigned long)self.event.referenceId]];
+    }
+    else
+    {
+        [self close];
+    }
 }
 
 -(void)close

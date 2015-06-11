@@ -86,7 +86,7 @@
              }
              
              NSArray *going = [event.going isEqualToString:@""] ? [[NSArray alloc] init] : [event.going componentsSeparatedByString:@"|"];
-             if([going count] >= event.maxParticipants) {
+             if(event.maxParticipants > 0 && [going count] >= event.maxParticipants) {
                  skip++;
                  continue;
              }
@@ -95,7 +95,7 @@
              [eventView addSubview:manyLabelContainer];
              
              UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, timeLabelContainer.frame.size.width, 20)];
-             manyLabel.text = [NSString stringWithFormat:@"%d of %d", [going count], event.maxParticipants];
+             manyLabel.text = [NSString stringWithFormat:@"%d of %d", [going count], event.minParticipants];
              manyLabel.textAlignment = NSTextAlignmentLeft;
              [manyLabelContainer addSubview:manyLabel];
              
@@ -115,21 +115,20 @@
 
 -(void)loadUserEvents
 {
-    User *user = (User *)[Session sessionVariables][@"currentUser"];
-    if(user == nil)
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate.facebookId == nil || [appDelegate.facebookId length] == 0)
         return;
     
     NSMutableArray *going = [[NSMutableArray alloc] init];
     NSMutableArray *invited = [[NSMutableArray alloc] init];
     for(Event *event in self.Events)
     {
-        if([event.going rangeOfString:user.facebookId].location != NSNotFound)
+        if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
             [going addObject:event];
-        if([event.invited rangeOfString:user.facebookId].location != NSNotFound)
+        if([event.invited rangeOfString:appDelegate.facebookId].location != NSNotFound)
             [invited addObject:event];
     }
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSString *referenceId = appDelegate.referenceId;
     
     if(referenceId != nil && [referenceId length] > 0)

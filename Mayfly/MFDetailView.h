@@ -13,8 +13,10 @@
 #import "Event.h"
 #import "User.h"
 #import "Session.h"
+#import "MFProfilePicView.h"
+#import "MFAddressBook.h"
 
-@interface MFDetailView : UIScrollView
+@interface MFDetailView : UIView
 
 -(void)open:(Event*)event;
 

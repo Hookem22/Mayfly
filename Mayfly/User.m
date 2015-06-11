@@ -59,13 +59,8 @@
             newUser.facebookId = appDelegate.facebookId;
             
             [newUser save:^(User *addedUser) {
-                [[Session sessionVariables] setObject:addedUser forKey:@"currentUser"];
                 completion(addedUser);
             }];
-        }
-        else
-        {
-            [[Session sessionVariables] setObject:deviceUser forKey:@"currentUser"];
         }
     }];
 }

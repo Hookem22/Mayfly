@@ -24,6 +24,7 @@
                  NSLog(@"fetched user:%@", result);
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
+                 self.firstName = [result objectForKey:@"first_name"];
                  
                  [User login:^(User *user) {
                      //NSLog(@"%@", user);

@@ -38,7 +38,7 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.text = @"Create Event";
     [self addSubview:headerLabel];
@@ -46,16 +46,16 @@
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 30, 80, 40);
+    cancelButton.frame = CGRectMake(25, 20, 80, 40);
     [self addSubview:cancelButton];
     
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [saveButton setTitle:@"Create" forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
+    saveButton.frame = CGRectMake(wd - 85, 20, 80, 40);
     [self addSubview:saveButton];
     
-    UIScrollView *createView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+    UIScrollView *createView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 50, wd, ht - 60)];
     self.createView = createView;
     [self addSubview:createView];
     
@@ -81,14 +81,14 @@
     self.descText = descText;
     [createView addSubview:descText];
     
-    self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 150, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 455)];
+    self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 150, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 445)];
     [createView addSubview:self.locationView];
     
     self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 150, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
     [createView addSubview:self.startText];
     
     UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
-    participantsLabel.text = @"Participants";
+    participantsLabel.text = @"Other People:";
     [createView addSubview:participantsLabel];
     
     UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd / 2), 190, (wd / 4) - 20, 30)];
@@ -196,8 +196,10 @@
     event.name = self.nameText.text;
     event.eventDescription = [self.descText.text isEqualToString:@"Details"] ? @"" : self.descText.text;
     event.location = self.locationView.location != nil ? self.locationView.location : [[Location alloc] init];
-    event.minParticipants = [self.minText.text integerValue];
+    event.minParticipants = [self.minText.text integerValue] + 1;
     event.maxParticipants = [self.maxText.text integerValue];
+    if(event.maxParticipants > 0)
+        event.maxParticipants++;
     
     NSDate *time = self.startText.getTime;
     
@@ -215,8 +217,8 @@
     
     event.invited = @"";
     
-    User *user = (User *)[Session sessionVariables][@"currentUser"];
-    event.going = user.facebookId;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
 
     event.referenceId = 0;
     
@@ -239,7 +241,7 @@
             }
         }
         if([facebookIds count] > 0)
-            [PushMessage inviteFriends:facebookIds from:user.name message:event.name];
+            [PushMessage inviteFriends:facebookIds from:appDelegate.name message:event.name];
     }
     
     [event save:^(Event *event)

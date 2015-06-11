@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 #import "QSAzureService.h"
 #import "Location.h"
 #import "Session.h"
@@ -32,8 +33,8 @@
 +(void)getByReferenceId:(NSString *)referenceId completion:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 
--(void)addGoing:(NSString *)facebookId;
--(void)removeGoing:(NSString *)facebookId;
+-(void)addGoing;
+-(void)removeGoing;
 -(void)addInvited:(NSMutableArray *)invitedList;
 
 @end

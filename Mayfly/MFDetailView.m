@@ -11,6 +11,8 @@
 @interface MFDetailView ()
 
 @property (nonatomic, strong) Event *event;
+@property (nonatomic, strong) UIScrollView *peopleView;
+@property (nonatomic, strong) UILabel *goingLabel;
 
 @end
 
@@ -32,7 +34,7 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.text = event.name;
     [self addSubview:headerLabel];
@@ -40,43 +42,59 @@
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 30, 80, 40);
+    cancelButton.frame = CGRectMake(25, 10, 80, 40);
     [self addSubview:cancelButton];
     
-    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 20)];
+    UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 40)];
+    [self addSubview:detailView];
+    
+    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, wd - 60, 20)];
     descriptionLabel.text = event.eventDescription;
     descriptionLabel.numberOfLines = 0;
     descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [descriptionLabel sizeToFit];
-    [self addSubview:descriptionLabel];
+    [detailView addSubview:descriptionLabel];
     
-    //TODO: Add map
-    UILabel *mapLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 90 + descriptionLabel.frame.size.height, wd - 60, 20)];
-    mapLabel.text = @"Map Here";
-    [self addSubview:mapLabel];
+    int descHt = descriptionLabel.frame.size.height;
 
-    UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 210 + descriptionLabel.frame.size.height, wd - 60, 20)];
-    startLabel.text = @"Start Time:";
-    [self addSubview:startLabel];
+    UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 10 + descHt, wd - 60, 20)];
+    locationLabel.text = [NSString stringWithFormat:@"Location: %@", event.location.name];
+    [detailView addSubview:locationLabel];
     
-    UILabel *cutoffLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 240 + descriptionLabel.frame.size.height, wd - 60, 20)];
-    cutoffLabel.text = @"Sign Up By:";
-    [self addSubview:cutoffLabel];
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    [outputFormatter setDateFormat:@"h:mm a"];
     
-    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 270 + descriptionLabel.frame.size.height, wd - 60, 20)];
-    participantsLabel.text = @"Participants";
-    participantsLabel.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:participantsLabel];
+    UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 40 + descHt, wd - 60, 20)];
+    startLabel.text = [NSString stringWithFormat:@"Start Time: %@", [outputFormatter stringFromDate:event.startTime]];
+    [detailView addSubview:startLabel];
+    
+    UILabel *cutoffLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 70 + descHt, wd - 60, 20)];
+    cutoffLabel.text = [NSString stringWithFormat:@"Join By: %@", [outputFormatter stringFromDate:event.cutoffTime]];
+    [detailView addSubview:cutoffLabel];
+    
+    UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 100 + descHt, wd - 60, 20)];
+    goingLabel.textAlignment = NSTextAlignmentCenter;
+    self.goingLabel = goingLabel;
+    [detailView addSubview:goingLabel];
+    
+    self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 130 + descHt, wd - 60, 80)];
+    [detailView addSubview:self.peopleView];
+    [self refreshGoing];
     
     UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
     [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    addFriendsButton.frame = CGRectMake(30, 350 + descriptionLabel.frame.size.height, wd-60, 30);
-    [self addSubview:addFriendsButton];
+    addFriendsButton.frame = CGRectMake(30, 205 + descHt, wd-60, 30);
+    [detailView addSubview:addFriendsButton];
     
-    User *user = (User *)[Session sessionVariables][@"currentUser"];
+    MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 250 + descHt, wd - 60, ht - (400 + descHt))];
+    [map loadMap:self.event.location];
+    [detailView addSubview:map];
+    
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSString *title = @"Join Event";
-    if([event.going rangeOfString:user.facebookId].location != NSNotFound)
+    if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
         title = @"Unjoin Event";
         
     UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -97,26 +115,94 @@
     }    
 }
 
+-(void)refreshGoing
+{
+    NSArray *going = [self.event.going componentsSeparatedByString:@"|"];
+    if([self.event.going length] == 0)
+        going = [[NSArray alloc] init];
+    
+    NSString *goingText = [NSString stringWithFormat:@"Going %d of %d", [going count], self.event.minParticipants];
+    if(self.event.maxParticipants > 0)
+        goingText = [NSString stringWithFormat:@"%@ (maximum %d)", goingText, self.event.maxParticipants];
+    self.goingLabel.text = goingText;
+    
+    for(UIView *subview in self.peopleView.subviews)
+        [subview removeFromSuperview];
+    
+    for(int i = 0; i < [going count]; i++)
+    {
+        NSArray *info = [[going objectAtIndex:i] componentsSeparatedByString:@":"];
+        if([info count] != 2)
+            continue;
+        
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
+        
+        NSString *facebookId = [info objectAtIndex:0];
+        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
+        [personView addSubview:pic];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+        label.text = [info objectAtIndex:1];
+        label.textAlignment = NSTextAlignmentCenter;
+        [personView addSubview:label];
+        
+        [self.peopleView addSubview:personView];
+        self.peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
+    }
+    for(int i = [going count]; i < self.event.minParticipants; i++)
+    {
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
+        
+        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(-5, -5, 60, 60)];
+        int faceNumber = (arc4random() % 8);
+        [pic setImage:[UIImage imageNamed:[NSString stringWithFormat:@"grayface%d", faceNumber]]];
+        [personView addSubview:pic];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+        label.text = @"Open";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.8];
+        [personView addSubview:label];
+        
+        [self.peopleView addSubview:personView];
+        self.peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
+    }
+}
+
 -(void)joinButtonClick:(id)sender
 {
-    User *user = (User *)[Session sessionVariables][@"currentUser"];
-    
     UIButton *button = (UIButton *)sender;
     if([button.titleLabel.text isEqualToString:@"Join Event"])
     {
-        [self.event addGoing:user.facebookId];
         [button setTitle:@"Unjoin Event" forState:UIControlStateNormal];
+        
+        [self.event addGoing];
+        [self refreshGoing];
     }
     else
     {
-        [self.event removeGoing:user.facebookId];
         [button setTitle:@"Join Event" forState:UIControlStateNormal];
-    }
         
+        [self.event removeGoing];
+        [self refreshGoing];
+    }
+    
 }
 -(void)addFriendsButtonClick:(id)sender
 {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    MFAddressBook *addressBook = [[MFAddressBook alloc] initWithFrame:CGRectMake(0, ht, wd, ht) invited:[NSArray arrayWithObjects:self.event, nil]];
+    [self addSubview:addressBook];
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         addressBook.frame = CGRectMake(0, 0, wd, ht);
+                     }
+                     completion:^(BOOL finished){
+                         
+                     }];
 }
 
 -(void)cancelButtonClick:(id)sender

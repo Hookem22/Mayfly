@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *deviceId;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *firstName;
 @property (nonatomic, copy) NSString *pushDeviceToken;
 @property (nonatomic, copy) NSString *facebookId;
 @property (nonatomic, copy) NSDate *lastSignedIn;
