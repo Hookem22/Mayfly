@@ -126,21 +126,24 @@
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         
         NSUInteger viewY = 0;
-        for(int i = [messages count] - 1; i >= 0; i--)
+        for(int i = (int)[messages count] - 1; i >= 0; i--)
         {
             PushMessage *message = (PushMessage *)[messages objectAtIndex:i];
             
             bool isMe = [appDelegate.facebookId isEqualToString:message.facebookId];
             NSString *userName = isMe ? @"" : message.name;
-            UIView *view = [self addTextView:message.message from:userName date:[self dateDiff:message.sentDate] isMe:isMe viewY:viewY];
+            UIView *view = [self addTextView:message.message from:userName date:[MFHelpers dateDiff:message.sentDate] isMe:isMe viewY:viewY];
             [self.messageView addSubview:view];
             viewY = viewY + view.frame.size.height;
         }
         
         self.messageView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, viewY + 10);
         
-        CGPoint bottomOffset = CGPointMake(0, self.messageView.contentSize.height - self.messageView.bounds.size.height);
-        [self.messageView setContentOffset:bottomOffset animated:NO];
+        if(viewY + 10 > [[UIScreen mainScreen] bounds].size.height - 120)
+        {
+            CGPoint bottomOffset = CGPointMake(0, self.messageView.contentSize.height - self.messageView.bounds.size.height);
+            [self.messageView setContentOffset:bottomOffset animated:NO];
+        }
     }];
 }
 
@@ -167,6 +170,7 @@
         [newTextbox.layer setBorderWidth:1.0];
         newTextbox.layer.cornerRadius = 15;
         newTextbox.clipsToBounds = YES;
+        newTextbox.textContainerInset = UIEdgeInsetsMake(10, 8, 0, 0);
         newTextbox.text = message;
         
         [view addSubview:newTextbox];
@@ -180,14 +184,14 @@
         
         if(from.length > 0)
         {
-            UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, wd - 5, 15)];
+            UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, wd - 5, 15)];
             fromLabel.font = [UIFont systemFontOfSize:12];
             fromLabel.text = [NSString stringWithFormat:@"%@ - %@", from, date];
             [view addSubview:fromLabel];
         }
         else
         {
-            UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, wd - 5, 15)];
+            UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, wd - 5, 15)];
             dateLabel.font = [UIFont systemFontOfSize:12];
             dateLabel.text = date;
             [view addSubview:dateLabel];
@@ -200,6 +204,7 @@
         [newTextbox.layer setBorderWidth:1.0];
         newTextbox.layer.cornerRadius = 15;
         newTextbox.clipsToBounds = YES;
+        newTextbox.textContainerInset = UIEdgeInsetsMake(10, 8, 0, 0);
         newTextbox.text = message;
         
         [view addSubview:newTextbox];
@@ -219,50 +224,6 @@
     CGFloat height = labelSize.height + 10;
     return height;
 }
-
--(NSString *)dateDiff:(NSDate *)date
-{
-    NSString *dateDiff = @"";
-    if(![date isMemberOfClass:[NSNull class]])
-    {
-        NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:date];
-        if(secondsBetween > 600000)
-        {
-            NSDateFormatter *format = [[NSDateFormatter alloc] init];
-            [format setDateFormat:@"MMM d h:mm a"];
-            
-            return [format stringFromDate:date];
-        }
-        else if(secondsBetween > 86400)
-        {
-            int value = (int)secondsBetween / 86400;
-            if(value == 1)
-                dateDiff = @"1 day ago";
-            else
-                dateDiff = [NSString stringWithFormat:@"%d days ago", value];
-        }
-        else if(secondsBetween > 3600)
-        {
-            int value = (int)secondsBetween / 3600;
-            if(value == 1)
-                dateDiff = @"1 hour ago";
-            else
-                dateDiff = [NSString stringWithFormat:@"%d hours ago", value];
-        }
-        else if(secondsBetween > 60)
-        {
-            int value = ((int)secondsBetween / 60);
-            if(value == 1)
-                dateDiff = @"1 minute ago";
-            else
-                dateDiff = [NSString stringWithFormat:@"%d minutes ago", value];
-        }
-        else
-            dateDiff = @"Now";
-    }
-    return dateDiff;
-}
-
 
 -(void)dismissKeyboard
 {

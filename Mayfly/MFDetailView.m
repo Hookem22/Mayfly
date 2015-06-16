@@ -144,9 +144,9 @@
     if([self.event.going length] == 0)
         going = [[NSArray alloc] init];
     
-    NSString *goingText = [NSString stringWithFormat:@"Going %d of %d", [going count], self.event.minParticipants];
+    NSString *goingText = [NSString stringWithFormat:@"Going %lu of %lu", (unsigned long)[going count], (unsigned long)self.event.minParticipants];
     if(self.event.maxParticipants > 0)
-        goingText = [NSString stringWithFormat:@"%@ (maximum %d)", goingText, self.event.maxParticipants];
+        goingText = [NSString stringWithFormat:@"%@ (maximum %lu)", goingText, (unsigned long)self.event.maxParticipants];
     self.goingLabel.text = goingText;
     
     for(UIView *subview in self.peopleView.subviews)
@@ -172,7 +172,7 @@
         [self.peopleView addSubview:personView];
         self.peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
     }
-    for(int i = [going count]; i < self.event.minParticipants; i++)
+    for(int i = (int)[going count]; i < self.event.minParticipants; i++)
     {
         UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
         
@@ -206,6 +206,11 @@
 
 -(void)joinButtonClick:(id)sender
 {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    Notification *notification = [[Notification alloc] init];
+    notification.eventId = self.event.eventId;
+    notification.facebookId = appDelegate.facebookId;
+    
     UIButton *button = (UIButton *)sender;
     if([button.titleLabel.text isEqualToString:@"Join Event"])
     {
@@ -213,6 +218,8 @@
         
         [self.event addGoing];
         [self refreshGoing];
+        
+        notification.message = [NSString stringWithFormat:@"Joined: %@", self.event.name];
     }
     else
     {
@@ -220,7 +227,11 @@
         
         [self.event removeGoing];
         [self refreshGoing];
+        
+        notification.message = [NSString stringWithFormat:@"Unjoined: %@", self.event.name];
     }
+    
+    [notification save:^(Notification *notification) { }];
     
 }
 -(void)addFriendsButtonClick:(id)sender

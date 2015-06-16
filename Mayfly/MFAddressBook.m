@@ -438,7 +438,7 @@
     if([contacts count] > 0)
     {
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [PushMessage inviteFriends:facebookIds from:appDelegate.name message:self.event.name];
+        [PushMessage inviteFriends:facebookIds from:appDelegate.name event:self.event];
         
         pushMessageContacts = [pushMessageContacts substringToIndex:[pushMessageContacts length] - 2];
         

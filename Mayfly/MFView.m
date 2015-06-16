@@ -7,7 +7,6 @@
 //
 
 #import "MFView.h"
-#import "AppDelegate.h"
 #import "ViewController.h"
 
 @implementation MFView
@@ -36,6 +35,11 @@
     headerLabel.textColor = [UIColor whiteColor];
     headerLabel.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
     [self addSubview:headerLabel];
+    
+    UIButton *notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
+    [notificationButton setImage:[UIImage imageNamed:@"whitenav"] forState:UIControlStateNormal];
+    [notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:notificationButton];
     
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [eventsView loadEvents];
@@ -102,6 +106,43 @@
     return;
     */
     
+}
+
+-(void)notificationButtonClick:(id)sender
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    MFRightSideView *rightSideView;
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFRightSideView class]])
+            rightSideView = (MFRightSideView *)subview;
+    }
+    if(rightSideView == nil)
+    {
+        MFRightSideView *rightSideView = [[MFRightSideView alloc] init];
+        [self addSubview:rightSideView];
+        
+        rightSideView.frame = CGRectMake(wd, 60, (wd * 3) / 4, ht);
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                                 rightSideView.frame = CGRectMake(wd / 4, 60, (wd * 3) / 4, ht - 60);
+                         }
+                         completion:^(BOOL finished){ }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             rightSideView.frame = CGRectMake(wd, 60, (wd * 3) / 4, ht - 60);
+                         }
+                         completion:^(BOOL finished){
+                             [rightSideView removeFromSuperview];
+                         }];
+    }
+
 }
 
 

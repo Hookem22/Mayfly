@@ -12,8 +12,7 @@
 #import "MFEventsView.h"
 #import "MFCreateView.h"
 #import "MFLoginView.h"
-#import "Event.h"
-#import "User.h"
+#import "MFRightSideView.h"
 #import "MFHelpers.h"
 
 @interface MFView : UIView

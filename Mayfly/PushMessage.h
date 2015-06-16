@@ -25,6 +25,6 @@
 
 +(void)push:(NSString *)deviceToken  header:(NSString *)header message:(NSString *)message;
 +(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message;
-+(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from message:(NSString *)message;
++(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from event:(Event *)event;
 
 @end

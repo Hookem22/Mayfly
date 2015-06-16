@@ -10,18 +10,18 @@
 
 @implementation Event
 
-@synthesize eventId;
-@synthesize name;
-@synthesize eventDescription;
-@synthesize location;
-@synthesize isPrivate;
-@synthesize minParticipants;
-@synthesize maxParticipants;
-@synthesize startTime;
-@synthesize cutoffTime;
-@synthesize invited;
-@synthesize going;
-@synthesize referenceId;
+@synthesize eventId = _eventId;
+@synthesize name = _name;
+@synthesize eventDescription = _eventDescription;
+@synthesize location = _location;
+@synthesize isPrivate = _isPrivate;
+@synthesize minParticipants = _minParticipants;
+@synthesize maxParticipants = _maxParticipants;
+@synthesize startTime = _startTime;
+@synthesize cutoffTime = _cutoffTime;
+@synthesize invited = _invited;
+@synthesize going = _going;
+@synthesize referenceId = _referenceId;
 
 - (id)init:(NSDictionary *)event {
     self = [super init];
@@ -104,7 +104,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
        
-    NSDictionary *event = @{@"name": self.name, @"eventdescription": self.eventDescription, @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude],  @"isprivate": [NSNumber numberWithBool:self.isPrivate], @"minparticipants": [NSNumber numberWithInt:self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:self.maxParticipants], @"starttime": self.startTime, @"cutofftime": self.cutoffTime, @"invited": self.invited, @"going": self.going, @"referenceid": [NSNumber numberWithInt:self.referenceId] };
+    NSDictionary *event = @{@"name": self.name, @"eventdescription": self.eventDescription, @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude],  @"isprivate": [NSNumber numberWithBool:self.isPrivate], @"minparticipants": [NSNumber numberWithInt:(int)self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:(int)self.maxParticipants], @"starttime": self.startTime, @"cutofftime": self.cutoffTime, @"invited": self.invited, @"going": self.going, @"referenceid": [NSNumber numberWithInt:(int)self.referenceId] };
     
     if([self.eventId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [event mutableCopy];

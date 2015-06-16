@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "MFProgressView.h"
+#import "Event.h"
+#import "User.h"
+#import "Session.h"
+#import "PushMessage.h"
+#import "Notification.h"
 
 @interface MFHelpers : UIView
 
@@ -18,6 +24,6 @@
 +(void)close:(UIView *)view;
 +(void)closeRight:(UIView *)view;
 +(void)remove:(UIView *)view;
-
++(NSString *)dateDiff:(NSDate *)date;
 
 @end

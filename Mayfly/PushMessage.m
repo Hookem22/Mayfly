@@ -96,15 +96,17 @@
     }
 }
 
-+(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from message:(NSString *)message
++(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from event:(Event *)event
 {
     for(NSString *facebookId in facebookIds)
     {
         [User getByFacebookId:facebookId completion:^(User* user)
          {
+             Notification *notification = [[Notification alloc] init: @{ @"facebookid": facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
+             [notification save:^(Notification *notification) { }];
             if(user.pushDeviceToken != nil && ![user.pushDeviceToken isEqualToString:@""])
             {
-                [PushMessage push:user.pushDeviceToken header:[NSString stringWithFormat:@"%@ invited you to an Event", from] message:message];
+                [PushMessage push:user.pushDeviceToken header:[NSString stringWithFormat:@"%@ invited you to an Event", from] message:event.name];
             }
         }];
     }

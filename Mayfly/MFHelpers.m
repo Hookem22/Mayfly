@@ -98,4 +98,47 @@
                      }];
 }
 
++(NSString *)dateDiff:(NSDate *)date
+{
+    NSString *dateDiff = @"";
+    if(![date isMemberOfClass:[NSNull class]])
+    {
+        NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:date];
+        if(secondsBetween > 600000)
+        {
+            NSDateFormatter *format = [[NSDateFormatter alloc] init];
+            [format setDateFormat:@"MMM d h:mm a"];
+            
+            return [format stringFromDate:date];
+        }
+        else if(secondsBetween > 86400)
+        {
+            int value = (int)secondsBetween / 86400;
+            if(value == 1)
+                dateDiff = @"1 day ago";
+            else
+                dateDiff = [NSString stringWithFormat:@"%d days ago", value];
+        }
+        else if(secondsBetween > 3600)
+        {
+            int value = (int)secondsBetween / 3600;
+            if(value == 1)
+                dateDiff = @"1 hour ago";
+            else
+                dateDiff = [NSString stringWithFormat:@"%d hours ago", value];
+        }
+        else if(secondsBetween > 60)
+        {
+            int value = ((int)secondsBetween / 60);
+            if(value == 1)
+                dateDiff = @"1 minute ago";
+            else
+                dateDiff = [NSString stringWithFormat:@"%d minutes ago", value];
+        }
+        else
+            dateDiff = @"Now";
+    }
+    return dateDiff;
+}
+
 @end

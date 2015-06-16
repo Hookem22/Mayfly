@@ -10,6 +10,7 @@
 #import "QSAzureService.h"
 #import "Session.h"
 #import "Event.h"
+#import "Notification.h"
 #import "AppDelegate.h"
 
 @interface User : NSObject

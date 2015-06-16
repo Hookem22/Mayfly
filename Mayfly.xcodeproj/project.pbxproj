@@ -37,6 +37,9 @@
 		48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D4F1B2FD59F00B4EE08 /* message@2x.png */; };
 		48185D531B2FD59F00B4EE08 /* nav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D501B2FD59F00B4EE08 /* nav@2x.png */; };
 		48185D541B2FD59F00B4EE08 /* newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D511B2FD59F00B4EE08 /* newmessage@2x.png */; };
+		48185D561B30937E00B4EE08 /* whitenav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D551B30937E00B4EE08 /* whitenav@2x.png */; };
+		48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D581B3094DE00B4EE08 /* MFRightSideView.m */; };
+		48185D5C1B30ADA400B4EE08 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D5B1B30ADA400B4EE08 /* Notification.m */; };
 		48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */; };
 		48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */; };
 		48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */; };
@@ -115,6 +118,11 @@
 		48185D4F1B2FD59F00B4EE08 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "message@2x.png"; path = "../../DishWish/DishWish/images/message@2x.png"; sourceTree = "<group>"; };
 		48185D501B2FD59F00B4EE08 /* nav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav@2x.png"; path = "../../DishWish/DishWish/images/nav@2x.png"; sourceTree = "<group>"; };
 		48185D511B2FD59F00B4EE08 /* newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newmessage@2x.png"; path = "../../DishWish/DishWish/images/newmessage@2x.png"; sourceTree = "<group>"; };
+		48185D551B30937E00B4EE08 /* whitenav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "whitenav@2x.png"; path = "../../Downloads/whitenav@2x.png"; sourceTree = "<group>"; };
+		48185D571B3094DE00B4EE08 /* MFRightSideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFRightSideView.h; sourceTree = "<group>"; };
+		48185D581B3094DE00B4EE08 /* MFRightSideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFRightSideView.m; sourceTree = "<group>"; };
+		48185D5A1B30ADA400B4EE08 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
+		48185D5B1B30ADA400B4EE08 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -215,6 +223,7 @@
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48185D551B30937E00B4EE08 /* whitenav@2x.png */,
 				48185D501B2FD59F00B4EE08 /* nav@2x.png */,
 				48185D4F1B2FD59F00B4EE08 /* message@2x.png */,
 				48185D511B2FD59F00B4EE08 /* newmessage@2x.png */,
@@ -282,6 +291,8 @@
 				48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
 				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
+				48185D571B3094DE00B4EE08 /* MFRightSideView.h */,
+				48185D581B3094DE00B4EE08 /* MFRightSideView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
@@ -339,6 +350,8 @@
 				4843EA721B1CE36A00C510B4 /* User.m */,
 				48185D0A1B262DB600B4EE08 /* PushMessage.h */,
 				48185D0B1B262DB600B4EE08 /* PushMessage.m */,
+				48185D5A1B30ADA400B4EE08 /* Notification.h */,
+				48185D5B1B30ADA400B4EE08 /* Notification.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -436,6 +449,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48185D561B30937E00B4EE08 /* whitenav@2x.png in Resources */,
 				48185D3C1B2A2DF900B4EE08 /* grayface1@2x.png in Resources */,
 				4886C9EA1B0BBAA900909747 /* Main.storyboard in Resources */,
 				48185D3F1B2A2DF900B4EE08 /* grayface4@2x.png in Resources */,
@@ -481,6 +495,7 @@
 				4843EA731B1CE36A00C510B4 /* User.m in Sources */,
 				48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */,
 				48185D451B2B507A00B4EE08 /* MBProgressHUD.m in Sources */,
+				48185D5C1B30ADA400B4EE08 /* Notification.m in Sources */,
 				4886C9E71B0BBAA900909747 /* ViewController.m in Sources */,
 				48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */,
 				4843EA301B1653FD00C510B4 /* Location.m in Sources */,
@@ -501,6 +516,7 @@
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,
+				48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,
 			);

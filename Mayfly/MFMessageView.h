@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "MFHelpers.h"
-#import "Event.h"
-#import "PushMessage.h"
 
 @interface MFMessageView : UIView <UITextFieldDelegate>
 

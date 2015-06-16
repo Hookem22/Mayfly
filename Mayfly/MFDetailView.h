@@ -10,9 +10,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFLoginView.h"
-#import "Event.h"
-#import "User.h"
-#import "Session.h"
 #import "MFProfilePicView.h"
 #import "MFAddressBook.h"
 #import "MFMessageView.h"

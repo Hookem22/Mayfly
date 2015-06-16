@@ -29,7 +29,6 @@
 -(void)loadEvents
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     [Event get:^(NSArray *events)
      {        
@@ -95,7 +94,7 @@
              [eventView addSubview:manyLabelContainer];
              
              UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, timeLabelContainer.frame.size.width, 20)];
-             manyLabel.text = [NSString stringWithFormat:@"%d of %d", [going count], event.minParticipants];
+             manyLabel.text = [NSString stringWithFormat:@"%lu of %lu", (unsigned long)[going count], (unsigned long)event.minParticipants];
              manyLabel.textAlignment = NSTextAlignmentLeft;
              [manyLabelContainer addSubview:manyLabel];
              
@@ -108,7 +107,6 @@
              self.contentSize = CGSizeMake(wd, (((i - skip) + 1) * 80));
          }
 
-         [self loadUserEvents];
          [MFHelpers hideProgressView:self.superview];
      }];
 

@@ -13,8 +13,6 @@
 #import "MFView.h"
 #import "MFLoginView.h"
 #import "MFLocationView.h"
-#import "Event.h"
-#import "PushMessage.h"
 #import "MFPillButton.h"
 #import "MFClockView.h"
 #import "MFInviteFriendsView.h"

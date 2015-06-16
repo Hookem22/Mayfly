@@ -138,9 +138,9 @@
             descText.text = self.event.eventDescription;
         self.locationView.locationText.text = self.event.location.name;
         [self.startText setTime:self.event.startTime];
-        minText.text = [NSString stringWithFormat:@"%d", self.event.minParticipants];
+        minText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.minParticipants];
         if(self.event.minParticipants)
-            maxText.text = [NSString stringWithFormat:@"%d", self.event.maxParticipants];
+            maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants];
         
         //TODO figure out public button
     }
@@ -247,46 +247,47 @@
     //TODO: Validation
     
     
-    if([self.contactsList count] > 0)
-    {
-        NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
-        for(NSDictionary *contact in self.contactsList)
-        {
-            NSString *fb = [contact valueForKey:@"id"];
-            if(fb != nil)
-            {
-                [facebookIds addObject:fb];
-                if([event.invited length] <= 0)
-                    event.invited = fb;
-                else
-                    event.invited = [NSString stringWithFormat:@"%@|%@", event.invited, fb];
-            }
-        }
-        if([facebookIds count] > 0)
-            [PushMessage inviteFriends:facebookIds from:appDelegate.name message:event.name];
-    }
-    
     [event save:^(Event *event)
      {
          [MFHelpers hideProgressView:self];
          
+         Notification *notification = [[Notification alloc] init];
+         notification.eventId = event.eventId;
+         notification.facebookId = appDelegate.facebookId;
+         notification.message = [NSString stringWithFormat:@"Created: %@", event.name];
+         [notification save:^(Notification *notification) { }];
+         
+         NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
          NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
          for(NSDictionary *contact in self.contactsList)
          {
+             NSString *fb = [contact valueForKey:@"id"];
              NSString *phone = [contact valueForKey:@"Phone"];
-             if(phone != nil)
+             if(fb != nil)
+             {
+                 [facebookIds addObject:fb];
+                 if([event.invited length] <= 0)
+                     event.invited = fb;
+                 else
+                     event.invited = [NSString stringWithFormat:@"%@|%@", event.invited, fb];
+             }
+             else if(phone != nil)
                  [phoneNumbers addObject:phone];
          }
+         if([facebookIds count] > 0) {
+             [PushMessage inviteFriends:facebookIds from:appDelegate.name event:event];
+         }
+         
          if([phoneNumbers count] > 0) {
              ViewController *vc = (ViewController *)self.window.rootViewController;
              [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://getmayfly.com?%lu", event.name, (unsigned long)event.referenceId]];
          }
-        else
-        {
+         else
+         {
             MFView *view = (MFView *)[self superview];
             [view setup];
             [MFHelpers close:self];
-        }
+         }
      }];
 
 }

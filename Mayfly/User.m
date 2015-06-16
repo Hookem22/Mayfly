@@ -60,6 +60,16 @@
             
             [newUser save:^(User *addedUser) {
                 completion(addedUser);
+                
+                if(appDelegate.referenceId != nil)
+                {
+                    [Event getByReferenceId:appDelegate.referenceId completion:^(Event *event)
+                     {
+                         Notification *notification = [[Notification alloc] init: @{@"facebookid": addedUser.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
+                         [notification save:^(Notification *notification) { }];
+                     }];
+                    
+                }
             }];
         }
     }];

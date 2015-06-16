@@ -25,9 +25,12 @@
     //debugging only
     if (TARGET_IPHONE_SIMULATOR)
     {
-        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(30.2500, -97.7500);
-        CLLocation *location = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil];
-        [[Session sessionVariables] setObject:location forKey:@"location"];
+        //CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(30.2500, -97.7500);
+        //CLLocation *location = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil];
+        Location *location = [[Location alloc] init];
+        location.latitude = 30.2500;
+        location.longitude = -97.7500;
+        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
         
         [self.mainView setup];
     }
