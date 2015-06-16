@@ -12,5 +12,6 @@
 
 -(id)initWithFrame:(CGRect)frame placeHolder:(NSString *)placeHolder;
 -(NSDate *)getTime;
+-(void)setTime:(NSDate *)time;
 
 @end

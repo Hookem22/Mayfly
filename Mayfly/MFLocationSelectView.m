@@ -19,9 +19,9 @@
 
 @implementation MFLocationSelectView
 
--(id)initWithFrame:(CGRect)frame returnView:(UIView *)returnView
+-(id)init:(UIView *)returnView
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.returnView = returnView;
         self.backgroundColor = [UIColor whiteColor];
@@ -228,7 +228,7 @@
     MFLocationView *locationView = (MFLocationView *)self.returnView;
     [locationView locationReturn:location];
     
-    [self close];
+    [MFHelpers close:self];
 }
 
 -(void)getLatLngFromAddress:(id)sender
@@ -308,21 +308,8 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    [self close];
+    [MFHelpers close:self];
 }
 
--(void)close
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.frame = CGRectMake(0, ht, wd, ht - 60);
-                     }
-                     completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
-}
 
 @end

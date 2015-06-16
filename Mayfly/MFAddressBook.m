@@ -20,9 +20,9 @@
 
 @implementation MFAddressBook
 
-- (id)initWithFrame:(CGRect)frame invited:(NSArray *)invited
+- (id)init:(NSArray *)invited
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         
@@ -392,7 +392,7 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    [self close];
+    [MFHelpers close:self];
 }
 -(void)saveButtonClick:(id)sender
 {
@@ -416,7 +416,7 @@
     
     MFCreateView *createView = (MFCreateView *)[self superview];
     [createView invite:contacts];
-    [self close];
+    [MFHelpers close:self];
 }
 
 -(void)inviteButtonClick:(id)sender
@@ -471,22 +471,8 @@
     }
     else
     {
-        [self close];
+        [MFHelpers close:self];
     }
-}
-
--(void)close
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.frame = CGRectMake(0, ht, wd, ht - 60);
-                     }
-                     completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
 }
 
 @end

@@ -10,7 +10,6 @@
 
 @interface MFLocationView()
 
-@property (nonatomic, strong) UITextField *locationText;
 @property (nonatomic, assign) CGRect mapFrame;
 
 @end
@@ -18,6 +17,7 @@
 @implementation MFLocationView
 
 @synthesize location = _location;
+@synthesize locationText = _locationText;
 
 -(id)initWithFrame:(CGRect)frame mapFrame:(CGRect)mapFrame
 {
@@ -42,19 +42,8 @@
 
 -(void)openLocationSelect:(id)sender
 {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    MFLocationSelectView *locationView = [[MFLocationSelectView alloc] initWithFrame:CGRectMake(0, ht, wd, ht) returnView:self];
-    [self.superview.superview addSubview:locationView];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         locationView.frame = CGRectMake(0, 0, wd, ht);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
+    MFLocationSelectView *locationView = [[MFLocationSelectView alloc] init:self];
+    [MFHelpers open:locationView onView:self.superview.superview];
 }
 
 -(void)locationReturn:(Location *)location

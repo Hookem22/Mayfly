@@ -10,10 +10,10 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "AppDelegate.h"
 #import "MFDetailView.h"
 #import "MFLoginView.h"
 #import "Event.h"
-#import "AppDelegate.h"
 
 @interface MFEventsView : UIScrollView
 

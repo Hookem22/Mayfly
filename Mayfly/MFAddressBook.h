@@ -15,6 +15,6 @@
 
 @interface MFAddressBook : UIView
 
--(id)initWithFrame:(CGRect)frame invited:(NSArray *)invited;
+-(id)init:(NSArray *)invited;
 
 @end

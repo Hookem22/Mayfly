@@ -22,7 +22,6 @@
 		48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D271B28D34600B4EE08 /* MFPillButton.m */; };
 		48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D2B1B28D81200B4EE08 /* MFClockView.m */; };
 		48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D2E1B28DF0600B4EE08 /* MFLocationView.m */; };
-		48185D321B28E70500B4EE08 /* MFInviteFriendsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D311B28E70500B4EE08 /* MFInviteFriendsView.m */; };
 		48185D3B1B2A2DF900B4EE08 /* grayface0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D331B2A2DF900B4EE08 /* grayface0@2x.png */; };
 		48185D3C1B2A2DF900B4EE08 /* grayface1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D341B2A2DF900B4EE08 /* grayface1@2x.png */; };
 		48185D3D1B2A2DF900B4EE08 /* grayface2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D351B2A2DF900B4EE08 /* grayface2@2x.png */; };
@@ -31,6 +30,13 @@
 		48185D401B2A2DF900B4EE08 /* grayface5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D381B2A2DF900B4EE08 /* grayface5@2x.png */; };
 		48185D411B2A2DF900B4EE08 /* grayface6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D391B2A2DF900B4EE08 /* grayface6@2x.png */; };
 		48185D421B2A2DF900B4EE08 /* grayface7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D3A1B2A2DF900B4EE08 /* grayface7@2x.png */; };
+		48185D451B2B507A00B4EE08 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D441B2B507A00B4EE08 /* MBProgressHUD.m */; };
+		48185D481B2B517B00B4EE08 /* MFProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D471B2B517B00B4EE08 /* MFProgressView.m */; };
+		48185D4B1B2B52E900B4EE08 /* MFHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D4A1B2B52E900B4EE08 /* MFHelpers.m */; };
+		48185D4E1B2F6A2500B4EE08 /* MFMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */; };
+		48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D4F1B2FD59F00B4EE08 /* message@2x.png */; };
+		48185D531B2FD59F00B4EE08 /* nav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D501B2FD59F00B4EE08 /* nav@2x.png */; };
+		48185D541B2FD59F00B4EE08 /* newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D511B2FD59F00B4EE08 /* newmessage@2x.png */; };
 		48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */; };
 		48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */; };
 		48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */; };
@@ -90,8 +96,6 @@
 		48185D2B1B28D81200B4EE08 /* MFClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFClockView.m; sourceTree = "<group>"; };
 		48185D2D1B28DF0600B4EE08 /* MFLocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFLocationView.h; sourceTree = "<group>"; };
 		48185D2E1B28DF0600B4EE08 /* MFLocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFLocationView.m; sourceTree = "<group>"; };
-		48185D301B28E70500B4EE08 /* MFInviteFriendsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFInviteFriendsView.h; sourceTree = "<group>"; };
-		48185D311B28E70500B4EE08 /* MFInviteFriendsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFInviteFriendsView.m; sourceTree = "<group>"; };
 		48185D331B2A2DF900B4EE08 /* grayface0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayface0@2x.png"; path = "../../Downloads/grayface0@2x.png"; sourceTree = "<group>"; };
 		48185D341B2A2DF900B4EE08 /* grayface1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayface1@2x.png"; path = "../../Downloads/grayface1@2x.png"; sourceTree = "<group>"; };
 		48185D351B2A2DF900B4EE08 /* grayface2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayface2@2x.png"; path = "../../Downloads/grayface2@2x.png"; sourceTree = "<group>"; };
@@ -100,6 +104,17 @@
 		48185D381B2A2DF900B4EE08 /* grayface5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayface5@2x.png"; path = "../../Downloads/grayface5@2x.png"; sourceTree = "<group>"; };
 		48185D391B2A2DF900B4EE08 /* grayface6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayface6@2x.png"; path = "../../Downloads/grayface6@2x.png"; sourceTree = "<group>"; };
 		48185D3A1B2A2DF900B4EE08 /* grayface7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayface7@2x.png"; path = "../../Downloads/grayface7@2x.png"; sourceTree = "<group>"; };
+		48185D431B2B507A00B4EE08 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		48185D441B2B507A00B4EE08 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		48185D461B2B517B00B4EE08 /* MFProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFProgressView.h; sourceTree = "<group>"; };
+		48185D471B2B517B00B4EE08 /* MFProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFProgressView.m; sourceTree = "<group>"; };
+		48185D491B2B52E900B4EE08 /* MFHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFHelpers.h; sourceTree = "<group>"; };
+		48185D4A1B2B52E900B4EE08 /* MFHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFHelpers.m; sourceTree = "<group>"; };
+		48185D4C1B2F6A2500B4EE08 /* MFMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFMessageView.h; sourceTree = "<group>"; };
+		48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFMessageView.m; sourceTree = "<group>"; };
+		48185D4F1B2FD59F00B4EE08 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "message@2x.png"; path = "../../DishWish/DishWish/images/message@2x.png"; sourceTree = "<group>"; };
+		48185D501B2FD59F00B4EE08 /* nav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav@2x.png"; path = "../../DishWish/DishWish/images/nav@2x.png"; sourceTree = "<group>"; };
+		48185D511B2FD59F00B4EE08 /* newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newmessage@2x.png"; path = "../../DishWish/DishWish/images/newmessage@2x.png"; sourceTree = "<group>"; };
 		48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -187,8 +202,12 @@
 				48185D2E1B28DF0600B4EE08 /* MFLocationView.m */,
 				4843EA2B1B163D6F00C510B4 /* MFLocationSelectView.h */,
 				4843EA2C1B163D6F00C510B4 /* MFLocationSelectView.m */,
-				48185D301B28E70500B4EE08 /* MFInviteFriendsView.h */,
-				48185D311B28E70500B4EE08 /* MFInviteFriendsView.m */,
+				48185D461B2B517B00B4EE08 /* MFProgressView.h */,
+				48185D471B2B517B00B4EE08 /* MFProgressView.m */,
+				48185D431B2B507A00B4EE08 /* MBProgressHUD.h */,
+				48185D441B2B507A00B4EE08 /* MBProgressHUD.m */,
+				48185D491B2B52E900B4EE08 /* MFHelpers.h */,
+				48185D4A1B2B52E900B4EE08 /* MFHelpers.m */,
 			);
 			name = Contols;
 			sourceTree = "<group>";
@@ -196,6 +215,9 @@
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48185D501B2FD59F00B4EE08 /* nav@2x.png */,
+				48185D4F1B2FD59F00B4EE08 /* message@2x.png */,
+				48185D511B2FD59F00B4EE08 /* newmessage@2x.png */,
 				48185D331B2A2DF900B4EE08 /* grayface0@2x.png */,
 				48185D341B2A2DF900B4EE08 /* grayface1@2x.png */,
 				48185D351B2A2DF900B4EE08 /* grayface2@2x.png */,
@@ -256,6 +278,8 @@
 				48A82A491B0D203000A8E978 /* MFCreateView.m */,
 				488E57B01B0E400B00E2DA64 /* MFDetailView.h */,
 				488E57B11B0E400B00E2DA64 /* MFDetailView.m */,
+				48185D4C1B2F6A2500B4EE08 /* MFMessageView.h */,
+				48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
 				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
@@ -417,9 +441,11 @@
 				48185D3F1B2A2DF900B4EE08 /* grayface4@2x.png in Resources */,
 				48185D3D1B2A2DF900B4EE08 /* grayface2@2x.png in Resources */,
 				48185D211B28BF8F00B4EE08 /* face6@2x.png in Resources */,
+				48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */,
 				48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */,
 				48185D411B2A2DF900B4EE08 /* grayface6@2x.png in Resources */,
 				48185D0E1B2760F000B4EE08 /* add@2x.png in Resources */,
+				48185D541B2FD59F00B4EE08 /* newmessage@2x.png in Resources */,
 				48185D221B28BF8F00B4EE08 /* face7@2x.png in Resources */,
 				4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */,
 				48185D421B2A2DF900B4EE08 /* grayface7@2x.png in Resources */,
@@ -431,6 +457,7 @@
 				48185D1F1B28BF8F00B4EE08 /* face4@2x.png in Resources */,
 				48185D1C1B28BF8F00B4EE08 /* face1@2x.png in Resources */,
 				48185D401B2A2DF900B4EE08 /* grayface5@2x.png in Resources */,
+				48185D531B2FD59F00B4EE08 /* nav@2x.png in Resources */,
 				48185D201B28BF8F00B4EE08 /* face5@2x.png in Resources */,
 				48185D3E1B2A2DF900B4EE08 /* grayface3@2x.png in Resources */,
 				48185D251B28C2B600B4EE08 /* check@2x.png in Resources */,
@@ -453,21 +480,24 @@
 			files = (
 				4843EA731B1CE36A00C510B4 /* User.m in Sources */,
 				48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */,
+				48185D451B2B507A00B4EE08 /* MBProgressHUD.m in Sources */,
 				4886C9E71B0BBAA900909747 /* ViewController.m in Sources */,
 				48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */,
 				4843EA301B1653FD00C510B4 /* Location.m in Sources */,
 				4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */,
 				4886CA1C1B0BC41100909747 /* Session.m in Sources */,
 				48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */,
+				48185D4E1B2F6A2500B4EE08 /* MFMessageView.m in Sources */,
 				48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */,
 				4843EA2D1B163D6F00C510B4 /* MFLocationSelectView.m in Sources */,
 				48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */,
 				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
+				48185D481B2B517B00B4EE08 /* MFProgressView.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
+				48185D4B1B2B52E900B4EE08 /* MFHelpers.m in Sources */,
 				488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */,
 				48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */,
-				48185D321B28E70500B4EE08 /* MFInviteFriendsView.m in Sources */,
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,

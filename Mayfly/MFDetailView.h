@@ -15,9 +15,10 @@
 #import "Session.h"
 #import "MFProfilePicView.h"
 #import "MFAddressBook.h"
+#import "MFMessageView.h"
 
 @interface MFDetailView : UIView
 
--(void)open:(Event*)event;
+-(id)init:(Event *)event;
 
 @end

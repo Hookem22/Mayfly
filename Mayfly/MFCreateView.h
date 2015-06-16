@@ -19,10 +19,11 @@
 #import "MFClockView.h"
 #import "MFInviteFriendsView.h"
 #import "MFAddressBook.h"
+#import "MFHelpers.h"
 
 @interface MFCreateView : UIView <UITextViewDelegate>
 
--(void)create;
+-(id)init:(Event *)event;
 -(void)invite:(NSArray *)contactsList;
 
 @end

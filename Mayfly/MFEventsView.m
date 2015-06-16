@@ -32,7 +32,7 @@
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     [Event get:^(NSArray *events)
-     {
+     {        
          self.Events = (NSMutableArray *)events;
          
          Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
@@ -109,6 +109,7 @@
          }
 
          [self loadUserEvents];
+         [MFHelpers hideProgressView:self.superview];
      }];
 
 }
@@ -151,20 +152,9 @@
     UIControl *button = (UIControl *)sender;
     long tagId = button.tag;
     
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    MFDetailView *detailView = [[MFDetailView alloc] init:(Event *)[self.Events objectAtIndex:tagId]];
+    [MFHelpers open:detailView onView:self.superview];
     
-    MFDetailView *detailView = [[MFDetailView alloc] initWithFrame:CGRectMake(0, ht, wd, ht - 120)];
-    [detailView open:(Event *)[self.Events objectAtIndex:tagId]];
-    [self.superview addSubview:detailView];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         detailView.frame = CGRectMake(0, 0, wd, ht);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
 }
 
 @end

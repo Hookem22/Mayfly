@@ -66,17 +66,7 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.superview.frame = CGRectMake(0, ht, wd, ht - 60);
-                     }
-                     completion:^(BOOL finished){
-                         //[self removeFromSuperview];
-                         [self.superview removeFromSuperview];
-                     }];
+    [MFHelpers close:self];
 }
 
 @end

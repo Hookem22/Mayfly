@@ -46,6 +46,13 @@
     return time;
 }
 
+-(void)setTime:(NSDate *)time
+{
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    [outputFormatter setDateFormat:@"h:mm a"];
+    self.timeText.text = [outputFormatter stringFromDate:time];
+}
+
 -(void)showClock:(id)sender
 {
     NSUInteger wd = self.superview.frame.size.width;

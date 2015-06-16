@@ -18,32 +18,57 @@
 
 @implementation MFDetailView
 
-- (id)initWithFrame:(CGRect)frame
+-(id)init:(Event *)event
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        
+        [self setup:event];
     }
     return self;
 }
 
--(void)open:(Event*)event
+-(void)setup:(Event*)event
 {
     self.event = event;
     
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.text = event.name;
     [self addSubview:headerLabel];
+
+    if([event.going rangeOfString:appDelegate.facebookId].location == 0)
+    {
+        float headerWd = [headerLabel.text boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
+        float totalWd = [[NSString stringWithFormat:@"%@ - Edit", headerLabel.text] boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
+        
+        headerLabel.frame = CGRectMake((wd - totalWd) / 2, 20, headerWd, 20);
+        
+        UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [editButton setTitle:@" - Edit" forState:UIControlStateNormal];
+        [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        editButton.frame = CGRectMake(((wd - totalWd) / 2) + headerWd, 20, totalWd - headerWd, 20);
+        [self addSubview:editButton];
+    }
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 10, 80, 40);
+    cancelButton.frame = CGRectMake(15, 10, 80, 40);
+    [cancelButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
     [self addSubview:cancelButton];
+    
+    UIButton *messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 60, 15, 35, 30)];
+    [messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+    [messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:messageButton];
     
     UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 40)];
     [self addSubview:detailView];
@@ -87,12 +112,10 @@
     addFriendsButton.frame = CGRectMake(30, 205 + descHt, wd-60, 30);
     [detailView addSubview:addFriendsButton];
     
-    MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 250 + descHt, wd - 60, ht - (400 + descHt))];
+    MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 250 + descHt, wd - 60, ht - (380 + descHt))];
     [map loadMap:self.event.location];
     [detailView addSubview:map];
     
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSString *title = @"Join Event";
     if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
         title = @"Unjoin Event";
@@ -169,6 +192,18 @@
     }
 }
 
+-(void)editButtonClick:(id)sender
+{
+    MFCreateView *detailView = [[MFCreateView alloc] init:self.event];
+    [MFHelpers open:detailView onView:self];
+}
+
+-(void)messageButtonClick:(id)sender
+{
+    MFMessageView *messageView = [[MFMessageView alloc] init:self.event];
+    [MFHelpers openFromRight:messageView onView:self];
+}
+
 -(void)joinButtonClick:(id)sender
 {
     UIButton *button = (UIButton *)sender;
@@ -190,38 +225,13 @@
 }
 -(void)addFriendsButtonClick:(id)sender
 {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    MFAddressBook *addressBook = [[MFAddressBook alloc] initWithFrame:CGRectMake(0, ht, wd, ht) invited:[NSArray arrayWithObjects:self.event, nil]];
-    [self addSubview:addressBook];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         addressBook.frame = CGRectMake(0, 0, wd, ht);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
+    MFAddressBook *addressBook = [[MFAddressBook alloc] init:[NSArray arrayWithObjects:self.event, nil]];
+    [MFHelpers open:addressBook onView:self];
 }
 
 -(void)cancelButtonClick:(id)sender
 {
-    [self close];
-}
-
--(void)close
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.frame = CGRectMake(0, ht, wd, ht - 60);
-                     }
-                     completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
+    [MFHelpers close:self];
 }
 
 @end

@@ -10,6 +10,7 @@
 
 @interface MFCreateView()
 
+@property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) UIScrollView *createView;
 @property (nonatomic, strong) NSArray *contactsList;
 @property (nonatomic, strong) UITextField *nameText;
@@ -24,33 +25,46 @@
 
 @implementation MFCreateView
 
-- (id)initWithFrame:(CGRect)frame
+-(id)init
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        [self setup];
     }
     return self;
 }
 
--(void)create
+-(id)init:(Event *)event
+{
+    self = [super init];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        self.event = event;
+        [self setup];
+    }
+    return self;
+}
+
+-(void)setup
 {   
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
-    headerLabel.text = @"Create Event";
+    headerLabel.text = self.event ? @"Edit Event" : @"Create Event";
     [self addSubview:headerLabel];
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 20, 80, 40);
+    cancelButton.frame = CGRectMake(15, 20, 80, 40);
     [self addSubview:cancelButton];
     
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [saveButton setTitle:@"Create" forState:UIControlStateNormal];
+    NSString *saveButtonTitle = self.event ? @"Save" : @"Create";
+    [saveButton setTitle:saveButtonTitle forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     saveButton.frame = CGRectMake(wd - 85, 20, 80, 40);
     [self addSubview:saveButton];
@@ -110,11 +124,26 @@
     self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
     [createView addSubview:self.publicButton];
     
+    //TODO figure out if add friends on edit
     UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
     [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     addFriendsButton.frame = CGRectMake(30, 275, wd-60, 30);
     [createView addSubview:addFriendsButton];
+    
+    if(self.event)
+    {
+        nameText.text = self.event.name;
+        if([self.event.eventDescription length])
+            descText.text = self.event.eventDescription;
+        self.locationView.locationText.text = self.event.location.name;
+        [self.startText setTime:self.event.startTime];
+        minText.text = [NSString stringWithFormat:@"%d", self.event.minParticipants];
+        if(self.event.minParticipants)
+            maxText.text = [NSString stringWithFormat:@"%d", self.event.maxParticipants];
+        
+        //TODO figure out public button
+    }
     
     if(![FBSDKAccessToken currentAccessToken])
     {
@@ -125,19 +154,8 @@
 
 -(void)addFriendsButtonClick:(id)sender
 {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    MFAddressBook *addressBook = [[MFAddressBook alloc] initWithFrame:CGRectMake(0, ht, wd, ht) invited:self.contactsList];
-    [self addSubview:addressBook];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         addressBook.frame = CGRectMake(0, 0, wd, ht);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
+    MFAddressBook *addressBook = [[MFAddressBook alloc] init:self.contactsList];
+    [MFHelpers open:addressBook onView:self];
 }
 -(void)invite:(NSArray *)contactsList
 {
@@ -188,10 +206,14 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    [self close];
+    [MFHelpers close:self];
 }
 -(void)saveButtonClick:(id)sender
 {
+    //TODO figure out save on edit
+    
+    [MFHelpers showProgressView:self];
+    
     Event *event = [[Event alloc] init];
     event.name = self.nameText.text;
     event.eventDescription = [self.descText.text isEqualToString:@"Details"] ? @"" : self.descText.text;
@@ -246,6 +268,8 @@
     
     [event save:^(Event *event)
      {
+         [MFHelpers hideProgressView:self];
+         
          NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
          for(NSDictionary *contact in self.contactsList)
          {
@@ -261,7 +285,7 @@
         {
             MFView *view = (MFView *)[self superview];
             [view setup];
-            [self close];
+            [MFHelpers close:self];
         }
      }];
 
@@ -287,30 +311,6 @@
     [textView resignFirstResponder];
 }
 
--(void)close
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.frame = CGRectMake(0, ht, wd, ht - 60);
-                     }
-                     completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
-}
--(void)remove:(UIView *)view
-{
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         view.frame = CGRectMake(0, ht, view.frame.size.width, view.frame.size.height);
-                     }
-                     completion:^(BOOL finished){
-                         [view removeFromSuperview];
-                     }];
-}
+
 
 @end

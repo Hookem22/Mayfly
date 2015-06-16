@@ -46,6 +46,7 @@
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:addButton];
     
+    [MFHelpers showProgressView:self];
     
     /*
     if ([FBSDKAccessToken currentAccessToken]) {
@@ -70,6 +71,10 @@
 
 -(void) addButtonClick:(id)sender
 {
+    
+    MFCreateView *createView = [[MFCreateView alloc] init];
+    [MFHelpers open:createView onView:self];
+    
     /*
     if ([FBSDKAccessToken currentAccessToken]) {
         [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends" parameters:nil]
@@ -96,20 +101,6 @@
     
     return;
     */
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    MFCreateView *createView = [[MFCreateView alloc] initWithFrame:CGRectMake(0, ht, wd, ht - 120)];
-    [createView create];
-    [self addSubview:createView];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         createView.frame = CGRectMake(0, 0, wd, ht);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
     
 }
 

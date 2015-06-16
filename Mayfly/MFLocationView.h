@@ -17,5 +17,6 @@
 -(void)locationReturn:(Location *)location;
 
 @property (nonatomic, strong) Location *location;
+@property (nonatomic, strong) UITextField *locationText;
 
 @end
