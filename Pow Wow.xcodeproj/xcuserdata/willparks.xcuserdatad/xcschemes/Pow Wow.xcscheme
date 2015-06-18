@@ -15,23 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4886C9DA1B0BBAA900909747"
-               BuildableName = "Mayfly.app"
-               BlueprintName = "Mayfly"
-               ReferencedContainer = "container:Mayfly.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4886C9F31B0BBAA900909747"
-               BuildableName = "MayflyTests.xctest"
-               BlueprintName = "MayflyTests"
-               ReferencedContainer = "container:Mayfly.xcodeproj">
+               BuildableName = "Pow Wow.app"
+               BlueprintName = "Pow Wow"
+               ReferencedContainer = "container:Pow Wow.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -42,24 +28,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4886C9F31B0BBAA900909747"
-               BuildableName = "MayflyTests.xctest"
-               BlueprintName = "MayflyTests"
-               ReferencedContainer = "container:Mayfly.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4886C9DA1B0BBAA900909747"
-            BuildableName = "Mayfly.app"
-            BlueprintName = "Mayfly"
-            ReferencedContainer = "container:Mayfly.xcodeproj">
+            BuildableName = "Pow Wow.app"
+            BlueprintName = "Pow Wow"
+            ReferencedContainer = "container:Pow Wow.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4886C9DA1B0BBAA900909747"
-            BuildableName = "Mayfly.app"
-            BlueprintName = "Mayfly"
-            ReferencedContainer = "container:Mayfly.xcodeproj">
+            BuildableName = "Pow Wow.app"
+            BlueprintName = "Pow Wow"
+            ReferencedContainer = "container:Pow Wow.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4886C9DA1B0BBAA900909747"
-            BuildableName = "Mayfly.app"
-            BlueprintName = "Mayfly"
-            ReferencedContainer = "container:Mayfly.xcodeproj">
+            BuildableName = "Pow Wow.app"
+            BlueprintName = "Pow Wow"
+            ReferencedContainer = "container:Pow Wow.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

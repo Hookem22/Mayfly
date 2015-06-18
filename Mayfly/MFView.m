@@ -30,7 +30,7 @@
         [subview removeFromSuperview];
     
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 80)];
-    headerLabel.text = @"Mayfly";
+    headerLabel.text = @"Pow Wow";
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.textColor = [UIColor whiteColor];
     headerLabel.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];

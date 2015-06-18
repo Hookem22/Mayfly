@@ -10,6 +10,8 @@
 
 @interface MFClockView : UIView
 
+@property (nonatomic, strong) UITextField *timeText;
+
 -(id)initWithFrame:(CGRect)frame placeHolder:(NSString *)placeHolder;
 -(NSDate *)getTime;
 -(void)setTime:(NSDate *)time;

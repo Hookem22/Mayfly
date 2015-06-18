@@ -14,8 +14,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        
         [self setup];
     }
     return self;
@@ -26,16 +24,17 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    self.backgroundColor = [UIColor whiteColor];
+    
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 40, 60, 20);
+    cancelButton.frame = CGRectMake(25, 20, 60, 20);
     [self addSubview:cancelButton];
     
-    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(20, (ht / 2) - 30, wd - 40, 60)];
     [loginButton setImage:[UIImage imageNamed:@"fbLoginButton"] forState:UIControlStateNormal];
     [loginButton addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    loginButton.frame = CGRectMake(30, (ht / 2) - 20, wd-60, 40);
     [self addSubview:loginButton];
     
 }
@@ -66,6 +65,7 @@
 
 -(void)cancelButtonClick:(id)sender
 {
+    [MFHelpers close:self.superview];
     [MFHelpers close:self];
 }
 

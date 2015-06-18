@@ -44,7 +44,7 @@
     headerLabel.text = event.name;
     [self addSubview:headerLabel];
 
-    if([event.going rangeOfString:appDelegate.facebookId].location == 0)
+    if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location == 0 && event.isPrivate)
     {
         float headerWd = [headerLabel.text boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
         float totalWd = [[NSString stringWithFormat:@"%@ - Edit", headerLabel.text] boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
@@ -117,7 +117,7 @@
     [detailView addSubview:map];
     
     NSString *title = @"Join Event";
-    if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
+    if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
         title = @"Unjoin Event";
         
     UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -223,6 +223,7 @@
     }
     else
     {
+        
         [button setTitle:@"Join Event" forState:UIControlStateNormal];
         
         [self.event removeGoing];

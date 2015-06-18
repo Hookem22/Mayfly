@@ -58,6 +58,24 @@
     return self;
 }
 
+-(void)switchButton
+{
+    if(self.yesButton.tag == 1)
+    {
+        self.yesButton.frame = CGRectMake(self.frame.size.width / 2 - 2, 2, self.frame.size.width / 2, self.frame.size.height - 4);
+        self.yesButton.tag = 2;
+        self.yesLabel.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
+        self.noLabel.textColor = [UIColor whiteColor];
+    }
+    else
+    {
+        self.yesButton.frame = CGRectMake(2, 2, self.frame.size.width / 2, self.frame.size.height - 4);
+        self.yesButton.tag = 1;
+        self.yesLabel.textColor = [UIColor whiteColor];
+        self.noLabel.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
+    }
+}
+
 -(void)buttonClick:(id)sender
 {
     if(self.yesButton.tag == 1)

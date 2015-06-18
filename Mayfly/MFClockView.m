@@ -8,13 +8,10 @@
 
 #import "MFClockView.h"
 
-@interface MFClockView()
-
-@property (nonatomic, strong) UITextField *timeText;
-
-@end
 
 @implementation MFClockView
+
+@synthesize timeText = _timeText;
 
 -(id)initWithFrame:(CGRect)frame placeHolder:(NSString *)placeHolder
 {

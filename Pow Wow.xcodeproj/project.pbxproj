@@ -140,7 +140,7 @@
 		4843EA2F1B1653FD00C510B4 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		4843EA711B1CE36A00C510B4 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		4843EA721B1CE36A00C510B4 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		4886C9DB1B0BBAA900909747 /* Mayfly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mayfly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4886C9DB1B0BBAA900909747 /* Pow Wow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pow Wow.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4886C9DF1B0BBAA900909747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4886C9E01B0BBAA900909747 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4886C9E21B0BBAA900909747 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 		4886C9E91B0BBAA900909747 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4886C9EB1B0BBAA900909747 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4886C9EE1B0BBAA900909747 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		4886C9F41B0BBAA900909747 /* MayflyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MayflyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4886C9F41B0BBAA900909747 /* Pow WowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pow WowTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4886C9F91B0BBAA900909747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4886C9FA1B0BBAA900909747 /* MayflyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MayflyTests.m; sourceTree = "<group>"; };
 		4886CA061B0BBBF700909747 /* QSAzureService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureService.h; sourceTree = "<group>"; };
@@ -263,8 +263,8 @@
 		4886C9DC1B0BBAA900909747 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4886C9DB1B0BBAA900909747 /* Mayfly.app */,
-				4886C9F41B0BBAA900909747 /* MayflyTests.xctest */,
+				4886C9DB1B0BBAA900909747 /* Pow Wow.app */,
+				4886C9F41B0BBAA900909747 /* Pow WowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -371,9 +371,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4886C9DA1B0BBAA900909747 /* Mayfly */ = {
+		4886C9DA1B0BBAA900909747 /* Pow Wow */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4886C9FE1B0BBAA900909747 /* Build configuration list for PBXNativeTarget "Mayfly" */;
+			buildConfigurationList = 4886C9FE1B0BBAA900909747 /* Build configuration list for PBXNativeTarget "Pow Wow" */;
 			buildPhases = (
 				4886C9D71B0BBAA900909747 /* Sources */,
 				4886C9D81B0BBAA900909747 /* Frameworks */,
@@ -383,14 +383,14 @@
 			);
 			dependencies = (
 			);
-			name = Mayfly;
+			name = "Pow Wow";
 			productName = Mayfly;
-			productReference = 4886C9DB1B0BBAA900909747 /* Mayfly.app */;
+			productReference = 4886C9DB1B0BBAA900909747 /* Pow Wow.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4886C9F31B0BBAA900909747 /* MayflyTests */ = {
+		4886C9F31B0BBAA900909747 /* Pow WowTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4886CA011B0BBAA900909747 /* Build configuration list for PBXNativeTarget "MayflyTests" */;
+			buildConfigurationList = 4886CA011B0BBAA900909747 /* Build configuration list for PBXNativeTarget "Pow WowTests" */;
 			buildPhases = (
 				4886C9F01B0BBAA900909747 /* Sources */,
 				4886C9F11B0BBAA900909747 /* Frameworks */,
@@ -401,9 +401,9 @@
 			dependencies = (
 				4886C9F61B0BBAA900909747 /* PBXTargetDependency */,
 			);
-			name = MayflyTests;
+			name = "Pow WowTests";
 			productName = MayflyTests;
-			productReference = 4886C9F41B0BBAA900909747 /* MayflyTests.xctest */;
+			productReference = 4886C9F41B0BBAA900909747 /* Pow WowTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -425,7 +425,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4886C9D61B0BBAA900909747 /* Build configuration list for PBXProject "Mayfly" */;
+			buildConfigurationList = 4886C9D61B0BBAA900909747 /* Build configuration list for PBXProject "Pow Wow" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -438,8 +438,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4886C9DA1B0BBAA900909747 /* Mayfly */,
-				4886C9F31B0BBAA900909747 /* MayflyTests */,
+				4886C9DA1B0BBAA900909747 /* Pow Wow */,
+				4886C9F31B0BBAA900909747 /* Pow WowTests */,
 			);
 		};
 /* End PBXProject section */
@@ -535,7 +535,7 @@
 /* Begin PBXTargetDependency section */
 		4886C9F61B0BBAA900909747 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4886C9DA1B0BBAA900909747 /* Mayfly */;
+			target = 4886C9DA1B0BBAA900909747 /* Pow Wow */;
 			targetProxy = 4886C9F51B0BBAA900909747 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -652,7 +652,7 @@
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Pow Wow";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -671,7 +671,7 @@
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Pow Wow";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -690,7 +690,7 @@
 				);
 				INFOPLIST_FILE = MayflyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Pow WowTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mayfly.app/Mayfly";
 			};
 			name = Debug;
@@ -705,7 +705,7 @@
 				);
 				INFOPLIST_FILE = MayflyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Pow WowTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mayfly.app/Mayfly";
 			};
 			name = Release;
@@ -713,7 +713,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4886C9D61B0BBAA900909747 /* Build configuration list for PBXProject "Mayfly" */ = {
+		4886C9D61B0BBAA900909747 /* Build configuration list for PBXProject "Pow Wow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4886C9FC1B0BBAA900909747 /* Debug */,
@@ -722,7 +722,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4886C9FE1B0BBAA900909747 /* Build configuration list for PBXNativeTarget "Mayfly" */ = {
+		4886C9FE1B0BBAA900909747 /* Build configuration list for PBXNativeTarget "Pow Wow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4886C9FF1B0BBAA900909747 /* Debug */,
@@ -731,7 +731,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4886CA011B0BBAA900909747 /* Build configuration list for PBXNativeTarget "MayflyTests" */ = {
+		4886CA011B0BBAA900909747 /* Build configuration list for PBXNativeTarget "Pow WowTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4886CA021B0BBAA900909747 /* Debug */,

@@ -124,25 +124,30 @@
     self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
     [createView addSubview:self.publicButton];
     
-    //TODO figure out if add friends on edit
-    UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
-    [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    addFriendsButton.frame = CGRectMake(30, 275, wd-60, 30);
-    [createView addSubview:addFriendsButton];
-    
     if(self.event)
     {
         nameText.text = self.event.name;
-        if([self.event.eventDescription length])
+        if([self.event.eventDescription length]) {
             descText.text = self.event.eventDescription;
+            descText.textColor = [UIColor blackColor];
+        }
         self.locationView.locationText.text = self.event.location.name;
+        self.locationView.location = self.event.location;
         [self.startText setTime:self.event.startTime];
-        minText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.minParticipants];
-        if(self.event.minParticipants)
-            maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants];
+        minText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.minParticipants - 1];
+        if(self.event.maxParticipants)
+            maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants - 1];
         
-        //TODO figure out public button
+        if(self.event.isPrivate)
+           [self.publicButton switchButton];
+    }
+    else
+    {
+        UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
+        [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        addFriendsButton.frame = CGRectMake(30, 275, wd-60, 30);
+        [createView addSubview:addFriendsButton];
     }
     
     if(![FBSDKAccessToken currentAccessToken])
@@ -210,11 +215,46 @@
 }
 -(void)saveButtonClick:(id)sender
 {
-    //TODO figure out save on edit
+    //Validation
+    self.nameText.layer.borderColor = [[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor];
+    self.locationView.locationText.layer.borderColor = [[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor];
+    self.startText.timeText.layer.borderColor = [[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor];
+    self.minText.layer.borderColor = [[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor];
     
-    [MFHelpers showProgressView:self];
+    BOOL error = false;
+    if([self.nameText.text isEqualToString:@""])
+    {
+        self.nameText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.nameText.layer.cornerRadius=8.0f;
+        self.nameText.layer.borderWidth= 1.0f;
+        error = true;
+    }
+    if([self.locationView.locationText.text isEqualToString:@""])
+    {
+        self.locationView.locationText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.locationView.locationText.layer.cornerRadius=8.0f;
+        self.locationView.locationText.layer.borderWidth= 1.0f;
+        error = true;
+    }
+    if([self.startText.timeText.text isEqualToString:@""])
+    {
+        self.startText.timeText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.startText.timeText.layer.cornerRadius=8.0f;
+        self.startText.timeText.layer.borderWidth= 1.0f;
+        error = true;
+    }
+    if([self.minText.text isEqualToString:@""])
+    {
+        self.minText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.minText.layer.cornerRadius=8.0f;
+        self.minText.layer.borderWidth= 1.0f;
+        error = true;
+    }
+    if(error)
+        return;
     
-    Event *event = [[Event alloc] init];
+    
+    Event *event = self.event == nil ? [[Event alloc] init] : self.event;
     event.name = self.nameText.text;
     event.eventDescription = [self.descText.text isEqualToString:@"Details"] ? @"" : self.descText.text;
     event.location = self.locationView.location != nil ? self.locationView.location : [[Location alloc] init];
@@ -232,24 +272,53 @@
     [components setMinute:timeComponents.minute];
     event.startTime = [calendar dateFromComponents:components];
     
-    NSTimeInterval minus30 = -30 * 60;
-    event.cutoffTime = [event.startTime dateByAddingTimeInterval:minus30];
-    
-    event.isPrivate = !self.publicButton.isYes; //isYes == Public
+    NSTimeInterval cutoffInterval = 0;
+    int secondsUntil = [event.startTime timeIntervalSinceDate: [NSDate date]];
+    if(secondsUntil >= 29 * 60)
+        cutoffInterval = -15 * 60;
+    if(secondsUntil >= 59 * 60)
+        cutoffInterval = -30 * 60;
+    if(secondsUntil >= 179 * 60)
+        cutoffInterval = -60 * 60;
+    event.cutoffTime = [event.startTime dateByAddingTimeInterval:cutoffInterval];
     
     event.invited = @"";
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
+    if(self.event && self.event.isPrivate && self.publicButton.isYes)
+    {
+        event.isPrivate = NO;
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Public"
+                                                        message:@"Once you make an event public, you cannot change it back to private. Continue?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"No"
+                                              otherButtonTitles:@"Yes", nil];
+        [alert show];
+        
+        return;
+    }
+    event.isPrivate = !self.publicButton.isYes; //isYes == Public
+    
+    [self save:event];
+}
 
-    event.referenceId = 0;
+-(void)save:(Event *)event
+{
+    [MFHelpers showProgressView:self];
     
-    //TODO: Validation
-    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(event.going == nil || [event.going isEqualToString:@""])
+        event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
     
     [event save:^(Event *event)
      {
          [MFHelpers hideProgressView:self];
+
+         if(self.event)
+         {
+             [MFHelpers close:self];
+             return;
+         }
          
          Notification *notification = [[Notification alloc] init];
          notification.eventId = event.eventId;
@@ -284,15 +353,27 @@
          }
          else
          {
-            MFView *view = (MFView *)[self superview];
-            [view setup];
-            [MFHelpers close:self];
+             if([[self superview]isMemberOfClass:[MFView class]])
+             {
+                 MFView *view = (MFView *)[self superview];
+                 [view setup];
+             }
+             [MFHelpers close:self];
          }
      }];
-
 }
 
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0: //"No" pressed
+            self.event.isPrivate = YES;
+            break;
+        case 1: //"Yes" pressed
+            [self save:self.event];
+            break;
+    }
+}
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {

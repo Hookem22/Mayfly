@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>878997C5-A46F-44C6-A3B2-37AE3950088D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Pow Wow</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>035F48A43C46F13D3233D5DAF8633B9D011CBAEC</key>
+		<string>https://github.com/Hookem22/Mayfly.git</string>
+		<key>6C0B72DD6E541A45C9F3FE352351235C5E7E4722</key>
+		<string>https://github.com/Hookem22/DishWish.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Pow Wow.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>035F48A43C46F13D3233D5DAF8633B9D011CBAEC</key>
+		<string>../..</string>
+		<key>6C0B72DD6E541A45C9F3FE352351235C5E7E4722</key>
+		<string>../../../DishWish</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Hookem22/Mayfly.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>035F48A43C46F13D3233D5DAF8633B9D011CBAEC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6C0B72DD6E541A45C9F3FE352351235C5E7E4722</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DishWish</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>035F48A43C46F13D3233D5DAF8633B9D011CBAEC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Mayfly</string>
+		</dict>
+	</array>
+</dict>
+</plist>

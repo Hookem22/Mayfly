@@ -11,6 +11,7 @@
 @interface MFPillButton : UIView
 
 -(id)initWithFrame:(CGRect)frame yesText:(NSString *)yesText noText:(NSString *)noText;
+-(void)switchButton;
 -(BOOL)isYes;
 
 @end
