@@ -14,7 +14,21 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                             categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                               didFinishLaunchingWithOptions:launchOptions];
+}
+
+-(void)applicationDidBecomeActive:(UIApplication *)application {
     [FBSDKAppEvents activateApp];
     
     if ([FBSDKAccessToken currentAccessToken]) {
@@ -32,11 +46,6 @@
              }
          }];
     }
-}
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                    didFinishLaunchingWithOptions:launchOptions];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
@@ -61,6 +70,10 @@
     NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
     self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
     NSLog(@"%@", self.deviceToken);
+    
+    [User login:^(User *user) {
+        //NSLog(@"%@", user);
+    }];
 }
 
 // Handle any failure to register. In this case we set the deviceToken to an empty

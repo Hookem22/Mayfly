@@ -46,17 +46,18 @@
 +(void)login:(QSCompletionBlock)completion
 {
     NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSString *pushDeviceToken = appDelegate.deviceToken == nil ? @"" : appDelegate.deviceToken;
 
-    [self get:deviceId pushDeviceToken:pushDeviceToken completion:^(User *deviceUser) {
-        if((deviceUser == nil || deviceUser.deviceId.length <= 0)) {
-            User *newUser = [[User alloc] init];
+    [self get:deviceId completion:^(User *deviceUser) {
+        if((deviceUser == nil || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""])) {
+            User *newUser = deviceUser == nil ? [[User alloc] init] : deviceUser;
             newUser.deviceId = deviceId;
-            newUser.pushDeviceToken = pushDeviceToken;
-            newUser.name = appDelegate.name;
-            newUser.facebookId = appDelegate.facebookId;
+            if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
+                newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
+            if(!newUser.name || [newUser.name isEqualToString:@""])
+                newUser.name = appDelegate.name ? appDelegate.name : @"";
+            if(!newUser.facebookId || [newUser.facebookId isEqualToString:@""])
+                newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
             
             [newUser save:^(User *addedUser) {
                 completion(addedUser);
@@ -75,14 +76,10 @@
     }];
 }
 
-+(void)get:(id)deviceId pushDeviceToken:(NSString *)pushDeviceToken completion:(QSCompletionBlock)completion
++(void)get:(id)deviceId completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
-    NSString *whereStatement = @"";
-    if([pushDeviceToken length] > 0)
-        whereStatement = [NSString stringWithFormat:@"deviceid = '%@' OR pushdevicetoken = '%@'", deviceId, pushDeviceToken];
-    else
-        whereStatement = [NSString stringWithFormat:@"deviceid = '%@'", deviceId];
+    NSString *whereStatement = [NSString stringWithFormat:@"deviceid = '%@'", deviceId];
     
     [service getByWhere:whereStatement completion:^(NSArray *results) {
         for(id item in results) {
