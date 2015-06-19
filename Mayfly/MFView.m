@@ -30,12 +30,16 @@
         [subview removeFromSuperview];
     
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 80)];
-    headerLabel.text = @"Pow Wow";
+    //headerLabel.text = @"Pow Wow";
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.textColor = [UIColor whiteColor];
     headerLabel.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
     [self addSubview:headerLabel];
     
+    UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
+    [header setImage:[UIImage imageNamed:@"title"]];
+    [self addSubview:header];
+
     UIButton *notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
     [notificationButton setImage:[UIImage imageNamed:@"whitenav"] forState:UIControlStateNormal];
     [notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -46,7 +50,7 @@
     [self addSubview:eventsView];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
-    [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+    [addButton setImage:[UIImage imageNamed:@"arrowplus"] forState:UIControlStateNormal];
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:addButton];
     
