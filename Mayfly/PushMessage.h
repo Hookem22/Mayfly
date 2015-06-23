@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QSAzureService.h"
+#import "QSAzureMessageService.h"
 #import "User.h"
 
 @interface PushMessage : NSObject

@@ -45,8 +45,6 @@ typedef void (^QSBusyUpdateBlock) (BOOL busy);
 
 - (void)getByProc:(NSString *)procName params:(NSDictionary *)params completion:(QSCompletionBlock)completion;
 
-- (void)sendPushMessage:(NSDictionary *)params;
-
 - (void)addItem:(NSDictionary *)item completion:(QSCompletionBlock)completion;
 
 - (void)updateItem:(NSDictionary *)item completion:(QSCompletionBlock)completion;

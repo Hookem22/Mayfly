@@ -149,6 +149,15 @@
 
 }
 
+-(void)openEvent:(NSString *)eventId
+{
+    [Event get:eventId completion:^(Event *event)
+     {;
+         MFDetailView *detailView = [[MFDetailView alloc] init:event];
+         [MFHelpers open:detailView onView:self.superview];
+     }];
+}
+
 
 
 @end

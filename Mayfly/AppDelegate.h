@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WindowsAzureMessaging/WindowsAzureMessaging.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "User.h"

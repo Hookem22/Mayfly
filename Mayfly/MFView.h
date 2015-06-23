@@ -18,5 +18,6 @@
 @interface MFView : UIView
 
 -(void)setup;
+-(void)openEvent:(NSString *)eventId;
 
 @end

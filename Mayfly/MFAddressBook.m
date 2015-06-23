@@ -72,7 +72,7 @@
     
     __block BOOL accessGranted = NO;
     
-    if (ABAddressBookRequestAccessWithCompletion != NULL) { // We are on iOS 6
+    if (ABAddressBookRequestAccessWithCompletion) { // We are on iOS 6
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         
         ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {

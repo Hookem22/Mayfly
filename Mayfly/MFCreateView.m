@@ -73,11 +73,16 @@
     self.createView = createView;
     [self addSubview:createView];
     
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard:)];
+    [createView addGestureRecognizer:singleTap];
+    
     UITextField *nameText = [[UITextField alloc] initWithFrame:CGRectMake(30, 20, wd - 60, 30)];
     nameText.borderStyle = UITextBorderStyleRoundedRect;
     nameText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     nameText.font = [UIFont systemFontOfSize:15];
     nameText.placeholder = @"Event Name";
+    [nameText setReturnKeyType:UIReturnKeyDone];
+    nameText.delegate = self;
     self.nameText = nameText;
     [createView addSubview:nameText];
     
@@ -110,6 +115,8 @@
     minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     minText.font = [UIFont systemFontOfSize:15];
     minText.placeholder = @"Min";
+    minText.keyboardType = UIKeyboardTypeNumberPad;
+    minText.delegate = self;
     self.minText = minText;
     [createView addSubview:minText];
     
@@ -118,6 +125,8 @@
     maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     maxText.font = [UIFont systemFontOfSize:15];
     maxText.placeholder = @"Max";
+    maxText.keyboardType = UIKeyboardTypeNumberPad;
+    maxText.delegate = self;
     self.maxText = maxText;
     [createView addSubview:maxText];
     
@@ -373,6 +382,16 @@
             [self save:self.event];
             break;
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(void)dismissKeyboard:(id)sender
+{
+    [self endEditing:YES];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView

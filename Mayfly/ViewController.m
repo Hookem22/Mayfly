@@ -7,15 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "MFView.h"
-
-@interface ViewController ()
-
-@property(nonatomic, strong) MFView *mainView;
-
-@end
 
 @implementation ViewController
+
 
 - (void)loadView {
     

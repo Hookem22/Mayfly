@@ -169,7 +169,7 @@
             double prevLatitude = [[location valueForKey:@"latitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location valueForKey:@"latitude"] doubleValue];
             double prevLongitude = [[location valueForKey:@"longitude"] isMemberOfClass:[NSNull class]] ? 0 : [[location valueForKey:@"longitude"] doubleValue];
             
-            if((fabs(latitude - prevLatitude) < .02 && fabsf(longitude - prevLongitude) < .02) /*|| [name isEqualToString:prevName]*/)
+            if((fabs(latitude - prevLatitude) < .02 && fabs(longitude - prevLongitude) < .02) /*|| [name isEqualToString:prevName]*/)
             {
                 skip++;
                 continue;

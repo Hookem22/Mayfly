@@ -131,14 +131,6 @@
 }
 
 
-- (void)sendPushMessage:(NSDictionary *)params
-{
-    [self.client invokeAPI:@"sendpushmessage" body:params HTTPMethod:@"POST" parameters:nil
-            headers:nil completion:^(NSDictionary *results, NSHTTPURLResponse *response, NSError *error) {
-                [self logErrorIfNotNil:error];
-            }];
-}
-
 -(void)addItem:(NSDictionary *)item completion:(QSCompletionBlock)completion
 {
     // Insert the item into the TodoItem table and add to the items array on completion

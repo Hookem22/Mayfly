@@ -19,7 +19,7 @@
 #import "MFAddressBook.h"
 #import "MFHelpers.h"
 
-@interface MFCreateView : UIView <UITextViewDelegate>
+@interface MFCreateView : UIView <UITextFieldDelegate, UITextViewDelegate>
 
 -(id)init:(Event *)event;
 -(void)invite:(NSArray *)contactsList;

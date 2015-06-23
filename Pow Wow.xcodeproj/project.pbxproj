@@ -59,7 +59,6 @@
 		4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4886C9ED1B0BBAA900909747 /* LaunchScreen.xib */; };
 		4886C9FB1B0BBAA900909747 /* MayflyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9FA1B0BBAA900909747 /* MayflyTests.m */; };
 		4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA071B0BBBF700909747 /* QSAzureService.m */; };
-		4886CA0C1B0BBE1C00909747 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4886CA0B1B0BBE1C00909747 /* WindowsAzureMobileServices.framework */; };
 		4886CA191B0BC0CC00909747 /* MFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA181B0BC0CC00909747 /* MFView.m */; };
 		4886CA1C1B0BC41100909747 /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA1B1B0BC41100909747 /* Session.m */; };
 		4886CA1F1B0BCB7000909747 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886CA1E1B0BCB7000909747 /* Event.m */; };
@@ -83,6 +82,9 @@
 		48A0757D1B34AB78008E4994 /* launch1242x2208@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757A1B34AB78008E4994 /* launch1242x2208@2x.png */; };
 		48A0757F1B34AF80008E4994 /* launchwhitearrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */; };
 		48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A82A491B0D203000A8E978 /* MFCreateView.m */; };
+		48CC80511B38B9FD0098412E /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */; };
+		48CC80521B38B9FD0098412E /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */; };
+		48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC80541B38C15B0098412E /* QSAzureMessageService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,7 +174,6 @@
 		4886C9FA1B0BBAA900909747 /* MayflyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MayflyTests.m; sourceTree = "<group>"; };
 		4886CA061B0BBBF700909747 /* QSAzureService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureService.h; sourceTree = "<group>"; };
 		4886CA071B0BBBF700909747 /* QSAzureService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAzureService.m; sourceTree = "<group>"; };
-		4886CA0B1B0BBE1C00909747 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		4886CA171B0BC0CC00909747 /* MFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFView.h; sourceTree = "<group>"; };
 		4886CA181B0BC0CC00909747 /* MFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFView.m; sourceTree = "<group>"; };
 		4886CA1A1B0BC41100909747 /* Session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
@@ -202,6 +203,10 @@
 		48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "launchwhitearrow@2x.png"; path = "../../Downloads/launchwhitearrow@2x.png"; sourceTree = "<group>"; };
 		48A82A481B0D203000A8E978 /* MFCreateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateView.h; sourceTree = "<group>"; };
 		48A82A491B0D203000A8E978 /* MFCreateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateView.m; sourceTree = "<group>"; };
+		48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMessaging.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMessaging.framework"; sourceTree = "<group>"; };
+		48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMobileServices.framework"; sourceTree = "<group>"; };
+		48CC80531B38C15B0098412E /* QSAzureMessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureMessageService.h; sourceTree = "<group>"; };
+		48CC80541B38C15B0098412E /* QSAzureMessageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAzureMessageService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,11 +214,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48CC80521B38B9FD0098412E /* WindowsAzureMobileServices.framework in Frameworks */,
 				48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */,
 				48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */,
 				48214FCF1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework in Frameworks */,
+				48CC80511B38B9FD0098412E /* WindowsAzureMessaging.framework in Frameworks */,
 				48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */,
-				4886CA0C1B0BBE1C00909747 /* WindowsAzureMobileServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +376,8 @@
 			children = (
 				4886CA061B0BBBF700909747 /* QSAzureService.h */,
 				4886CA071B0BBBF700909747 /* QSAzureService.m */,
+				48CC80531B38C15B0098412E /* QSAzureMessageService.h */,
+				48CC80541B38C15B0098412E /* QSAzureMessageService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -396,11 +404,12 @@
 		4886CA0A1B0BBDC600909747 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */,
+				48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */,
 				48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */,
 				48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */,
 				48214FCC1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework */,
 				48214FC81B0E57E500B4E54D /* FBSDKShareKit.framework */,
-				4886CA0B1B0BBE1C00909747 /* WindowsAzureMobileServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -587,6 +596,7 @@
 				48185D481B2B517B00B4EE08 /* MFProgressView.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
 				48185D4B1B2B52E900B4EE08 /* MFHelpers.m in Sources */,
+				48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */,
 				488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */,
 				48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */,
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
@@ -725,6 +735,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					/Users/willparks/Documents/FacebookSDK,
+					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -746,6 +757,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					/Users/willparks/Documents/FacebookSDK,
+					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;

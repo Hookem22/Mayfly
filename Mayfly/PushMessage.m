@@ -74,15 +74,9 @@
 
 +(void)push:(NSString *)deviceToken  header:(NSString *)header message:(NSString *)message
 {
-    QSAzureService *service = [QSAzureService defaultService:@""];
+    QSAzureMessageService *messageService = [[QSAzureMessageService alloc] init];
     
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    
-    [params setValue:deviceToken forKey:@"devicetoken"];
-    [params setValue:header forKey:@"header"];
-    [params setValue:message forKey:@"message"];
-    
-    [service sendPushMessage:params];
+    [messageService send:deviceToken alert:header message:message];
 }
 
 +(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message
@@ -91,25 +85,29 @@
     {
         [User getByFacebookId:fbId completion:^(User *user)
          {
-             [self push:fbId header:header message:message];
+             [self push:user.pushDeviceToken header:header message:message];
          }];
     }
 }
 
 +(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from event:(Event *)event
 {
+    QSAzureMessageService *messageService = [[QSAzureMessageService alloc] init];
     for(NSString *facebookId in facebookIds)
     {
         [User getByFacebookId:facebookId completion:^(User* user)
          {
              Notification *notification = [[Notification alloc] init: @{ @"facebookid": facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
              [notification save:^(Notification *notification) { }];
+            
             if(user.pushDeviceToken != nil && ![user.pushDeviceToken isEqualToString:@""])
             {
-                [PushMessage push:user.pushDeviceToken header:[NSString stringWithFormat:@"%@ invited you to an Event", from] message:event.name];
+                AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                [messageService send:appDelegate.deviceToken alert:[NSString stringWithFormat:@"%@ invited you to %@", from, event.name] message:[NSString stringWithFormat:@"Invitation|%@", event.eventId]];
             }
         }];
     }
 }
+
 
 @end

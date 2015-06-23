@@ -7,15 +7,22 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) NSString *eventId;
 
 @end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    
+    //self.window.rootViewController = self.viewController;
+    
+    application.applicationIconBadgeNumber = 0;
+    
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
                                                     UIUserNotificationTypeSound);
@@ -56,26 +63,98 @@
     
     self.referenceId = [url query];
     
-    
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {
+    SBNotificationHub* hub = [[SBNotificationHub alloc] initWithConnectionString:@"Endpoint=sb://mayflyapphub-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=KdLzdARZgqnLMU6/ft+4Jln7YOWTPtUGAZCSrP5GcqI="
+                                                             notificationHubPath:@"mayflyapphub"];
+    
+    NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+    self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
+    self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSSet *set = [[NSSet alloc] initWithObjects:self.deviceToken, nil];
+    
+    [hub registerNativeWithDeviceToken:deviceToken tags:set completion:^(NSError* error) {
+        if (error != nil) {
+            NSLog(@"Error registering for notifications: %@", error);
+        }
+        else {
+            NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+            self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
+            NSLog(@"%@", self.deviceToken);
+            
+            [User login:^(User *user) {
+                //NSLog(@"%@", user);
+            }];
+        }
+    }];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
+    NSLog(@"%@", userInfo);
+    
+    NSDictionary *message = [userInfo objectForKey:@"aps"];
+    if(message)
+    {
+        NSString *event = [message valueForKey:@"message"];
+        if(event && [event rangeOfString:@"|"].location != NSNotFound)
+        {
+            NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
+            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+            
+            [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+        }
+    }
+    
+}
+
+-(void)MessageBox:(NSString *)title message:(NSString *)messageText
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:messageText
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Go", nil];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0: //"No" pressed
+            break;
+        case 1: //"Yes" pressed
+            [self openEvent];
+            break;
+    }
+}
+
+-(void)openEvent
+{
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    MFView *mfView = (MFView *)vc.mainView;
+    [mfView openEvent:self.eventId];
+}
+
 // We are registered, so now store the device token (as a string) on the AppDelegate instance
 // taking care to remove the angle brackets first.
+/*
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:
 (NSData *)deviceToken {
     NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
     self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
+    //self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"%@", self.deviceToken);
     
     [User login:^(User *user) {
         //NSLog(@"%@", user);
     }];
 }
-
+*/
 // Handle any failure to register. In this case we set the deviceToken to an empty
 // string to prevent the insert from failing.
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:

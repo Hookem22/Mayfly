@@ -107,7 +107,7 @@
          {
              [self populateMessages];
              
-             [PushMessage pushByEvent:self.event header:[NSString stringWithFormat:@"%@", self.event.name] message:newMessage.message];
+             [PushMessage pushByEvent:self.event header:[NSString stringWithFormat:@"%@: %@", self.event.name, message.message] message:[NSString stringWithFormat: @"New Message|%@", message.eventId]];
          }];
         
         [self.messageTextField setText:@""];
