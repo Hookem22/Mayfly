@@ -32,6 +32,9 @@
     
     [Event get:^(NSArray *events)
      {        
+         for(UIView *subview in self.subviews)
+             [subview removeFromSuperview];
+         
          self.Events = (NSMutableArray *)events;
          
          Location *location = (Location *)[Session sessionVariables][@"currentLocation"];

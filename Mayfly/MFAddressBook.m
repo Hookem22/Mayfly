@@ -25,6 +25,7 @@
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        [MFHelpers showProgressView:self];
         
         if([invited count] == 1 && [[invited objectAtIndex:0] isMemberOfClass:[Event class]])
             self.event = [invited objectAtIndex:0];
@@ -333,6 +334,7 @@
         
         scrollView.contentSize = CGSizeMake(wd, (((i - skipCt) + 4) * 30) + friendHt);
     }
+    [MFHelpers hideProgressView:self];
 }
 
 -(void)nameButtonClick:(id)sender

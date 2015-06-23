@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSString *facebookId;
 @property (nonatomic, copy) NSString *eventId;
 @property (nonatomic, copy) NSString *message;
+@property (nonatomic, assign) NSInteger secondsSince;
 @property (nonatomic, copy) NSDate *createdDate;
 
 -(id)init:(NSDictionary *)notification;

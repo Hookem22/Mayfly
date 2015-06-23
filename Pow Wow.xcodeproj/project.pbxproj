@@ -87,6 +87,7 @@
 		48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC80541B38C15B0098412E /* QSAzureMessageService.m */; };
 		48CC80581B39D3710098412E /* bell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80561B39D3710098412E /* bell@2x.png */; };
 		48CC805B1B39D4950098412E /* bellNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC805A1B39D4950098412E /* bellNotify@2x.png */; };
+		48CC805E1B39E25C0098412E /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC805D1B39E25C0098412E /* Message.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +212,8 @@
 		48CC80541B38C15B0098412E /* QSAzureMessageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAzureMessageService.m; sourceTree = "<group>"; };
 		48CC80561B39D3710098412E /* bell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bell@2x.png"; path = "../../Downloads/bell@2x.png"; sourceTree = "<group>"; };
 		48CC805A1B39D4950098412E /* bellNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bellNotify@2x.png"; path = "../../Downloads/bellNotify@2x.png"; sourceTree = "<group>"; };
+		48CC805C1B39E25C0098412E /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		48CC805D1B39E25C0098412E /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +402,8 @@
 				4843EA2F1B1653FD00C510B4 /* Location.m */,
 				4843EA711B1CE36A00C510B4 /* User.h */,
 				4843EA721B1CE36A00C510B4 /* User.m */,
+				48CC805C1B39E25C0098412E /* Message.h */,
+				48CC805D1B39E25C0098412E /* Message.m */,
 				48185D0A1B262DB600B4EE08 /* PushMessage.h */,
 				48185D0B1B262DB600B4EE08 /* PushMessage.m */,
 				48185D5A1B30ADA400B4EE08 /* Notification.h */,
@@ -613,6 +618,7 @@
 				48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,
+				48CC805E1B39E25C0098412E /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

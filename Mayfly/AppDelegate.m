@@ -128,16 +128,19 @@
         case 0: //"No" pressed
             break;
         case 1: //"Yes" pressed
-            [self openEvent];
+            if([alertView.title rangeOfString:@"Message"].location != NSNotFound)
+                [self openEvent:YES];
+            else
+                [self openEvent:NO];
             break;
     }
 }
 
--(void)openEvent
+-(void)openEvent:(BOOL)toMessaging
 {
     ViewController *vc = (ViewController *)self.window.rootViewController;
     MFView *mfView = (MFView *)vc.mainView;
-    [mfView openEvent:self.eventId];
+    [mfView openEvent:self.eventId toMessaging:toMessaging];
 }
 
 // We are registered, so now store the device token (as a string) on the AppDelegate instance

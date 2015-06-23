@@ -48,6 +48,7 @@
     for(UIView *subview in self.notificationsView.subviews)
         [subview removeFromSuperview];
     
+    [MFHelpers showProgressView:self];
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     wd = (wd * 3) / 4;
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -68,7 +69,7 @@
              [notificationView addSubview:messageLabel];
              
              UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, wd, 20)];
-             timeLabel.text = [MFHelpers dateDiff:notification.createdDate];
+             timeLabel.text = [MFHelpers dateDiffBySeconds:notification.secondsSince];
              [timeLabel setFont:[UIFont boldSystemFontOfSize:12]];
              [notificationView addSubview:timeLabel];
              
@@ -79,6 +80,7 @@
              [self.notificationsView addSubview:notificationView];
              self.notificationsView.contentSize = CGSizeMake(self.notificationsView.frame.size.width, (i + 1) * 60 + 10);
          }
+         [MFHelpers hideProgressView:self];
      }];
 }
 

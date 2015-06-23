@@ -7,22 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QSAzureService.h"
 #import "QSAzureMessageService.h"
 #import "User.h"
 
 @interface PushMessage : NSObject
-
-@property (nonatomic, copy) NSString *messageId;
-@property (nonatomic, copy) NSString *eventId;
-@property (nonatomic, copy) NSString *facebookId;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *message;
-@property (nonatomic, copy) NSDate *sentDate;
-
--(id)init:(NSDictionary *)pushMessage;
-+(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
--(void)save:(QSCompletionBlock)completion;
 
 +(void)push:(NSString *)deviceToken  header:(NSString *)header message:(NSString *)message;
 +(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message;

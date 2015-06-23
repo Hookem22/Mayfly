@@ -14,6 +14,7 @@
 @property (atomic, strong) UIScrollView *messageView;
 @property (atomic, strong) UIView *inputView;
 @property (atomic, strong) UITextField *messageTextField;
+@property (atomic, assign) NSInteger messageViewHeight;
 
 @end
 
@@ -96,14 +97,14 @@
     {
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         
-        PushMessage *message = [[PushMessage alloc] init];
+        Message *message = [[Message alloc] init];
         message.eventId = self.event.eventId;
         message.facebookId = appDelegate.facebookId;
         message.name = appDelegate.firstName;
         message.message = self.messageTextField.text;
         message.sentDate = [NSDate date];
         
-        [message save:^(PushMessage *newMessage)
+        [message save:^(Message *newMessage)
          {
              [self populateMessages];
              
@@ -118,32 +119,37 @@
 
 -(void)populateMessages
 {
-    for(UIView *subview in self.messageView.subviews)
-        [subview removeFromSuperview];
-    
-    [PushMessage get:self.event.eventId completion:^(NSArray *messages)
+    [MFHelpers showProgressView:self.messageView];
+    [Message get:self.event.eventId completion:^(NSArray *messages)
     {
+        for(UIView *subview in self.messageView.subviews)
+            [subview removeFromSuperview];
+        
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         
         NSUInteger viewY = 0;
         for(int i = (int)[messages count] - 1; i >= 0; i--)
         {
-            PushMessage *message = (PushMessage *)[messages objectAtIndex:i];
+            Message *message = (Message *)[messages objectAtIndex:i];
             
             bool isMe = [appDelegate.facebookId isEqualToString:message.facebookId];
             NSString *userName = isMe ? @"" : message.name;
-            UIView *view = [self addTextView:message.message from:userName date:[MFHelpers dateDiff:message.sentDate] isMe:isMe viewY:viewY];
+            UIView *view = [self addTextView:message.message from:userName date:[MFHelpers dateDiffBySeconds:message.secondsSince] isMe:isMe viewY:viewY];
+            view.tag = 2;
             [self.messageView addSubview:view];
             viewY = viewY + view.frame.size.height;
         }
         
-        self.messageView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, viewY + 10);
+        self.messageViewHeight = viewY + 10;
+        self.messageView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, self.messageViewHeight);
         
         if(viewY + 10 > [[UIScreen mainScreen] bounds].size.height - 120)
         {
             CGPoint bottomOffset = CGPointMake(0, self.messageView.contentSize.height - self.messageView.bounds.size.height);
             [self.messageView setContentOffset:bottomOffset animated:NO];
         }
+        
+        [MFHelpers hideProgressView:self.messageView];
     }];
 }
 
@@ -227,6 +233,7 @@
 
 -(void)dismissKeyboard
 {
+    self.messageView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, self.messageViewHeight);
     [self endEditing:YES];
 }
 
@@ -242,6 +249,13 @@
     
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    self.messageView.contentSize = CGSizeMake(wd, self.messageViewHeight + keyboardRect.size.height);
+    if(self.messageViewHeight + keyboardRect.size.height > ht - 120)
+    {
+        CGPoint bottomOffset = CGPointMake(0, self.messageView.contentSize.height - self.messageView.bounds.size.height);
+        [self.messageView setContentOffset:bottomOffset animated:NO];
+    }
     
     [UIView animateWithDuration:0.25 delay:0.005 options:0
                      animations:^{

@@ -59,7 +59,7 @@
     }
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     cancelButton.frame = CGRectMake(15, 10, 80, 40);
     [cancelButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
@@ -243,6 +243,11 @@
 
 -(void)cancelButtonClick:(id)sender
 {
+    if([[self superview] isMemberOfClass:[MFView class]])
+    {
+        MFView *mfView = (MFView *)[self superview];
+        [mfView refreshEvents];
+    }
     [MFHelpers close:self];
 }
 

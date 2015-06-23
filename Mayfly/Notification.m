@@ -14,6 +14,7 @@
 @synthesize facebookId = _facebookId;
 @synthesize eventId = _eventId;
 @synthesize message = _message;
+@synthesize secondsSince = _secondsSince;
 @synthesize createdDate = _createdDate;
 
 -(id)init:(NSDictionary *)notification
@@ -24,6 +25,7 @@
         self.facebookId = [notification objectForKey:@"facebookid"];
         self.eventId = [notification objectForKey:@"eventid"];
         self.message = [notification objectForKey:@"message"];
+        self.secondsSince = [[notification objectForKey:@"Seconds"] isMemberOfClass:[NSNull class]] ? 0 : [[notification objectForKey:@"Seconds"] intValue];
         self.createdDate = [notification objectForKey:@"__createdAt"];
     }
     return self;

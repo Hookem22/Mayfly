@@ -18,6 +18,7 @@
 @interface MFView : UIView
 
 -(void)setup;
--(void)openEvent:(NSString *)eventId;
+-(void)refreshEvents;
+-(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging;
 
 @end

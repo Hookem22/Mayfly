@@ -78,6 +78,18 @@
     
 }
 
+-(void)refreshEvents
+{
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFEventsView class]])
+        {
+            MFEventsView *eventsView = (MFEventsView *)subview;
+            [eventsView loadEvents];
+        }
+    }
+}
+
 
 -(void) addButtonClick:(id)sender
 {
@@ -154,12 +166,18 @@
 
 }
 
--(void)openEvent:(NSString *)eventId
+-(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging
 {
     [Event get:eventId completion:^(Event *event)
      {;
          MFDetailView *detailView = [[MFDetailView alloc] init:event];
          [MFHelpers open:detailView onView:self.superview];
+         
+         if(toMessaging)
+         {
+             MFMessageView *messageView = [[MFMessageView alloc] init:event];
+             [MFHelpers open:messageView onView:detailView];
+         }
      }];
 }
 

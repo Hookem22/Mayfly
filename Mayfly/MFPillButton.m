@@ -78,6 +78,13 @@
 
 -(void)buttonClick:(id)sender
 {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Public Events"
+                                                    message:@"Pow Wow currently does not have enough members near you to create public events. Invite your friends to enable public events."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    /*
     if(self.yesButton.tag == 1)
     {
         [UIView animateWithDuration:0.3
@@ -102,7 +109,7 @@
                              self.noLabel.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
                          }];
     }
-    
+    */
 }
 
 -(BOOL)isYes

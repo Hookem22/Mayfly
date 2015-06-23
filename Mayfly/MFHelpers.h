@@ -14,6 +14,7 @@
 #import "Session.h"
 #import "PushMessage.h"
 #import "Notification.h"
+#import "Message.h"
 
 @interface MFHelpers : UIView
 
@@ -24,6 +25,7 @@
 +(void)close:(UIView *)view;
 +(void)closeRight:(UIView *)view;
 +(void)remove:(UIView *)view;
-+(NSString *)dateDiff:(NSDate *)date;
++(NSString *)dateDiffByDate:(NSDate *)date;
++(NSString *)dateDiffBySeconds:(NSInteger)seconds;
 
 @end

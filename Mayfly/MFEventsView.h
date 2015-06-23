@@ -15,7 +15,6 @@
 
 @interface MFEventsView : UIScrollView
 
-
 -(void)loadEvents;
 
 @end

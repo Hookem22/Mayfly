@@ -80,7 +80,7 @@
     nameText.borderStyle = UITextBorderStyleRoundedRect;
     nameText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     nameText.font = [UIFont systemFontOfSize:15];
-    nameText.placeholder = @"Event Name";
+    nameText.placeholder = @"What do you want to do?";
     [nameText setReturnKeyType:UIReturnKeyDone];
     nameText.delegate = self;
     self.nameText = nameText;
@@ -131,6 +131,7 @@
     [createView addSubview:maxText];
     
     self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
+    [self.publicButton switchButton]; //Start as private
     [createView addSubview:self.publicButton];
     
     if(self.event)
@@ -147,7 +148,7 @@
         if(self.event.maxParticipants)
             maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants - 1];
         
-        if(self.event.isPrivate)
+        if(!self.event.isPrivate)
            [self.publicButton switchButton];
     }
     else
@@ -365,7 +366,7 @@
              if([[self superview]isMemberOfClass:[MFView class]])
              {
                  MFView *view = (MFView *)[self superview];
-                 [view setup];
+                 [view refreshEvents];
              }
              [MFHelpers close:self];
          }
