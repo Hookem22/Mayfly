@@ -41,7 +41,9 @@
     [self addSubview:header];
 
     UIButton *notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
-    [notificationButton setImage:[UIImage imageNamed:@"whitenav"] forState:UIControlStateNormal];
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSString *imageName = appDelegate.hasNotifications ? @"bellNotify" : @"bell";
+    [notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:notificationButton];
     
@@ -50,7 +52,7 @@
     [self addSubview:eventsView];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
-    [addButton setImage:[UIImage imageNamed:@"arrowplus"] forState:UIControlStateNormal];
+    [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:addButton];
     
@@ -116,6 +118,9 @@
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    UIButton *notificationButton = (UIButton *)sender;
+    [notificationButton setImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
     
     MFRightSideView *rightSideView;
     for(UIView *subview in self.subviews)

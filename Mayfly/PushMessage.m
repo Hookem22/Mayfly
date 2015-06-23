@@ -81,12 +81,16 @@
 
 +(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message
 {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     for(NSString *fbId in [event.going componentsSeparatedByString:@"|"])
     {
-        [User getByFacebookId:fbId completion:^(User *user)
-         {
-             [self push:user.pushDeviceToken header:header message:message];
-         }];
+        if([fbId rangeOfString:appDelegate.facebookId].location == NSNotFound)
+        {
+            [User getByFacebookId:fbId completion:^(User *user)
+             {
+                 [self push:user.pushDeviceToken header:header message:message];
+             }];
+        }
     }
 }
 
@@ -102,8 +106,7 @@
             
             if(user.pushDeviceToken != nil && ![user.pushDeviceToken isEqualToString:@""])
             {
-                AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-                [messageService send:appDelegate.deviceToken alert:[NSString stringWithFormat:@"%@ invited you to %@", from, event.name] message:[NSString stringWithFormat:@"Invitation|%@", event.eventId]];
+                [messageService send:user.pushDeviceToken alert:[NSString stringWithFormat:@"%@ invited you to %@", from, event.name] message:[NSString stringWithFormat:@"Invitation|%@", event.eventId]];
             }
         }];
     }

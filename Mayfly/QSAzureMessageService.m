@@ -38,7 +38,7 @@ NSString *HubSasKeyValue;
                              delegate:nil delegateQueue:nil];
     
     // Apple Notification format of the notification message
-    NSString *json = [NSString stringWithFormat:@"{\"aps\":{\"alert\":\"%@\",\"message\":\"%@\"}}",
+    NSString *json = [NSString stringWithFormat:@"{\"aps\":{\"badge\":1,\"alert\":\"%@\",\"message\":\"%@\"}}",
                       alert, message];
     
     // Construct the messages REST endpoint

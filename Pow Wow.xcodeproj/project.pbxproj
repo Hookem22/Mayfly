@@ -85,6 +85,8 @@
 		48CC80511B38B9FD0098412E /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */; };
 		48CC80521B38B9FD0098412E /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */; };
 		48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC80541B38C15B0098412E /* QSAzureMessageService.m */; };
+		48CC80581B39D3710098412E /* bell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80561B39D3710098412E /* bell@2x.png */; };
+		48CC805B1B39D4950098412E /* bellNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC805A1B39D4950098412E /* bellNotify@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,6 +209,8 @@
 		48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMobileServices.framework"; sourceTree = "<group>"; };
 		48CC80531B38C15B0098412E /* QSAzureMessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureMessageService.h; sourceTree = "<group>"; };
 		48CC80541B38C15B0098412E /* QSAzureMessageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAzureMessageService.m; sourceTree = "<group>"; };
+		48CC80561B39D3710098412E /* bell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bell@2x.png"; path = "../../Downloads/bell@2x.png"; sourceTree = "<group>"; };
+		48CC805A1B39D4950098412E /* bellNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bellNotify@2x.png"; path = "../../Downloads/bellNotify@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +268,8 @@
 			isa = PBXGroup;
 			children = (
 				48A075651B34A4DE008E4994 /* icons */,
+				48CC805A1B39D4950098412E /* bellNotify@2x.png */,
+				48CC80561B39D3710098412E /* bell@2x.png */,
 				48A0755F1B34A097008E4994 /* arrowplus@2x.png */,
 				48A0755D1B3492D8008E4994 /* title@2x.png */,
 				48185D551B30937E00B4EE08 /* whitenav@2x.png */,
@@ -543,6 +549,7 @@
 				48A075771B34AA00008E4994 /* logo114@2x.png in Resources */,
 				4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */,
 				4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */,
+				48CC805B1B39D4950098412E /* bellNotify@2x.png in Resources */,
 				48185D1D1B28BF8F00B4EE08 /* face2@2x.png in Resources */,
 				48185D1F1B28BF8F00B4EE08 /* face4@2x.png in Resources */,
 				48A0757D1B34AB78008E4994 /* launch1242x2208@2x.png in Resources */,
@@ -560,6 +567,7 @@
 				48185D251B28C2B600B4EE08 /* check@2x.png in Resources */,
 				48A0755E1B3492D8008E4994 /* title@2x.png in Resources */,
 				48A075641B34A3EE008E4994 /* launch@2x.png in Resources */,
+				48CC80581B39D3710098412E /* bell@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

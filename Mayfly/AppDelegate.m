@@ -19,10 +19,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    //self.window.rootViewController = self.viewController;
-    
-    application.applicationIconBadgeNumber = 0;
-    
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
                                                     UIUserNotificationTypeSound);
@@ -36,6 +32,10 @@
 }
 
 -(void)applicationDidBecomeActive:(UIApplication *)application {
+    
+    self.hasNotifications = application.applicationIconBadgeNumber > 0;
+    application.applicationIconBadgeNumber = 0;
+    
     [FBSDKAppEvents activateApp];
     
     if ([FBSDKAccessToken currentAccessToken]) {
