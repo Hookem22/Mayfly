@@ -13,7 +13,7 @@
 #import "MFDetailView.h"
 #import "MFLoginView.h"
 
-@interface MFEventsView : UIScrollView
+@interface MFEventsView : UIScrollView <UIScrollViewDelegate>
 
 -(void)loadEvents;
 

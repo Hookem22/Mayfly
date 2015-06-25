@@ -434,11 +434,16 @@
         if(![invited isEqualToString:@"NO"]) {
             [contacts addObject:contact];
             [facebookIds addObject:[contact objectForKey:@"id"]];
-            pushMessageContacts = [NSString stringWithFormat:@"%@, ", [contact objectForKey:@"firstName"]];
+            pushMessageContacts = [NSString stringWithFormat:@"%@, %@", [contact objectForKey:@"firstName"], pushMessageContacts];
+            
+            //Add to invited
+            self.event.invited = [self.event.invited length] <= 0 ? [contact objectForKey:@"id"] : [NSString stringWithFormat:@"%@|%@", self.event.invited, [contact objectForKey:@"id"]];
         }
     }
     if([contacts count] > 0)
     {
+        [self.event save:^(Event *event) { }];
+        
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [PushMessage inviteFriends:facebookIds from:appDelegate.name event:self.event];
         
@@ -469,7 +474,7 @@
     }
     if([phoneNumbers count] > 0) {
         ViewController *vc = (ViewController *)self.window.rootViewController;
-        [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://getmayfly.com?%lu", self.event.name, (unsigned long)self.event.referenceId]];
+        [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://joinpowwow.com?%lu", self.event.name, (unsigned long)self.event.referenceId]];
     }
     else
     {

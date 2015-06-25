@@ -292,8 +292,6 @@
         cutoffInterval = -60 * 60;
     event.cutoffTime = [event.startTime dateByAddingTimeInterval:cutoffInterval];
     
-    event.invited = @"";
-    
     if(self.event && self.event.isPrivate && self.publicButton.isYes)
     {
         event.isPrivate = NO;
@@ -319,6 +317,8 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if(event.going == nil || [event.going isEqualToString:@""])
         event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
+    if(event.invited == nil || [event.invited isEqualToString:@""])
+        event.invited = appDelegate.facebookId;
     
     [event save:^(Event *event)
      {
@@ -345,21 +345,19 @@
              if(fb != nil)
              {
                  [facebookIds addObject:fb];
-                 if([event.invited length] <= 0)
-                     event.invited = fb;
-                 else
-                     event.invited = [NSString stringWithFormat:@"%@|%@", event.invited, fb];
+                 event.invited = [event.invited length] <= 0 ? fb : [NSString stringWithFormat:@"%@|%@", event.invited, fb];
              }
              else if(phone != nil)
                  [phoneNumbers addObject:phone];
          }
          if([facebookIds count] > 0) {
              [PushMessage inviteFriends:facebookIds from:appDelegate.name event:event];
+             [event save:^(Event *event) { }];
          }
          
          if([phoneNumbers count] > 0) {
              ViewController *vc = (ViewController *)self.window.rootViewController;
-             [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://getmayfly.com?%lu", event.name, (unsigned long)event.referenceId]];
+             [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://joinpowwow.com?%lu", event.name, (unsigned long)event.referenceId]];
          }
          else
          {

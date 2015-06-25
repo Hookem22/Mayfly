@@ -35,6 +35,8 @@
 
 -(void)addGoing;
 -(void)removeGoing;
--(void)addInvited:(NSMutableArray *)invitedList;
+-(void)addInvited:(NSString *)facebookId;
+-(BOOL)isGoing;
+-(BOOL)isInvited;
 
 @end

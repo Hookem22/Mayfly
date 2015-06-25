@@ -33,42 +33,43 @@
 
 -(void)setup
 {
+    
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    
+
     self.backgroundColor = [UIColor whiteColor];
-    
+
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
-    
+
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 20)];
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.text = self.event.name;
     [self addSubview:headerLabel];
-    
+
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     cancelButton.frame = CGRectMake(15, 10, 80, 40);
     [cancelButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
     [self addSubview:cancelButton];
-    
+
     self.messageView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 120)];
     [self addSubview:self.messageView];
-    
+
     self.inputView = [[UIView alloc] initWithFrame:CGRectMake(0, ht - 60, wd, 60)];
     [self addSubview:self.inputView];
-    
+
     UIView *bottomBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, 60)];
     bottomBackground.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.inputView addSubview:bottomBackground];
 
-    
+
     UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, 1)];
     bottomBorder.backgroundColor = [UIColor colorWithRed:171.0/255.0 green:171.0/255.0 blue:171.0/255.0 alpha:1.0];
     [self.inputView addSubview:bottomBorder];
-    
+
     UITextField *messageTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, wd - 70, 30)];
     messageTextField.borderStyle = UITextBorderStyleRoundedRect;
     messageTextField.font = [UIFont systemFontOfSize:15];
@@ -76,19 +77,18 @@
     messageTextField.delegate = self;
     self.messageTextField = messageTextField;
     [self.inputView addSubview:messageTextField];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    
+
     UISwipeGestureRecognizer *dismissKeyboard = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [dismissKeyboard setDirection:(UISwipeGestureRecognizerDirectionDown)];
     [messageTextField addGestureRecognizer:dismissKeyboard];
-    
+
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [sendButton setTitle:@"Send" forState:UIControlStateNormal];
     sendButton.frame = CGRectMake(wd - 60, 10, 50, 30);
     [sendButton addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
     [self.inputView addSubview:sendButton];
-    
 }
 
 -(void)sendMessage:(id)sender

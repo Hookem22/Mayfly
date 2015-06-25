@@ -66,6 +66,8 @@
                 {
                     [Event getByReferenceId:appDelegate.referenceId completion:^(Event *event)
                      {
+                         [event addInvited:addedUser.facebookId];
+                         
                          Notification *notification = [[Notification alloc] init: @{@"facebookid": addedUser.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
                          [notification save:^(Notification *notification) { }];
                      }];

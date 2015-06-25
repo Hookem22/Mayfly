@@ -89,15 +89,10 @@
     UIButton *button = (UIButton *)sender;
     Notification *notification = (Notification *)[self.notifications objectAtIndex:button.tag];
     
-    [Event get:notification.eventId completion:^(Event *event)
-    {
-        MFDetailView *detailView = [[MFDetailView alloc] init:event];
-        [MFHelpers open:detailView onView:self.superview];
+    MFDetailView *detailView = [[MFDetailView alloc] init:notification.eventId];
+    [MFHelpers open:detailView onView:self.superview];
         
-        [self cancelButtonClick:self];
-    }];
-    
-
+    [self cancelButtonClick:self];
 }
 
 -(void)cancelButtonClick:(id)sender

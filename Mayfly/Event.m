@@ -166,13 +166,27 @@
      }];
 }
 
--(void)addInvited:(NSMutableArray *)invitedList
+-(void)addInvited:(NSString *)facebookId
 {
-    self.invited = [self listToString:invitedList];
-    [self save:^(Event *event)
+    [Event get:self.eventId completion:^(Event *event)
      {
-         
+         event.invited = [event.invited length] <= 0 ? facebookId : [NSString stringWithFormat:@"%@|%@", event.invited, facebookId];
+         [event save:^(Event *event)
+          {
+              
+          }];
      }];
+}
+
+-(BOOL)isGoing
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return [self.going rangeOfString:appDelegate.facebookId].location != NSNotFound;
+}
+-(BOOL)isInvited
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return [self.invited rangeOfString:appDelegate.facebookId].location != NSNotFound;
 }
 
 -(NSString *)listToString:(NSMutableArray *)list

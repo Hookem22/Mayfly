@@ -168,17 +168,18 @@
 
 -(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging
 {
-    [Event get:eventId completion:^(Event *event)
-     {;
-         MFDetailView *detailView = [[MFDetailView alloc] init:event];
-         [MFHelpers open:detailView onView:self.superview];
-         
-         if(toMessaging)
-         {
-             MFMessageView *messageView = [[MFMessageView alloc] init:event];
-             [MFHelpers open:messageView onView:detailView];
-         }
-     }];
+
+     MFDetailView *detailView = [[MFDetailView alloc] init:eventId];
+     [MFHelpers open:detailView onView:self.superview];
+     
+     if(toMessaging)
+     {
+         [Event get:^(Event *event)
+          {
+              MFMessageView *messageView = [[MFMessageView alloc] init:event];
+              [MFHelpers open:messageView onView:detailView];
+          }];
+     }
 }
 
 

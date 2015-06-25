@@ -18,124 +18,129 @@
 
 @implementation MFDetailView
 
--(id)init:(Event *)event
+-(id)init:(NSString *)eventId
 {
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         
-        [self setup:event];
+        [self setup:eventId];
     }
     return self;
 }
 
--(void)setup:(Event*)event
+-(void)setup:(NSString *)eventId
 {
-    self.event = event;
-    
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 20)];
-    headerLabel.textAlignment = NSTextAlignmentCenter;
-    headerLabel.text = event.name;
-    [self addSubview:headerLabel];
-
-    if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location == 0 && event.isPrivate)
+    [Event get:eventId completion:^(Event *event)
     {
-        float headerWd = [headerLabel.text boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
-        float totalWd = [[NSString stringWithFormat:@"%@ - Edit", headerLabel.text] boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
-        
-        headerLabel.frame = CGRectMake((wd - totalWd) / 2, 20, headerWd, 20);
-        
-        UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [editButton setTitle:@" - Edit" forState:UIControlStateNormal];
-        [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        editButton.frame = CGRectMake(((wd - totalWd) / 2) + headerWd, 20, totalWd - headerWd, 20);
-        [self addSubview:editButton];
-    }
-    
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(15, 10, 80, 40);
-    [cancelButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
-    [self addSubview:cancelButton];
-    
-    UIButton *messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 60, 15, 35, 30)];
-    [messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
-    [messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:messageButton];
-    
-    UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 40)];
-    [self addSubview:detailView];
-    
-    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, wd - 60, 20)];
-    descriptionLabel.text = event.eventDescription;
-    descriptionLabel.numberOfLines = 0;
-    descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [descriptionLabel sizeToFit];
-    [detailView addSubview:descriptionLabel];
-    
-    int descHt = descriptionLabel.frame.size.height;
+        self.event = event;
 
-    UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 10 + descHt, wd - 60, 20)];
-    locationLabel.text = [NSString stringWithFormat:@"Location: %@", event.location.name];
-    [detailView addSubview:locationLabel];
+        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+        NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+
+
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 20)];
+        headerLabel.textAlignment = NSTextAlignmentCenter;
+        headerLabel.text = event.name;
+        [self addSubview:headerLabel];
+
+        if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location == 0 && event.isPrivate)
+        {
+            float headerWd = [headerLabel.text boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
+            float totalWd = [[NSString stringWithFormat:@"%@ - Edit", headerLabel.text] boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
+            
+            headerLabel.frame = CGRectMake((wd - totalWd) / 2, 20, headerWd, 20);
+            
+            UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [editButton setTitle:@" - Edit" forState:UIControlStateNormal];
+            [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            editButton.frame = CGRectMake(((wd - totalWd) / 2) + headerWd, 20, totalWd - headerWd, 20);
+            [self addSubview:editButton];
+        }
+
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        cancelButton.frame = CGRectMake(15, 10, 80, 40);
+        [cancelButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
+        [self addSubview:cancelButton];
+
+        UIButton *messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 60, 15, 35, 30)];
+        [messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+        [messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:messageButton];
+
+        UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 40)];
+        [self addSubview:detailView];
+
+        UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, wd - 60, 20)];
+        descriptionLabel.text = event.eventDescription;
+        descriptionLabel.numberOfLines = 0;
+        descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [descriptionLabel sizeToFit];
+        [detailView addSubview:descriptionLabel];
+
+        int descHt = descriptionLabel.frame.size.height;
+
+        UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 10 + descHt, wd - 60, 20)];
+        locationLabel.text = [NSString stringWithFormat:@"Location: %@", event.location.name];
+        [detailView addSubview:locationLabel];
+
+        NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+        [outputFormatter setDateFormat:@"h:mm a"];
+
+        UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 40 + descHt, wd - 60, 20)];
+        startLabel.text = [NSString stringWithFormat:@"Start Time: %@", [outputFormatter stringFromDate:event.startTime]];
+        [detailView addSubview:startLabel];
+
+        UILabel *cutoffLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 70 + descHt, wd - 60, 20)];
+        cutoffLabel.text = [NSString stringWithFormat:@"Join By: %@", [outputFormatter stringFromDate:event.cutoffTime]];
+        [detailView addSubview:cutoffLabel];
+
+        UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 100 + descHt, wd - 60, 20)];
+        goingLabel.textAlignment = NSTextAlignmentCenter;
+        self.goingLabel = goingLabel;
+        [detailView addSubview:goingLabel];
+
+        self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 130 + descHt, wd - 60, 80)];
+        [detailView addSubview:self.peopleView];
+        [self refreshGoing];
+
+        UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
+        [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        addFriendsButton.frame = CGRectMake(30, 205 + descHt, wd-60, 30);
+        [detailView addSubview:addFriendsButton];
+
+        MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 250 + descHt, wd - 60, ht - (380 + descHt))];
+        [map loadMap:self.event.location];
+        [detailView addSubview:map];
+
+        NSString *title = @"Join Event";
+        if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
+            title = @"Unjoin Event";
+            
+        UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [joinButton setTitle:title forState:UIControlStateNormal];
+        [joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        joinButton.frame = CGRectMake(0, ht - 60, wd, 60);
+        [self addSubview:joinButton];
+
+        UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 1.0f, wd, 1)];
+        topBorder.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
+        [joinButton addSubview:topBorder];
+
+
+        if(![FBSDKAccessToken currentAccessToken])
+        {
+            MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+            [self addSubview:loginView];
+        }
     
-    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"h:mm a"];
+    }];
     
-    UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 40 + descHt, wd - 60, 20)];
-    startLabel.text = [NSString stringWithFormat:@"Start Time: %@", [outputFormatter stringFromDate:event.startTime]];
-    [detailView addSubview:startLabel];
-    
-    UILabel *cutoffLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 70 + descHt, wd - 60, 20)];
-    cutoffLabel.text = [NSString stringWithFormat:@"Join By: %@", [outputFormatter stringFromDate:event.cutoffTime]];
-    [detailView addSubview:cutoffLabel];
-    
-    UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 100 + descHt, wd - 60, 20)];
-    goingLabel.textAlignment = NSTextAlignmentCenter;
-    self.goingLabel = goingLabel;
-    [detailView addSubview:goingLabel];
-    
-    self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 130 + descHt, wd - 60, 80)];
-    [detailView addSubview:self.peopleView];
-    [self refreshGoing];
-    
-    UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
-    [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    addFriendsButton.frame = CGRectMake(30, 205 + descHt, wd-60, 30);
-    [detailView addSubview:addFriendsButton];
-    
-    MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 250 + descHt, wd - 60, ht - (380 + descHt))];
-    [map loadMap:self.event.location];
-    [detailView addSubview:map];
-    
-    NSString *title = @"Join Event";
-    if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
-        title = @"Unjoin Event";
-        
-    UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [joinButton setTitle:title forState:UIControlStateNormal];
-    [joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    joinButton.frame = CGRectMake(0, ht - 60, wd, 60);
-    [self addSubview:joinButton];
-    
-    UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 1.0f, wd, 1)];
-    topBorder.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
-    [joinButton addSubview:topBorder];
-    
-    
-    if(![FBSDKAccessToken currentAccessToken])
-    {
-        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
-        [self addSubview:loginView];
-    }    
 }
 
 -(void)refreshGoing
