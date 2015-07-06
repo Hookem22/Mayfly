@@ -90,6 +90,7 @@
 		48CC805E1B39E25C0098412E /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC805D1B39E25C0098412E /* Message.m */; };
 		48CC80611B3B50F70098412E /* invited@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC805F1B3B50F70098412E /* invited@2x.png */; };
 		48CC80621B3B50F70098412E /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80601B3B50F70098412E /* lock@2x.png */; };
+		48CC80641B446FEB0098412E /* images in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80631B446FEB0098412E /* images */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,6 +219,7 @@
 		48CC805D1B39E25C0098412E /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		48CC805F1B3B50F70098412E /* invited@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "invited@2x.png"; path = "../../Downloads/invited@2x.png"; sourceTree = "<group>"; };
 		48CC80601B3B50F70098412E /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lock@2x.png"; path = "../../Downloads/lock@2x.png"; sourceTree = "<group>"; };
+		48CC80631B446FEB0098412E /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../../DishWish/DishWish/images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +276,7 @@
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48CC80631B446FEB0098412E /* images */,
 				48A075651B34A4DE008E4994 /* icons */,
 				48CC805F1B3B50F70098412E /* invited@2x.png */,
 				48CC80601B3B50F70098412E /* lock@2x.png */,
@@ -546,6 +549,7 @@
 				48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */,
 				48A0756C1B34A622008E4994 /* logo76@2x.png in Resources */,
 				48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */,
+				48CC80641B446FEB0098412E /* images in Resources */,
 				48185D411B2A2DF900B4EE08 /* grayface6@2x.png in Resources */,
 				48185D0E1B2760F000B4EE08 /* add@2x.png in Resources */,
 				48A075621B34A097008E4994 /* logo120@2x.png in Resources */,
@@ -751,8 +755,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -760,7 +763,7 @@
 					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Pow Wow";
 				PROVISIONING_PROFILE = "";
@@ -773,7 +776,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -782,7 +785,7 @@
 					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Pow Wow";
 				PROVISIONING_PROFILE = "";

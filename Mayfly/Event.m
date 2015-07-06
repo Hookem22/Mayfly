@@ -181,12 +181,18 @@
 -(BOOL)isGoing
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate == nil || appDelegate.facebookId == nil)
+        return false;
+    
     return [self.going rangeOfString:appDelegate.facebookId].location != NSNotFound;
 }
 -(BOOL)isInvited
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    return [self.invited rangeOfString:appDelegate.facebookId].location != NSNotFound;
+    if(appDelegate == nil || appDelegate.facebookId == nil)
+        return false;
+    
+    return appDelegate != nil || [self.invited rangeOfString:appDelegate.facebookId].location != NSNotFound;
 }
 
 -(NSString *)listToString:(NSMutableArray *)list

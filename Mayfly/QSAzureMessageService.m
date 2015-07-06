@@ -73,7 +73,7 @@ NSString *HubSasKeyValue;
                                           NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*) response;
                                           if (error || httpResponse.statusCode != 200)
                                           {
-                                              NSLog(@"\nError status: %d\nError: %@", httpResponse.statusCode, error);
+                                              NSLog(@"\nError status: %ld\nError: %@", (long)httpResponse.statusCode, error);
                                           }
                                           if (data != NULL)
                                           {
