@@ -86,7 +86,13 @@
     self.nameText = nameText;
     [createView addSubview:nameText];
     
-    UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 60, wd - 60, 80)];
+    self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 60, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 445)];
+    [createView addSubview:self.locationView];
+    
+    self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 60, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
+    [createView addSubview:self.startText];
+    
+    UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 100, wd - 60, 80)];
     [descText.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor]];
     [descText.layer setBorderWidth:1.0];
     [descText.layer setBackgroundColor:[[[UIColor grayColor] colorWithAlphaComponent:0.1] CGColor]];
@@ -100,17 +106,11 @@
     self.descText = descText;
     [createView addSubview:descText];
     
-    self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 150, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 445)];
-    [createView addSubview:self.locationView];
-    
-    self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 150, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
-    [createView addSubview:self.startText];
-    
     UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
-    participantsLabel.text = @"Other People:";
+    participantsLabel.text = @"How Many People?";
     [createView addSubview:participantsLabel];
     
-    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd / 2), 190, (wd / 4) - 20, 30)];
+    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 5, 190, (wd / 5) - 20, 30)];
     minText.borderStyle = UITextBorderStyleRoundedRect;
     minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     minText.font = [UIFont systemFontOfSize:15];
@@ -120,7 +120,7 @@
     self.minText = minText;
     [createView addSubview:minText];
     
-    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 4 - 10, 190, (wd / 4) - 20, 30)];
+    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 4) / 5 - 10, 190, (wd / 5) - 20, 30)];
     maxText.borderStyle = UITextBorderStyleRoundedRect;
     maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     maxText.font = [UIFont systemFontOfSize:15];
@@ -253,13 +253,13 @@
         self.startText.timeText.layer.borderWidth= 1.0f;
         error = true;
     }
-    if([self.minText.text isEqualToString:@""])
+    /*if([self.minText.text isEqualToString:@""])
     {
         self.minText.layer.borderColor=[[UIColor redColor] CGColor];
         self.minText.layer.cornerRadius=8.0f;
         self.minText.layer.borderWidth= 1.0f;
         error = true;
-    }
+    }*/
     if(error)
         return;
     
