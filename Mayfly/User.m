@@ -64,18 +64,28 @@
                 
                 if(appDelegate.referenceId != nil)
                 {
-                    [Event getByReferenceId:appDelegate.referenceId completion:^(Event *event)
-                     {
-                         [event addInvited:addedUser.facebookId];
-                         
-                         Notification *notification = [[Notification alloc] init: @{@"facebookid": addedUser.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
-                         [notification save:^(Notification *notification) { }];
-                     }];
-                    
+                    [self addReferralEvent:addedUser];
                 }
             }];
         }
+        else if(appDelegate.referenceId != nil)
+        {
+            [self addReferralEvent:deviceUser];
+        }
     }];
+}
+
++(void)addReferralEvent:(User *)user
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    [Event getByReferenceId:appDelegate.referenceId completion:^(Event *event)
+     {
+         [event addInvited:user.facebookId];
+         
+         Notification *notification = [[Notification alloc] init: @{@"facebookid": user.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
+         [notification save:^(Notification *notification) { }];
+     }];
 }
 
 +(void)get:(id)deviceId completion:(QSCompletionBlock)completion
