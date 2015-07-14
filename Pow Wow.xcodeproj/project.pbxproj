@@ -764,7 +764,7 @@
 					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Pow Wow";
 				PROVISIONING_PROFILE = "";
@@ -786,7 +786,7 @@
 					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
 				);
 				INFOPLIST_FILE = Mayfly/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Pow Wow";
 				PROVISIONING_PROFILE = "";

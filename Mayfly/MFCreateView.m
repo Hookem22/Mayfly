@@ -221,6 +221,11 @@
 
 -(void)cancelButtonClick:(id)sender
 {
+    if([[self superview] isMemberOfClass:[MFView class]]) {
+        MFView *view = (MFView *)[self superview];
+        [view refreshEvents];
+    }
+    
     [MFHelpers close:self];
 }
 -(void)saveButtonClick:(id)sender
@@ -291,6 +296,14 @@
     if(secondsUntil >= 179 * 60)
         cutoffInterval = -60 * 60;
     event.cutoffTime = [event.startTime dateByAddingTimeInterval:cutoffInterval];
+        
+    //Don't schedule time earlier than now
+    if ([event.cutoffTime compare:[NSDate date]] == NSOrderedAscending) {
+        self.startText.timeText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.startText.timeText.layer.cornerRadius=8.0f;
+        self.startText.timeText.layer.borderWidth= 1.0f;
+        return;
+    }
     
     if(self.event && self.event.isPrivate && self.publicButton.isYes)
     {

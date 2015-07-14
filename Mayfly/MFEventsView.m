@@ -73,7 +73,7 @@
             }
 
 
-            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, wd, 20)];
+            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, wd - (70 + (wd / 4)), 20)];
             nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
             nameLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
             [nameLabel setFont:[UIFont boldSystemFontOfSize:16]];
@@ -209,7 +209,12 @@
     long tagId = button.tag;
     
     Event *event = (Event *)[self.Events objectAtIndex:tagId];
-    if(event.isPrivate && !event.isGoing && !event.isInvited)
+    if(event.isPrivate && ![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self.superview];
+    }
+    else if(event.isPrivate && !event.isGoing && !event.isInvited)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
                                                         message:@"You cannot join private events unless you are invited."

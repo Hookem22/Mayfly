@@ -22,7 +22,6 @@
 -(void)setup
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     self.backgroundColor = [UIColor whiteColor];
     
@@ -32,10 +31,15 @@
     cancelButton.frame = CGRectMake(25, 20, 60, 20);
     [self addSubview:cancelButton];
     
-    UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(20, (ht / 2) - 30, wd - 40, 60)];
+    UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 140, wd - 40, 60)];
     [loginButton setImage:[UIImage imageNamed:@"fbLoginButton"] forState:UIControlStateNormal];
     [loginButton addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:loginButton];
+    
+    UILabel *disclaimer = [[UILabel alloc] initWithFrame:CGRectMake(50, 110, wd - 100, 280)];
+    disclaimer.text = @"Pow Wow will not post to your Facebook wall or message without your explicit permission.";
+    disclaimer.numberOfLines = 0;
+    [self addSubview:disclaimer];
     
 }
 
@@ -54,7 +58,7 @@
             // should check if specific permissions missing
             //if ([result.grantedPermissions containsObject:@"user_friends"]) {
             // Do work
-            //NSLog(@"Yes");
+            //NSLog(@"%@", result);
             //}
             
             //Redirect to correct page
@@ -65,7 +69,9 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    [MFHelpers close:self.superview];
+    if(![[self superview] isMemberOfClass:[MFView class]]){
+        [MFHelpers close:self.superview];
+    }
     [MFHelpers close:self];
 }
 

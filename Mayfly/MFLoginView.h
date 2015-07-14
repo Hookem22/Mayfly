@@ -10,6 +10,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFHelpers.h"
+#import "MFView.h"
 
 @interface MFLoginView : UIView
 

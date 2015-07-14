@@ -47,9 +47,7 @@
                  self.name = [result objectForKey:@"name"];
                  self.firstName = [result objectForKey:@"first_name"];
                  
-                 [User login:^(User *user) {
-                     //NSLog(@"%@", user);
-                 }];
+                 [self LoginUser];
              }
          }];
     }
@@ -87,11 +85,18 @@
             self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
             NSLog(@"%@", self.deviceToken);
             
-            [User login:^(User *user) {
-                //NSLog(@"%@", user);
-            }];
+            [self LoginUser];
         }
     }];
+}
+
+-(void)LoginUser {
+    [User login:^(User *user) {
+        ViewController *vc = (ViewController *)self.window.rootViewController;
+        MFView *mfView = (MFView *)vc.mainView;
+        [mfView refreshEvents];
+    }];
+
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
@@ -153,9 +158,7 @@
     //self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"%@", self.deviceToken);
     
-    [User login:^(User *user) {
-        //NSLog(@"%@", user);
-    }];
+    [self LoginUser];
 }
 */
 // Handle any failure to register. In this case we set the deviceToken to an empty

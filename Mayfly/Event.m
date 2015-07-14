@@ -192,7 +192,7 @@
     if(appDelegate == nil || appDelegate.facebookId == nil)
         return false;
     
-    return appDelegate != nil || [self.invited rangeOfString:appDelegate.facebookId].location != NSNotFound;
+    return [self.invited rangeOfString:appDelegate.facebookId].location != NSNotFound;
 }
 
 -(NSString *)listToString:(NSMutableArray *)list
