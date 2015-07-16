@@ -81,7 +81,11 @@
     
     [Event getByReferenceId:appDelegate.referenceId completion:^(Event *event)
      {
-         [event addInvited:user.facebookId];
+         NSString *firstName = user.name;
+         if([firstName rangeOfString:@" "].location != NSNotFound)
+             firstName = [firstName substringToIndex:[firstName rangeOfString:@" "].location];
+         
+         [event addInvited:user.facebookId firstName:firstName];
          
          Notification *notification = [[Notification alloc] init: @{@"facebookid": user.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
          [notification save:^(Notification *notification) { }];

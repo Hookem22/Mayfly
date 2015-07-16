@@ -19,13 +19,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mayfly/MFEventsView.m"
-            timestampString = "458601018.181227"
+            filePath = "Mayfly/MFDetailView.m"
+            timestampString = "458778759.676549"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "-loadEvents"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
+            landmarkName = "-refreshGoing"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

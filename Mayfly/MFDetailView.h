@@ -17,5 +17,6 @@
 @interface MFDetailView : UIView
 
 -(id)init:(NSString *)eventId;
+-(void)refreshGoing;
 
 @end

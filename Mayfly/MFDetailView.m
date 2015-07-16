@@ -149,9 +149,12 @@
     if([self.event.going length] == 0)
         going = [[NSArray alloc] init];
     
-    NSString *goingText = [NSString stringWithFormat:@"Going %lu of %lu", (unsigned long)[going count], (unsigned long)self.event.minParticipants];
+    NSString *goingText = [NSString stringWithFormat:@"Going: %lu", (unsigned long)[going count]];
     if(self.event.maxParticipants > 0)
-        goingText = [NSString stringWithFormat:@"%@ (maximum %lu)", goingText, (unsigned long)self.event.maxParticipants];
+        goingText = [NSString stringWithFormat:@"%@ (min: %lu, max: %lu)", goingText, (unsigned long)self.event.minParticipants, (unsigned long)self.event.maxParticipants];
+    else if (self.event.minParticipants > 1)
+        goingText = [NSString stringWithFormat:@"%@ (min: %lu)", goingText, (unsigned long)self.event.minParticipants];
+    
     self.goingLabel.text = goingText;
     
     for(UIView *subview in self.peopleView.subviews)
@@ -169,6 +172,17 @@
         MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
         [personView addSubview:pic];
         
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(35, 32, 20, 20)];
+        picBackground.backgroundColor = [UIColor whiteColor];
+        picBackground.layer.cornerRadius = 10;
+        picBackground.layer.borderColor = [UIColor colorWithRed:7.0/255.0 green:149.0/255.0 blue:0.0/255.0 alpha:1.0].CGColor;
+        picBackground.layer.borderWidth = 1;
+        [personView addSubview:picBackground];
+        
+        UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(39, 37, 12, 12)];
+        [checkPic setImage:[UIImage imageNamed:@"greenCheck"]];
+        [personView addSubview:checkPic];
+        
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
         label.text = [info objectAtIndex:1];
         label.textAlignment = NSTextAlignmentCenter;
@@ -177,9 +191,71 @@
         [self.peopleView addSubview:personView];
         self.peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
     }
-    for(int i = (int)[going count]; i < self.event.minParticipants; i++)
+    NSMutableArray *invited = [[self.event.invited componentsSeparatedByString:@"|"] mutableCopy];
+    if([self.event.invited length] == 0)
     {
-        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
+        invited = [[NSMutableArray alloc] init];
+    }
+    else
+    {
+        for(int i = 0; i < [going count]; i++) {
+            NSArray *info = [[going objectAtIndex:i] componentsSeparatedByString:@":"];
+            if([info count] != 2)
+                continue;
+            
+            NSString *goingId = [info objectAtIndex:0];
+            for(int j = (int)[invited count] - 1; j >= 0; j--) {
+                NSString *invitedId = [invited objectAtIndex:j];
+                if([invitedId rangeOfString:goingId].location != NSNotFound) {
+                    [invited removeObject:invitedId];
+                }
+            }
+        }
+
+    }
+    for(int i = 0; i < [invited count]; i++)
+    {
+        NSArray *info = [[invited objectAtIndex:i] componentsSeparatedByString:@":"];
+        if([info count] != 2)
+            continue;
+        
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(([going count] + i) * 60, 0, 60, 80)];
+        
+        NSString *facebookId = [info objectAtIndex:0];
+        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
+        [personView addSubview:pic];
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = CGRectMake(0, 0, 50, 50);
+        blurEffectView.alpha = .6;
+        blurEffectView.layer.cornerRadius = 25;
+        blurEffectView.clipsToBounds = YES;
+        [blurEffectView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [personView addSubview:blurEffectView];
+        
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(35, 32, 20, 20)];
+        picBackground.backgroundColor = [UIColor whiteColor];
+        picBackground.layer.cornerRadius = 10;
+        picBackground.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+        picBackground.layer.borderWidth = 1;
+        [personView addSubview:picBackground];
+        
+        UIImageView *invitePic = [[UIImageView alloc] initWithFrame:CGRectMake(37, 34, 16, 15)];
+        [invitePic setImage:[UIImage imageNamed:@"invited"]];
+        [personView addSubview:invitePic];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+        label.text = [info objectAtIndex:1];
+        label.textAlignment = NSTextAlignmentCenter;
+        [personView addSubview:label];
+        
+        [self.peopleView addSubview:personView];
+        self.peopleView.contentSize = CGSizeMake(([going count] + i + 1) * 60, 80);
+    }
+    for(int i = (int)[going count]; i < self.event.maxParticipants; i++)
+    {
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(([invited count] + i) * 60, 0, 60, 80)];
         
         UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(-5, -5, 60, 60)];
         int faceNumber = (arc4random() % 8);
@@ -193,7 +269,7 @@
         [personView addSubview:label];
         
         [self.peopleView addSubview:personView];
-        self.peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
+        self.peopleView.contentSize = CGSizeMake(([invited count] + i + 1) * 60, 80);
     }
 }
 

@@ -166,15 +166,19 @@
      }];
 }
 
--(void)addInvited:(NSString *)facebookId
+-(void)addInvited:(NSString *)facebookId firstName:(NSString *)firstName
 {
     [Event get:self.eventId completion:^(Event *event)
      {
-         event.invited = [event.invited length] <= 0 ? facebookId : [NSString stringWithFormat:@"%@|%@", event.invited, facebookId];
-         [event save:^(Event *event)
-          {
-              
-          }];
+         if([self.invited rangeOfString:facebookId].location == NSNotFound)
+         {
+             NSString *person = [NSString stringWithFormat:@"%@:%@", facebookId, firstName];
+             event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
+             [event save:^(Event *event)
+              {
+                  
+              }];
+         }
      }];
 }
 

@@ -433,16 +433,29 @@
         NSString *invited = [contact objectForKey:@"invited"];
         if(![invited isEqualToString:@"NO"]) {
             [contacts addObject:contact];
-            [facebookIds addObject:[contact objectForKey:@"id"]];
-            pushMessageContacts = [NSString stringWithFormat:@"%@, %@", [contact objectForKey:@"firstName"], pushMessageContacts];
+            
+            NSString *fb = [contact valueForKey:@"id"];
+            NSString *firstName = [contact valueForKey:@"firstName"];
+            
+            [facebookIds addObject:fb];
+            pushMessageContacts = [NSString stringWithFormat:@"%@, %@", firstName, pushMessageContacts];
             
             //Add to invited
-            self.event.invited = [self.event.invited length] <= 0 ? [contact objectForKey:@"id"] : [NSString stringWithFormat:@"%@|%@", self.event.invited, [contact objectForKey:@"id"]];
+            NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
+            
+            if([self.event.invited rangeOfString:fb].location == NSNotFound)
+                self.event.invited = [self.event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", self.event.invited, person];
         }
     }
     if([contacts count] > 0)
     {
-        [self.event save:^(Event *event) { }];
+        [self.event save:^(Event *event) {
+            if([[self superview] isMemberOfClass:[MFDetailView class]])
+            {
+                MFDetailView *detailView = (MFDetailView *)[self superview];
+                [detailView refreshGoing];
+            }
+        }];
         
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [PushMessage inviteFriends:facebookIds from:appDelegate.name event:self.event];

@@ -319,7 +319,7 @@
         return;
     }
     event.isPrivate = !self.publicButton.isYes; //isYes == Public
-    
+
     [self save:event];
 }
 
@@ -331,7 +331,7 @@
     if(event.going == nil || [event.going isEqualToString:@""])
         event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
     if(event.invited == nil || [event.invited isEqualToString:@""])
-        event.invited = appDelegate.facebookId;
+        event.invited = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
     
     [event save:^(Event *event)
      {
@@ -355,10 +355,12 @@
          {
              NSString *fb = [contact valueForKey:@"id"];
              NSString *phone = [contact valueForKey:@"Phone"];
+             NSString *firstName = [contact valueForKey:@"firstName"];
              if(fb != nil)
              {
                  [facebookIds addObject:fb];
-                 event.invited = [event.invited length] <= 0 ? fb : [NSString stringWithFormat:@"%@|%@", event.invited, fb];
+                 NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
+                 event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
              }
              else if(phone != nil)
                  [phoneNumbers addObject:phone];

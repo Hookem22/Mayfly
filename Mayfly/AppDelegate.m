@@ -73,8 +73,8 @@
     
     NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
     self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
-    self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSSet *set = [[NSSet alloc] initWithObjects:self.deviceToken, nil];
+    //self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSSet *set = [[NSSet alloc] initWithObjects:[self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""], nil];
     
     [hub registerNativeWithDeviceToken:deviceToken tags:set completion:^(NSError* error) {
         if (error != nil) {
