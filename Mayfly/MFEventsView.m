@@ -186,7 +186,7 @@
             [invited addObject:event];
     }
     
-    NSString *referenceId = appDelegate.referenceId;
+    NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
     
     if(referenceId != nil && [referenceId length] > 0)
     {

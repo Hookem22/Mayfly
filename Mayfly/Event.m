@@ -192,6 +192,10 @@
 }
 -(BOOL)isInvited
 {
+    NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
+    if(referenceId != nil && self.referenceId == [referenceId intValue])
+        return true;
+    
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if(appDelegate == nil || appDelegate.facebookId == nil)
         return false;

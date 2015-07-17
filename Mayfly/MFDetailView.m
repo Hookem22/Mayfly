@@ -41,7 +41,7 @@
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 
 
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, wd, 20)];
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 20, wd - 150, 20)];
         headerLabel.textAlignment = NSTextAlignmentCenter;
         headerLabel.text = event.name;
         [self addSubview:headerLabel];
@@ -51,12 +51,18 @@
             float headerWd = [headerLabel.text boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
             float totalWd = [[NSString stringWithFormat:@"%@ - Edit", headerLabel.text] boundingRectWithSize:headerLabel.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:headerLabel.font } context:nil].size.width;
             
-            headerLabel.frame = CGRectMake((wd - totalWd) / 2, 20, headerWd, 20);
-            
+            CGRect editFrame = CGRectMake(wd / 2 - 15, 40, 30, 20);
+            NSString *editTitle = @"Edit";
+            if(totalWd > 0) {
+                headerLabel.frame = CGRectMake((wd - totalWd) / 2, 20, headerWd, 20);
+                editFrame = CGRectMake(((wd - totalWd) / 2) + headerWd, 20, totalWd - headerWd, 20);
+                editTitle = @" - Edit";
+            }
+
             UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [editButton setTitle:@" - Edit" forState:UIControlStateNormal];
+            [editButton setTitle:editTitle forState:UIControlStateNormal];
             [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-            editButton.frame = CGRectMake(((wd - totalWd) / 2) + headerWd, 20, totalWd - headerWd, 20);
+            editButton.frame = editFrame;
             [self addSubview:editButton];
         }
 

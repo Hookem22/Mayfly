@@ -69,12 +69,12 @@
     }
     */
     
-    /*
+    
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     //loginButton.center = self.center;
     [self addSubview:loginButton];
-    */
+    
     
 }
 
@@ -128,6 +128,13 @@
 
 -(void)notificationButtonClick:(id)sender
 {
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self];
+        return;
+    }
+    
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     

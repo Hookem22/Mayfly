@@ -60,26 +60,34 @@
                 newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
             
             [newUser save:^(User *addedUser) {
-                completion(addedUser);
-                
-                if(appDelegate.referenceId != nil)
+                if((NSString *)[Session sessionVariables][@"referenceId"] != nil)
                 {
-                    [self addReferralEvent:addedUser];
+                    [self addReferralEvent:addedUser completion:^(void) {
+                        completion(addedUser);
+                    }];
+                }
+                else {
+                    completion(addedUser);
                 }
             }];
         }
-        else if(appDelegate.referenceId != nil)
+        else if([FBSDKAccessToken currentAccessToken] && (NSString *)[Session sessionVariables][@"referenceId"] != nil)
         {
-            [self addReferralEvent:deviceUser];
+            [self addReferralEvent:deviceUser completion:^(void) {
+                completion(deviceUser);
+            }];
+        }
+        else {
+            completion(deviceUser);
         }
     }];
 }
 
-+(void)addReferralEvent:(User *)user
++(void)addReferralEvent:(User *)user completion:(QSCompletionBlock)completion
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
     
-    [Event getByReferenceId:appDelegate.referenceId completion:^(Event *event)
+    [Event getByReferenceId:referenceId completion:^(Event *event)
      {
          NSString *firstName = user.name;
          if([firstName rangeOfString:@" "].location != NSNotFound)
@@ -88,7 +96,9 @@
          [event addInvited:user.facebookId firstName:firstName];
          
          Notification *notification = [[Notification alloc] init: @{@"facebookid": user.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
-         [notification save:^(Notification *notification) { }];
+         [notification save:^(Notification *notification) {
+             completion(nil);
+         }];
      }];
 }
 

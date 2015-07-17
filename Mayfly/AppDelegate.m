@@ -19,6 +19,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    if([launchOptions count] > 0) //ReferenceId on first launch
+    {
+        NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        if(url != nil && [url query] != nil)
+            [[Session sessionVariables] setObject:[url query] forKey:@"referenceId"];
+    }
+
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
                                                     UIUserNotificationTypeSound);
@@ -59,8 +66,14 @@
     NSLog(@"URL scheme:%@", [url scheme]);
     NSLog(@"URL query: %@", [url query]);
     
-    self.referenceId = [url query];
-    
+    if([url query] != nil)
+    {
+        [[Session sessionVariables] setObject:[url query] forKey:@"referenceId"];
+        
+        ViewController *vc = (ViewController *)self.window.rootViewController;
+        MFView *mfView = (MFView *)vc.mainView;
+        [mfView refreshEvents];
+    }
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication

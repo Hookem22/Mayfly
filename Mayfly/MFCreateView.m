@@ -339,6 +339,16 @@
 
          if(self.event)
          {
+             /*TODO: Refresh detail view on save
+             if([[self superview]isMemberOfClass:[MFDetailView class]])
+             {
+                 MFDetailView *detailView = (MFDetailView *)[self superview];
+                 for(UIView *subview in detailView.subviews)
+                     [subview removeFromSuperview];
+                 
+                 detailView = [[MFDetailView alloc] init:event.eventId];
+             }
+            */
              [MFHelpers close:self];
              return;
          }
