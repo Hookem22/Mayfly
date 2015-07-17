@@ -11,6 +11,7 @@
 @interface MFDetailView ()
 
 @property (nonatomic, strong) Event *event;
+@property (nonatomic, strong) UIButton *messageButton;
 @property (nonatomic, strong) UIScrollView *peopleView;
 @property (nonatomic, strong) UILabel *goingLabel;
 
@@ -72,12 +73,18 @@
         cancelButton.frame = CGRectMake(15, 10, 80, 40);
         [cancelButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [self addSubview:cancelButton];
+        
+        self.messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 60, 15, 35, 30)];
+        [self.messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+        [self.messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.messageButton];
 
-        UIButton *messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 60, 15, 35, 30)];
-        [messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
-        [messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:messageButton];
-
+        [Message get:self.event.eventId completion:^(NSArray *messages)
+         {
+             if([messages count] > 0)
+                 [self.messageButton setImage:[UIImage imageNamed:@"newmessage"] forState:UIControlStateNormal];
+         }];
+        
         UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 40)];
         [self addSubview:detailView];
 
@@ -289,6 +296,7 @@
 {
     MFMessageView *messageView = [[MFMessageView alloc] init:self.event];
     [MFHelpers openFromRight:messageView onView:self];
+    [self.messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
 }
 
 -(void)joinButtonClick:(id)sender

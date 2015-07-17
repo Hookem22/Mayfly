@@ -36,7 +36,7 @@
 		48185D4E1B2F6A2500B4EE08 /* MFMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */; };
 		48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D4F1B2FD59F00B4EE08 /* message@2x.png */; };
 		48185D531B2FD59F00B4EE08 /* nav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D501B2FD59F00B4EE08 /* nav@2x.png */; };
-		48185D541B2FD59F00B4EE08 /* newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D511B2FD59F00B4EE08 /* newmessage@2x.png */; };
+		48185D541B2FD59F00B4EE08 /* _newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */; };
 		48185D561B30937E00B4EE08 /* whitenav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D551B30937E00B4EE08 /* whitenav@2x.png */; };
 		48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D581B3094DE00B4EE08 /* MFRightSideView.m */; };
 		48185D5C1B30ADA400B4EE08 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D5B1B30ADA400B4EE08 /* Notification.m */; };
@@ -92,6 +92,7 @@
 		48CC80621B3B50F70098412E /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80601B3B50F70098412E /* lock@2x.png */; };
 		48CC80641B446FEB0098412E /* images in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80631B446FEB0098412E /* images */; };
 		48DF69551B585A5A00DCCE58 /* greenCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */; };
+		48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69561B597BDF00DCCE58 /* newmessage@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,7 +144,7 @@
 		48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFMessageView.m; sourceTree = "<group>"; };
 		48185D4F1B2FD59F00B4EE08 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "message@2x.png"; path = "../../DishWish/DishWish/images/message@2x.png"; sourceTree = "<group>"; };
 		48185D501B2FD59F00B4EE08 /* nav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav@2x.png"; path = "../../DishWish/DishWish/images/nav@2x.png"; sourceTree = "<group>"; };
-		48185D511B2FD59F00B4EE08 /* newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newmessage@2x.png"; path = "../../DishWish/DishWish/images/newmessage@2x.png"; sourceTree = "<group>"; };
+		48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "_newmessage@2x.png"; path = "../../DishWish/DishWish/images/_newmessage@2x.png"; sourceTree = "<group>"; };
 		48185D551B30937E00B4EE08 /* whitenav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "whitenav@2x.png"; path = "../../Downloads/whitenav@2x.png"; sourceTree = "<group>"; };
 		48185D571B3094DE00B4EE08 /* MFRightSideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFRightSideView.h; sourceTree = "<group>"; };
 		48185D581B3094DE00B4EE08 /* MFRightSideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFRightSideView.m; sourceTree = "<group>"; };
@@ -222,6 +223,7 @@
 		48CC80601B3B50F70098412E /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lock@2x.png"; path = "../../Downloads/lock@2x.png"; sourceTree = "<group>"; };
 		48CC80631B446FEB0098412E /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../../DishWish/DishWish/images; sourceTree = "<group>"; };
 		48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "greenCheck@2x.png"; path = "../../Downloads/greenCheck@2x.png"; sourceTree = "<group>"; };
+		48DF69561B597BDF00DCCE58 /* newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newmessage@2x.png"; path = "../../Downloads/newmessage@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48DF69561B597BDF00DCCE58 /* newmessage@2x.png */,
 				48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */,
 				48CC80631B446FEB0098412E /* images */,
 				48A075651B34A4DE008E4994 /* icons */,
@@ -290,7 +293,7 @@
 				48185D551B30937E00B4EE08 /* whitenav@2x.png */,
 				48185D501B2FD59F00B4EE08 /* nav@2x.png */,
 				48185D4F1B2FD59F00B4EE08 /* message@2x.png */,
-				48185D511B2FD59F00B4EE08 /* newmessage@2x.png */,
+				48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */,
 				48185D331B2A2DF900B4EE08 /* grayface0@2x.png */,
 				48185D341B2A2DF900B4EE08 /* grayface1@2x.png */,
 				48185D351B2A2DF900B4EE08 /* grayface2@2x.png */,
@@ -549,6 +552,7 @@
 				48185D3F1B2A2DF900B4EE08 /* grayface4@2x.png in Resources */,
 				48185D3D1B2A2DF900B4EE08 /* grayface2@2x.png in Resources */,
 				48185D211B28BF8F00B4EE08 /* face6@2x.png in Resources */,
+				48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */,
 				48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */,
 				48A0756C1B34A622008E4994 /* logo76@2x.png in Resources */,
 				48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */,
@@ -558,7 +562,7 @@
 				48A075621B34A097008E4994 /* logo120@2x.png in Resources */,
 				48A0756D1B34A622008E4994 /* logo80@2x.png in Resources */,
 				48A0757F1B34AF80008E4994 /* launchwhitearrow@2x.png in Resources */,
-				48185D541B2FD59F00B4EE08 /* newmessage@2x.png in Resources */,
+				48185D541B2FD59F00B4EE08 /* _newmessage@2x.png in Resources */,
 				48185D221B28BF8F00B4EE08 /* face7@2x.png in Resources */,
 				48A075731B34A980008E4994 /* logo29@2x.png in Resources */,
 				4886C9EF1B0BBAA900909747 /* LaunchScreen.xib in Resources */,

@@ -319,7 +319,7 @@
         return;
     }
     event.isPrivate = !self.publicButton.isYes; //isYes == Public
-
+    //event.isPrivate = NO;
     [self save:event];
 }
 

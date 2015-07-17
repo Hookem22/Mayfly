@@ -7,6 +7,7 @@
 //
 
 #import "Event.h"
+#import "PushMessage.h"
 
 @implementation Event
 
@@ -137,7 +138,17 @@
     
     [self save:^(Event *event)
      {
-         
+         if([event.going rangeOfString:@":"].location != NSNotFound)
+         {
+             NSString *ownerFbId = [event.going substringToIndex:[event.going rangeOfString:@":"].location];
+             if(![ownerFbId isEqualToString:appDelegate.facebookId])
+             {
+                 [User getByFacebookId:ownerFbId completion:^(User *user) {
+                     NSString *header = [NSString stringWithFormat:@"%@ joined %@", appDelegate.firstName, self.name];
+                     [PushMessage push:user.pushDeviceToken header:header message:@""];
+                 }];
+             }
+         }
      }];
 }
 

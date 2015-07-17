@@ -42,7 +42,8 @@
 
     UIButton *notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSString *imageName = appDelegate.hasNotifications ? @"bellNotify" : @"bell";
+    BOOL notify = appDelegate.hasNotifications || (NSString *)[Session sessionVariables][@"referenceId"] != nil;
+    NSString *imageName = notify ? @"bellNotify" : @"bell";
     [notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:notificationButton];
