@@ -107,27 +107,27 @@
         UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 40 + descHt, wd - 60, 20)];
         startLabel.text = [NSString stringWithFormat:@"Start Time: %@", [outputFormatter stringFromDate:event.startTime]];
         [detailView addSubview:startLabel];
-
+        /*
         UILabel *cutoffLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 70 + descHt, wd - 60, 20)];
         cutoffLabel.text = [NSString stringWithFormat:@"Join By: %@", [outputFormatter stringFromDate:event.cutoffTime]];
         [detailView addSubview:cutoffLabel];
-
-        UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 100 + descHt, wd - 60, 20)];
+         */
+        UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 70 + descHt, wd - 60, 20)];
         goingLabel.textAlignment = NSTextAlignmentCenter;
         self.goingLabel = goingLabel;
         [detailView addSubview:goingLabel];
 
-        self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 130 + descHt, wd - 60, 80)];
+        self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 100 + descHt, wd - 60, 80)];
         [detailView addSubview:self.peopleView];
         [self refreshGoing];
 
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        addFriendsButton.frame = CGRectMake(30, 205 + descHt, wd-60, 30);
+        addFriendsButton.frame = CGRectMake(30, 175 + descHt, wd-60, 30);
         [detailView addSubview:addFriendsButton];
 
-        MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 250 + descHt, wd - 60, ht - (380 + descHt))];
+        MFMapView *map = [[MFMapView alloc] initWithFrame:CGRectMake(30, 220 + descHt, wd - 60, ht - (350 + descHt))];
         [map loadMap:self.event.location];
         [detailView addSubview:map];
 
@@ -163,10 +163,13 @@
         going = [[NSArray alloc] init];
     
     NSString *goingText = [NSString stringWithFormat:@"Going: %lu", (unsigned long)[going count]];
-    if(self.event.maxParticipants > 0)
-        goingText = [NSString stringWithFormat:@"%@ (min: %lu, max: %lu)", goingText, (unsigned long)self.event.minParticipants, (unsigned long)self.event.maxParticipants];
+    if(self.event.maxParticipants > 0 && self.event.minParticipants > 1)
+        goingText = [NSString stringWithFormat:@"%@ (Min: %lu, Max: %lu)", goingText, (unsigned long)self.event.minParticipants, (unsigned long)self.event.maxParticipants];
     else if (self.event.minParticipants > 1)
-        goingText = [NSString stringWithFormat:@"%@ (min: %lu)", goingText, (unsigned long)self.event.minParticipants];
+        goingText = [NSString stringWithFormat:@"%@ (Min: %lu)", goingText, (unsigned long)self.event.minParticipants];
+    else if(self.event.maxParticipants > 0)
+        goingText = [NSString stringWithFormat:@"%@ (Max: %lu)", goingText, (unsigned long)self.event.maxParticipants];
+    
     
     self.goingLabel.text = goingText;
     

@@ -94,14 +94,14 @@
             UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, wd, 20)];
             distanceLabel.text = distanceText;
             [eventView addSubview:distanceLabel];
-
+            /*
             UILabel *timeLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/4, 10, (wd*2)/5, 20)];
             timeLabelContainer.textAlignment = NSTextAlignmentRight;
             [eventView addSubview:timeLabelContainer];
-
-            UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, timeLabelContainer.frame.size.width, 20)];
-            timeLabel.textAlignment = NSTextAlignmentLeft;
-            [timeLabelContainer addSubview:timeLabel];
+            */
+            UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, wd - 20, 20)];
+            timeLabel.textAlignment = NSTextAlignmentRight;
+            [eventView addSubview:timeLabel];
              
             if(event.isPrivate && !event.isGoing && !event.isInvited)
             {
@@ -124,14 +124,24 @@
                 skip++;
                 continue;
             }
+            /*
             UILabel *manyLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/4, 40, (wd*2)/5, 20)];
             manyLabelContainer.textAlignment = NSTextAlignmentRight;
             [eventView addSubview:manyLabelContainer];
-
-            UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, timeLabelContainer.frame.size.width, 20)];
-            manyLabel.text = [NSString stringWithFormat:@"%lu of %lu", (unsigned long)[going count], (unsigned long)event.minParticipants];
-            manyLabel.textAlignment = NSTextAlignmentLeft;
-            [manyLabelContainer addSubview:manyLabel];
+            */
+             NSString *manyText = @"";
+             if(event.maxParticipants > 0 && event.minParticipants > 1)
+                 manyText = [NSString stringWithFormat:@"Min: %lu Max: %lu", (unsigned long)event.minParticipants, (unsigned long)event.maxParticipants];
+             else if (event.minParticipants > 1)
+                 manyText = [NSString stringWithFormat:@"Min: %lu", (unsigned long)event.minParticipants];
+             else if(event.maxParticipants > 0)
+                 manyText = [NSString stringWithFormat:@"Max: %lu", (unsigned long)event.maxParticipants];
+             
+             
+            UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd - 20, 20)];
+            manyLabel.text = manyText;
+            manyLabel.textAlignment = NSTextAlignmentRight;
+            [eventView addSubview:manyLabel];
 
 
             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];

@@ -181,7 +181,7 @@
 {
     [Event get:self.eventId completion:^(Event *event)
      {
-         if([self.invited rangeOfString:facebookId].location == NSNotFound)
+         if(![facebookId isEqualToString:@""] && [self.invited rangeOfString:facebookId].location == NSNotFound)
          {
              NSString *person = [NSString stringWithFormat:@"%@:%@", facebookId, firstName];
              event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
