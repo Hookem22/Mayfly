@@ -156,6 +156,50 @@
     return dateDiff;
 }
 
++(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSDictionary *params = @{@"ReferenceName": appDelegate.firstName,
+                             @"ReferenceId": [NSString stringWithFormat:@"%lu", (unsigned long)referenceId]};
+    // ... insert code to start the spinner of your choice here ...
+    [[Branch getInstance] getShortURLWithParams:params
+                                     andChannel:@"SMS"
+                                     andFeature:@"Referral"
+                                    andCallback:^(NSString *url, NSError *error) {
+                                        if(!error) {
+                                            NSString *message = [NSString stringWithFormat:@"You're invited to %@. Download the app: %@", eventName, url];
+                                            completion(message);
+                                     }
+                                     else {
+                                        NSLog(@"%@", error);
+                                     }
+                                        
+                                        /*if (!error) {
+                                            // Check to make sure we can send messages on this device
+                                            if ([MFMessageComposeViewController canSendText]) {
+                                             
+                                                 MFMessageComposeViewController *messageComposer =
+                                                 [[MFMessageComposeViewController alloc] init];
+                                                 // Set the contents of the SMS/iMessage -- be sure to include the URL!
+                                                 [messageComposer setBody:[NSString stringWithFormat:
+                                                 @"Check out MyApp -- use my link to get free  points: %@", url]];
+                                                 messageComposer.messageComposeDelegate = self;
+                                             
+                                                ViewController *vc = (ViewController *)self.window.rootViewController;
+                                                [vc sendTextMessage:phoneNumbers message:url];
+                                                
+                                            } else {
+                                                // ... insert code to stop the spinner here
+                                                [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                            message:@"Your device cannot send messages."
+                                                                           delegate:nil
+                                                                  cancelButtonTitle:@"Okay"
+                                                                  otherButtonTitles:nil] show];
+                                            }
+                                        }*/
+                                    }];
+}
+
 
 
 @end

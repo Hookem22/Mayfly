@@ -94,6 +94,8 @@
              firstName = [firstName substringToIndex:[firstName rangeOfString:@" "].location];
          
          [event addInvited:user.facebookId firstName:firstName];
+         if(user.facebookId == nil || [user.facebookId isEqualToString:@""])
+             return;
          
          Notification *notification = [[Notification alloc] init: @{@"facebookid": user.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
          [notification save:^(Notification *notification) {

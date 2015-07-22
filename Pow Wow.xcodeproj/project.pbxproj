@@ -93,6 +93,8 @@
 		48CC80641B446FEB0098412E /* images in Resources */ = {isa = PBXBuildFile; fileRef = 48CC80631B446FEB0098412E /* images */; };
 		48DF69551B585A5A00DCCE58 /* greenCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */; };
 		48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69561B597BDF00DCCE58 /* newmessage@2x.png */; };
+		48DF69611B60126B00DCCE58 /* Branch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DF69601B60126B00DCCE58 /* Branch.framework */; };
+		48DF69631B6012A600DCCE58 /* Branch-SDK in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69621B6012A600DCCE58 /* Branch-SDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -224,6 +226,8 @@
 		48CC80631B446FEB0098412E /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../../DishWish/DishWish/images; sourceTree = "<group>"; };
 		48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "greenCheck@2x.png"; path = "../../Downloads/greenCheck@2x.png"; sourceTree = "<group>"; };
 		48DF69561B597BDF00DCCE58 /* newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newmessage@2x.png"; path = "../../Downloads/newmessage@2x.png"; sourceTree = "<group>"; };
+		48DF69601B60126B00DCCE58 /* Branch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Branch.framework; sourceTree = "<group>"; };
+		48DF69621B6012A600DCCE58 /* Branch-SDK */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Branch-SDK"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +239,7 @@
 				48214FC91B0E57E500B4E54D /* FBSDKShareKit.framework in Frameworks */,
 				48214FCD1B0E57FF00B4E54D /* FBSDKCoreKit.framework in Frameworks */,
 				48214FCF1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework in Frameworks */,
+				48DF69611B60126B00DCCE58 /* Branch.framework in Frameworks */,
 				48CC80511B38B9FD0098412E /* WindowsAzureMessaging.framework in Frameworks */,
 				48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */,
 			);
@@ -339,6 +344,7 @@
 		4886C9DD1B0BBAA900909747 /* Mayfly */ = {
 			isa = PBXGroup;
 			children = (
+				48DF69621B6012A600DCCE58 /* Branch-SDK */,
 				4886CA051B0BBB3D00909747 /* Services */,
 				4886CA091B0BBCB200909747 /* Models */,
 				48185D291B28D7AF00B4EE08 /* Contols */,
@@ -430,6 +436,7 @@
 		4886CA0A1B0BBDC600909747 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48DF69601B60126B00DCCE58 /* Branch.framework */,
 				48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */,
 				48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */,
 				48214FCA1B0E57FF00B4E54D /* FBSDKCoreKit.framework */,
@@ -555,6 +562,7 @@
 				48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */,
 				48185D521B2FD59F00B4EE08 /* message@2x.png in Resources */,
 				48A0756C1B34A622008E4994 /* logo76@2x.png in Resources */,
+				48DF69631B6012A600DCCE58 /* Branch-SDK in Resources */,
 				48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */,
 				48CC80641B446FEB0098412E /* images in Resources */,
 				48185D411B2A2DF900B4EE08 /* grayface6@2x.png in Resources */,

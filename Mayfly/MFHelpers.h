@@ -15,6 +15,7 @@
 #import "PushMessage.h"
 #import "Notification.h"
 #import "Message.h"
+#import "Branch-SDK/Branch.h"
 
 @interface MFHelpers : UIView
 
@@ -27,5 +28,6 @@
 +(void)remove:(UIView *)view;
 +(NSString *)dateDiffByDate:(NSDate *)date;
 +(NSString *)dateDiffBySeconds:(NSInteger)seconds;
++(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "Branch-SDK/Branch.h"
 
 @interface AppDelegate ()
 
@@ -18,14 +19,32 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    Branch *branch = [Branch getInstance];
+    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+        // params are the deep linked params associated with the link that the user clicked before showing up.
+        NSLog(@"deep link data: %@", [params description]);
+        if(!error && params != nil && [params objectForKey:@"ReferenceId"] != nil) {
+            [[Session sessionVariables] setObject:[params objectForKey:@"ReferenceId"] forKey:@"referenceId"];
+            NSLog(@"%@", [params objectForKey:@"ReferenceId"]);
+            
+            self.hasNotifications = YES;
+            ViewController *vc = (ViewController *)self.window.rootViewController;
+            if(vc != nil) {
+                MFView *mfView = (MFView *)vc.mainView;
+                if(mfView != nil)
+                    [mfView refreshEvents];
+            }
+        }
+    }];
+
+    /*
     if([launchOptions count] > 0) //ReferenceId on first launch
     {
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url != nil && [url query] != nil)
             [[Session sessionVariables] setObject:[url query] forKey:@"referenceId"];
     }
-
+    */
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
                                                     UIUserNotificationTypeSound);
@@ -62,6 +81,10 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[Branch getInstance] handleDeepLink:url]) {
+        return YES;
+    }
+    /*
     NSLog(@"Calling Application Bundle ID: %@", sourceApplication);
     NSLog(@"URL scheme:%@", [url scheme]);
     NSLog(@"URL query: %@", [url query]);
@@ -74,10 +97,12 @@
         MFView *mfView = (MFView *)vc.mainView;
         [mfView refreshEvents];
     }
+    */
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
+    
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {

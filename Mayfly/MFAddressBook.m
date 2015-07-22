@@ -486,8 +486,10 @@
         }
     }
     if([phoneNumbers count] > 0) {
-        ViewController *vc = (ViewController *)self.window.rootViewController;
-        [vc sendTextMessage:phoneNumbers message:[NSString stringWithFormat:@"You have been invited to: %@. Download the app here: http://joinpowwow.com?%lu", self.event.name, (unsigned long)self.event.referenceId]];
+        [MFHelpers GetBranchUrl:self.event.referenceId eventName:self.event.name completion:^(NSString *url) {
+            ViewController *vc = (ViewController *)self.window.rootViewController;
+            [vc sendTextMessage:phoneNumbers message:url];
+        }];
     }
     else
     {

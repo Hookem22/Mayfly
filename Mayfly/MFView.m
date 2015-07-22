@@ -9,6 +9,12 @@
 #import "MFView.h"
 #import "ViewController.h"
 
+@interface MFView ()
+
+@property (nonatomic, strong) UIButton *notificationButton;
+
+@end
+
 @implementation MFView
 
 - (id)init
@@ -40,13 +46,13 @@
     [header setImage:[UIImage imageNamed:@"title"]];
     [self addSubview:header];
 
-    UIButton *notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
+    self.notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     BOOL notify = appDelegate.hasNotifications || (NSString *)[Session sessionVariables][@"referenceId"] != nil;
     NSString *imageName = notify ? @"bellNotify" : @"bell";
-    [notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-    [notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:notificationButton];
+    [self.notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [self.notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.notificationButton];
     
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [eventsView loadEvents];
@@ -70,12 +76,12 @@
     }
     */
     
-    /*
+    
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     //loginButton.center = self.center;
     [self addSubview:loginButton];
-    */
+    
     
 }
 
@@ -88,6 +94,12 @@
             MFEventsView *eventsView = (MFEventsView *)subview;
             [eventsView loadEvents];
         }
+    }
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate.hasNotifications) {
+        [self.notificationButton setImage:[UIImage imageNamed:@"bellNotify"] forState:UIControlStateNormal];
+        appDelegate.hasNotifications = NO;
     }
 }
 
