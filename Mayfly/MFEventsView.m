@@ -219,7 +219,7 @@
     long tagId = button.tag;
     
     Event *event = (Event *)[self.Events objectAtIndex:tagId];
-    if(event.isPrivate && ![FBSDKAccessToken currentAccessToken])
+    if(event.isPrivate && !event.isInvited && ![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] init];
         [MFHelpers open:loginView onView:self.superview];

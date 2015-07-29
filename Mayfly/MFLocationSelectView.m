@@ -64,7 +64,8 @@
 
 -(void)queryFacebookPlaces
 {
-    CLLocationCoordinate2D currentCentre = CLLocationCoordinate2DMake(30.2500, -97.7500);
+    Location *currentLocation = (Location *)[Session sessionVariables][@"currentLocation"];
+    CLLocationCoordinate2D currentCentre = CLLocationCoordinate2DMake(currentLocation.latitude, currentLocation.longitude);
     int radius = 5000;
     NSString *placeName = [self.searchText.text stringByReplacingOccurrencesOfString:@" " withString:@"%22"];
     if([placeName length] < 3)

@@ -66,7 +66,8 @@
     NSString *saveButtonTitle = self.event ? @"Save" : @"Create";
     [saveButton setTitle:saveButtonTitle forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    saveButton.frame = CGRectMake(wd - 85, 20, 80, 40);
+    [saveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    saveButton.frame = CGRectMake(wd - 100, 20, 80, 40);
     [self addSubview:saveButton];
     
     UIScrollView *createView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 50, wd, ht - 60)];
@@ -296,9 +297,9 @@
     if(secondsUntil >= 179 * 60)
         cutoffInterval = -60 * 60;
     event.cutoffTime = [event.startTime dateByAddingTimeInterval:cutoffInterval];
-        
+    
     //Don't schedule time earlier than now
-    if ([event.cutoffTime compare:[NSDate date]] == NSOrderedAscending) {
+    if ([event.startTime compare:[NSDate date]] == NSOrderedAscending) {
         self.startText.timeText.layer.borderColor=[[UIColor redColor] CGColor];
         self.startText.timeText.layer.cornerRadius=8.0f;
         self.startText.timeText.layer.borderWidth= 1.0f;

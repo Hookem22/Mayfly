@@ -48,7 +48,7 @@
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No GPS"
-                                                        message:@"Turn on Location"
+                                                        message:@"Please Turn On Location to Find Events Near You"
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -61,12 +61,12 @@
     /*
     UIAlertView *errorAlert = [[UIAlertView alloc]
                                initWithTitle:@"No GPS"
-                               message:@"Turn on Location"
+                               message:@"Please Turn On Location to Find Events Near You"
                                delegate:nil
                                cancelButtonTitle:@"OK"
                                otherButtonTitles:nil];
     [errorAlert show];
-     */
+    */
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {

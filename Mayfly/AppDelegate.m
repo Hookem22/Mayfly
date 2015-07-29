@@ -69,6 +69,11 @@
          startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
              if (!error) {
                  NSLog(@"fetched user:%@", result);
+                 /*
+                 self.facebookId = @"10106610968977054";//[result objectForKey:@"id"];
+                 self.name = @"Bob Sherriff"; //[result objectForKey:@"name"];
+                 self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
+                 */
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
                  self.firstName = [result objectForKey:@"first_name"];
