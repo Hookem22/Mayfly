@@ -77,6 +77,7 @@
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
                  self.firstName = [result objectForKey:@"first_name"];
+                 self.email = [result objectForKey:@"email"];
                  
                  [self LoginUser];
              }

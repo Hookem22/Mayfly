@@ -120,7 +120,7 @@
             }
 
             NSArray *going = [event.going isEqualToString:@""] ? [[NSArray alloc] init] : [event.going componentsSeparatedByString:@"|"];
-            if(event.maxParticipants > 0 && [going count] >= event.maxParticipants) {
+            if(!event.isGoing && event.maxParticipants > 0 && [going count] >= event.maxParticipants) {
                 skip++;
                 continue;
             }

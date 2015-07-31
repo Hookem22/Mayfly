@@ -38,6 +38,7 @@
         self.name = [user objectForKey:@"name"];
         self.pushDeviceToken = [user objectForKey:@"pushdevicetoken"];
         self.facebookId = [user objectForKey:@"facebookid"];
+        self.email = [user objectForKey:@"email"];
         self.lastSignedIn = [user objectForKey:@"lastsignedin"];
     }
     return self;
@@ -58,6 +59,8 @@
                 newUser.name = appDelegate.name ? appDelegate.name : @"";
             if(!newUser.facebookId || [newUser.facebookId isEqualToString:@""])
                 newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
+            if(!newUser.email || [newUser.email isEqualToString:@""])
+                newUser.email = appDelegate.email ? appDelegate.email : @"";
             
             [newUser save:^(User *addedUser) {
                 if((NSString *)[Session sessionVariables][@"referenceId"] != nil)
@@ -70,6 +73,7 @@
                     completion(addedUser);
                 }
             }];
+
         }
         else if([FBSDKAccessToken currentAccessToken] && (NSString *)[Session sessionVariables][@"referenceId"] != nil)
         {
@@ -139,7 +143,7 @@
     
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
-    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId /*, @"lastsignedin" : self.lastSignedIn */};
+    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email /*, @"lastsignedin" : self.lastSignedIn */};
     
     if([self.userId length] <= 0)
     {
@@ -159,5 +163,23 @@
         }];
     }
 }
-
+/*
++(User *)CheckUserResults:(NSArray *)results {
+    if(results && [results count] > 1) {
+        for(int i = 0; i < [results count] - 1; i++) {
+            User *user = [[User alloc] init:results[i]];
+            QSAzureService *service = [QSAzureService defaultService:@"Users"];
+            [service deleteItem:user.userId completion:^(NSString *userId) {
+                NSLog(@"Deleted: %@", userId);
+            }];
+        }
+    }
+    if([results count] > 0)
+    {
+        User *user = [[User alloc] init:results[0]];
+        return user;
+    }
+    return nil;
+}
+*/
 @end

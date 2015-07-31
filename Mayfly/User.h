@@ -21,6 +21,7 @@
 @property (nonatomic, copy) NSString *firstName;
 @property (nonatomic, copy) NSString *pushDeviceToken;
 @property (nonatomic, copy) NSString *facebookId;
+@property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSDate *lastSignedIn;
 
 +(void)login:(QSCompletionBlock)completion;
