@@ -34,11 +34,11 @@
     self = [super init];
     if (self) {
         self.userId = [user objectForKey:@"id"];
-        self.deviceId = [user objectForKey:@"deviceid"];
-        self.name = [user objectForKey:@"name"];
-        self.pushDeviceToken = [user objectForKey:@"pushdevicetoken"];
-        self.facebookId = [user objectForKey:@"facebookid"];
-        self.email = [user objectForKey:@"email"];
+        self.deviceId = [[user objectForKey:@"deviceid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"deviceid"];
+        self.name = [[user objectForKey:@"name"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"name"];
+        self.pushDeviceToken = [[user objectForKey:@"pushdevicetoken"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"pushdevicetoken"];
+        self.facebookId = [[user objectForKey:@"facebookid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"facebookid"];
+        self.email = [[user objectForKey:@"email"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"email"];
         self.lastSignedIn = [user objectForKey:@"lastsignedin"];
     }
     return self;
@@ -46,13 +46,15 @@
 
 +(void)login:(QSCompletionBlock)completion
 {
-    NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 
-    [self get:deviceId completion:^(User *deviceUser) {
-        if((deviceUser == nil || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""])) {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(!appDelegate || !appDelegate.facebookId || [appDelegate.facebookId isEqualToString:@""])
+        return;
+    
+    [self getByFacebookId:appDelegate.facebookId completion:^(User *deviceUser) {
+        if((!deviceUser || !deviceUser.deviceId || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""])) {
             User *newUser = deviceUser == nil ? [[User alloc] init] : deviceUser;
-            newUser.deviceId = deviceId;
+            newUser.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];;
             if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
                 newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
             if(!newUser.name || [newUser.name isEqualToString:@""])

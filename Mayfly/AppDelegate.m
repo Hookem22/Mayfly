@@ -129,7 +129,8 @@
             self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
             NSLog(@"%@", self.deviceToken);
             
-            [self LoginUser];
+            //Will accept this before logging in
+            //[self LoginUser];
         }
     }];
 }
