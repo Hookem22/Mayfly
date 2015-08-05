@@ -19,29 +19,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mayfly/User.m"
-            timestampString = "460058599.467695"
+            filePath = "Mayfly/MFLocationSelectView.m"
+            timestampString = "460497306.451566"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "+login:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Mayfly/User.m"
-            timestampString = "460058974.627136"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "+login:"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "-populateGoogleData:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

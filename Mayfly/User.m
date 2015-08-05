@@ -52,9 +52,16 @@
         return;
     
     [self getByFacebookId:appDelegate.facebookId completion:^(User *deviceUser) {
-        if((!deviceUser || !deviceUser.deviceId || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""])) {
+        if((!deviceUser || !deviceUser.deviceId || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""] || ![deviceUser.pushDeviceToken isEqualToString:appDelegate.deviceToken])) {
             User *newUser = deviceUser == nil ? [[User alloc] init] : deviceUser;
             newUser.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];;
+            
+            newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
+            newUser.name = appDelegate.name ? appDelegate.name : @"";
+            newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
+            newUser.email = appDelegate.email ? appDelegate.email : @"";
+            
+            /*Always update info
             if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
                 newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
             if(!newUser.name || [newUser.name isEqualToString:@""])
@@ -63,7 +70,7 @@
                 newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
             if(!newUser.email || [newUser.email isEqualToString:@""])
                 newUser.email = appDelegate.email ? appDelegate.email : @"";
-            
+            */
             [newUser save:^(User *addedUser) {
                 if((NSString *)[Session sessionVariables][@"referenceId"] != nil)
                 {
