@@ -24,7 +24,7 @@
 @synthesize going = _going;
 @synthesize referenceId = _referenceId;
 
-- (id)init:(NSDictionary *)event {
+-(id)init:(NSDictionary *)event {
     self = [super init];
     if (self) {
         self.eventId = [event valueForKey:@"id"];
@@ -47,6 +47,25 @@
         self.referenceId = [[event objectForKey:@"referenceid"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"referenceid"] intValue];
     }
     return self;
+}
+
+-(id)initFromUrl:(NSString *)url
+{
+    NSError* error;
+    url = [url stringByRemovingPercentEncoding];
+    NSLog(@"%@", url);
+    NSData* data = [url dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableDictionary *dJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    
+    for(int i = 0; i < [[dJSON allKeys] count]; i++)
+    {
+        NSString *key = [dJSON allKeys][i];
+        NSString *newKey = [key lowercaseString];
+        [dict setObject:[dJSON objectForKey:key] forKeyedSubscript:newKey];
+    }
+    
+    return [[Event alloc] init:dict];
 }
 
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion

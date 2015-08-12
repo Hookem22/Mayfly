@@ -156,6 +156,27 @@
     return dateDiff;
 }
 
++(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName phone:(NSString *)phone completion:(QSCompletionBlock)completion
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSDictionary *params = @{@"ReferenceName": appDelegate.firstName,
+                             @"ReferencePhone": phone,
+                             @"ReferenceId": [NSString stringWithFormat:@"%lu", (unsigned long)referenceId]};
+    // ... insert code to start the spinner of your choice here ...
+    [[Branch getInstance] getShortURLWithParams:params
+                                     andChannel:@"SMS"
+                                     andFeature:@"Referral"
+                                    andCallback:^(NSString *url, NSError *error) {
+                                        if(!error) {
+                                            NSString *message = [NSString stringWithFormat:@"You're invited to %@. Download the app: %@", eventName, url];
+                                            completion(message);
+                                        }
+                                        else {
+                                            NSLog(@"%@", error);
+                                        }
+                                    }];
+}
+
 +(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

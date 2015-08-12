@@ -25,6 +25,7 @@
         NSLog(@"deep link data: %@", [params description]);
         if(!error && params != nil && [params objectForKey:@"ReferenceId"] != nil) {
             [[Session sessionVariables] setObject:[params objectForKey:@"ReferenceId"] forKey:@"referenceId"];
+            [[Session sessionVariables] setObject:[params objectForKey:@"ReferencePhone"] forKey:@"referencePhone"];
             NSLog(@"%@", [params objectForKey:@"ReferenceId"]);
             
             self.hasNotifications = YES;

@@ -28,6 +28,7 @@
 +(void)remove:(UIView *)view;
 +(NSString *)dateDiffByDate:(NSDate *)date;
 +(NSString *)dateDiffBySeconds:(NSInteger)seconds;
++(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName phone:(NSString *)phone completion:(QSCompletionBlock)completion;
 +(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion;
 
 @end

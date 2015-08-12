@@ -31,12 +31,13 @@
     return self;
 }
 
--(id)initFromWebsite:(NSString *)params
+-(id)initFromWebsite:(NSString *)params event:(Event *)event
 {
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.params = params;
+        self.event = event;
         NSMutableArray *invited = [[NSMutableArray alloc] init];
         if([params containsString:@"Invited%22:%22"] && [params containsString:@"Going%22:%22"])
         {
@@ -51,6 +52,9 @@
                 NSString *info = [person componentsSeparatedByString:@":"][0];
                 if(![info isEqualToString:appDelegate.facebookId])
                 {
+                    if([info hasPrefix:@"p"])
+                        info = [[info substringFromIndex:1] stringByReplacingOccurrencesOfString:@"%20" withString:@" "];
+                    
                     NSDictionary *dict = @{@"id": info, @"Phone": info };
                     [invited addObject:dict];
                 }
@@ -519,6 +523,9 @@
     if([contacts count] > 0)
     {
         [self.event save:^(Event *event) {
+            MFView *view = (MFView *)[self superview];
+            [view goToEvent:event.eventId];
+            
             if([[self superview] isMemberOfClass:[MFDetailView class]])
             {
                 MFDetailView *detailView = (MFDetailView *)[self superview];
@@ -551,10 +558,16 @@
         if(![invited isEqualToString:@"NO"]) {
             NSString *phone = [contact valueForKey:@"Phone"];
             if(phone != nil)
+            {
                 [phoneNumbers addObject:phone];
+                NSString *invitedPhone = [NSString stringWithFormat:@"p%@", phone];
+                if([self.event.invited rangeOfString:invitedPhone].location == NSNotFound)
+                    self.event.invited = [NSString stringWithFormat:@"%@|%@:%@", self.event.invited, invitedPhone, [contact valueForKey:@"firstName"]];
+            }
         }
     }
     if([phoneNumbers count] > 0) {
+        [[Session sessionVariables] setObject:self.event forKey:@"eventToSend"];
         [MFHelpers GetBranchUrl:self.event.referenceId eventName:self.event.name completion:^(NSString *url) {
             ViewController *vc = (ViewController *)self.window.rootViewController;
             [vc sendTextMessage:phoneNumbers message:url];

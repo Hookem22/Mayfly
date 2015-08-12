@@ -211,6 +211,7 @@
 
 -(void)loadWebsite
 {
+    [MFHelpers showProgressView:self];
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
@@ -221,38 +222,72 @@
     
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
     [self.webView setScalesPageToFit:YES];
+    self.webView.scrollView.bounces = NO;
+    self.webView.delegate = self;
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
     NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&lat=%f&lng=%f", appDelegate.fbAccessToken, location.latitude, location.longitude];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    self.webView.delegate = self;
-    
     [self.webView loadRequest:requestObj];
     
     [self addSubview:self.webView];
+    [MFHelpers hideProgressView:self];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if ([[[request URL] absoluteString] hasPrefix:@"ios:AddressBookFromCreate"]) {
+    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromCreate"]) {
         
         NSString *urlString = [[request URL] absoluteString];
         NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
         
-        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params];  //[NSArray arrayWithObjects:self.event, nil]];
+        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params event:nil];
         [MFHelpers open:addressBook onView:self];
 
-
-        
-        // Call the given selector
-        //[self performSelector:@selector(webToNativeCall)];
-        // Cancel the location change
         return NO;
     }
-    return YES;
+    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromDetails"]) {
+        
+        NSString *urlString = [[request URL] absoluteString];
+        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
+        NSRange eventParam = [params rangeOfString:@"&currentEvent="];
+        NSString *eventUrl = [params substringFromIndex:eventParam.location + eventParam.length];
+        
+        Event *event = [[Event alloc] initFromUrl:eventUrl];
+        
+        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params event:event];
+        [MFHelpers open:addressBook onView:self];
+        
+        return NO;
+    }
+    if ([[[request URL] absoluteString] hasPrefix:@"ios:SendSMS"]) {
+        
+        NSString *urlString = [[request URL] absoluteString];
+        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location + 1];
+        
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        for (NSString *keyValuePair in [params componentsSeparatedByString:@"&"])
+        {
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+            NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
+            
+            [dict setObject:value forKey:key];
+        }
+
+        [MFHelpers GetBranchUrl:[[dict valueForKey:@"referenceId"] integerValue] eventName:[dict objectForKey:@"name"] completion:^(NSString *url) {
+            ViewController *vc = (ViewController *)self.window.rootViewController;
+            [vc sendTextMessage:[[dict objectForKey:@"phone"] componentsSeparatedByString:@","] message:url];
+        }];
+        
+        
+        
+        return NO;
+    }
     
+    return YES;
 }
 
 -(void)returnAddressList:(NSString *)params
@@ -266,6 +301,19 @@
         NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/%@", params];
         NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
         [self.webView loadRequest:requestObj];
+}
+
+-(void)goToEvent:(NSString *)eventId
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+    
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&lat=%f&lng=%f&goToEvent=%@", appDelegate.fbAccessToken, location.latitude, location.longitude, eventId];
+    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+
+    [self.webView loadRequest:requestObj];
 }
 
 

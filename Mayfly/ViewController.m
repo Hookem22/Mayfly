@@ -111,6 +111,9 @@
 }
 
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    
+    Event *event = (Event *)[Session sessionVariables][@"eventToSend"];
+    [[Session sessionVariables] removeObjectForKey:@"eventToSend"];
     switch (result) {
         case MessageComposeResultCancelled:
             break;
@@ -123,14 +126,25 @@
         }
             
         case MessageComposeResultSent:
+        {
+            [event save:^(Event *event) {
+                [self.mainView goToEvent:event.eventId];
+            }];
             break;
+        }
             
         default:
             break;
     }
     
+    for(UIView *subview in self.mainView.subviews) {
+        if(![subview isMemberOfClass:[UIWebView class]])
+            [subview removeFromSuperview];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self.mainView setup];
+    //[self.mainView setup];
+    //[self.mainView loadWebsite];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

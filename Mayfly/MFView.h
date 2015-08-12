@@ -19,8 +19,10 @@
 
 -(void)setup;
 -(void)refreshEvents;
+-(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging;
+
 -(void)loadWebsite;
 -(void)returnAddressList:(NSString *)params;
--(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging;
+-(void)goToEvent:(NSString *)eventId;
 
 @end

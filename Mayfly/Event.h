@@ -28,6 +28,7 @@
 @property (nonatomic, assign) NSUInteger referenceId;
 
 -(id)init:(NSDictionary *)event;
+-(id)initFromUrl:(NSString *)url;
 +(void)get:(QSCompletionBlock)completion;
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
 +(void)getByReferenceId:(NSString *)referenceId completion:(QSCompletionBlock)completion;
