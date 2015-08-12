@@ -15,7 +15,7 @@
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UITextField *searchText;
 @property (nonatomic, strong) Event *event;
-
+@property (nonatomic, strong) NSString *params;
 @end
 
 @implementation MFAddressBook
@@ -25,46 +25,82 @@
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        [MFHelpers showProgressView:self];
-        
-        if([invited count] == 1 && [[invited objectAtIndex:0] isMemberOfClass:[Event class]])
-            self.event = [invited objectAtIndex:0];
-        
-        if ([FBSDKAccessToken currentAccessToken]) {
-            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends?fields=id,name,first_name" parameters:nil]
-             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                 if (!error) {
-                     NSArray *fbList = [result objectForKey:@"data"];
-                     NSMutableArray *friendList = [[NSMutableArray alloc] init];
-                     for(int i = 0; i < [fbList count]; i++)
-                     {
-                         NSDictionary *dict = [fbList objectAtIndex:i];
-                         NSMutableDictionary *friend = [[NSMutableDictionary alloc] init];
-                         [friend setObject:[dict objectForKey:@"id"] forKey:@"id"];
-                         [friend setObject:[dict objectForKey:@"name"] forKey:@"name"];
-                         [friend setObject:[dict objectForKey:@"first_name"] forKey:@"firstName"];
-                         [friend setObject:@"NO" forKey:@"invited"];
-                         [friendList addObject:friend];
-                         for(NSDictionary *contact in invited)
-                         {
-                             if(self.event == nil && [[contact objectForKey:@"id"] isEqualToString:[friend objectForKey:@"id"]])
-                                 [friend setObject:@"YES" forKey:@"invited"];
-                         }
-                     }
-                     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
-                     self.friendList = [friendList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-                 }
-                 
-                 [self loadAddressBook:invited];
-             }];
-        }
-        else
-        {
-            [self loadAddressBook:invited];
-        }
+        [self initialize:invited];
         
     }
     return self;
+}
+
+-(id)initFromWebsite:(NSString *)params
+{
+    self = [super init];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        self.params = params;
+        NSMutableArray *invited = [[NSMutableArray alloc] init];
+        if([params containsString:@"Invited%22:%22"] && [params containsString:@"Going%22:%22"])
+        {
+            NSRange invitedRange = [params rangeOfString:@"Invited%22:%22"];
+            NSString *invitedString = [params substringFromIndex:invitedRange.location + invitedRange.length];
+            invitedString = [invitedString substringToIndex:[invitedString rangeOfString:@"Going%22:%22"].location];
+            
+            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            NSArray *people = [invitedString componentsSeparatedByString:@"%7C"];
+            for(NSString *person in people)
+            {
+                NSString *info = [person componentsSeparatedByString:@":"][0];
+                if(![info isEqualToString:appDelegate.facebookId])
+                {
+                    NSDictionary *dict = @{@"id": info, @"Phone": info };
+                    [invited addObject:dict];
+                }
+            }
+        }
+        [self initialize:invited];
+    }
+    return self;
+}
+
+-(void)initialize:(NSArray *)invited
+{
+    [MFHelpers showProgressView:self];
+    
+    if([invited count] == 1 && [[invited objectAtIndex:0] isMemberOfClass:[Event class]])
+        self.event = [invited objectAtIndex:0];
+
+    
+    if ([FBSDKAccessToken currentAccessToken]) {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends?fields=id,name,first_name" parameters:nil]
+         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+             if (!error) {
+                 NSArray *fbList = [result objectForKey:@"data"];
+                 NSMutableArray *friendList = [[NSMutableArray alloc] init];
+                 for(int i = 0; i < [fbList count]; i++)
+                 {
+                     NSDictionary *dict = [fbList objectAtIndex:i];
+                     NSMutableDictionary *friend = [[NSMutableDictionary alloc] init];
+                     [friend setObject:[dict objectForKey:@"id"] forKey:@"id"];
+                     [friend setObject:[dict objectForKey:@"name"] forKey:@"name"];
+                     [friend setObject:[dict objectForKey:@"first_name"] forKey:@"firstName"];
+                     [friend setObject:@"NO" forKey:@"invited"];
+                     [friendList addObject:friend];
+                     for(NSDictionary *contact in invited)
+                     {
+                         if(self.event == nil && [[contact objectForKey:@"id"] isEqualToString:[friend objectForKey:@"id"]])
+                             [friend setObject:@"YES" forKey:@"invited"];
+                     }
+                 }
+                 NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
+                 self.friendList = [friendList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+             }
+             
+             [self loadAddressBook:invited];
+         }];
+    }
+    else
+    {
+        [self loadAddressBook:invited];
+    }
 }
 
 -(void)loadAddressBook:(NSArray *)invited
@@ -416,8 +452,41 @@
         }
     }
     
-    MFCreateView *createView = (MFCreateView *)[self superview];
-    [createView invite:contacts];
+    if(self.params != nil && [self.params length] > 0)
+    {
+        if([self.params containsString:@"Invited%22:%22"] && [self.params containsString:@"%22,%22Going%22:%22"] && [contacts count] > 0)
+        {
+            NSRange invitedRange = [self.params rangeOfString:@"Invited%22:%22"];
+            NSString *toInvitedString = [self.params substringToIndex:invitedRange.location + invitedRange.length];
+            NSString *fromGoingString = [self.params substringFromIndex:[self.params rangeOfString:@"%22,%22Going%22:%22"].location];
+            
+            NSString *invitedString = @"";
+            for(NSDictionary *contact in contacts)
+            {
+                NSString *fb = [contact valueForKey:@"id"];
+                NSString *phone = [contact valueForKey:@"Phone"];
+                NSString *firstName = [contact valueForKey:@"firstName"];
+                if(fb != nil)
+                    invitedString = [NSString stringWithFormat:@"%@%@:%@|", invitedString, fb, firstName];
+                else if(phone != nil)
+                    invitedString = [NSString stringWithFormat:@"%@p%@:%@|", invitedString, phone, firstName];
+            }
+            if([invitedString length] > 0)
+                invitedString = [invitedString substringToIndex:[invitedString length] - 1];
+            
+            invitedString = [invitedString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+            self.params = [NSString stringWithFormat:@"%@%@%@", toInvitedString, invitedString, fromGoingString];
+            
+            MFView *view = (MFView *)[self superview];
+            [view returnAddressList:self.params];
+        }
+    }
+    else
+    {
+        MFCreateView *createView = (MFCreateView *)[self superview];
+        [createView invite:contacts];
+    }
+
     [MFHelpers close:self];
 }
 

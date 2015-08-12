@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *firstName;
 @property (strong, nonatomic) NSString *deviceId;
+@property (strong, nonatomic) NSString *fbAccessToken;
 @property (strong, nonatomic) NSString *facebookId;
 @property (strong, nonatomic) NSString *email;
 @property (assign, nonatomic) BOOL hasNotifications;

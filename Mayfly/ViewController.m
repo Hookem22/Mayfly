@@ -26,7 +26,7 @@
         location.longitude = -97.7500;
         [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
         
-        [self.mainView setup];
+        //[self.mainView setup];
     }
 }
 
@@ -90,7 +90,7 @@
             return;
     }*/
     
-    [self.mainView setup];
+    //[self.mainView setup];
     
 }
 

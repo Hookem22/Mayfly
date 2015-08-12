@@ -74,6 +74,7 @@
                  self.name = @"Bob Sherriff"; //[result objectForKey:@"name"];
                  self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
                  */
+                 self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;;
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
                  self.firstName = [result objectForKey:@"first_name"];
@@ -139,7 +140,8 @@
     [User login:^(User *user) {
         ViewController *vc = (ViewController *)self.window.rootViewController;
         MFView *mfView = (MFView *)vc.mainView;
-        [mfView refreshEvents];
+        [mfView loadWebsite];
+        //[mfView refreshEvents];
     }];
 
 }

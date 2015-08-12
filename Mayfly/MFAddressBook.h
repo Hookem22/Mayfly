@@ -16,5 +16,6 @@
 @interface MFAddressBook : UIView
 
 -(id)init:(NSArray *)invited;
+-(id)initFromWebsite:(NSString *)param;
 
 @end

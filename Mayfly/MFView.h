@@ -15,10 +15,12 @@
 #import "MFRightSideView.h"
 #import "MFHelpers.h"
 
-@interface MFView : UIView
+@interface MFView : UIView <UIWebViewDelegate>
 
 -(void)setup;
 -(void)refreshEvents;
+-(void)loadWebsite;
+-(void)returnAddressList:(NSString *)params;
 -(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging;
 
 @end

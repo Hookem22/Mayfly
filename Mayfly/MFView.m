@@ -12,6 +12,7 @@
 @interface MFView ()
 
 @property (nonatomic, strong) UIButton *notificationButton;
+@property (nonatomic, strong) UIWebView *webView;
 
 @end
 
@@ -201,6 +202,80 @@
           }];
      }
 }
+
+
+
+//////////////////////
+///// Website ////////
+//////////////////////
+
+-(void)loadWebsite
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    for(UIView *subview in self.subviews)
+        [subview removeFromSuperview];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
+    [self.webView setScalesPageToFit:YES];
+    
+    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+    
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&lat=%f&lng=%f", appDelegate.fbAccessToken, location.latitude, location.longitude];
+    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    self.webView.delegate = self;
+    
+    [self.webView loadRequest:requestObj];
+    
+    [self addSubview:self.webView];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if ([[[request URL] absoluteString] hasPrefix:@"ios:AddressBookFromCreate"]) {
+        
+        NSString *urlString = [[request URL] absoluteString];
+        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
+        
+        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params];  //[NSArray arrayWithObjects:self.event, nil]];
+        [MFHelpers open:addressBook onView:self];
+
+
+        
+        // Call the given selector
+        //[self performSelector:@selector(webToNativeCall)];
+        // Cancel the location change
+        return NO;
+    }
+    return YES;
+    
+}
+
+-(void)returnAddressList:(NSString *)params
+{
+        /*
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contactList options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        jsonString = [self urlEncodeJSON:jsonString];
+        params = [NSString stringWithFormat:@"%@&contactList=%@", params, jsonString];
+        */
+        NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/%@", params];
+        NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
+        [self.webView loadRequest:requestObj];
+}
+
+
+-(NSString *)urlEncodeJSON:(NSString *)json;
+{
+    return [json stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+}
+
+
+
 
 
 
