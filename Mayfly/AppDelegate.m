@@ -25,15 +25,16 @@
         NSLog(@"deep link data: %@", [params description]);
         if(!error && params != nil && [params objectForKey:@"ReferenceId"] != nil) {
             [[Session sessionVariables] setObject:[params objectForKey:@"ReferenceId"] forKey:@"referenceId"];
-            [[Session sessionVariables] setObject:[params objectForKey:@"ReferencePhone"] forKey:@"referencePhone"];
-            NSLog(@"%@", [params objectForKey:@"ReferenceId"]);
+             NSLog(@"%@", [params objectForKey:@"ReferenceId"]);
             
             self.hasNotifications = YES;
             ViewController *vc = (ViewController *)self.window.rootViewController;
             if(vc != nil) {
                 MFView *mfView = (MFView *)vc.mainView;
                 if(mfView != nil)
-                    [mfView refreshEvents];
+                {
+                    [mfView goToEvent:[[params objectForKey:@"ReferenceId"]intValue]];
+                }
             }
         }
     }];
@@ -75,7 +76,7 @@
                  self.name = @"Bob Sherriff"; //[result objectForKey:@"name"];
                  self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
                  */
-                 self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;;
+                 //self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;;
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
                  self.firstName = [result objectForKey:@"first_name"];
@@ -84,6 +85,10 @@
                  [self LoginUser];
              }
          }];
+    }
+    else
+    {
+        self.notLoggedIn = YES;
     }
 }
 

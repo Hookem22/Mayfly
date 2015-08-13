@@ -72,23 +72,9 @@
                 newUser.email = appDelegate.email ? appDelegate.email : @"";
             */
             [newUser save:^(User *addedUser) {
-                if((NSString *)[Session sessionVariables][@"referenceId"] != nil)
-                {
-                    [self addReferralEvent:addedUser completion:^(void) {
-                        completion(addedUser);
-                    }];
-                }
-                else {
-                    completion(addedUser);
-                }
+                completion(addedUser);
             }];
 
-        }
-        else if([FBSDKAccessToken currentAccessToken] && (NSString *)[Session sessionVariables][@"referenceId"] != nil)
-        {
-            [self addReferralEvent:deviceUser completion:^(void) {
-                completion(deviceUser);
-            }];
         }
         else {
             completion(deviceUser);

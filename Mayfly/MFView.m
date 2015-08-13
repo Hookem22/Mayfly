@@ -211,6 +211,13 @@
 
 -(void)loadWebsite
 {
+    NSUInteger referenceId = [[Session sessionVariables][@"referenceId"] integerValue];
+    if(referenceId > 0)
+    {
+        [self joinEvent:referenceId];
+        return;
+    }
+    
     [MFHelpers showProgressView:self];
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
@@ -227,17 +234,30 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&lat=%f&lng=%f", appDelegate.fbAccessToken, location.latitude, location.longitude];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:requestObj];
     
     [self addSubview:self.webView];
     [MFHelpers hideProgressView:self];
+    
+    
+     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
+     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+     //loginButton.center = self.center;
+     [self addSubview:loginButton];
+    
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    if ([[[request URL] absoluteString] hasPrefix:@"ios:FacebookLogin"]) {
+        
+        [MFLoginView facebookLogin];
+        
+        return NO;
+    }
     if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromCreate"]) {
         
         NSString *urlString = [[request URL] absoluteString];
@@ -303,19 +323,46 @@
         [self.webView loadRequest:requestObj];
 }
 
--(void)goToEvent:(NSString *)eventId
+-(void)goToEvent:(NSUInteger)referenceId
 {
+    if(self.webView == nil)
+    {
+        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+        NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+        
+        for(UIView *subview in self.subviews)
+            [subview removeFromSuperview];
+        
+        self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
+        [self.webView setScalesPageToFit:YES];
+        self.webView.scrollView.bounces = NO;
+        self.webView.delegate = self;
+        [self addSubview:self.webView];
+    }
+    
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&lat=%f&lng=%f&goToEvent=%@", appDelegate.fbAccessToken, location.latitude, location.longitude, eventId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%i", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, referenceId];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
 
     [self.webView loadRequest:requestObj];
 }
 
+-(void)joinEvent:(NSUInteger)referenceId
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+    
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%i", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, referenceId];
+    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    
+    [self.webView loadRequest:requestObj];
+}
 
 -(NSString *)urlEncodeJSON:(NSString *)json;
 {

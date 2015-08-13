@@ -14,4 +14,6 @@
 
 @interface MFLoginView : UIView
 
++(void)facebookLogin;
+
 @end

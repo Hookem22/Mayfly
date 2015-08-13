@@ -23,6 +23,6 @@
 
 -(void)loadWebsite;
 -(void)returnAddressList:(NSString *)params;
--(void)goToEvent:(NSString *)eventId;
+-(void)goToEvent:(NSUInteger)referenceId;
 
 @end

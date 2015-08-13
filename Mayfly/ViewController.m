@@ -27,6 +27,7 @@
         [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
         
         //[self.mainView setup];
+        [self.mainView loadWebsite];
     }
 }
 
@@ -91,6 +92,9 @@
     }*/
     
     //[self.mainView setup];
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate.notLoggedIn == YES)
+        [self.mainView loadWebsite];
     
 }
 
@@ -128,7 +132,7 @@
         case MessageComposeResultSent:
         {
             [event save:^(Event *event) {
-                [self.mainView goToEvent:event.eventId];
+                [self.mainView goToEvent:event.referenceId];
             }];
             break;
         }

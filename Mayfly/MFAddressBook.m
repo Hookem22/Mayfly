@@ -524,7 +524,7 @@
     {
         [self.event save:^(Event *event) {
             MFView *view = (MFView *)[self superview];
-            [view goToEvent:event.eventId];
+            [view goToEvent:event.referenceId];
             
             if([[self superview] isMemberOfClass:[MFDetailView class]])
             {

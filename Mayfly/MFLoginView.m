@@ -43,6 +43,27 @@
     
 }
 
++(void)facebookLogin
+{
+    FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+    [login logInWithReadPermissions:@[@"public_profile", @"email", @"user_friends"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        if (error) {
+            // Process error
+        } else if (result.isCancelled) {
+            // Handle cancellations
+        } else {
+            
+            
+            // If you ask for multiple permissions at once, you
+            // should check if specific permissions missing
+            //if ([result.grantedPermissions containsObject:@"user_friends"]) {
+            // Do work
+            //NSLog(@"%@", result);
+            //}
+        }
+    }];
+}
+
 -(void)loginButtonClick:(id)sender
 {
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
