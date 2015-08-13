@@ -33,7 +33,7 @@
                 MFView *mfView = (MFView *)vc.mainView;
                 if(mfView != nil)
                 {
-                    [mfView goToEvent:[[params objectForKey:@"ReferenceId"]intValue]];
+                    [mfView goToEvent:[[params objectForKey:@"ReferenceId"] intValue]];
                 }
             }
         }
@@ -198,7 +198,13 @@
 {
     ViewController *vc = (ViewController *)self.window.rootViewController;
     MFView *mfView = (MFView *)vc.mainView;
-    [mfView openEvent:self.eventId toMessaging:toMessaging];
+    //[mfView openEvent:self.eventId toMessaging:toMessaging];
+    
+    [[Session sessionVariables] setValue:[NSNumber numberWithBool:toMessaging] forKey:@"toMessaging"];
+    [Event get:self.eventId completion:^(Event *event) {
+        [mfView goToEvent:event.referenceId];
+    }];
+    
 }
 
 // We are registered, so now store the device token (as a string) on the AppDelegate instance

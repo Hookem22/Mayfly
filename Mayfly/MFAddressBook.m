@@ -522,10 +522,10 @@
     }
     if([contacts count] > 0)
     {
+        ViewController *vc = (ViewController *)self.window.rootViewController;
         [self.event save:^(Event *event) {
-            MFView *view = (MFView *)[self superview];
-            [view goToEvent:event.referenceId];
             
+            [vc.mainView goToEvent:event.referenceId];
             if([[self superview] isMemberOfClass:[MFDetailView class]])
             {
                 MFDetailView *detailView = (MFDetailView *)[self superview];

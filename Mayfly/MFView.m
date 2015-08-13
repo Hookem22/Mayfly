@@ -242,12 +242,12 @@
     [self addSubview:self.webView];
     [MFHelpers hideProgressView:self];
     
-    
+    /*
      FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
      loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
      //loginButton.center = self.center;
      [self addSubview:loginButton];
-    
+    */
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -344,7 +344,10 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%i", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, referenceId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+    BOOL toMessaging = [[Session sessionVariables][@"toMessaging"] boolValue];
+    if(toMessaging)
+        urlAddress = [NSString stringWithFormat:@"%@&toMessaging=true", urlAddress];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
 
@@ -357,7 +360,7 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%i", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, referenceId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     
@@ -369,6 +372,9 @@
     return [json stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
 }
 
+-(void)webViewDidFinishLoad:(UIWebView *)webView {
+    webView.keyboardDisplayRequiresUserAction = NO;
+}
 
 
 

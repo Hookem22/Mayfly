@@ -59,15 +59,34 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    /*
-    UIAlertView *errorAlert = [[UIAlertView alloc]
-                               initWithTitle:@"No GPS"
-                               message:@"Please Turn On Location to Find Events Near You"
-                               delegate:nil
-                               cancelButtonTitle:@"OK"
-                               otherButtonTitles:nil];
-    [errorAlert show];
-    */
+    if ([error domain] == kCLErrorDomain) {
+        
+        // We handle CoreLocation-related errors here
+        switch ([error code]) {
+                // "Don't Allow" on two successive app launches is the same as saying "never allow". The user
+                // can reset this for all apps by going to Settings > General > Reset > Reset Location Warnings.
+            case kCLErrorDenied:
+            {
+                UIAlertView *errorAlert = [[UIAlertView alloc]
+                                           initWithTitle:@"No GPS"
+                                           message:@"Please Turn On Location to Find Events Near You"
+                                           delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+                [errorAlert show];
+                break;
+            }
+            case kCLErrorLocationUnknown:
+                //...
+                break;
+            default:
+                //...
+                break;
+        }
+    } else {
+        // We handle all non-CoreLocation errors here
+    }
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
