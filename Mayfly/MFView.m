@@ -25,6 +25,13 @@
     
     self.backgroundColor = [UIColor whiteColor];
     
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    UIImageView *launch = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+    [launch setImage:[UIImage imageNamed:@"launch1242x2208"]];
+    [self addSubview:launch];
+    
     return self;
 }
 
@@ -223,8 +230,10 @@
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     for(UIView *subview in self.subviews)
-        [subview removeFromSuperview];
-    
+    {
+        if(![subview isKindOfClass:[UIImageView class]])
+            [subview removeFromSuperview];
+    }
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
@@ -234,7 +243,7 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&pushDeviceToken=%@&lat=%f&lng=%f", appDelegate.fbAccessToken, appDelegate.deviceToken, location.latitude, location.longitude];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:requestObj];
@@ -243,10 +252,10 @@
     [MFHelpers hideProgressView:self];
     
     /*
-     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
-     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
-     //loginButton.center = self.center;
-     [self addSubview:loginButton];
+    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
+    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+    //loginButton.center = self.center;
+    [self addSubview:loginButton];
     */
 }
 
@@ -258,6 +267,16 @@
         
         return NO;
     }
+    if ([[[request URL] absoluteString] hasPrefix:@"ios:GetContacts"]) {
+        
+        NSString *contacts = [[MFAddressBook getContacts] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        NSString *function = [NSString stringWithFormat:@"iOSContacts(\"%@\")", contacts];
+        
+        [self.webView stringByEvaluatingJavaScriptFromString:function];
+        
+        return NO;
+    }
+    /*
     if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromCreate"]) {
         
         NSString *urlString = [[request URL] absoluteString];
@@ -282,6 +301,7 @@
         
         return NO;
     }
+    */
     if ([[[request URL] absoluteString] hasPrefix:@"ios:SendSMS"]) {
         
         NSString *urlString = [[request URL] absoluteString];
@@ -297,12 +317,8 @@
             [dict setObject:value forKey:key];
         }
 
-        [MFHelpers GetBranchUrl:[[dict valueForKey:@"referenceId"] integerValue] eventName:[dict objectForKey:@"name"] completion:^(NSString *url) {
-            ViewController *vc = (ViewController *)self.window.rootViewController;
-            [vc sendTextMessage:[[dict objectForKey:@"phone"] componentsSeparatedByString:@","] message:url];
-        }];
-        
-        
+        ViewController *vc = (ViewController *)self.window.rootViewController;
+        [vc sendTextMessage:[[dict objectForKey:@"phone"] componentsSeparatedByString:@","] message:[dict objectForKey:@"message"]];
         
         return NO;
     }
@@ -318,7 +334,7 @@
         jsonString = [self urlEncodeJSON:jsonString];
         params = [NSString stringWithFormat:@"%@&contactList=%@", params, jsonString];
         */
-        NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/%@", params];
+        NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/%@", params];
         NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
         [self.webView loadRequest:requestObj];
 }
@@ -344,7 +360,7 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
     BOOL toMessaging = [[Session sessionVariables][@"toMessaging"] boolValue];
     if(toMessaging)
         urlAddress = [NSString stringWithFormat:@"%@&toMessaging=true", urlAddress];
@@ -360,7 +376,7 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://dev.joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     

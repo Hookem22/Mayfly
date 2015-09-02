@@ -135,8 +135,8 @@
 
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
     
-    Event *event = (Event *)[Session sessionVariables][@"eventToSend"];
-    [[Session sessionVariables] removeObjectForKey:@"eventToSend"];
+    //Event *event = (Event *)[Session sessionVariables][@"eventToSend"];
+    //[[Session sessionVariables] removeObjectForKey:@"eventToSend"];
     switch (result) {
         case MessageComposeResultCancelled:
             break;
@@ -150,9 +150,9 @@
             
         case MessageComposeResultSent:
         {
-            [event save:^(Event *event) {
-                [self.mainView goToEvent:event.referenceId];
-            }];
+            //[event save:^(Event *event) {
+            //   [self.mainView goToEvent:event.referenceId];
+            //}];
             break;
         }
             

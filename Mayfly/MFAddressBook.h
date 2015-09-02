@@ -17,5 +17,6 @@
 
 -(id)init:(NSArray *)invited;
 -(id)initFromWebsite:(NSString *)params event:(Event *)event;
++(NSString *)getContacts;
 
 @end

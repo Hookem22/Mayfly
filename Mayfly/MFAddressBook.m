@@ -65,6 +65,93 @@
     return self;
 }
 
++(NSString *)getContacts
+{
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+    
+    __block BOOL accessGranted = NO;
+    
+    if (ABAddressBookRequestAccessWithCompletion) { // We are on iOS 6
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            accessGranted = granted;
+            dispatch_semaphore_signal(semaphore);
+        });
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    
+    if (accessGranted) {
+        NSMutableArray *contacts = [[NSMutableArray alloc] init];
+        CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
+        CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
+        
+        for (int i=0;i < nPeople;i++) {
+            NSMutableDictionary *dOfPerson=[NSMutableDictionary dictionary];
+            
+            ABRecordRef ref = CFArrayGetValueAtIndex(allPeople,i);
+            
+            //For username and surname
+            ABMultiValueRef phones =(__bridge ABMultiValueRef)((__bridge NSString*)ABRecordCopyValue(ref, kABPersonPhoneProperty));
+            
+            CFStringRef firstName, lastName;
+            firstName = ABRecordCopyValue(ref, kABPersonFirstNameProperty);
+            lastName  = ABRecordCopyValue(ref, kABPersonLastNameProperty);
+            
+            NSString *sFirstName = (__bridge NSString *)firstName;
+            NSString *sLastName = (__bridge NSString *)lastName;
+            if(sFirstName == nil || [sFirstName isEqualToString:@"(null)"])
+                sFirstName = @"";
+            if(sLastName == nil || [sLastName isEqualToString:@"(null)"])
+                sLastName = @"";
+            if([sFirstName isEqualToString:@""] && [sLastName isEqualToString:@""])
+                continue;
+            
+            NSString *name = [[NSString stringWithFormat:@"%@ %@", sFirstName, sLastName] stringByTrimmingCharactersInSet:
+                              [NSCharacterSet whitespaceCharacterSet]];
+            [dOfPerson setObject:name forKey:@"name"];
+            [dOfPerson setObject:[NSString stringWithFormat:@"%@", sFirstName] forKey:@"firstName"];
+            [dOfPerson setObject:[NSString stringWithFormat:@"%@", sLastName] forKey:@"lastName"];
+            
+            //For Phone number
+            NSString* mobileLabel;
+            
+            for(CFIndex i = 0; i < ABMultiValueGetCount(phones); i++) {
+                mobileLabel = (__bridge NSString*)ABMultiValueCopyLabelAtIndex(phones, i);
+                if([mobileLabel isEqualToString:(NSString *)kABPersonPhoneMobileLabel])
+                {
+                    [dOfPerson setObject:(__bridge NSString*)ABMultiValueCopyValueAtIndex(phones, i) forKey:@"Phone"];
+                }
+                else if ([mobileLabel isEqualToString:(NSString*)kABPersonPhoneIPhoneLabel])
+                {
+                    [dOfPerson setObject:(__bridge NSString*)ABMultiValueCopyValueAtIndex(phones, i) forKey:@"Phone"];
+                    break ;
+                }
+                
+            }
+            if(![dOfPerson objectForKey:@"Phone"])
+                continue;
+
+            [contacts addObject:dOfPerson];
+        }
+
+        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
+        contacts = [[contacts sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]] mutableCopy];
+        
+        NSString *sContacts = @"";
+        for(int i = 0; i < [contacts count]; i++)
+        {
+            NSDictionary *contact = [contacts objectAtIndex:i];
+            sContacts = [NSString stringWithFormat:@"%@||%@|%@", sContacts, [contact objectForKey:@"Phone"], [contact objectForKey:@"name"]];
+        }
+        return sContacts;
+    }
+    
+    
+    return @"";
+}
+
 -(void)initialize:(NSArray *)invited
 {
     [MFHelpers showProgressView:self];

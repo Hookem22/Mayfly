@@ -76,7 +76,7 @@
                  self.name = @"Bob Sherriff"; //[result objectForKey:@"name"];
                  self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
                  */
-                 //self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;;
+                 self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;;
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
                  self.firstName = [result objectForKey:@"first_name"];
@@ -124,17 +124,17 @@
     
     NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
     self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
-    //self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSSet *set = [[NSSet alloc] initWithObjects:[self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""], nil];
+    self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSSet *set = [[NSSet alloc] initWithObjects:self.deviceToken, nil];
     
     [hub registerNativeWithDeviceToken:deviceToken tags:set completion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Error registering for notifications: %@", error);
         }
         else {
-            NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
-            self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
-            NSLog(@"%@", self.deviceToken);
+            //NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+            //self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
+            //NSLog(@"%@", self.deviceToken);
             
             //Will accept this before logging in
             //[self LoginUser];
@@ -143,12 +143,18 @@
 }
 
 -(void)LoginUser {
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    MFView *mfView = (MFView *)vc.mainView;
+    [mfView loadWebsite];
+    
+    /*
     [User login:^(User *user) {
         ViewController *vc = (ViewController *)self.window.rootViewController;
         MFView *mfView = (MFView *)vc.mainView;
         [mfView loadWebsite];
         //[mfView refreshEvents];
     }];
+    */
 
 }
 
