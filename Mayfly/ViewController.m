@@ -15,6 +15,7 @@
     
     self.mainView = [[MFView alloc] init];
     self.view = self.mainView;
+    [self.mainView loadWebsite];
     
     //debugging only
     if (TARGET_IPHONE_SIMULATOR)
@@ -111,9 +112,7 @@
     }*/
     
     //[self.mainView setup];
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(appDelegate.notLoggedIn == YES)
-        [self.mainView loadWebsite];
+    [self.mainView sendLatLngToWeb];
     
 }
 

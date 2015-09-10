@@ -242,8 +242,13 @@
     self.webView.delegate = self;
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+    double lat = location == NULL ? 0 : location.latitude;
+    double lng = location == NULL ? 0 : location.longitude;
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/?OS=iOS&fbAccessToken=%@&pushDeviceToken=%@&lat=%f&lng=%f", appDelegate.fbAccessToken, appDelegate.deviceToken, location.latitude, location.longitude];
+    NSString *fbAccessToken = appDelegate.fbAccessToken == NULL ? @"" : appDelegate.fbAccessToken;
+    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
+    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&fbAccessToken=%@&deviceId=%@&pushDeviceToken=%@&lat=%f&lng=%f", fbAccessToken, uuid, uuid, lat, lng];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:requestObj];
@@ -256,7 +261,8 @@
     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     //loginButton.center = self.center;
     [self addSubview:loginButton];
-    */
+     */
+    
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -326,6 +332,17 @@
     return YES;
 }
 
+-(void)sendLatLngToWeb
+{
+    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+    if(location == NULL)
+        return;
+    
+    NSString *function = [NSString stringWithFormat:@"ReceiveLocation(\"%f\",\"%f\")", location.latitude, location.longitude];    
+    if(self.webView != NULL)
+        [self.webView stringByEvaluatingJavaScriptFromString:function];
+}
+
 -(void)returnAddressList:(NSString *)params
 {
         /*
@@ -334,7 +351,7 @@
         jsonString = [self urlEncodeJSON:jsonString];
         params = [NSString stringWithFormat:@"%@&contactList=%@", params, jsonString];
         */
-        NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/%@", params];
+        NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/%@", params];
         NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
         [self.webView loadRequest:requestObj];
 }
@@ -360,7 +377,7 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
     BOOL toMessaging = [[Session sessionVariables][@"toMessaging"] boolValue];
     if(toMessaging)
         urlAddress = [NSString stringWithFormat:@"%@&toMessaging=true", urlAddress];
@@ -376,7 +393,7 @@
     
     Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
     
-    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.com/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     
@@ -390,6 +407,8 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
     webView.keyboardDisplayRequiresUserAction = NO;
+    if(!webView.loading)
+        [self sendLatLngToWeb];
 }
 
 

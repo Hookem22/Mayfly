@@ -62,20 +62,22 @@
 -(void)applicationDidBecomeActive:(UIApplication *)application {
     
     self.hasNotifications = application.applicationIconBadgeNumber > 0;
+    self.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     application.applicationIconBadgeNumber = 0;
     
     [FBSDKAppEvents activateApp];
+    
     
     if ([FBSDKAccessToken currentAccessToken]) {
         [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
          startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
              if (!error) {
                  NSLog(@"fetched user:%@", result);
-                 /*
-                 self.facebookId = @"10106610968977054";//[result objectForKey:@"id"];
-                 self.name = @"Bob Sherriff"; //[result objectForKey:@"name"];
-                 self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
-                 */
+                 
+                 //self.facebookId = @"10106610968977054";//[result objectForKey:@"id"];
+                 //self.name = @"Bob Sherriff"; //[result objectForKey:@"name"];
+                 //self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
+                 
                  self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;;
                  self.facebookId = [result objectForKey:@"id"];
                  self.name = [result objectForKey:@"name"];
@@ -85,10 +87,6 @@
                  [self LoginUser];
              }
          }];
-    }
-    else
-    {
-        self.notLoggedIn = YES;
     }
 }
 
@@ -122,10 +120,12 @@
     SBNotificationHub* hub = [[SBNotificationHub alloc] initWithConnectionString:@"Endpoint=sb://mayflyapphub-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=KdLzdARZgqnLMU6/ft+4Jln7YOWTPtUGAZCSrP5GcqI="
                                                              notificationHubPath:@"mayflyapphub"];
     
-    NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
-    self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
-    self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSSet *set = [[NSSet alloc] initWithObjects:self.deviceToken, nil];
+    //NSCharacterSet *angleBrackets = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+    //self.deviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:angleBrackets];
+    //self.deviceToken = [self.deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSSet *set = [[NSSet alloc] initWithObjects:uuid, nil];
     
     [hub registerNativeWithDeviceToken:deviceToken tags:set completion:^(NSError* error) {
         if (error != nil) {

@@ -23,7 +23,6 @@
 @property (strong, nonatomic) NSString *fbAccessToken;
 @property (strong, nonatomic) NSString *email;
 @property (assign, nonatomic) BOOL hasNotifications;
-@property (assign, nonatomic) BOOL notLoggedIn;
 
 @end
 

@@ -54,7 +54,7 @@
     [self getByFacebookId:appDelegate.facebookId completion:^(User *deviceUser) {
         if((!deviceUser || !deviceUser.deviceId || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""] || ![deviceUser.pushDeviceToken isEqualToString:appDelegate.deviceToken])) {
             User *newUser = deviceUser == nil ? [[User alloc] init] : deviceUser;
-            newUser.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];;
+            newUser.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
             
             newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
             newUser.name = appDelegate.name ? appDelegate.name : @"";
