@@ -78,8 +78,16 @@
                 break;
             }
             case kCLErrorLocationUnknown:
-                //...
+            {
+                UIAlertView *errorAlert = [[UIAlertView alloc]
+                                           initWithTitle:@"No GPS"
+                                           message:@"Unable to find your current location."
+                                           delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+                [errorAlert show];
                 break;
+            }
             default:
                 //...
                 break;
