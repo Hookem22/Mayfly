@@ -15,7 +15,8 @@
     
     self.mainView = [[MFView alloc] init];
     self.view = self.mainView;
-    [self.mainView loadWebsite];
+    [self.mainView setup];
+    //[self.mainView loadWebsite];
     
     //debugging only
     if (TARGET_IPHONE_SIMULATOR)
@@ -109,8 +110,8 @@
         return;
     
     Location *location = [[Location alloc] init];
-    location.latitude = cllocation.coordinate.latitude;
-    location.longitude = cllocation.coordinate.longitude;
+    location.latitude = 0; //cllocation.coordinate.latitude;
+    location.longitude = 0; //cllocation.coordinate.longitude;
 
     [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
     
@@ -119,8 +120,8 @@
             return;
     }*/
     
-    //[self.mainView setup];
-    [self.mainView sendLatLngToWeb];
+    [self.mainView setup];
+    //[self.mainView sendLatLngToWeb];
     
 }
 

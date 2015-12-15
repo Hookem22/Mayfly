@@ -20,7 +20,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
         self.delegate = self;
         self.Events = [[NSMutableArray alloc] init];
     }
@@ -43,13 +43,69 @@
          CLLocation *currentLocation = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longitude];
          
          int skip = 0;
+         int days = 0;
          for(int i = 0; i < [self.Events count]; i++)
          {
             Event *event = [self.Events objectAtIndex:i];
-            UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i - skip) * 80), wd, 80)];
-            [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
-            eventView.tag = i;
 
+            bool newDay = i == 0;
+            if(!newDay)
+            {
+                Event *prevEvent = [self.Events objectAtIndex:i - 1];
+                if(prevEvent.dayOfWeek != event.dayOfWeek)
+                    newDay = true;
+            }
+            if(newDay)
+            {
+                NSDate *today = [NSDate date];
+                NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
+                [myFormatter setDateFormat:@"EEEE"]; // day, like "Saturday"
+                NSString *dayText = [myFormatter stringFromDate:today];
+                
+                NSArray *daysOfWeek = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil ];
+                
+                if([dayText isEqualToString:[daysOfWeek objectAtIndex:event.dayOfWeek]])
+                    dayText = @"Today";
+                else if([dayText isEqualToString:[daysOfWeek objectAtIndex:(event.dayOfWeek + 6) % 7]])
+                    dayText = @"Tomorrow";
+                
+                UIControl *newDayView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i + days) * 80), wd, 80)];
+                [self addSubview:newDayView];
+                days++;
+                
+//                if(i > 0)
+//                {
+//                    UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, newDayView.frame.size.width, 1)];
+//                    topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+//                    topBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
+//                    topBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+//                    topBorder.layer.shadowRadius = 3.0f;
+//                    topBorder.layer.shadowOpacity = 1.0f;
+//                    [newDayView addSubview:topBorder];
+//                }
+                
+                UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, newDayView.frame.size.height - 1.0f, newDayView.frame.size.width, 1)];
+                bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [newDayView addSubview:bottomBorder];
+                
+                UIView *middleBorder = [[UIView alloc] initWithFrame:CGRectMake(20, newDayView.frame.size.height / 2, newDayView.frame.size.width - 40, 1)];
+                middleBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [newDayView addSubview:middleBorder];
+                
+                UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 31, wd - 200, 20)];
+                dayLabel.text = [NSString stringWithFormat:@"%@", dayText];
+                dayLabel.textAlignment = NSTextAlignmentCenter;
+                dayLabel.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+                [dayLabel setFont:[UIFont boldSystemFontOfSize:18]];
+                [newDayView addSubview:dayLabel];
+                
+            }
+             
+            UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i - skip + days) * 80), wd, 80)];
+            [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
+            eventView.backgroundColor = [UIColor whiteColor];
+            eventView.tag = i;
+             
             //Icon
             if(event.isGoing)
             {
@@ -145,7 +201,7 @@
 
 
             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
-            bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+            bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
             [eventView addSubview:bottomBorder];
 
             [self addSubview:eventView];

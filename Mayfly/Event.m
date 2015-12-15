@@ -23,6 +23,7 @@
 @synthesize invited = _invited;
 @synthesize going = _going;
 @synthesize referenceId = _referenceId;
+@synthesize dayOfWeek = _dayOfWeek;
 
 -(id)init:(NSDictionary *)event {
     self = [super init];
@@ -45,6 +46,7 @@
         self.invited = [event objectForKey:@"invited"];
         self.going = [event objectForKey:@"going"];
         self.referenceId = [[event objectForKey:@"referenceid"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"referenceid"] intValue];
+        self.dayOfWeek = [[event objectForKey:@"dayofweek"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"dayofweek"] intValue];
     }
     return self;
 }

@@ -25,8 +25,8 @@
     
     self.backgroundColor = [UIColor redColor];
     
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    //NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    //NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     //UIImageView *launch = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
     //[launch setImage:[UIImage imageNamed:@"launch1242x2208"]];
@@ -53,7 +53,7 @@
     UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
     [header setImage:[UIImage imageNamed:@"title"]];
     [self addSubview:header];
-
+    
     self.notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     BOOL notify = appDelegate.hasNotifications || (NSString *)[Session sessionVariables][@"referenceId"] != nil;
@@ -65,6 +65,14 @@
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [eventsView loadEvents];
     [self addSubview:eventsView];
+    
+    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 1)];
+    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
+    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+    bottomBorder.layer.shadowRadius = 3.0f;
+    bottomBorder.layer.shadowOpacity = 1.0f;
+    [self addSubview:bottomBorder];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
     [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];

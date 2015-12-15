@@ -26,6 +26,7 @@
 @property (nonatomic, copy) NSString *invited;
 @property (nonatomic, copy) NSString *going;
 @property (nonatomic, assign) NSUInteger referenceId;
+@property (nonatomic, assign) NSUInteger dayOfWeek;
 
 -(id)init:(NSDictionary *)event;
 -(id)initFromUrl:(NSString *)url;

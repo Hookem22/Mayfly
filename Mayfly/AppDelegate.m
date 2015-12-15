@@ -143,18 +143,17 @@
 }
 
 -(void)LoginUser {
-    ViewController *vc = (ViewController *)self.window.rootViewController;
-    MFView *mfView = (MFView *)vc.mainView;
-    [mfView loadWebsite];
+    //ViewController *vc = (ViewController *)self.window.rootViewController;
+    //MFView *mfView = (MFView *)vc.mainView;
+    //[mfView loadWebsite];
     
-    /*
+    
     [User login:^(User *user) {
         ViewController *vc = (ViewController *)self.window.rootViewController;
         MFView *mfView = (MFView *)vc.mainView;
-        [mfView loadWebsite];
-        //[mfView refreshEvents];
+        [mfView refreshEvents];
     }];
-    */
+    
 
 }
 
