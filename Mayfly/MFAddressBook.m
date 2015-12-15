@@ -71,6 +71,7 @@
     
     __block BOOL accessGranted = NO;
     
+    /*
     if (ABAddressBookRequestAccessWithCompletion) { // We are on iOS 6
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         
@@ -81,7 +82,7 @@
         
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     }
-    
+    */
     if (accessGranted) {
         NSMutableArray *contacts = [[NSMutableArray alloc] init];
         CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
@@ -198,8 +199,8 @@
 {
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
     
-    __block BOOL accessGranted = NO;
-    
+    __block BOOL accessGranted = YES;
+    /*
     if (ABAddressBookRequestAccessWithCompletion) { // We are on iOS 6
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         
@@ -215,7 +216,7 @@
         accessGranted = YES;
         [self getContactsWithAddressBook:addressBook invited:invited];
     }
-    
+    */
     if (accessGranted) {
         [self getContactsWithAddressBook:addressBook invited:invited];
     }

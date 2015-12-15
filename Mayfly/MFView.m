@@ -23,14 +23,14 @@
     self = [super init];
     if (!self) return nil;
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor redColor];
     
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    UIImageView *launch = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
-    [launch setImage:[UIImage imageNamed:@"launch1242x2208"]];
-    [self addSubview:launch];
+    //UIImageView *launch = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+    //[launch setImage:[UIImage imageNamed:@"launch1242x2208"]];
+    //[self addSubview:launch];
     
     return self;
 }
