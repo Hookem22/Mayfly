@@ -156,6 +156,30 @@
     return dateDiff;
 }
 
++(void)addTitleBar:(UIView *)view titleText:(NSString *)titleText
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 1)];
+    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
+    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+    bottomBorder.layer.shadowRadius = 3.0f;
+    bottomBorder.layer.shadowOpacity = 1.0f;
+    [view addSubview:bottomBorder];
+    
+    UIView *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 60)];
+    headerView.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+    [view addSubview:headerView];
+    
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, wd, 60)];
+    headerLabel.text = titleText;
+    headerLabel.textAlignment = NSTextAlignmentCenter;
+    headerLabel.textColor = [UIColor whiteColor];
+    [headerLabel setFont:[UIFont boldSystemFontOfSize:18.f]];
+    [view addSubview:headerLabel];
+}
+
 +(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

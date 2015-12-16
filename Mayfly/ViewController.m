@@ -15,7 +15,8 @@
     
     self.mainView = [[MFView alloc] init];
     self.view = self.mainView;
-    [self.mainView setup];
+    //[self.mainView setup];
+    
     //[self.mainView loadWebsite];
     
     //debugging only
@@ -114,13 +115,14 @@
     location.longitude = 0; //cllocation.coordinate.longitude;
 
     [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
-    
-    /*for(id subview in self.mainView.subviews) { //Bug for loading cards twice
-        if([subview isMemberOfClass:[DWDraggableView class]] || [subview isMemberOfClass:[DWLeftSideBar class]] )
-            return;
-    }*/
-    
-    [self.mainView setup];
+    [School get:location.latitude longitdue:location.longitude completion:^(School *school) {
+        if(school != nil)
+        {
+            [[Session sessionVariables] setObject:school forKey:@"currentSchool"];
+            [self.mainView setup];
+        }
+    }];
+
     //[self.mainView sendLatLngToWeb];
     
 }

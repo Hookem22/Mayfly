@@ -7,7 +7,11 @@
 //
 
 #import "MFClockView.h"
+@interface MFClockView ()
 
+@property (nonatomic, strong) NSDate *dateTime;
+
+@end
 
 @implementation MFClockView
 
@@ -38,15 +42,17 @@
 -(NSDate *)getTime
 {
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"h:mm a"];
-    NSDate *time = [outputFormatter dateFromString:self.timeText.text];
-    return time;
+    [outputFormatter setDateFormat:@"MM-dd-yyyy h:mm a"];
+    NSString *sDate = [outputFormatter stringFromDate:self.dateTime];
+    NSDate *date = [outputFormatter dateFromString:sDate];
+    return date;
 }
 
 -(void)setTime:(NSDate *)time
 {
+    self.dateTime = time;
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"h:mm a"];
+    [outputFormatter setDateFormat:@"EEE MMM dd h:mm a"];
     self.timeText.text = [outputFormatter stringFromDate:time];
 }
 
@@ -59,9 +65,9 @@
     clockView.backgroundColor = [UIColor whiteColor];
     clockView.tag = 1001;
     [self.superview addSubview:clockView];
-
+    
     UIDatePicker  *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 20, wd, 200)];
-    datePicker.datePickerMode = UIDatePickerModeTime;
+    datePicker.datePickerMode = UIDatePickerModeDateAndTime; //UIDatePickerModeTime;
     //NSDate *in30min = [NSDate dateWithTimeIntervalSinceNow:30*60];
     //[datePicker setDate:in30min];
     [datePicker addTarget:self action:@selector(didChangePickerDate:) forControlEvents:UIControlEventValueChanged];
@@ -71,7 +77,6 @@
     {
         [datePicker setDate:[self getTime]];
     }
-    
     
     [UIView animateWithDuration:0.3
                      animations:^{
@@ -100,8 +105,9 @@
 
 -(void)setStartDate:(NSDate *)date
 {
+    self.dateTime = date;
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"h:mm a"];
+    [outputFormatter setDateFormat:@"EEE MMM dd h:mm a"];
     
     NSString *start = [outputFormatter stringFromDate:date];
     self.timeText.text = start;

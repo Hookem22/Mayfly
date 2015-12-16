@@ -11,6 +11,7 @@
 #import <MessageUI/MessageUI.h>
 #import "MFView.h"
 #import "Session.h"
+#import "School.h"
 
 @class MFView;
 

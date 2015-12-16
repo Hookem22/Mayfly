@@ -23,7 +23,7 @@
     self = [super init];
     if (!self) return nil;
     
-    self.backgroundColor = [UIColor redColor];
+    self.backgroundColor = [UIColor whiteColor];
     
     //NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     //NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
@@ -43,12 +43,11 @@
     for(UIView *subview in self.subviews)
         [subview removeFromSuperview];
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 80)];
-    //headerLabel.text = @"Pow Wow";
-    headerLabel.textAlignment = NSTextAlignmentCenter;
-    headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
-    [self addSubview:headerLabel];
+    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+    [eventsView loadEvents];
+    [self addSubview:eventsView];
+    
+    [MFHelpers addTitleBar:self titleText:@""];
     
     UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
     [header setImage:[UIImage imageNamed:@"title"]];
@@ -61,18 +60,6 @@
     [self.notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [self.notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.notificationButton];
-    
-    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
-    [eventsView loadEvents];
-    [self addSubview:eventsView];
-    
-    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 1)];
-    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
-    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
-    bottomBorder.layer.shadowRadius = 3.0f;
-    bottomBorder.layer.shadowOpacity = 1.0f;
-    [self addSubview:bottomBorder];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
     [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];

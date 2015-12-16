@@ -32,7 +32,7 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    [Event get:^(NSArray *events)
+    [Event getBySchool:^(NSArray *events)
      {
          for(UIView *subview in self.subviews)
              [subview removeFromSuperview];
@@ -60,13 +60,13 @@
                 NSDate *today = [NSDate date];
                 NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
                 [myFormatter setDateFormat:@"EEEE"]; // day, like "Saturday"
-                NSString *dayText = [myFormatter stringFromDate:today];
+                NSString *todayText = [myFormatter stringFromDate:today];
                 
                 NSArray *daysOfWeek = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil ];
-                
-                if([dayText isEqualToString:[daysOfWeek objectAtIndex:event.dayOfWeek]])
+                NSString *dayText = [daysOfWeek objectAtIndex:event.dayOfWeek];
+                if([todayText isEqualToString:dayText])
                     dayText = @"Today";
-                else if([dayText isEqualToString:[daysOfWeek objectAtIndex:(event.dayOfWeek + 6) % 7]])
+                else if([todayText isEqualToString:[daysOfWeek objectAtIndex:(event.dayOfWeek + 6) % 7]])
                     dayText = @"Tomorrow";
                 
                 UIControl *newDayView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i + days) * 80), wd, 80)];
@@ -118,8 +118,8 @@
                 NSString *iconImage = @"";
                 if(event.isInvited)
                     iconImage = @"invited";
-                else if(!event.isPrivate)
-                    iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
+                //else if(!event.isPrivate)
+                //    iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
                 else
                     iconImage = @"lock";
 
@@ -159,27 +159,27 @@
             timeLabel.textAlignment = NSTextAlignmentRight;
             [eventView addSubview:timeLabel];
              
-            if(event.isPrivate && !event.isGoing && !event.isInvited)
-            {
-                timeLabel.text = @"Private";
-            }
-            else
-            {
-                NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-                [outputFormatter setDateFormat:@"h:mm a"];
-                timeLabel.text = [outputFormatter stringFromDate:event.startTime];
-            }
-
-            if([event.going isMemberOfClass:[NSNull class]]) {
-                skip++;
-                continue;
-            }
-
-            NSArray *going = [event.going isEqualToString:@""] ? [[NSArray alloc] init] : [event.going componentsSeparatedByString:@"|"];
-            if(!event.isGoing && event.maxParticipants > 0 && [going count] >= event.maxParticipants) {
-                skip++;
-                continue;
-            }
+//            if(event.isPrivate && !event.isGoing && !event.isInvited)
+//            {
+//                timeLabel.text = @"Private";
+//            }
+//            else
+//            {
+//                NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+//                [outputFormatter setDateFormat:@"h:mm a"];
+//                timeLabel.text = [outputFormatter stringFromDate:event.startTime];
+//            }
+//
+//            if([event.going isMemberOfClass:[NSNull class]]) {
+//                skip++;
+//                continue;
+//            }
+//
+//            NSArray *going = [event.going isEqualToString:@""] ? [[NSArray alloc] init] : [event.going componentsSeparatedByString:@"|"];
+//            if(!event.isGoing && event.maxParticipants > 0 && [going count] >= event.maxParticipants) {
+//                skip++;
+//                continue;
+//            }
             /*
             UILabel *manyLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/4, 40, (wd*2)/5, 20)];
             manyLabelContainer.textAlignment = NSTextAlignmentRight;
@@ -246,10 +246,10 @@
     NSMutableArray *invited = [[NSMutableArray alloc] init];
     for(Event *event in self.Events)
     {
-        if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
-            [going addObject:event];
-        if([event.invited rangeOfString:appDelegate.facebookId].location != NSNotFound)
-            [invited addObject:event];
+//        if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
+//            [going addObject:event];
+//        if([event.invited rangeOfString:appDelegate.facebookId].location != NSNotFound)
+//            [invited addObject:event];
     }
     
     NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
@@ -275,21 +275,21 @@
     long tagId = button.tag;
     
     Event *event = (Event *)[self.Events objectAtIndex:tagId];
-    if(event.isPrivate && !event.isInvited && ![FBSDKAccessToken currentAccessToken])
-    {
-        MFLoginView *loginView = [[MFLoginView alloc] init];
-        [MFHelpers open:loginView onView:self.superview];
-    }
-    else if(event.isPrivate && !event.isGoing && !event.isInvited)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
-                                                        message:@"You cannot join private events unless you are invited."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-    else
+//    if(event.isPrivate && !event.isInvited && ![FBSDKAccessToken currentAccessToken])
+//    {
+//        MFLoginView *loginView = [[MFLoginView alloc] init];
+//        [MFHelpers open:loginView onView:self.superview];
+//    }
+//    else if(event.isPrivate && !event.isGoing && !event.isInvited)
+//    {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
+//                                                        message:@"You cannot join private events unless you are invited."
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//    }
+//    else
     {
         MFDetailView *detailView = [[MFDetailView alloc] init:event.eventId];
         [MFHelpers open:detailView onView:self.superview];

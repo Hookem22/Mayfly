@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UITextField *minText;
 @property (nonatomic, strong) UITextField *maxText;
 @property (nonatomic, strong) MFClockView *startText;
+@property (nonatomic, strong) UIButton *saveButton;
 
 @end
 
@@ -51,24 +52,13 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, wd, 20)];
-    headerLabel.textAlignment = NSTextAlignmentCenter;
-    headerLabel.text = self.event ? @"Edit Event" : @"Create Event";
-    [self addSubview:headerLabel];
+    NSString *headerLabel = self.event ? @"Edit Event" : @"Create Event";
+    [MFHelpers addTitleBar:self titleText:headerLabel];
     
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
+    [cancelButton setImage:[UIImage imageNamed:@"whitebackarrow"] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(15, 20, 80, 40);
     [self addSubview:cancelButton];
-    
-    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    NSString *saveButtonTitle = self.event ? @"Save" : @"Create";
-    [saveButton setTitle:saveButtonTitle forState:UIControlStateNormal];
-    [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
-    saveButton.frame = CGRectMake(wd - 100, 20, 80, 40);
-    [self addSubview:saveButton];
     
     UIScrollView *createView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 50, wd, ht - 60)];
     self.createView = createView;
@@ -87,10 +77,11 @@
     self.nameText = nameText;
     [createView addSubview:nameText];
     
-    self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 60, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 445)];
-    [createView addSubview:self.locationView];
+    //self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 60, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 445)];
+    //[createView addSubview:self.locationView];
     
-    self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 60, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
+    //self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 60, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
+    self.startText = [[MFClockView alloc] initWithFrame:CGRectMake(30, 60, wd - 60, 30) placeHolder:@"Start Time"];
     [createView addSubview:self.startText];
     
     UITextView *descText = [[UITextView alloc] initWithFrame:CGRectMake(30, 100, wd - 60, 80)];
@@ -102,13 +93,13 @@
     descText.clipsToBounds = YES;
     
     descText.delegate = self;
-    descText.text = @"Details";
+    descText.text = @"Location & Details";
     descText.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     self.descText = descText;
     [createView addSubview:descText];
     
     UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
-    participantsLabel.text = @"How Many People?";
+    participantsLabel.text = @"Total People?";
     [createView addSubview:participantsLabel];
     
     UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 5, 190, (wd / 5) - 20, 30)];
@@ -131,15 +122,15 @@
     self.maxText = maxText;
     [createView addSubview:maxText];
     
-    self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
-    [self.publicButton switchButton]; //Start as private
-    [createView addSubview:self.publicButton];
+//    self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
+//    [self.publicButton switchButton]; //Start as private
+//    [createView addSubview:self.publicButton];
     
     if(self.event)
     {
         nameText.text = self.event.name;
-        if([self.event.eventDescription length]) {
-            descText.text = self.event.eventDescription;
+        if([self.event.description length]) {
+            descText.text = self.event.description;
             descText.textColor = [UIColor blackColor];
         }
         self.locationView.locationText.text = self.event.location.name;
@@ -149,18 +140,35 @@
         if(self.event.maxParticipants)
             maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants - 1];
         
-        if(!self.event.isPrivate)
-           [self.publicButton switchButton];
     }
     else
     {
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [addFriendsButton setTitle:@"Invite Friends" forState:UIControlStateNormal];
+        [addFriendsButton setTitle:@"Invite Friends or Groups" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        addFriendsButton.frame = CGRectMake(30, 275, wd-60, 30);
+        addFriendsButton.frame = CGRectMake(20, 230, wd-40, 30);
+        [addFriendsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
         [createView addSubview:addFriendsButton];
     }
     
+    UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
+    topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+//    topBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
+//    topBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+//    topBorder.layer.shadowRadius = 3.0f;
+//    topBorder.layer.shadowOpacity = 1.0f;
+    [createView addSubview:topBorder];
+    
+    UIButton *saveButton = [[UIButton alloc] initWithFrame:CGRectMake(20, createView.frame.size.height - 45, wd - 40, 40)];
+    NSString *saveButtonTitle = self.event ? @"Save" : @"Create";
+    [saveButton setTitle:saveButtonTitle forState:UIControlStateNormal];
+    [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [saveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    saveButton.layer.cornerRadius = 20;
+    saveButton.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+    self.saveButton = saveButton;
+    [createView addSubview:saveButton];
+       
     if(![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
@@ -245,13 +253,13 @@
         self.nameText.layer.borderWidth= 1.0f;
         error = true;
     }
-    if([self.locationView.locationText.text isEqualToString:@""])
-    {
-        self.locationView.locationText.layer.borderColor=[[UIColor redColor] CGColor];
-        self.locationView.locationText.layer.cornerRadius=8.0f;
-        self.locationView.locationText.layer.borderWidth= 1.0f;
-        error = true;
-    }
+//    if([self.locationView.locationText.text isEqualToString:@""])
+//    {
+//        self.locationView.locationText.layer.borderColor=[[UIColor redColor] CGColor];
+//        self.locationView.locationText.layer.cornerRadius=8.0f;
+//        self.locationView.locationText.layer.borderWidth= 1.0f;
+//        error = true;
+//    }
     if([self.startText.timeText.text isEqualToString:@""])
     {
         self.startText.timeText.layer.borderColor=[[UIColor redColor] CGColor];
@@ -259,44 +267,39 @@
         self.startText.timeText.layer.borderWidth= 1.0f;
         error = true;
     }
-    /*if([self.minText.text isEqualToString:@""])
-    {
-        self.minText.layer.borderColor=[[UIColor redColor] CGColor];
-        self.minText.layer.cornerRadius=8.0f;
-        self.minText.layer.borderWidth= 1.0f;
-        error = true;
-    }*/
+//    if([self.minText.text isEqualToString:@""])
+//    {
+//        self.minText.layer.borderColor=[[UIColor redColor] CGColor];
+//        self.minText.layer.cornerRadius=8.0f;
+//        self.minText.layer.borderWidth= 1.0f;
+//        error = true;
+//    }
     if(error)
         return;
     
     
     Event *event = self.event == nil ? [[Event alloc] init] : self.event;
     event.name = self.nameText.text;
-    event.eventDescription = [self.descText.text isEqualToString:@"Details"] ? @"" : self.descText.text;
+    event.description = [self.descText.text isEqualToString:@"Location & Details"] ? @"" : self.descText.text;
     event.location = self.locationView.location != nil ? self.locationView.location : [[Location alloc] init];
-    event.minParticipants = [self.minText.text integerValue] + 1;
+    event.minParticipants = [self.minText.text integerValue];
     event.maxParticipants = [self.maxText.text integerValue];
-    if(event.maxParticipants > 0)
-        event.maxParticipants++;
+    event.groupId = @""; //TODO
     
-    NSDate *time = self.startText.getTime;
+    School *school = (School *)[Session sessionVariables][@"currentSchool"];
+    event.location = [[Location alloc] init: @{ @"name": school.name, @"address": @"", @"latitude": [NSNumber numberWithInt:(int)school.latitude], @"longitude": [NSNumber numberWithInt:(int)school.longitude] }];
+    event.schoolId = school.schoolId;
     
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
-    NSDateComponents *timeComponents = [calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:time];
-    [components setHour:timeComponents.hour];
-    [components setMinute:timeComponents.minute];
-    event.startTime = [calendar dateFromComponents:components];
+    event.startTime = self.startText.getTime;
     
-    NSTimeInterval cutoffInterval = 0;
-    int secondsUntil = [event.startTime timeIntervalSinceDate: [NSDate date]];
-    if(secondsUntil >= 29 * 60)
-        cutoffInterval = -15 * 60;
-    if(secondsUntil >= 59 * 60)
-        cutoffInterval = -30 * 60;
-    if(secondsUntil >= 179 * 60)
-        cutoffInterval = -60 * 60;
-    event.cutoffTime = [event.startTime dateByAddingTimeInterval:cutoffInterval];
+    NSDateFormatter *dayFormatter = [[NSDateFormatter alloc] init];
+    [dayFormatter setDateFormat:@"c"];
+    NSString *weekday = [dayFormatter stringFromDate:event.startTime];
+    event.dayOfWeek = ([weekday intValue] + 6) % 7;
+    
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    [timeFormatter setDateFormat:@"h:mm a"];
+    event.localTime = [timeFormatter stringFromDate:event.startTime];
     
     //Don't schedule time earlier than now
     if ([event.startTime compare:[NSDate date]] == NSOrderedAscending) {
@@ -306,21 +309,6 @@
         return;
     }
     
-    if(self.event && self.event.isPrivate && self.publicButton.isYes)
-    {
-        event.isPrivate = NO;
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Public"
-                                                        message:@"Once you make an event public, you cannot change it back to private. Continue?"
-                                                       delegate:self
-                                              cancelButtonTitle:@"No"
-                                              otherButtonTitles:@"Yes", nil];
-        [alert show];
-        
-        return;
-    }
-    event.isPrivate = !self.publicButton.isYes; //isYes == Public
-    //event.isPrivate = NO;
     [self save:event];
 }
 
@@ -329,10 +317,10 @@
     [MFHelpers showProgressView:self];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(event.going == nil || [event.going isEqualToString:@""])
-        event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
-    if(event.invited == nil || [event.invited isEqualToString:@""])
-        event.invited = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
+//    if(event.going == nil || [event.going isEqualToString:@""])
+//        event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
+//    if(event.invited == nil || [event.invited isEqualToString:@""])
+//        event.invited = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
     
     [event save:^(Event *event)
      {
@@ -371,7 +359,7 @@
              {
                  [facebookIds addObject:fb];
                  NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
-                 event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
+                 //event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
              }
              else if(phone != nil)
                  [phoneNumbers addObject:phone];
@@ -403,7 +391,7 @@
 {
     switch(buttonIndex) {
         case 0: //"No" pressed
-            self.event.isPrivate = YES;
+            //self.event.isPrivate = YES;
             break;
         case 1: //"Yes" pressed
             [self save:self.event];
@@ -423,7 +411,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    if ([textView.text isEqualToString:@"Details"]) {
+    if ([textView.text isEqualToString:@"Location & Details"]) {
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
@@ -433,7 +421,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     if ([textView.text isEqualToString:@""]) {
-        textView.text = @"Details";
+        textView.text = @"Location & Details";
         textView.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     }
     [textView resignFirstResponder];

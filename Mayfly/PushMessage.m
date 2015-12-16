@@ -20,17 +20,17 @@
 +(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    for(NSString *facebookId in [event.going componentsSeparatedByString:@"|"])
-    {
-        if([facebookId rangeOfString:appDelegate.facebookId].location == NSNotFound)
-        {
-            NSString *fbId = [facebookId substringToIndex:[facebookId rangeOfString:@":"].location];
-            [User getByFacebookId:fbId completion:^(User *user)
-             {
-                 [self push:user.pushDeviceToken header:header message:message];
-             }];
-        }
-    }
+//    for(NSString *facebookId in [event.going componentsSeparatedByString:@"|"])
+//    {
+//        if([facebookId rangeOfString:appDelegate.facebookId].location == NSNotFound)
+//        {
+//            NSString *fbId = [facebookId substringToIndex:[facebookId rangeOfString:@":"].location];
+//            [User getByFacebookId:fbId completion:^(User *user)
+//             {
+//                 [self push:user.pushDeviceToken header:header message:message];
+//             }];
+//        }
+//    }
 }
 
 +(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from event:(Event *)event

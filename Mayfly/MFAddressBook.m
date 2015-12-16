@@ -604,8 +604,8 @@
             //Add to invited
             NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
             
-            if([self.event.invited rangeOfString:fb].location == NSNotFound)
-                self.event.invited = [self.event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", self.event.invited, person];
+//            if([self.event.invited rangeOfString:fb].location == NSNotFound)
+//                self.event.invited = [self.event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", self.event.invited, person];
         }
     }
     if([contacts count] > 0)
@@ -649,8 +649,8 @@
             {
                 [phoneNumbers addObject:phone];
                 NSString *invitedPhone = [NSString stringWithFormat:@"p%@", phone];
-                if([self.event.invited rangeOfString:invitedPhone].location == NSNotFound)
-                    self.event.invited = [NSString stringWithFormat:@"%@|%@:%@", self.event.invited, invitedPhone, [contact valueForKey:@"firstName"]];
+//                if([self.event.invited rangeOfString:invitedPhone].location == NSNotFound)
+//                    self.event.invited = [NSString stringWithFormat:@"%@|%@:%@", self.event.invited, invitedPhone, [contact valueForKey:@"firstName"]];
             }
         }
     }
