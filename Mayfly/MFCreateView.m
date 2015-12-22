@@ -52,6 +52,10 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self addGestureRecognizer:recognizer];
+    
     NSString *headerLabel = self.event ? @"Edit Event" : @"Create Event";
     [MFHelpers addTitleBar:self titleText:headerLabel];
     
@@ -235,7 +239,7 @@
         [view refreshEvents];
     }
     
-    [MFHelpers close:self];
+    [MFHelpers closeRight:self];
 }
 -(void)saveButtonClick:(id)sender
 {
@@ -323,8 +327,9 @@
 //        event.invited = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
     
     [event save:^(Event *event)
-     {
-         [MFHelpers hideProgressView:self];
+    {
+        [event addGoing:appDelegate.userId isAdmin:YES];
+        [MFHelpers hideProgressView:self];
 
          if(self.event)
          {

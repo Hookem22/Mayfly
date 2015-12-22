@@ -23,6 +23,8 @@
 @synthesize dayOfWeek = _dayOfWeek;
 @synthesize localTime = _localTime;
 @synthesize schoolId = _schoolId;
+@synthesize going = _going;
+@synthesize invited = _invited;
 
 -(id)init:(NSDictionary *)event {
     self = [super init];
@@ -74,10 +76,21 @@
     [service getByWhere:whereStatement completion:^(NSArray *results) {
         for(id item in results) {
             Event *event = [[Event alloc] init:item];
-            completion(event);
+            [event getEventGoing:^(NSArray *goings) {
+                event.going = [NSArray arrayWithArray:goings];
+                completion(event);
+            }];
+            //completion(event);
             return;
         }
         completion(nil);
+    }];
+}
+
+-(void)getEventGoing:(QSCompletionBlock)completion
+{
+    [EventGoing getByEventId:self.eventId completion:^(NSArray *goings) {
+        completion(goings);
     }];
 }
 
@@ -163,8 +176,33 @@
 
 }
 
--(void)addGoing
+-(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin
 {
+    [EventGoing joinEvent:self.eventId userId:userId isAdmin:isAdmin];
+}
+
+-(void)removeGoing:(NSString *)userId
+{
+    QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
+    
+    NSString *eventGoingId = @"";
+    for(EventGoing *eg in self.going)
+    {
+        if([eg.userId isEqualToString:userId])
+        {
+            eventGoingId = eg.eventGoingId;
+            break;
+        }
+    }
+    [service deleteItem:eventGoingId completion:^(NSDictionary *item)
+     {
+         
+     }];
+}
+
+
+//-(void)addGoing
+//{
 //    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 //    NSString *person = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
 //    if(self.going == nil || [self.going isEqualToString:@""])
@@ -186,10 +224,10 @@
 //             }
 //         }
 //     }];
-}
+//}
 
--(void)removeGoing
-{
+//-(void)removeGoing
+//{
 //    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 //    
 //    NSMutableArray *list = [self stringToList:self.going];
@@ -211,7 +249,7 @@
 //     {
 //         
 //     }];
-}
+//}
 
 -(void)addInvited:(NSString *)facebookId firstName:(NSString *)firstName
 {
@@ -231,12 +269,21 @@
 
 -(BOOL)isGoing
 {
-    return TRUE;
-//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//    if(appDelegate == nil || appDelegate.facebookId == nil)
-//        return false;
-//    
-//    return [self.going rangeOfString:appDelegate.facebookId].location != NSNotFound;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate == nil || appDelegate.facebookId == nil)
+        return false;
+    
+    for(EventGoing *evgoing in self.going)
+    {
+        NSLog(@"%@", evgoing);
+
+        NSString *fbId = evgoing.facebookId;
+        NSLog(@"%@", fbId);
+        if([fbId isEqualToString:appDelegate.facebookId])
+            return true;
+    }
+    
+    return false;
 }
 -(BOOL)isInvited
 {

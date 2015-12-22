@@ -62,6 +62,7 @@
 		485AB3751C20BA2C0035C79D /* whiteMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB36B1C20BA2C0035C79D /* whiteMenu.png */; };
 		485AB3761C20BA2C0035C79D /* whiteSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB36C1C20BA2C0035C79D /* whiteSearch.png */; };
 		485AB3791C20CC450035C79D /* School.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AB3781C20CC450035C79D /* School.m */; };
+		485AB37C1C2348130035C79D /* EventGoing.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AB37B1C2348130035C79D /* EventGoing.m */; };
 		4886C9E11B0BBAA900909747 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E01B0BBAA900909747 /* main.m */; };
 		4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E31B0BBAA900909747 /* AppDelegate.m */; };
 		4886C9E71B0BBAA900909747 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E61B0BBAA900909747 /* ViewController.m */; };
@@ -192,6 +193,8 @@
 		485AB36C1C20BA2C0035C79D /* whiteSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteSearch.png; sourceTree = "<group>"; };
 		485AB3771C20CC450035C79D /* School.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = School.h; sourceTree = "<group>"; };
 		485AB3781C20CC450035C79D /* School.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = School.m; sourceTree = "<group>"; };
+		485AB37A1C2348130035C79D /* EventGoing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventGoing.h; sourceTree = "<group>"; };
+		485AB37B1C2348130035C79D /* EventGoing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventGoing.m; sourceTree = "<group>"; };
 		4886C9DB1B0BBAA900909747 /* Pow Wow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pow Wow.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4886C9DF1B0BBAA900909747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4886C9E01B0BBAA900909747 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -452,6 +455,8 @@
 				4886CA1B1B0BC41100909747 /* Session.m */,
 				4886CA1D1B0BCB7000909747 /* Event.h */,
 				4886CA1E1B0BCB7000909747 /* Event.m */,
+				485AB37A1C2348130035C79D /* EventGoing.h */,
+				485AB37B1C2348130035C79D /* EventGoing.m */,
 				4843EA2E1B1653FD00C510B4 /* Location.h */,
 				4843EA2F1B1653FD00C510B4 /* Location.m */,
 				4843EA711B1CE36A00C510B4 /* User.h */,
@@ -680,6 +685,7 @@
 				48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */,
 				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
+				485AB37C1C2348130035C79D /* EventGoing.m in Sources */,
 				48185D481B2B517B00B4EE08 /* MFProgressView.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
 				48185D4B1B2B52E900B4EE08 /* MFHelpers.m in Sources */,

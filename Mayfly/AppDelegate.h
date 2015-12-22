@@ -15,6 +15,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *deviceToken;
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *firstName;

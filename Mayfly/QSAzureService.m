@@ -123,7 +123,7 @@
     [self.client invokeAPI:procName body:params HTTPMethod:@"POST" parameters:nil
                    headers:nil completion:^(NSArray *results, NSHTTPURLResponse *response, NSError *error) {
                        [self logErrorIfNotNil:error];
-                       NSLog([NSString stringWithFormat:@"%@", results]);
+                       NSLog(@"%@", results);
                        items = [results mutableCopy];
                        
                        completion(items);

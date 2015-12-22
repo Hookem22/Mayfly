@@ -12,6 +12,7 @@
 #import "Location.h"
 #import "Session.h"
 #import "School.h"
+#import "EventGoing.h"
 
 @interface Event : NSObject
 
@@ -28,6 +29,9 @@
 @property (nonatomic, copy) NSString *localTime;
 @property (nonatomic, copy) NSString *schoolId;
 
+@property (nonatomic, copy) NSArray *going;
+@property (nonatomic, copy) NSArray *invited;
+
 -(id)init:(NSDictionary *)event;
 -(id)initFromUrl:(NSString *)url;
 +(void)get:(QSCompletionBlock)completion;
@@ -36,8 +40,8 @@
 +(void)getBySchool:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 
--(void)addGoing;
--(void)removeGoing;
+-(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin;
+-(void)removeGoing:(NSString *)userId;
 -(void)addInvited:(NSString *)facebookId firstName:(NSString *)firstName;
 -(BOOL)isGoing;
 -(BOOL)isInvited;

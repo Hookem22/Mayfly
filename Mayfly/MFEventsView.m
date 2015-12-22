@@ -107,7 +107,7 @@
             eventView.tag = i;
              
             //Icon
-            if(event.isGoing)
+            if([event isGoing])
             {
                 AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
                 MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(10, 10, 50, 50) facebookId:appDelegate.facebookId];
@@ -205,7 +205,7 @@
             [eventView addSubview:bottomBorder];
 
             [self addSubview:eventView];
-            self.contentSize = CGSizeMake(wd, (((i - skip) + 1) * 80));
+            self.contentSize = CGSizeMake(wd, (((days + i - skip) + 2) * 80));
          }
 
          if(self.contentSize.height < ht)

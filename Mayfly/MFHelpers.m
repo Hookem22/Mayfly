@@ -32,7 +32,7 @@
     view.frame = CGRectMake(0, ht, wd, ht);
     [onView addSubview:view];
     
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:0.0
                      animations:^{
                          view.frame = CGRectMake(0, 0, wd, ht);
                      }
@@ -176,7 +176,7 @@
     headerLabel.text = titleText;
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.textColor = [UIColor whiteColor];
-    [headerLabel setFont:[UIFont boldSystemFontOfSize:18.f]];
+    [headerLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     [view addSubview:headerLabel];
 }
 

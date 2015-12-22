@@ -149,6 +149,7 @@
     
     
     [User login:^(User *user) {
+        self.userId = user.userId;
         ViewController *vc = (ViewController *)self.window.rootViewController;
         MFView *mfView = (MFView *)vc.mainView;
         [mfView refreshEvents];
