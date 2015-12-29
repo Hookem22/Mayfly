@@ -45,6 +45,9 @@
 		48214FCE1B0E57FF00B4E54D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCB1B0E57FF00B4E54D /* FBSDKLoginKit.framework */; };
 		48214FCF1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48214FCC1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework */; };
 		48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48214FD11B0E6B6100B4E54D /* MFLoginView.m */; };
+		4835C5B31C31DACF00BB8962 /* MFGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4835C5B21C31DACF00BB8962 /* MFGroupView.m */; };
+		4835C5B61C33109200BB8962 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 4835C5B51C33109200BB8962 /* Group.m */; };
+		4835C5B81C33250F00BB8962 /* group.png in Resources */ = {isa = PBXBuildFile; fileRef = 4835C5B71C33250F00BB8962 /* group.png */; };
 		4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */; };
 		4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA1E1B0FA78100C510B4 /* MFAddressBook.m */; };
 		4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA261B14ECE700C510B4 /* MFMapView.m */; };
@@ -94,6 +97,7 @@
 		48A0757D1B34AB78008E4994 /* launch1242x2208@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757A1B34AB78008E4994 /* launch1242x2208@2x.png */; };
 		48A0757F1B34AF80008E4994 /* launchwhitearrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */; };
 		48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A82A491B0D203000A8E978 /* MFCreateView.m */; };
+		48C5BEFB1C3331820036C9B1 /* MFCreateGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */; };
 		48CC80511B38B9FD0098412E /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */; };
 		48CC80521B38B9FD0098412E /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */; };
 		48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC80541B38C15B0098412E /* QSAzureMessageService.m */; };
@@ -170,6 +174,11 @@
 		48214FCC1B0E57FF00B4E54D /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = ../Documents/FacebookSDK/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		48214FD01B0E6B6100B4E54D /* MFLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFLoginView.h; sourceTree = "<group>"; };
 		48214FD11B0E6B6100B4E54D /* MFLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFLoginView.m; sourceTree = "<group>"; };
+		4835C5B11C31DACF00BB8962 /* MFGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGroupView.h; sourceTree = "<group>"; };
+		4835C5B21C31DACF00BB8962 /* MFGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFGroupView.m; sourceTree = "<group>"; };
+		4835C5B41C33109200BB8962 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		4835C5B51C33109200BB8962 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		4835C5B71C33250F00BB8962 /* group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group.png; sourceTree = "<group>"; };
 		4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fbLoginButton@2x.png"; sourceTree = "<group>"; };
 		4843EA1D1B0FA78100C510B4 /* MFAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFAddressBook.h; sourceTree = "<group>"; };
 		4843EA1E1B0FA78100C510B4 /* MFAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFAddressBook.m; sourceTree = "<group>"; };
@@ -239,6 +248,8 @@
 		48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "launchwhitearrow@2x.png"; path = "../../Downloads/launchwhitearrow@2x.png"; sourceTree = "<group>"; };
 		48A82A481B0D203000A8E978 /* MFCreateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateView.h; sourceTree = "<group>"; };
 		48A82A491B0D203000A8E978 /* MFCreateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateView.m; sourceTree = "<group>"; };
+		48C5BEF91C3331820036C9B1 /* MFCreateGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateGroupView.h; sourceTree = "<group>"; };
+		48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateGroupView.m; sourceTree = "<group>"; };
 		48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMessaging.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMessaging.framework"; sourceTree = "<group>"; };
 		48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMobileServices.framework"; sourceTree = "<group>"; };
 		48CC80531B38C15B0098412E /* QSAzureMessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureMessageService.h; sourceTree = "<group>"; };
@@ -311,6 +322,7 @@
 		4843EA181B0F952D00C510B4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4835C5B71C33250F00BB8962 /* group.png */,
 				485AB3631C20BA2C0035C79D /* grayadd.png */,
 				485AB3641C20BA2C0035C79D /* graySearch.png */,
 				485AB3651C20BA2C0035C79D /* message.png */,
@@ -396,6 +408,10 @@
 				48A82A491B0D203000A8E978 /* MFCreateView.m */,
 				488E57B01B0E400B00E2DA64 /* MFDetailView.h */,
 				488E57B11B0E400B00E2DA64 /* MFDetailView.m */,
+				4835C5B11C31DACF00BB8962 /* MFGroupView.h */,
+				4835C5B21C31DACF00BB8962 /* MFGroupView.m */,
+				48C5BEF91C3331820036C9B1 /* MFCreateGroupView.h */,
+				48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */,
 				48185D4C1B2F6A2500B4EE08 /* MFMessageView.h */,
 				48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
@@ -457,6 +473,8 @@
 				4886CA1E1B0BCB7000909747 /* Event.m */,
 				485AB37A1C2348130035C79D /* EventGoing.h */,
 				485AB37B1C2348130035C79D /* EventGoing.m */,
+				4835C5B41C33109200BB8962 /* Group.h */,
+				4835C5B51C33109200BB8962 /* Group.m */,
 				4843EA2E1B1653FD00C510B4 /* Location.h */,
 				4843EA2F1B1653FD00C510B4 /* Location.m */,
 				4843EA711B1CE36A00C510B4 /* User.h */,
@@ -599,6 +617,7 @@
 				48185D3F1B2A2DF900B4EE08 /* grayface4@2x.png in Resources */,
 				48185D3D1B2A2DF900B4EE08 /* grayface2@2x.png in Resources */,
 				48185D211B28BF8F00B4EE08 /* face6@2x.png in Resources */,
+				4835C5B81C33250F00BB8962 /* group.png in Resources */,
 				48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */,
 				48185D521B2FD59F00B4EE08 /* _message@2x.png in Resources */,
 				485AB3741C20BA2C0035C79D /* whitegroup.png in Resources */,
@@ -668,6 +687,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4835C5B61C33109200BB8962 /* Group.m in Sources */,
 				4843EA731B1CE36A00C510B4 /* User.m in Sources */,
 				48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */,
 				48185D451B2B507A00B4EE08 /* MBProgressHUD.m in Sources */,
@@ -686,11 +706,13 @@
 				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				485AB37C1C2348130035C79D /* EventGoing.m in Sources */,
+				48C5BEFB1C3331820036C9B1 /* MFCreateGroupView.m in Sources */,
 				48185D481B2B517B00B4EE08 /* MFProgressView.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
 				48185D4B1B2B52E900B4EE08 /* MFHelpers.m in Sources */,
 				48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */,
 				488E57B21B0E400B00E2DA64 /* MFDetailView.m in Sources */,
+				4835C5B31C31DACF00BB8962 /* MFGroupView.m in Sources */,
 				48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */,
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,

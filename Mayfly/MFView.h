@@ -14,12 +14,15 @@
 #import "MFLoginView.h"
 #import "MFRightSideView.h"
 #import "MFHelpers.h"
+#import "MFGroupView.h"
 
 @interface MFView : UIView <UIWebViewDelegate>
 
 -(void)setup;
 -(void)refreshEvents;
 -(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging;
+
+
 
 -(void)loadWebsite;
 -(void)returnAddressList:(NSString *)params;

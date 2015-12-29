@@ -11,6 +11,7 @@
 
 @interface MFView ()
 
+@property (nonatomic, strong) UIButton *groupButton;
 @property (nonatomic, strong) UIButton *notificationButton;
 @property (nonatomic, strong) UIWebView *webView;
 
@@ -53,18 +54,35 @@
     [header setImage:[UIImage imageNamed:@"title"]];
     [self addSubview:header];
     
-    self.notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    BOOL notify = appDelegate.hasNotifications || (NSString *)[Session sessionVariables][@"referenceId"] != nil;
-    NSString *imageName = notify ? @"bellNotify" : @"bell";
-    [self.notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-    [self.notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.notificationButton];
+    
+   
+//    self.notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    BOOL notify = appDelegate.hasNotifications || (NSString *)[Session sessionVariables][@"referenceId"] != nil;
+//    NSString *imageName = notify ? @"bellNotify" : @"bell";
+//    [self.notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+//    [self.notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:self.notificationButton];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
     [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:addButton];
+    
+    
+    MFGroupView *groupView = [[MFGroupView alloc] init];
+    groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
+    [groupView loadGroups];
+    [self addSubview:groupView];
+    
+    self.groupButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 36, 36)];
+    [self.groupButton setImage:[UIImage imageNamed:@"whitegroup"] forState:UIControlStateNormal];
+    [self.groupButton addTarget:self action:@selector(groupButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.groupButton];
+    
+    UISwipeGestureRecognizer *groupRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openGroup)];
+    [groupRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [self addGestureRecognizer:groupRecognizer];
     
     [MFHelpers showProgressView:self];
     
@@ -140,6 +158,48 @@
     return;
     */
     
+}
+
+-(void)groupButtonClick:(id)sender
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFGroupView class]])
+        {
+            MFGroupView *groupView = (MFGroupView *)subview;
+            CGRect frame = CGRectMake(wd, 60, wd, ht- 60);
+            if(groupView.frame.origin.x > 0)
+                frame = CGRectMake(0, 60, wd, ht- 60);
+
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 groupView.frame = frame;
+                             }
+                             completion:^(BOOL finished){ }];
+        }
+    }
+}
+
+-(void)openGroup
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFGroupView class]])
+        {
+            MFGroupView *groupView = (MFGroupView *)subview;
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 groupView.frame = CGRectMake(0, 60, wd, ht- 60);
+                             }
+                             completion:^(BOOL finished){ }];
+        }
+    }
 }
 
 -(void)notificationButtonClick:(id)sender
