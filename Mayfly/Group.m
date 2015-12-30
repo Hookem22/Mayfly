@@ -26,7 +26,7 @@
 -(id)init:(NSDictionary *)group {
     self = [super init];
     if (self) {
-        self.groupId = [group valueForKey:@"groupid"];
+        self.groupId = [group valueForKey:@"id"];
         self.name = [group objectForKey:@"name"];
         self.description = [group objectForKey:@"description"];
         self.pictureUrl = [group objectForKey:@"pictureurl"];
@@ -58,6 +58,71 @@
         }
         completion(list);
     }];
+}
+
++(void)get:(NSString *)groupId completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"Group"];
+    NSString *whereStatement = [NSString stringWithFormat:@"id = '%@'", groupId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        for(id item in results) {
+            Group *group = [[Group alloc] init:item];
+            [group getMembers:^(NSArray *users) {
+                group.members = [NSArray arrayWithArray:users];
+                completion(group);
+            }];
+            //completion(group);
+            return;
+        }
+        completion(nil);
+    }];
+}
+
+-(void)getMembers:(QSCompletionBlock)completion
+{
+    [GroupUsers getByGroupId:self.groupId completion:^(NSArray *results) {
+        completion(results);
+    }];
+}
+
+-(void)addMember:(NSString *)userId isAdmin:(BOOL)isAdmin
+{
+    [GroupUsers joinGroup:self.groupId userId:userId isAdmin:isAdmin];
+}
+
+-(void)removeMember:(NSString *)userId
+{
+    QSAzureService *service = [QSAzureService defaultService:@"GroupUsers"];
+    
+    NSString *groupUserId = @"";
+    for(GroupUsers *user in self.members)
+    {
+        if([user.userId isEqualToString:userId])
+        {
+            groupUserId = user.groupUserId;
+            break;
+        }
+    }
+    [service deleteItem:groupUserId completion:^(NSDictionary *item)
+     {
+         
+     }];
+}
+
+-(BOOL)isMember
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate == nil || appDelegate.userId == nil)
+        return false;
+    
+    for(GroupUsers *member in self.members)
+    {
+        if([member.facebookId isEqualToString:appDelegate.facebookId])
+            return true;
+    }
+    
+    return false;
 }
 
 -(void)save:(QSCompletionBlock)completion

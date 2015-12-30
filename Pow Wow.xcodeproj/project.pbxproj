@@ -98,6 +98,8 @@
 		48A0757F1B34AF80008E4994 /* launchwhitearrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */; };
 		48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A82A491B0D203000A8E978 /* MFCreateView.m */; };
 		48C5BEFB1C3331820036C9B1 /* MFCreateGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */; };
+		48C5BEFE1C3382EC0036C9B1 /* MFGroupDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFD1C3382EC0036C9B1 /* MFGroupDetailView.m */; };
+		48C5BF011C33922B0036C9B1 /* GroupUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BF001C33922B0036C9B1 /* GroupUsers.m */; };
 		48CC80511B38B9FD0098412E /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */; };
 		48CC80521B38B9FD0098412E /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */; };
 		48CC80551B38C15B0098412E /* QSAzureMessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CC80541B38C15B0098412E /* QSAzureMessageService.m */; };
@@ -250,6 +252,10 @@
 		48A82A491B0D203000A8E978 /* MFCreateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateView.m; sourceTree = "<group>"; };
 		48C5BEF91C3331820036C9B1 /* MFCreateGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateGroupView.h; sourceTree = "<group>"; };
 		48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateGroupView.m; sourceTree = "<group>"; };
+		48C5BEFC1C3382EC0036C9B1 /* MFGroupDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGroupDetailView.h; sourceTree = "<group>"; };
+		48C5BEFD1C3382EC0036C9B1 /* MFGroupDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFGroupDetailView.m; sourceTree = "<group>"; };
+		48C5BEFF1C33922B0036C9B1 /* GroupUsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupUsers.h; sourceTree = "<group>"; };
+		48C5BF001C33922B0036C9B1 /* GroupUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupUsers.m; sourceTree = "<group>"; };
 		48CC804F1B38B9FD0098412E /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMessaging.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMessaging.framework"; sourceTree = "<group>"; };
 		48CC80501B38B9FD0098412E /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = "../Downloads/azuresdk-iOS-v1.2.4/WindowsAzureMobileServices.framework"; sourceTree = "<group>"; };
 		48CC80531B38C15B0098412E /* QSAzureMessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureMessageService.h; sourceTree = "<group>"; };
@@ -412,6 +418,8 @@
 				4835C5B21C31DACF00BB8962 /* MFGroupView.m */,
 				48C5BEF91C3331820036C9B1 /* MFCreateGroupView.h */,
 				48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */,
+				48C5BEFC1C3382EC0036C9B1 /* MFGroupDetailView.h */,
+				48C5BEFD1C3382EC0036C9B1 /* MFGroupDetailView.m */,
 				48185D4C1B2F6A2500B4EE08 /* MFMessageView.h */,
 				48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
@@ -475,6 +483,8 @@
 				485AB37B1C2348130035C79D /* EventGoing.m */,
 				4835C5B41C33109200BB8962 /* Group.h */,
 				4835C5B51C33109200BB8962 /* Group.m */,
+				48C5BEFF1C33922B0036C9B1 /* GroupUsers.h */,
+				48C5BF001C33922B0036C9B1 /* GroupUsers.m */,
 				4843EA2E1B1653FD00C510B4 /* Location.h */,
 				4843EA2F1B1653FD00C510B4 /* Location.m */,
 				4843EA711B1CE36A00C510B4 /* User.h */,
@@ -688,6 +698,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4835C5B61C33109200BB8962 /* Group.m in Sources */,
+				48C5BEFE1C3382EC0036C9B1 /* MFGroupDetailView.m in Sources */,
 				4843EA731B1CE36A00C510B4 /* User.m in Sources */,
 				48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */,
 				48185D451B2B507A00B4EE08 /* MBProgressHUD.m in Sources */,
@@ -720,6 +731,7 @@
 				48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,
+				48C5BF011C33922B0036C9B1 /* GroupUsers.m in Sources */,
 				48CC805E1B39E25C0098412E /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

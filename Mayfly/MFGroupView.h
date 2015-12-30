@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MFCreateGroupView.h"
+#import "MFGroupDetailView.h"
 #import "MFHelpers.h"
 #import "Group.h"
 

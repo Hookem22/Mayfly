@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "QSAzureService.h"
+#import "AppDelegate.h"
 #import "Session.h"
 #import "School.h"
+#import "GroupUsers.h"
 
 @interface Group : NSObject
 
@@ -26,8 +28,15 @@
 @property (nonatomic, copy) NSString *locations;
 @property (nonatomic, assign) int orderBy;
 
+@property (nonatomic, copy) NSArray *members;
+
 -(id)init:(NSDictionary *)group;
++(void)get:(NSString *)groupId completion:(QSCompletionBlock)completion;
 +(void)getBySchool:(QSCompletionBlock)completion;
+-(void)addMember:(NSString *)userId isAdmin:(BOOL)isAdmin;
+-(void)removeMember:(NSString *)userId;
 -(void)save:(QSCompletionBlock)completion;
+
+-(BOOL)isMember;
 
 @end

@@ -74,7 +74,9 @@
          {
              Group *group = [groups objectAtIndex:i];
              
-             UIView *groupView = [[UILabel alloc] initWithFrame:CGRectMake(0, (i * 50) + 110, wd, 50)];
+             UIButton *groupView = [[UIButton alloc] initWithFrame:CGRectMake(0, (i * 50) + 110, wd, 50)];
+             [groupView addTarget:self action:@selector(groupClicked:) forControlEvents:UIControlEventTouchUpInside];
+             groupView.tag = i;
              [self addSubview:groupView];
              
              UIImageView *groupImg = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
@@ -100,6 +102,17 @@
 {
     MFCreateGroupView *view = [[MFCreateGroupView alloc] init];
     [MFHelpers open:view onView:self.superview];
+}
+
+-(void)groupClicked:(id)sender
+{
+    UIControl *button = (UIControl *)sender;
+    long tagId = button.tag;
+    
+    Group *group = (Group *)[self.Groups objectAtIndex:tagId];
+
+    MFGroupDetailView *detailView = [[MFGroupDetailView alloc] init:group.groupId];
+    [MFHelpers open:detailView onView:self.superview];
 }
 
 -(void)closeGroups:(id)sender

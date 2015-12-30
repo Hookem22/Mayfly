@@ -39,11 +39,6 @@
     [Event get:eventId completion:^(Event *event)
     {
         self.event = event;
-
-        [EventGoing getByEventId:event.eventId completion:^(NSArray *goings) {
-            event.going = goings;
-            NSLog(@"%@", event);
-        }];
         
         NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
         NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
