@@ -100,7 +100,7 @@
 -(void)refreshGroup
 {
     School *school = (School *)[Session sessionVariables][@"currentSchool"];
-    self.detailsLabel.text = [NSString stringWithFormat:@"%i Members - %@", self.group.members.count, school.name];
+    self.detailsLabel.text = [NSString stringWithFormat:@"%luu Members - %@",(unsigned long)self.group.members.count, school.name];
 }
 
 -(void)joinButtonClick:(id)sender

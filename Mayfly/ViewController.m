@@ -17,7 +17,7 @@
     self.view = self.mainView;
     //[self.mainView setup];
     
-    //[self.mainView loadWebsite];
+    [self.mainView loadWebsite];
     
     //debugging only
     if (TARGET_IPHONE_SIMULATOR)
@@ -111,19 +111,19 @@
         return;
     
     Location *location = [[Location alloc] init];
-    location.latitude = 0; //cllocation.coordinate.latitude;
-    location.longitude = 0; //cllocation.coordinate.longitude;
+    location.latitude = cllocation.coordinate.latitude;
+    location.longitude = cllocation.coordinate.longitude;
 
     [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
-    [School get:location.latitude longitdue:location.longitude completion:^(School *school) {
-        if(school != nil)
-        {
-            [[Session sessionVariables] setObject:school forKey:@"currentSchool"];
-            [self.mainView setup];
-        }
-    }];
+//    [School get:location.latitude longitdue:location.longitude completion:^(School *school) {
+//        if(school != nil)
+//        {
+//            [[Session sessionVariables] setObject:school forKey:@"currentSchool"];
+//            [self.mainView setup];
+//        }
+//    }];
 
-    //[self.mainView sendLatLngToWeb];
+    [self.mainView sendLatLngToWeb];
     
 }
 

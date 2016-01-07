@@ -304,6 +304,7 @@
     NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     
     NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&fbAccessToken=%@&deviceId=%@&pushDeviceToken=%@&lat=%f&lng=%f", fbAccessToken, uuid, uuid, lat, lng];
+    NSLog(@"%@", urlAddress);
     NSURL *url = [[NSURL alloc] initWithString:urlAddress];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:requestObj];
@@ -458,6 +459,10 @@
 -(NSString *)urlEncodeJSON:(NSString *)json;
 {
     return [json stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+}
+
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    NSLog(@"%@", error);
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView {

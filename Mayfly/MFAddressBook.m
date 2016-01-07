@@ -70,9 +70,8 @@
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
     
     __block BOOL accessGranted = NO;
-    
-    /*
-    if (ABAddressBookRequestAccessWithCompletion) { // We are on iOS 6
+     
+    if (&ABAddressBookRequestAccessWithCompletion) { // We are on iOS 6
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         
         ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
@@ -82,7 +81,7 @@
         
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     }
-    */
+    
     if (accessGranted) {
         NSMutableArray *contacts = [[NSMutableArray alloc] init];
         CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
@@ -308,19 +307,31 @@
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
-    headerLabel.textAlignment = NSTextAlignmentCenter;
-    if([invited count] == 0 || self.event != nil)
-        headerLabel.text = @"Recipients";
-    else
-        headerLabel.text = [NSString stringWithFormat:@"Recipients (%lu)", (unsigned long)[invited count]];
-    self.headerLabel = headerLabel;
-    [self addSubview:self.headerLabel];
+//    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
+//    headerLabel.textAlignment = NSTextAlignmentCenter;
+//    if([invited count] == 0 || self.event != nil)
+//        headerLabel.text = @"Recipients";
+//    else
+//        headerLabel.text = [NSString stringWithFormat:@"Recipients (%lu)", (unsigned long)[invited count]];
+//    self.headerLabel = headerLabel;
+//    [self addSubview:self.headerLabel];
+//    
+//    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+//    [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    cancelButton.frame = CGRectMake(25, 30, 80, 40);
+//    [self addSubview:cancelButton];
+
     
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self addGestureRecognizer:recognizer];
+    
+    [MFHelpers addTitleBar:self titleText:@"Recipients"];
+    
+    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
+    [cancelButton setImage:[UIImage imageNamed:@"whitebackarrow"] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = CGRectMake(25, 30, 80, 40);
     [self addSubview:cancelButton];
     
     if(self.event != nil)
@@ -368,7 +379,7 @@
     [self addSubview:scrollView];
     
     NSString *search = [self.searchText.text uppercaseString];
-    
+
     //Friend List
     int skipCt = 0;
     int friendHt = 0;
@@ -522,7 +533,7 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    [MFHelpers close:self];
+    [MFHelpers closeRight:self];
 }
 -(void)saveButtonClick:(id)sender
 {

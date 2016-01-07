@@ -147,15 +147,15 @@
     //MFView *mfView = (MFView *)vc.mainView;
     //[mfView loadWebsite];
     
-    
-    [User login:^(User *user) {
-        self.userId = user.userId;
-        ViewController *vc = (ViewController *)self.window.rootViewController;
-        MFView *mfView = (MFView *)vc.mainView;
-        [mfView refreshEvents];
-    }];
-    
-
+    if(self.userId.length <= 0)
+    {
+        [User login:^(User *user) {
+            self.userId = user.userId;
+            ViewController *vc = (ViewController *)self.window.rootViewController;
+            MFView *mfView = (MFView *)vc.mainView;
+            [mfView loadWebsite];
+        }];
+    }
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
