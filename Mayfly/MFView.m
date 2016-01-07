@@ -317,7 +317,7 @@
     loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     //loginButton.center = self.center;
     [self addSubview:loginButton];
-     */
+    */
     
 }
 

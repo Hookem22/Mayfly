@@ -58,6 +58,7 @@
             
             newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
             newUser.name = appDelegate.name ? appDelegate.name : @"";
+            newUser.firstName = appDelegate.firstName ? appDelegate.firstName : @"";
             newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
             newUser.email = appDelegate.email ? appDelegate.email : @"";
             
@@ -138,7 +139,7 @@
     
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
-    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email /*, @"lastsignedin" : self.lastSignedIn */};
+    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email /*, @"lastsignedin" : self.lastSignedIn */};
     
     if([self.userId length] <= 0)
     {
