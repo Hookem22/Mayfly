@@ -159,20 +159,20 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
-    NSLog(@"%@", userInfo);
-    
-    NSDictionary *message = [userInfo objectForKey:@"aps"];
-    if(message)
-    {
-        NSString *event = [message valueForKey:@"message"];
-        if(event && [event rangeOfString:@"|"].location != NSNotFound)
-        {
-            NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
-            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
-            
-            [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
-        }
-    }
+//    NSLog(@"%@", userInfo);
+//    
+//    NSDictionary *message = [userInfo objectForKey:@"aps"];
+//    if(message)
+//    {
+//        NSString *event = [message valueForKey:@"message"];
+//        if(event && [event rangeOfString:@"|"].location != NSNotFound)
+//        {
+//            NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
+//            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+//            
+//            [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+//        }
+//    }
     
 }
 

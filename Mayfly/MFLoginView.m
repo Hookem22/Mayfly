@@ -46,14 +46,16 @@
 +(void)facebookLogin
 {
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-    [login logInWithReadPermissions:@[@"public_profile", @"email", @"user_friends"] fromViewController:NULL handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    [login logInWithReadPermissions:@[@"public_profile", @"email", @"user_friends"] fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
         if (error) {
             // Process error
         } else if (result.isCancelled) {
             // Handle cancellations
+            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            ViewController *vc = (ViewController *)appDelegate.window.rootViewController;
+            MFView *mfView = (MFView *)vc.mainView;
+            [mfView loadWebsite];
         } else {
-            
-            
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
             //if ([result.grantedPermissions containsObject:@"user_friends"]) {
@@ -67,11 +69,12 @@
 -(void)loginButtonClick:(id)sender
 {
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-    [login logInWithReadPermissions:@[@"public_profile", @"email", @"user_friends"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    [login logInWithReadPermissions:@[@"public_profile", @"email", @"user_friends"] fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
         if (error) {
             // Process error
         } else if (result.isCancelled) {
             // Handle cancellations
+            [self removeFromSuperview];
         } else {
             
             
