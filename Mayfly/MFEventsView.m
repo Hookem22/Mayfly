@@ -37,7 +37,7 @@
          for(UIView *subview in self.subviews)
              [subview removeFromSuperview];
          
-         self.Events = [[self reorderEvents:events] mutableCopy];
+         self.Events = [events mutableCopy];
          
          int viewY = 0;
          for(int i = 0; i < [self.Events count]; i++)
@@ -98,31 +98,9 @@
                 viewY += 80;
             }
              
-            UIControl *eventView = [self addEventView:event viewY:viewY i:i];
+            UIView *eventView = [self addEventView:event viewY:viewY i:i];
             
-            //Icon
-            if([event isGoing])
-            {
-                AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-                MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(10, 10, 50, 50) facebookId:appDelegate.facebookId];
-                [eventView addSubview:pic];
-            }
-            else
-            {
-                NSString *iconImage = @"";
-                if(event.isInvited)
-                    iconImage = @"invited";
-                //else if(!event.isPrivate)
-                //    iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
-                else
-                    iconImage = @"lock";
-
-                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
-                [icon setImage:[UIImage imageNamed:iconImage]];
-                [eventView addSubview:icon];
-            }
-
-
+            
 
 //            CLLocation *loc = [[CLLocation alloc] initWithLatitude:event.location.latitude longitude:event.location.longitude];
 //            CLLocationDistance distance = [currentLocation distanceFromLocation:loc];
@@ -167,19 +145,19 @@
             manyLabelContainer.textAlignment = NSTextAlignmentRight;
             [eventView addSubview:manyLabelContainer];
             */
-             NSString *manyText = @"";
-             if(event.maxParticipants > 0 && event.minParticipants > 1)
-                 manyText = [NSString stringWithFormat:@"Min: %lu Max: %lu", (unsigned long)event.minParticipants, (unsigned long)event.maxParticipants];
-             else if (event.minParticipants > 1)
-                 manyText = [NSString stringWithFormat:@"Min: %lu", (unsigned long)event.minParticipants];
-             else if(event.maxParticipants > 0)
-                 manyText = [NSString stringWithFormat:@"Max: %lu", (unsigned long)event.maxParticipants];
-             
-             
-            UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd - 20, 20)];
-            manyLabel.text = manyText;
-            manyLabel.textAlignment = NSTextAlignmentRight;
-            [eventView addSubview:manyLabel];
+//             NSString *manyText = @"";
+//             if(event.maxParticipants > 0 && event.minParticipants > 1)
+//                 manyText = [NSString stringWithFormat:@"Min: %lu Max: %lu", (unsigned long)event.minParticipants, (unsigned long)event.maxParticipants];
+//             else if (event.minParticipants > 1)
+//                 manyText = [NSString stringWithFormat:@"Min: %lu", (unsigned long)event.minParticipants];
+//             else if(event.maxParticipants > 0)
+//                 manyText = [NSString stringWithFormat:@"Max: %lu", (unsigned long)event.maxParticipants];
+//             
+//             
+//            UILabel *manyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd - 20, 20)];
+//            manyLabel.text = manyText;
+//            manyLabel.textAlignment = NSTextAlignmentRight;
+//            [eventView addSubview:manyLabel];
 
 
             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
@@ -208,10 +186,24 @@
     eventView.backgroundColor = [UIColor whiteColor];
     eventView.tag = i;
     
+    //Icon
+    if([event.groupPictureUrl isKindOfClass:[NSNull class]] || event.groupPictureUrl.length <= 0) {
+        NSString *iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
+        
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
+        [icon setImage:[UIImage imageNamed:iconImage]];
+        [eventView addSubview:icon];
+    }
+    else {
+        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(10, 10, 50, 50) url:event.groupPictureUrl];
+        [eventView addSubview:pic];
+    }
+    
+    
     int nameWidth = (int)(wd - (70 + (wd / 4)));
     UITextView *nameLabel = [[UITextView alloc] init];
     nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
-    [nameLabel setFont:[UIFont systemFontOfSize:16]];
+    [nameLabel setFont:[UIFont systemFontOfSize:18]];
     int nameHeight = [MFHelpers heightForText:nameLabel width:nameWidth - 10];
     nameLabel.frame = CGRectMake(70, 15, nameWidth, nameHeight);
     nameLabel.scrollEnabled = NO;
@@ -219,8 +211,8 @@
     nameLabel.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [nameLabel setUserInteractionEnabled:YES];
     
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
-    [nameLabel addGestureRecognizer:gestureRecognizer];
+    UITapGestureRecognizer *gestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
+    [nameLabel addGestureRecognizer:gestureRecognizer1];
     nameLabel.tag = i;
     
     [eventView addSubview:nameLabel];
@@ -231,35 +223,61 @@
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, (wd*2)/5, 20)];
     timeLabel.text = event.localTime;
     timeLabel.textAlignment = NSTextAlignmentRight;
-    [timeLabel setFont:[UIFont systemFontOfSize:16]];
+    [timeLabel setFont:[UIFont systemFontOfSize:18]];
     [timeLabelContainer addSubview:timeLabel];
     
+    int groupHeight = 0;
+    if(![event.groupName isKindOfClass:[NSNull class]] && event.groupName.length > 0) {
+        NSString *groupText = @"";
+        NSArray *groups = [event.groupName componentsSeparatedByString: @"|"];
+        for (NSString *group in groups) {
+            groupText = [NSString stringWithFormat:@"%@ #%@", groupText, group];
+        }
+        
+        int groupWidth = (int)(wd - 80);
+        UITextView *groupLabel = [[UITextView alloc] init];
+        groupLabel.text = [NSString stringWithFormat:@"%@", groupText];
+        [groupLabel setFont:[UIFont systemFontOfSize:18]];
+        groupHeight = [MFHelpers heightForText:groupLabel width:groupWidth - 10];
+        groupLabel.frame = CGRectMake(70, nameHeight + 20, groupWidth, groupHeight);
+        groupLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+        groupLabel.scrollEnabled = NO;
+        [groupLabel setEditable:NO];
+        groupLabel.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        [groupLabel setUserInteractionEnabled:YES];
+        
+        UITapGestureRecognizer *gestureRecognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
+        [groupLabel addGestureRecognizer:gestureRecognizer2];
+        groupLabel.tag = i;
+        
+        [eventView addSubview:groupLabel];
+    }
     
-    if(nameHeight + 30 > eventView.frame.size.height)
-        eventView.frame = CGRectMake(0, viewY, wd, nameHeight + 30);
+    if(nameHeight + groupHeight + 35 > eventView.frame.size.height)
+        eventView.frame = CGRectMake(0, viewY, wd, nameHeight + groupHeight + 35);
     
     return eventView;
 }
 
--(NSArray *)reorderEvents:(NSArray *)events
-{
-    NSMutableArray *goingEvents = [[NSMutableArray alloc] init];
-    NSMutableArray *invitedEvents = [[NSMutableArray alloc] init];
-    NSMutableArray *otherEvents = [[NSMutableArray alloc] init];
-    
-    for(int i = 0; i < [events count]; i++)
-    {
-        Event *event = (Event *)[events objectAtIndex:i];
-        if(event.isGoing)
-            [goingEvents addObject:event];
-        else if(event.isInvited)
-            [invitedEvents addObject:event];
-        else
-            [otherEvents addObject:event];
-    }
-    
-    return [[goingEvents arrayByAddingObjectsFromArray:invitedEvents] arrayByAddingObjectsFromArray:otherEvents];
-}
+//-(NSArray *)reorderEvents:(NSArray *)events
+//{
+//    NSMutableArray *goingEvents = [[NSMutableArray alloc] init];
+//    NSMutableArray *invitedEvents = [[NSMutableArray alloc] init];
+//    NSMutableArray *otherEvents = [[NSMutableArray alloc] init];
+//    
+//    for(int i = 0; i < [events count]; i++)
+//    {
+//        Event *event = (Event *)[events objectAtIndex:i];
+//        if(event.isGoing)
+//            [goingEvents addObject:event];
+//        else if(event.isInvited)
+//            [invitedEvents addObject:event];
+//        else
+//            [otherEvents addObject:event];
+//    }
+//    
+//    return [[goingEvents arrayByAddingObjectsFromArray:invitedEvents] arrayByAddingObjectsFromArray:otherEvents];
+//}
 
 -(void)loadUserEvents
 {

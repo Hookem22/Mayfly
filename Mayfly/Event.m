@@ -15,6 +15,9 @@
 @synthesize name = _name;
 @synthesize description = _description;
 @synthesize groupId = _groupId;
+@synthesize groupName = _groupName;
+@synthesize groupPictureUrl = _groupPictureUrl;
+@synthesize groupIsPublic = _groupIsPublic;
 @synthesize referenceId = _referenceId;
 @synthesize location = _location;
 @synthesize minParticipants = _minParticipants;
@@ -33,6 +36,9 @@
         self.name = [event objectForKey:@"name"];
         self.description = [event objectForKey:@"description"];
         self.groupId = [event objectForKey:@"groupid"];
+        self.groupName = [event objectForKey:@"groupname"];
+        self.groupPictureUrl = [event objectForKey:@"grouppictureurl"];
+        self.groupIsPublic = [[event objectForKey:@"groupispublic"] isMemberOfClass:[NSNull class]] ? YES : [[event objectForKey:@"groupispublic"] boolValue];
         self.referenceId = [[event objectForKey:@"referenceid"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"referenceid"] intValue];
         self.location = [[Location alloc] init];
         self.location.name = [event objectForKey:@"locationname"];
@@ -125,7 +131,7 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:[NSString stringWithFormat:@"%@", school.schoolId] forKey:@"schoolid"];
 
-    [service getByProc:@"geteventswithgroupsbyschoolid" params:params completion:^(NSArray *results) {
+    [service getByProc:@"geteventsbyschoolid" params:params completion:^(NSArray *results) {
         NSMutableArray *events = [[NSMutableArray alloc] init];
         for(id item in results) {
             Event *event = [[Event alloc] init:item];
@@ -154,7 +160,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
        
-    NSDictionary *event = @{@"name": self.name, @"description": self.description, @"groupid": self.groupId, @"referenceid": [NSNumber numberWithInt:(int)self.referenceId], @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude], @"minparticipants": [NSNumber numberWithInt:(int)self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:(int)self.maxParticipants], @"starttime": self.startTime, @"dayofweek": [NSNumber numberWithInt:(int)self.dayOfWeek], @"localtime": self.localTime, @"schoolid": self.schoolId };
+    NSDictionary *event = @{@"name": self.name, @"description": self.description, @"groupid": self.groupId, @"groupname": self.groupName, @"grouppictureurl": self.groupPictureUrl, @"groupispublic": [NSNumber numberWithBool:self.groupIsPublic], @"referenceid": [NSNumber numberWithInt:(int)self.referenceId], @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude], @"minparticipants": [NSNumber numberWithInt:(int)self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:(int)self.maxParticipants], @"starttime": self.startTime, @"dayofweek": [NSNumber numberWithInt:(int)self.dayOfWeek], @"localtime": self.localTime, @"schoolid": self.schoolId };
     
     if([self.eventId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [event mutableCopy];

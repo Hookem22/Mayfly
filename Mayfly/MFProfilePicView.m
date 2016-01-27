@@ -31,4 +31,24 @@
     return self;
 }
 
+-(id)initWithUrl:(CGRect)frame url:(NSString *)url {
+    self = [super initWithFrame:frame];
+    if (self) {
+        dispatch_queue_t queue = dispatch_queue_create("Image Queue", NULL);
+        
+        dispatch_async(queue, ^{
+            NSURL *nsurl = [NSURL URLWithString:url];
+            NSData *data = [NSData dataWithContentsOfURL:nsurl];
+            UIImage *img = [UIImage imageWithData:data];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setImage:img];
+                self.layer.cornerRadius = frame.size.width / 2;
+                self.clipsToBounds = YES;
+            });
+        });
+        
+    }
+    return self;
+}
+
 @end

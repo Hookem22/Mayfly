@@ -20,6 +20,9 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *description;
 @property (nonatomic, copy) NSString *groupId;
+@property (nonatomic, copy) NSString *groupName;
+@property (nonatomic, copy) NSString *groupPictureUrl;
+@property (nonatomic, assign) BOOL groupIsPublic;
 @property (nonatomic, strong) Location *location;
 @property (nonatomic, assign) NSUInteger minParticipants;
 @property (nonatomic, assign) NSUInteger maxParticipants;

@@ -11,5 +11,6 @@
 @interface MFProfilePicView : UIImageView
 
 -(id)initWithFrame:(CGRect)frame facebookId:(NSString *)facebookId;
+-(id)initWithUrl:(CGRect)frame url:(NSString *)url;
 
 @end
