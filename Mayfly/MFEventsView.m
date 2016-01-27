@@ -39,11 +39,7 @@
          
          self.Events = [[self reorderEvents:events] mutableCopy];
          
-         Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
-         CLLocation *currentLocation = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longitude];
-         
-         int skip = 0;
-         int days = 0;
+         int viewY = 0;
          for(int i = 0; i < [self.Events count]; i++)
          {
             Event *event = [self.Events objectAtIndex:i];
@@ -69,9 +65,9 @@
                 else if([todayText isEqualToString:[daysOfWeek objectAtIndex:(event.dayOfWeek + 6) % 7]])
                     dayText = @"Tomorrow";
                 
-                UIControl *newDayView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i + days) * 80), wd, 80)];
+                UIControl *newDayView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
                 [self addSubview:newDayView];
-                days++;
+                //days++;
                 
 //                if(i > 0)
 //                {
@@ -99,13 +95,11 @@
                 [dayLabel setFont:[UIFont boldSystemFontOfSize:18]];
                 [newDayView addSubview:dayLabel];
                 
+                viewY += 80;
             }
              
-            UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, ((i - skip + days) * 80), wd, 80)];
-            [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
-            eventView.backgroundColor = [UIColor whiteColor];
-            eventView.tag = i;
-             
+            UIControl *eventView = [self addEventView:event viewY:viewY i:i];
+            
             //Icon
             if([event isGoing])
             {
@@ -129,35 +123,23 @@
             }
 
 
-            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, wd - (70 + (wd / 4)), 20)];
-            nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
-            nameLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
-            [nameLabel setFont:[UIFont boldSystemFontOfSize:16]];
-            [eventView addSubview:nameLabel];
 
-            CLLocation *loc = [[CLLocation alloc] initWithLatitude:event.location.latitude longitude:event.location.longitude];
-            CLLocationDistance distance = [currentLocation distanceFromLocation:loc];
-            double metersToMiles = 0.000621371;
-            double miles = distance * metersToMiles;
-            NSString *distanceText = @"";
-            if(miles < 1)
-             distanceText = @"< 1 mile away";
-            else if(miles < 1.5)
-             distanceText = @"1 mile away";
-            else
-             distanceText = [NSString stringWithFormat:@"%d miles away", (int)miles];
+//            CLLocation *loc = [[CLLocation alloc] initWithLatitude:event.location.latitude longitude:event.location.longitude];
+//            CLLocationDistance distance = [currentLocation distanceFromLocation:loc];
+//            double metersToMiles = 0.000621371;
+//            double miles = distance * metersToMiles;
+//            NSString *distanceText = @"";
+//            if(miles < 1)
+//             distanceText = @"< 1 mile away";
+//            else if(miles < 1.5)
+//             distanceText = @"1 mile away";
+//            else
+//             distanceText = [NSString stringWithFormat:@"%d miles away", (int)miles];
 
-            UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, wd, 20)];
-            distanceLabel.text = distanceText;
-            [eventView addSubview:distanceLabel];
-            /*
-            UILabel *timeLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/4, 10, (wd*2)/5, 20)];
-            timeLabelContainer.textAlignment = NSTextAlignmentRight;
-            [eventView addSubview:timeLabelContainer];
-            */
-            UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, wd - 20, 20)];
-            timeLabel.textAlignment = NSTextAlignmentRight;
-            [eventView addSubview:timeLabel];
+//            UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, wd, 20)];
+//            distanceLabel.text = distanceText;
+//            [eventView addSubview:distanceLabel];
+            
              
 //            if(event.isPrivate && !event.isGoing && !event.isInvited)
 //            {
@@ -205,15 +187,58 @@
             [eventView addSubview:bottomBorder];
 
             [self addSubview:eventView];
-            self.contentSize = CGSizeMake(wd, (((days + i - skip) + 2) * 80));
+             viewY += eventView.frame.size.height;
          }
 
+         self.contentSize = CGSizeMake(wd, viewY + 120);
+         
          if(self.contentSize.height < ht)
              self.contentSize = CGSizeMake(wd, ht - 40);
          
          [MFHelpers hideProgressView:self.superview];
      }];
 
+}
+
+-(UIView *)addEventView:(Event *)event viewY:(int)viewY i:(int)i {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
+    [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
+    eventView.backgroundColor = [UIColor whiteColor];
+    eventView.tag = i;
+    
+    int nameWidth = (int)(wd - (70 + (wd / 4)));
+    UITextView *nameLabel = [[UITextView alloc] init];
+    nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
+    [nameLabel setFont:[UIFont systemFontOfSize:16]];
+    int nameHeight = [MFHelpers heightForText:nameLabel width:nameWidth - 10];
+    nameLabel.frame = CGRectMake(70, 15, nameWidth, nameHeight);
+    nameLabel.scrollEnabled = NO;
+    [nameLabel setEditable:NO];
+    nameLabel.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    [nameLabel setUserInteractionEnabled:YES];
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
+    [nameLabel addGestureRecognizer:gestureRecognizer];
+    nameLabel.tag = i;
+    
+    [eventView addSubview:nameLabel];
+
+    UILabel *timeLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 15, (wd*2)/5, 20)];
+    [eventView addSubview:timeLabelContainer];
+    
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, (wd*2)/5, 20)];
+    timeLabel.text = event.localTime;
+    timeLabel.textAlignment = NSTextAlignmentRight;
+    [timeLabel setFont:[UIFont systemFontOfSize:16]];
+    [timeLabelContainer addSubview:timeLabel];
+    
+    
+    if(nameHeight + 30 > eventView.frame.size.height)
+        eventView.frame = CGRectMake(0, viewY, wd, nameHeight + 30);
+    
+    return eventView;
 }
 
 -(NSArray *)reorderEvents:(NSArray *)events
@@ -269,27 +294,35 @@
     [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
 }
 
--(void) eventClicked:(id)sender
+-(void)eventClicked:(id)sender
 {
     UIControl *button = (UIControl *)sender;
     long tagId = button.tag;
-    
+    [self openEvent:tagId];
+}
+
+-(void)eventNameClicked:(UITapGestureRecognizer *)gesture{
+    long tagId = gesture.view.tag;
+    [self openEvent:tagId];
+}
+
+-(void)openEvent:(long)tagId {
     Event *event = (Event *)[self.Events objectAtIndex:tagId];
-//    if(event.isPrivate && !event.isInvited && ![FBSDKAccessToken currentAccessToken])
-//    {
-//        MFLoginView *loginView = [[MFLoginView alloc] init];
-//        [MFHelpers open:loginView onView:self.superview];
-//    }
-//    else if(event.isPrivate && !event.isGoing && !event.isInvited)
-//    {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
-//                                                        message:@"You cannot join private events unless you are invited."
-//                                                       delegate:nil
-//                                              cancelButtonTitle:@"OK"
-//                                              otherButtonTitles:nil];
-//        [alert show];
-//    }
-//    else
+    //    if(event.isPrivate && !event.isInvited && ![FBSDKAccessToken currentAccessToken])
+    //    {
+    //        MFLoginView *loginView = [[MFLoginView alloc] init];
+    //        [MFHelpers open:loginView onView:self.superview];
+    //    }
+    //    else if(event.isPrivate && !event.isGoing && !event.isInvited)
+    //    {
+    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
+    //                                                        message:@"You cannot join private events unless you are invited."
+    //                                                       delegate:nil
+    //                                              cancelButtonTitle:@"OK"
+    //                                              otherButtonTitles:nil];
+    //        [alert show];
+    //    }
+    //    else
     {
         MFDetailView *detailView = [[MFDetailView alloc] init:event.eventId];
         [MFHelpers open:detailView onView:self.superview];

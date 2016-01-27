@@ -271,205 +271,205 @@
 ///// Website ////////
 //////////////////////
 
--(void)loadWebsite
-{
-    NSUInteger referenceId = [[Session sessionVariables][@"referenceId"] integerValue];
-    if(referenceId > 0)
-    {
-        [self joinEvent:referenceId];
-        return;
-    }
-    
-    [MFHelpers showProgressView:self];
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    for(UIView *subview in self.subviews)
-    {
-        if(![subview isKindOfClass:[UIImageView class]])
-            [subview removeFromSuperview];
-    }
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
-    [self.webView setScalesPageToFit:YES];
-    self.webView.scrollView.bounces = NO;
-    self.webView.delegate = self;
-    
-    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
-    double lat = location == NULL ? 0 : location.latitude;
-    double lng = location == NULL ? 0 : location.longitude;
-    
-    NSString *fbAccessToken = appDelegate.fbAccessToken == NULL ? @"" : appDelegate.fbAccessToken;
-    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    
-    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&fbAccessToken=%@&deviceId=%@&pushDeviceToken=%@&lat=%f&lng=%f", fbAccessToken, uuid, uuid, lat, lng];
-    NSLog(@"%@", urlAddress);
-    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:requestObj];
-    
-    [self addSubview:self.webView];
-    [MFHelpers hideProgressView:self];
-    
-    
-//    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
-//    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
-//    //loginButton.center = self.center;
-//    [self addSubview:loginButton];
-    
-    
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    if ([[[request URL] absoluteString] hasPrefix:@"ios:FacebookLogin"]) {
-        
-        [MFLoginView facebookLogin];
-        
-        return NO;
-    }
-    if ([[[request URL] absoluteString] hasPrefix:@"ios:GetContacts"]) {
-        
-        NSString *contacts = [[MFAddressBook getContacts] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-        NSString *function = [NSString stringWithFormat:@"iOSContacts(\"%@\")", contacts];
-        
-        [self.webView stringByEvaluatingJavaScriptFromString:function];
-        
-        return NO;
-    }
-    /*
-    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromCreate"]) {
-        
-        NSString *urlString = [[request URL] absoluteString];
-        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
-        
-        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params event:nil];
-        [MFHelpers open:addressBook onView:self];
-
-        return NO;
-    }
-    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromDetails"]) {
-        
-        NSString *urlString = [[request URL] absoluteString];
-        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
-        NSRange eventParam = [params rangeOfString:@"&currentEvent="];
-        NSString *eventUrl = [params substringFromIndex:eventParam.location + eventParam.length];
-        
-        Event *event = [[Event alloc] initFromUrl:eventUrl];
-        
-        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params event:event];
-        [MFHelpers open:addressBook onView:self];
-        
-        return NO;
-    }
-    */
-    if ([[[request URL] absoluteString] hasPrefix:@"ios:SendSMS"]) {
-        
-        NSString *urlString = [[request URL] absoluteString];
-        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location + 1];
-        
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        for (NSString *keyValuePair in [params componentsSeparatedByString:@"&"])
-        {
-            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-            NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
-            
-            [dict setObject:value forKey:key];
-        }
-
-        ViewController *vc = (ViewController *)self.window.rootViewController;
-        [vc sendTextMessage:[[dict objectForKey:@"phone"] componentsSeparatedByString:@","] message:[dict objectForKey:@"message"]];
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
--(void)sendLatLngToWeb
-{
-    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
-    if(location == NULL)
-        return;
-    
-    NSString *function = [NSString stringWithFormat:@"ReceiveLocation(\"%f\",\"%f\")", location.latitude, location.longitude];    
-    if(self.webView != NULL)
-        [self.webView stringByEvaluatingJavaScriptFromString:function];
-}
-
--(void)returnAddressList:(NSString *)params
-{
-        /*
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contactList options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        jsonString = [self urlEncodeJSON:jsonString];
-        params = [NSString stringWithFormat:@"%@&contactList=%@", params, jsonString];
-        */
-        NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/%@", params];
-        NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
-        [self.webView loadRequest:requestObj];
-}
-
--(void)goToEvent:(NSUInteger)referenceId
-{
-    if(self.webView == nil)
-    {
-        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-        NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-        
-        for(UIView *subview in self.subviews)
-            [subview removeFromSuperview];
-        
-        self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
-        [self.webView setScalesPageToFit:YES];
-        self.webView.scrollView.bounces = NO;
-        self.webView.delegate = self;
-        [self addSubview:self.webView];
-    }
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
-    
-    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
-    BOOL toMessaging = [[Session sessionVariables][@"toMessaging"] boolValue];
-    if(toMessaging)
-        urlAddress = [NSString stringWithFormat:@"%@&toMessaging=true", urlAddress];
-    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-
-    [self.webView loadRequest:requestObj];
-}
-
--(void)joinEvent:(NSUInteger)referenceId
-{
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
-    
-    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
-    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    
-    [self.webView loadRequest:requestObj];
-}
-
--(NSString *)urlEncodeJSON:(NSString *)json;
-{
-    return [json stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-}
-
--(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"%@", error);
-}
-
--(void)webViewDidFinishLoad:(UIWebView *)webView {
-    webView.keyboardDisplayRequiresUserAction = NO;
-    if(!webView.loading)
-        [self sendLatLngToWeb];
-}
+//-(void)loadWebsite
+//{
+//    NSUInteger referenceId = [[Session sessionVariables][@"referenceId"] integerValue];
+//    if(referenceId > 0)
+//    {
+//        [self joinEvent:referenceId];
+//        return;
+//    }
+//    
+//    [MFHelpers showProgressView:self];
+//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+//    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+//    
+//    for(UIView *subview in self.subviews)
+//    {
+//        if(![subview isKindOfClass:[UIImageView class]])
+//            [subview removeFromSuperview];
+//    }
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    
+//    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
+//    [self.webView setScalesPageToFit:YES];
+//    self.webView.scrollView.bounces = NO;
+//    self.webView.delegate = self;
+//    
+//    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+//    double lat = location == NULL ? 0 : location.latitude;
+//    double lng = location == NULL ? 0 : location.longitude;
+//    
+//    NSString *fbAccessToken = appDelegate.fbAccessToken == NULL ? @"" : appDelegate.fbAccessToken;
+//    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    
+//    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&fbAccessToken=%@&deviceId=%@&pushDeviceToken=%@&lat=%f&lng=%f", fbAccessToken, uuid, uuid, lat, lng];
+//    NSLog(@"%@", urlAddress);
+//    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
+//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+//    [self.webView loadRequest:requestObj];
+//    
+//    [self addSubview:self.webView];
+//    [MFHelpers hideProgressView:self];
+//    
+//    
+////    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(0, 60, 200, 40)];
+////    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+////    //loginButton.center = self.center;
+////    [self addSubview:loginButton];
+//    
+//    
+//}
+//
+//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+//{
+//    if ([[[request URL] absoluteString] hasPrefix:@"ios:FacebookLogin"]) {
+//        
+//        [MFLoginView facebookLogin];
+//        
+//        return NO;
+//    }
+//    if ([[[request URL] absoluteString] hasPrefix:@"ios:GetContacts"]) {
+//        
+//        NSString *contacts = [[MFAddressBook getContacts] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+//        NSString *function = [NSString stringWithFormat:@"iOSContacts(\"%@\")", contacts];
+//        
+//        [self.webView stringByEvaluatingJavaScriptFromString:function];
+//        
+//        return NO;
+//    }
+//    /*
+//    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromCreate"]) {
+//        
+//        NSString *urlString = [[request URL] absoluteString];
+//        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
+//        
+//        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params event:nil];
+//        [MFHelpers open:addressBook onView:self];
+//
+//        return NO;
+//    }
+//    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromDetails"]) {
+//        
+//        NSString *urlString = [[request URL] absoluteString];
+//        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location];
+//        NSRange eventParam = [params rangeOfString:@"&currentEvent="];
+//        NSString *eventUrl = [params substringFromIndex:eventParam.location + eventParam.length];
+//        
+//        Event *event = [[Event alloc] initFromUrl:eventUrl];
+//        
+//        MFAddressBook *addressBook = [[MFAddressBook alloc] initFromWebsite:params event:event];
+//        [MFHelpers open:addressBook onView:self];
+//        
+//        return NO;
+//    }
+//    */
+//    if ([[[request URL] absoluteString] hasPrefix:@"ios:SendSMS"]) {
+//        
+//        NSString *urlString = [[request URL] absoluteString];
+//        NSString *params = [urlString substringFromIndex:[urlString rangeOfString:@"?"].location + 1];
+//        
+//        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+//        for (NSString *keyValuePair in [params componentsSeparatedByString:@"&"])
+//        {
+//            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+//            NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+//            NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
+//            
+//            [dict setObject:value forKey:key];
+//        }
+//
+//        ViewController *vc = (ViewController *)self.window.rootViewController;
+//        [vc sendTextMessage:[[dict objectForKey:@"phone"] componentsSeparatedByString:@","] message:[dict objectForKey:@"message"]];
+//        
+//        return NO;
+//    }
+//    
+//    return YES;
+//}
+//
+//-(void)sendLatLngToWeb
+//{
+//    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+//    if(location == NULL)
+//        return;
+//    
+//    NSString *function = [NSString stringWithFormat:@"ReceiveLocation(\"%f\",\"%f\")", location.latitude, location.longitude];    
+//    if(self.webView != NULL)
+//        [self.webView stringByEvaluatingJavaScriptFromString:function];
+//}
+//
+//-(void)returnAddressList:(NSString *)params
+//{
+//        /*
+//        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contactList options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        jsonString = [self urlEncodeJSON:jsonString];
+//        params = [NSString stringWithFormat:@"%@&contactList=%@", params, jsonString];
+//        */
+//        NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/%@", params];
+//        NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
+//        [self.webView loadRequest:requestObj];
+//}
+//
+//-(void)goToEvent:(NSUInteger)referenceId
+//{
+//    if(self.webView == nil)
+//    {
+//        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+//        NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+//        
+//        for(UIView *subview in self.subviews)
+//            [subview removeFromSuperview];
+//        
+//        self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,wd,ht)];
+//        [self.webView setScalesPageToFit:YES];
+//        self.webView.scrollView.bounces = NO;
+//        self.webView.delegate = self;
+//        [self addSubview:self.webView];
+//    }
+//    
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    
+//    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+//    
+//    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&goToEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+//    BOOL toMessaging = [[Session sessionVariables][@"toMessaging"] boolValue];
+//    if(toMessaging)
+//        urlAddress = [NSString stringWithFormat:@"%@&toMessaging=true", urlAddress];
+//    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
+//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+//
+//    [self.webView loadRequest:requestObj];
+//}
+//
+//-(void)joinEvent:(NSUInteger)referenceId
+//{
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    
+//    Location *location = (Location *)[Session sessionVariables][@"currentLocation"];
+//    
+//    NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/?OS=iOS&facebookId=%@&firstName=%@&lat=%f&lng=%f&joinEvent=%lu", appDelegate.facebookId, appDelegate.firstName, location.latitude, location.longitude, (unsigned long)referenceId];
+//    NSURL *url = [[NSURL alloc] initWithString:urlAddress];
+//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+//    
+//    [self.webView loadRequest:requestObj];
+//}
+//
+//-(NSString *)urlEncodeJSON:(NSString *)json;
+//{
+//    return [json stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+//}
+//
+//-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+//    NSLog(@"%@", error);
+//}
+//
+//-(void)webViewDidFinishLoad:(UIWebView *)webView {
+//    webView.keyboardDisplayRequiresUserAction = NO;
+//    if(!webView.loading)
+//        [self sendLatLngToWeb];
+//}
 
 
 

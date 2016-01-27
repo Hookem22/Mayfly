@@ -180,6 +180,17 @@
     [view addSubview:headerLabel];
 }
 
++(CGFloat)heightForText:(UITextView *)textView width:(NSUInteger)width
+{
+    CGRect rect = [textView.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                            attributes:@{NSFontAttributeName: textView.font}
+                                               context:nil];
+    rect.size.width = ceil(rect.size.width);
+    rect.size.height = ceil(rect.size.height);
+    return rect.size.height;
+}
+
 +(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

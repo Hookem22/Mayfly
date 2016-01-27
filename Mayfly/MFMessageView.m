@@ -159,7 +159,7 @@
     
     if(isMe)
     {
-        CGFloat textHeight = [self heightForText:message width:(wd * 3) / 5 - 5 fontSize:14] + 10;
+        CGFloat textHeight = 0; //[MFHelpers heightForText:message width:(wd * 3) / 5 - 5 fontSize:14] + 10;
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, textHeight + 25)];
         
         UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake((wd * 2) / 5, 0, (wd * 3) / 5 - 10, 15)];
@@ -185,7 +185,7 @@
     else
     {
         
-        CGFloat textHeight = [self heightForText:message width:(wd * 3) / 5 - 5 fontSize:14] + 10;
+        CGFloat textHeight = 0; //[MFHelpers heightForText:message width:(wd * 3) / 5 - 5 fontSize:14] + 10;
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, viewY + 5, wd, textHeight + 25)];
         
         if(from.length > 0)
@@ -216,19 +216,6 @@
         [view addSubview:newTextbox];
         return view;
     }
-}
-
--(CGFloat)heightForText:(NSString *)text width:(NSUInteger)width fontSize:(NSUInteger)fontSize
-{
-    UIFont *font = [UIFont systemFontOfSize:fontSize];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:@{ NSFontAttributeName: font }];
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){width, CGFLOAT_MAX}
-                                               options:NSStringDrawingUsesLineFragmentOrigin
-                                               context:nil];
-    
-    CGSize labelSize = rect.size;
-    CGFloat height = labelSize.height + 10;
-    return height;
 }
 
 -(void)dismissKeyboard

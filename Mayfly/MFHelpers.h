@@ -29,6 +29,7 @@
 +(NSString *)dateDiffByDate:(NSDate *)date;
 +(NSString *)dateDiffBySeconds:(NSInteger)seconds;
 +(void)addTitleBar:(UIView *)view titleText:(NSString *)titleText;
++(CGFloat)heightForText:(UITextView *)textView width:(NSUInteger)width;
 //+(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName phone:(NSString *)phone completion:(QSCompletionBlock)completion;
 +(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion;
 
