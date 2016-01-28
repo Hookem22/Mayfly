@@ -251,7 +251,6 @@
 
 -(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging
 {
-
      MFDetailView *detailView = [[MFDetailView alloc] init:eventId];
      [MFHelpers open:detailView onView:self.superview];
      

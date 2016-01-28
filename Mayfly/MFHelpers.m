@@ -151,7 +151,7 @@
             dateDiff = [NSString stringWithFormat:@"%d minutes ago", value];
     }
     else
-        dateDiff = @"Now";
+        dateDiff = @"Just Now";
 
     return dateDiff;
 }
@@ -172,12 +172,17 @@
     headerView.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
     [view addSubview:headerView];
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, wd, 60)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 10, wd - 90, 60)];
     headerLabel.text = titleText;
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.textColor = [UIColor whiteColor];
     [headerLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     [view addSubview:headerLabel];
+    
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:headerLabel.font, NSFontAttributeName, nil];
+    int titleWidth = [[[NSAttributedString alloc] initWithString:headerLabel.text attributes:attributes] size].width;
+    if(titleWidth > wd - 90)
+        headerLabel.frame = CGRectMake(45, 10, wd - 50, 60);
 }
 
 +(CGFloat)heightForText:(UITextView *)textView width:(NSUInteger)width

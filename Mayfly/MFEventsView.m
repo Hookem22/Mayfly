@@ -199,24 +199,33 @@
         [eventView addSubview:pic];
     }
     
-    
-    int nameWidth = (int)(wd - (70 + (wd / 4)));
-    UITextView *nameLabel = [[UITextView alloc] init];
-    nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
-    [nameLabel setFont:[UIFont systemFontOfSize:18]];
-    int nameHeight = [MFHelpers heightForText:nameLabel width:nameWidth - 10];
-    nameLabel.frame = CGRectMake(70, 15, nameWidth, nameHeight);
-    nameLabel.scrollEnabled = NO;
-    [nameLabel setEditable:NO];
-    nameLabel.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    [nameLabel setUserInteractionEnabled:YES];
-    
-    UITapGestureRecognizer *gestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
-    [nameLabel addGestureRecognizer:gestureRecognizer1];
-    nameLabel.tag = i;
-    
-    [eventView addSubview:nameLabel];
+//    int nameWidth = (int)(wd - (70 + (wd / 4)));
+//    UITextView *nameLabel = [[UITextView alloc] init];
+//    nameLabel.text = [NSString stringWithFormat:@"%@", event.name];
+//    [nameLabel setFont:[UIFont systemFontOfSize:18]];
+//    int nameHeight = [MFHelpers heightForText:nameLabel width:nameWidth - 10];
+//    nameLabel.frame = CGRectMake(70, 15, nameWidth, nameHeight);
+//    nameLabel.scrollEnabled = NO;
+//    [nameLabel setEditable:NO];
+//    nameLabel.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    [nameLabel setUserInteractionEnabled:YES];
+//    
+//    UITapGestureRecognizer *gestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
+//    [nameLabel addGestureRecognizer:gestureRecognizer1];
+//    nameLabel.tag = i;
+//    
+//    [eventView addSubview:nameLabel];
 
+    int nameWidth = (int)(wd - (70 + (wd / 4)));
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, nameWidth, 20)];
+    nameLabel.text = event.name;
+    nameLabel.numberOfLines = 0;
+    nameLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [nameLabel sizeToFit];
+    [eventView addSubview:nameLabel];
+    
+    int nameHeight = ceil(nameLabel.frame.size.height);
+    
     UILabel *timeLabelContainer = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 15, (wd*2)/5, 20)];
     [eventView addSubview:timeLabelContainer];
     
@@ -235,26 +244,21 @@
         }
         
         int groupWidth = (int)(wd - 80);
-        UITextView *groupLabel = [[UITextView alloc] init];
-        groupLabel.text = [NSString stringWithFormat:@"%@", groupText];
-        [groupLabel setFont:[UIFont systemFontOfSize:18]];
-        groupHeight = [MFHelpers heightForText:groupLabel width:groupWidth - 10];
-        groupLabel.frame = CGRectMake(70, nameHeight + 20, groupWidth, groupHeight);
+        UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, nameHeight + 20, groupWidth, 20)];
+        groupLabel.text = groupText;
         groupLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
-        groupLabel.scrollEnabled = NO;
-        [groupLabel setEditable:NO];
-        groupLabel.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        [groupLabel setUserInteractionEnabled:YES];
-        
-        UITapGestureRecognizer *gestureRecognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameClicked:)];
-        [groupLabel addGestureRecognizer:gestureRecognizer2];
-        groupLabel.tag = i;
-        
+        groupLabel.numberOfLines = 0;
+        groupLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [groupLabel sizeToFit];
         [eventView addSubview:groupLabel];
+        
+        groupHeight = ceil(nameLabel.frame.size.height);
     }
     
-    if(nameHeight + groupHeight + 35 > eventView.frame.size.height)
-        eventView.frame = CGRectMake(0, viewY, wd, nameHeight + groupHeight + 35);
+    if(nameHeight + groupHeight + 30 > eventView.frame.size.height) {
+        eventView.frame = CGRectMake(0, viewY, wd, nameHeight + groupHeight + 30);
+    }
+    
     
     return eventView;
 }

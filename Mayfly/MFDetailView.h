@@ -13,10 +13,12 @@
 #import "MFProfilePicView.h"
 #import "MFAddressBook.h"
 #import "MFMessageView.h"
+#import "MFPostMessageView.h"
 
 @interface MFDetailView : UIView
 
 -(id)init:(NSString *)eventId;
 -(void)refreshGoing;
+-(void)reset:(NSString *)eventId;
 
 @end

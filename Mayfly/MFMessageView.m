@@ -99,6 +99,7 @@
         
         Message *message = [[Message alloc] init];
         message.eventId = self.event.eventId;
+        message.userId = appDelegate.userId;
         message.facebookId = appDelegate.facebookId;
         message.name = appDelegate.firstName;
         message.message = self.messageTextField.text;
@@ -132,7 +133,7 @@
         {
             Message *message = (Message *)[messages objectAtIndex:i];
             
-            bool isMe = [appDelegate.facebookId isEqualToString:message.facebookId];
+            bool isMe = [appDelegate.userId isEqualToString:message.userId];
             NSString *userName = isMe ? @"" : message.name;
             UIView *view = [self addTextView:message.message from:userName date:[MFHelpers dateDiffBySeconds:message.secondsSince] isMe:isMe viewY:viewY];
             view.tag = 2;

@@ -102,29 +102,29 @@
     self.descText = descText;
     [createView addSubview:descText];
     
-    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
-    participantsLabel.text = @"Total People?";
-    [createView addSubview:participantsLabel];
+//    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
+//    participantsLabel.text = @"Total People?";
+//    [createView addSubview:participantsLabel];
     
-    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 5, 190, (wd / 5) - 20, 30)];
-    minText.borderStyle = UITextBorderStyleRoundedRect;
-    minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-    minText.font = [UIFont systemFontOfSize:15];
-    minText.placeholder = @"Min";
-    minText.keyboardType = UIKeyboardTypeNumberPad;
-    minText.delegate = self;
-    self.minText = minText;
-    [createView addSubview:minText];
-    
-    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 4) / 5 - 10, 190, (wd / 5) - 20, 30)];
-    maxText.borderStyle = UITextBorderStyleRoundedRect;
-    maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-    maxText.font = [UIFont systemFontOfSize:15];
-    maxText.placeholder = @"Max";
-    maxText.keyboardType = UIKeyboardTypeNumberPad;
-    maxText.delegate = self;
-    self.maxText = maxText;
-    [createView addSubview:maxText];
+//    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 5, 190, (wd / 5) - 20, 30)];
+//    minText.borderStyle = UITextBorderStyleRoundedRect;
+//    minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
+//    minText.font = [UIFont systemFontOfSize:15];
+//    minText.placeholder = @"Min";
+//    minText.keyboardType = UIKeyboardTypeNumberPad;
+//    minText.delegate = self;
+//    self.minText = minText;
+//    [createView addSubview:minText];
+//    
+//    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 4) / 5 - 10, 190, (wd / 5) - 20, 30)];
+//    maxText.borderStyle = UITextBorderStyleRoundedRect;
+//    maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
+//    maxText.font = [UIFont systemFontOfSize:15];
+//    maxText.placeholder = @"Max";
+//    maxText.keyboardType = UIKeyboardTypeNumberPad;
+//    maxText.delegate = self;
+//    self.maxText = maxText;
+//    [createView addSubview:maxText];
     
 //    self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
 //    [self.publicButton switchButton]; //Start as private
@@ -137,12 +137,15 @@
             descText.text = self.event.description;
             descText.textColor = [UIColor blackColor];
         }
-        self.locationView.locationText.text = self.event.location.name;
-        self.locationView.location = self.event.location;
         [self.startText setTime:self.event.startTime];
-        minText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.minParticipants - 1];
-        if(self.event.maxParticipants)
-            maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants - 1];
+        
+        
+//        self.locationView.locationText.text = self.event.location.name;
+//        self.locationView.location = self.event.location;
+//        
+//        minText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.minParticipants - 1];
+//        if(self.event.maxParticipants)
+//            maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants - 1];
         
     }
     else
@@ -150,8 +153,8 @@
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [addFriendsButton setTitle:@"Invite Friends or Groups" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        addFriendsButton.frame = CGRectMake(20, 230, wd-40, 30);
-        [addFriendsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        addFriendsButton.frame = CGRectMake(20, 190, wd-40, 30);
+        [addFriendsButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
         [createView addSubview:addFriendsButton];
     }
     
@@ -195,7 +198,7 @@
             [subview removeFromSuperview];
     }
     
-    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 305, wd - 60, 80)];
+    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 265, wd - 60, 80)];
     
     self.contactsList = contactsList;
 
@@ -288,7 +291,6 @@
     event.location = self.locationView.location != nil ? self.locationView.location : [[Location alloc] init];
     event.minParticipants = [self.minText.text integerValue];
     event.maxParticipants = [self.maxText.text integerValue];
-    event.groupId = @""; //TODO
     
     School *school = (School *)[Session sessionVariables][@"currentSchool"];
     event.location = [[Location alloc] init: @{ @"name": school.name, @"address": @"", @"latitude": [NSNumber numberWithInt:(int)school.latitude], @"longitude": [NSNumber numberWithInt:(int)school.longitude] }];
@@ -312,6 +314,11 @@
         self.startText.timeText.layer.borderWidth= 1.0f;
         return;
     }
+    
+    event.groupId = @""; //TODO
+    event.groupName = @"";
+    event.groupPictureUrl = @"";
+    event.groupIsPublic = YES;
     
     [self save:event];
 }

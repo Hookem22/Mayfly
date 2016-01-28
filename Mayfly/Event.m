@@ -28,6 +28,7 @@
 @synthesize schoolId = _schoolId;
 @synthesize going = _going;
 @synthesize invited = _invited;
+@synthesize messages = _messages;
 
 -(id)init:(NSDictionary *)event {
     self = [super init];
@@ -84,7 +85,10 @@
             Event *event = [[Event alloc] init:item];
             [event getEventGoing:^(NSArray *goings) {
                 event.going = [NSArray arrayWithArray:goings];
-                completion(event);
+                [event getMessages:^(NSArray *messages) {
+                    event.messages = [NSArray arrayWithArray:messages];
+                    completion(event);
+                }];
             }];
             //completion(event);
             return;
@@ -99,6 +103,17 @@
         completion(goings);
     }];
 }
+
+//TODO: get Invited
+
+-(void)getMessages:(QSCompletionBlock)completion
+{
+    [Message get:self.eventId completion:^(NSArray *messages)
+     {
+         completion(messages);
+     }];
+}
+
 
 +(void)get:(QSCompletionBlock)completion
 {

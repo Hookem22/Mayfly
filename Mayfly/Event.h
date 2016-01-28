@@ -13,6 +13,7 @@
 #import "Session.h"
 #import "School.h"
 #import "EventGoing.h"
+#import "Message.h"
 
 @interface Event : NSObject
 
@@ -34,6 +35,7 @@
 
 @property (nonatomic, copy) NSArray *going;
 @property (nonatomic, copy) NSArray *invited;
+@property (nonatomic, copy) NSArray *messages;
 
 -(id)init:(NSDictionary *)event;
 -(id)initFromUrl:(NSString *)url;

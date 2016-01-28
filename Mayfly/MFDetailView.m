@@ -11,7 +11,7 @@
 @interface MFDetailView ()
 
 @property (nonatomic, strong) Event *event;
-@property (nonatomic, strong) UIButton *messageButton;
+@property (nonatomic, strong) UIView *detailView;
 @property (nonatomic, strong) UIScrollView *peopleView;
 @property (nonatomic, strong) UILabel *goingLabel;
 
@@ -23,15 +23,30 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
         
         UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
         [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
         [self addGestureRecognizer:recognizer];
         
+        UISwipeGestureRecognizer *recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
+        [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+        [self addGestureRecognizer:recognizer2];
+        
         [self setup:eventId];
     }
     return self;
+}
+
+-(void)nothing:(id)sender {
+    
+}
+
+-(void)reset:(NSString *)eventId {
+    for(UIView *subview in self.subviews)
+        [subview removeFromSuperview];
+    
+    [self setup:eventId];
 }
 
 -(void)setup:(NSString *)eventId
@@ -86,34 +101,39 @@
         [self addSubview:cancelButton];
         
         
-        self.messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 45, 25, 35, 30)];
-        [self.messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
-        [self.messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.messageButton];
-
-        [Message get:self.event.eventId completion:^(NSArray *messages)
-         {
-             if([messages count] > 0)
-                 [self.messageButton setImage:[UIImage imageNamed:@"newmessage"] forState:UIControlStateNormal];
-         }];
+//        self.messageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 45, 25, 35, 30)];
+//        [self.messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+//        [self.messageButton addTarget:self action:@selector(messageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:self.messageButton];
+//
+//        [Message get:self.event.eventId completion:^(NSArray *messages)
+//         {
+//             if([messages count] > 0)
+//                 [self.messageButton setImage:[UIImage imageNamed:@"newmessage"] forState:UIControlStateNormal];
+//         }];
         
-        UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, wd, ht - 80)];
+        int viewY = 0;
+        UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+        detailView.backgroundColor = [UIColor whiteColor];
         [self addSubview:detailView];
-
-        UILabel *detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, wd - 60, 20)];
+        viewY += 20;
+        
+        UILabel *detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
         NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-        [outputFormatter setDateFormat:@"EEE h:mm a"];
-        detailsLabel.text = [NSString stringWithFormat:@"%@ - %@", [outputFormatter stringFromDate:event.startTime], event.location.name];
+        [outputFormatter setDateFormat:@"EEE, MMM d - h:mm a"];
+        detailsLabel.text = [NSString stringWithFormat:@"%@", [outputFormatter stringFromDate:event.startTime]];
         detailsLabel.textAlignment = NSTextAlignmentCenter;
         [detailView addSubview:detailsLabel];
+        viewY += 40;
         
         UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]];
         [joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        joinButton.frame = CGRectMake(30, 40, wd - 60, 40);
+        joinButton.frame = CGRectMake(30, viewY, wd - 60, 40);
         joinButton.layer.cornerRadius = 4.0f;
         joinButton.layer.borderWidth = 2.0f;
         [detailView addSubview:joinButton];
+        viewY += 50;
         
         if(![event isGoing])
         {
@@ -130,41 +150,136 @@
             joinButton.layer.backgroundColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
         }
         
-        UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 90, wd - 60, 20)];
-        descriptionLabel.text = event.description;
+        UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
+        descriptionLabel.text = [event.description stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [descriptionLabel sizeToFit];
         [detailView addSubview:descriptionLabel];
-
-        int descHt = descriptionLabel.frame.size.height;
+        viewY += descriptionLabel.frame.size.height;
+        viewY += 20;
         
-        NSString *goingText = [NSString stringWithFormat:@"Going %i", [event.going count]];
-        if(event.minParticipants > 0 && event.maxParticipants > 0)
-            goingText = [NSString stringWithFormat:@"%@ (Min: %i Max: %i)", goingText, event.minParticipants, event.maxParticipants];
-        else if(event.minParticipants > 0)
-            goingText = [NSString stringWithFormat:@"%@ (Min: %i)", goingText, event.minParticipants];
-        else if(event.maxParticipants > 0)
-            goingText = [NSString stringWithFormat:@"%@ (Max: %i)", goingText, event.maxParticipants];
+        UIView *topBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+        topBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [detailView addSubview:topBorder1];
+        viewY += 1;
         
-        UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 110 + descHt, wd - 60, 20)];
+        UIView *middle1 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 10)];
+        middle1.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        [detailView addSubview:middle1];
+        viewY += 10;
+        
+        UIView *bottomBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+        bottomBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [detailView addSubview:bottomBorder1];
+        viewY += 20;
+        
+        UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
         goingLabel.textAlignment = NSTextAlignmentCenter;
-        goingLabel.text = goingText;
         self.goingLabel = goingLabel;
         [detailView addSubview:goingLabel];
-
-        self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 140 + descHt, wd - 60, 80)];
+        viewY += 30;
+        
+        self.peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
         [detailView addSubview:self.peopleView];
         [self refreshGoing];
-
+        viewY += 80;
+        
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [addFriendsButton setTitle:@"Invite Friends or Groups" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        addFriendsButton.frame = CGRectMake(30, 225 + descHt, wd-60, 30);
-        [addFriendsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        addFriendsButton.frame = CGRectMake(30, viewY, wd-60, 30);
+        [addFriendsButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
         [detailView addSubview:addFriendsButton];
+        viewY += 40;
+        
+        UIView *topBorder2 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+        topBorder2.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [detailView addSubview:topBorder2];
+        viewY += 1;
+        
+        UIView *middle2 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 10)];
+        middle2.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        [detailView addSubview:middle2];
+        viewY += 10;
+        
+        UIView *bottomBorder2 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+        bottomBorder2.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [detailView addSubview:bottomBorder2];
+        
+        UIButton *postMessageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, viewY, wd, 70)];
+        [postMessageButton addTarget:self action:@selector(postMessageClick:) forControlEvents:UIControlEventTouchUpInside];
+        [detailView addSubview:postMessageButton];
+        viewY += 70;
+        
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 10, 50, 50) facebookId:appDelegate.facebookId];
+        [postMessageButton addSubview:postMessagePic];
+        
+        UILabel *postMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 25, wd - 90, 20)];
+        postMessageLabel.text = @"Say something...";
+        postMessageLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+        [postMessageButton addSubview:postMessageLabel];
+        
+         for(Message *message in event.messages) {
+             UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+             topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+             [detailView addSubview:topBorder];
+             viewY += 1;
+             
+             UIView *middle = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 10)];
+             middle.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+             [detailView addSubview:middle];
+             viewY += 10;
+             
+             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+             bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+             [detailView addSubview:bottomBorder];
+             viewY += 1;
+             
+             UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 120)];
+             [detailView addSubview:messageView];
+             
+             MFProfilePicView *messagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 10, 50, 50) facebookId:message.facebookId];
+             [messageView addSubview:messagePic];
+             
+             UILabel *nameMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 15, wd - 90, 20)];
+             nameMessageLabel.text = message.name;
+             [messageView addSubview:nameMessageLabel];
+             
+             UILabel *dateMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 40, wd - 90, 20)];
+             dateMessageLabel.text = [MFHelpers dateDiffBySeconds:message.secondsSince];
+             dateMessageLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+             [messageView addSubview:dateMessageLabel];
+             
+             UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 20)];
+             messageLabel.text = message.message;
+             messageLabel.numberOfLines = 0;
+             messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+             [messageLabel sizeToFit];
+             [messageView addSubview:messageLabel];
+             
+             NSLog(@"%f", messageLabel.frame.size.height);
+             NSLog(@"%f", messageView.frame.size.height);
+             if(messageLabel.frame.size.height + 90 > messageView.frame.size.height) {
+                 messageView.frame = CGRectMake(0, viewY, wd, messageLabel.frame.size.height + 100);
+             }
+             viewY += messageView.frame.size.height;
+         }
+        
+        UIView *topBorder3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+        topBorder3.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [detailView addSubview:topBorder3];
+        viewY += 1;
+        
+        UIView *middle3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 300)];
+        middle3.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        [detailView addSubview:middle3];
+        viewY += 30;
 
-
+        detailView.contentSize = CGSizeMake(wd, viewY);
+        self.detailView = detailView;
+        
 //        NSString *title = @"Join Event";
         //if(appDelegate.facebookId != nil && [event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
         //    title = @"Unjoin Event";
@@ -196,15 +311,7 @@
     if(going.count == 0)
         going = [[NSArray alloc] init];
 
-    NSString *goingText = [NSString stringWithFormat:@"Going: %lu", (unsigned long)[going count]];
-    if(self.event.maxParticipants > 0 && self.event.minParticipants > 1)
-        goingText = [NSString stringWithFormat:@"%@ (Min: %lu, Max: %lu)", goingText, (unsigned long)self.event.minParticipants, (unsigned long)self.event.maxParticipants];
-    else if (self.event.minParticipants > 1)
-        goingText = [NSString stringWithFormat:@"%@ (Min: %lu)", goingText, (unsigned long)self.event.minParticipants];
-    else if(self.event.maxParticipants > 0)
-        goingText = [NSString stringWithFormat:@"%@ (Max: %lu)", goingText, (unsigned long)self.event.maxParticipants];
-
-    
+    NSString *goingText = [NSString stringWithFormat:@"Going: %i | Invited: %i", self.event.going.count, self.event.invited.count];
     self.goingLabel.text = goingText;
     
     for(UIView *subview in self.peopleView.subviews)
@@ -237,7 +344,8 @@
         [personView addSubview:label];
         
         [self.peopleView addSubview:personView];
-        self.peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
+        self.peopleView.contentSize = CGSizeMake((i + 1) * 60 + 40, 80);
+        self.peopleView.contentOffset = CGPointMake(-30, 0);
     }
 //    NSMutableArray *invited = [[self.event.invited componentsSeparatedByString:@"|"] mutableCopy];
 //    if([self.event.invited length] == 0)
@@ -327,12 +435,12 @@
     [MFHelpers open:detailView onView:self];
 }
 
--(void)messageButtonClick:(id)sender
-{
-    MFMessageView *messageView = [[MFMessageView alloc] init:self.event];
-    [MFHelpers openFromRight:messageView onView:self];
-    [self.messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
-}
+//-(void)messageButtonClick:(id)sender
+//{
+//    MFMessageView *messageView = [[MFMessageView alloc] init:self.event];
+//    [MFHelpers openFromRight:messageView onView:self];
+//    [self.messageButton setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+//}
 
 -(void)joinButtonClick:(id)sender
 {
@@ -393,6 +501,11 @@
 {
     MFAddressBook *addressBook = [[MFAddressBook alloc] init:[NSArray arrayWithObjects:self.event, nil]];
     [MFHelpers open:addressBook onView:self];
+}
+
+-(void)postMessageClick:(id)sender {
+    MFPostMessageView *view = [[MFPostMessageView alloc] init:self.event];
+    [MFHelpers open:view onView:self];
 }
 
 -(void)cancelButtonClick:(id)sender

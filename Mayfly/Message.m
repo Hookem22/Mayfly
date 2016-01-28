@@ -12,6 +12,7 @@
 
 @synthesize messageId = _messageId;
 @synthesize eventId = _eventId;
+@synthesize userId = _userId;
 @synthesize facebookId = _facebookId;
 @synthesize name = _name;
 @synthesize message = _message;
@@ -24,6 +25,7 @@
     if (self) {
         self.messageId = [message valueForKey:@"id"];
         self.eventId = [message objectForKey:@"eventid"];
+        self.userId = [message objectForKey:@"userid"];
         self.facebookId = [message objectForKey:@"facebookid"];
         self.name = [message objectForKey:@"name"];
         self.message = [message objectForKey:@"message"];
@@ -55,7 +57,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Message"];
     
-    NSDictionary *dict = @{@"eventid": self.eventId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message };
+    NSDictionary *dict = @{@"eventid": self.eventId, @"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message };
     
     if([self.messageId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [dict mutableCopy];

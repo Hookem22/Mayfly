@@ -13,6 +13,7 @@
 
 @property (nonatomic, copy) NSString *messageId;
 @property (nonatomic, copy) NSString *eventId;
+@property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *facebookId;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *message;

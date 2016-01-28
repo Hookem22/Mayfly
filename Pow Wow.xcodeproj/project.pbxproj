@@ -62,6 +62,7 @@
 		485AB3761C20BA2C0035C79D /* whiteSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB36C1C20BA2C0035C79D /* whiteSearch.png */; };
 		485AB3791C20CC450035C79D /* School.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AB3781C20CC450035C79D /* School.m */; };
 		485AB37C1C2348130035C79D /* EventGoing.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AB37B1C2348130035C79D /* EventGoing.m */; };
+		487761101C59D5CB006E5454 /* MFPostMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877610F1C59D5CB006E5454 /* MFPostMessageView.m */; };
 		4886C9E11B0BBAA900909747 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E01B0BBAA900909747 /* main.m */; };
 		4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E31B0BBAA900909747 /* AppDelegate.m */; };
 		4886C9E71B0BBAA900909747 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4886C9E61B0BBAA900909747 /* ViewController.m */; };
@@ -200,6 +201,8 @@
 		485AB3781C20CC450035C79D /* School.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = School.m; sourceTree = "<group>"; };
 		485AB37A1C2348130035C79D /* EventGoing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventGoing.h; sourceTree = "<group>"; };
 		485AB37B1C2348130035C79D /* EventGoing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventGoing.m; sourceTree = "<group>"; };
+		4877610E1C59D5CB006E5454 /* MFPostMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFPostMessageView.h; sourceTree = "<group>"; };
+		4877610F1C59D5CB006E5454 /* MFPostMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFPostMessageView.m; sourceTree = "<group>"; };
 		4886C9DB1B0BBAA900909747 /* Pow Wow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pow Wow.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4886C9DF1B0BBAA900909747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4886C9E01B0BBAA900909747 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -420,6 +423,8 @@
 				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
 				48185D571B3094DE00B4EE08 /* MFRightSideView.h */,
 				48185D581B3094DE00B4EE08 /* MFRightSideView.m */,
+				4877610E1C59D5CB006E5454 /* MFPostMessageView.h */,
+				4877610F1C59D5CB006E5454 /* MFPostMessageView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
@@ -689,6 +694,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				487761101C59D5CB006E5454 /* MFPostMessageView.m in Sources */,
 				4835C5B61C33109200BB8962 /* Group.m in Sources */,
 				48C5BEFE1C3382EC0036C9B1 /* MFGroupDetailView.m in Sources */,
 				4843EA731B1CE36A00C510B4 /* User.m in Sources */,
