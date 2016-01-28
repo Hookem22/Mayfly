@@ -44,23 +44,23 @@
     return self;
 }
 
-+(void)login:(QSCompletionBlock)completion
++(void)login:(User *)loginUser completion:(QSCompletionBlock)completion
 {
 
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(!appDelegate || !appDelegate.facebookId || [appDelegate.facebookId isEqualToString:@""])
+    if([loginUser isKindOfClass:[NSNull class]] || [loginUser.facebookId isKindOfClass:[NSNull class]] || loginUser.facebookId.length <= 0)
         return;
     
-    [self getByFacebookId:appDelegate.facebookId completion:^(User *deviceUser) {
-        if((!deviceUser || !deviceUser.deviceId || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""] || ![deviceUser.pushDeviceToken isEqualToString:appDelegate.deviceToken])) {
+    [self getByFacebookId:loginUser.facebookId completion:^(User *deviceUser) {
+        if((!deviceUser || !deviceUser.deviceId || deviceUser.deviceId.length <= 0 || [deviceUser.name isEqualToString:@""] || [deviceUser.pushDeviceToken isEqualToString:@""] || ![deviceUser.pushDeviceToken isEqualToString:loginUser.pushDeviceToken])) {
+            
             User *newUser = deviceUser == nil ? [[User alloc] init] : deviceUser;
             newUser.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
             
-            newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
-            newUser.name = appDelegate.name ? appDelegate.name : @"";
-            newUser.firstName = appDelegate.firstName ? appDelegate.firstName : @"";
-            newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
-            newUser.email = appDelegate.email ? appDelegate.email : @"";
+            newUser.pushDeviceToken = loginUser.pushDeviceToken ? loginUser.pushDeviceToken : @"";
+            newUser.name = loginUser.name ? loginUser.name : @"";
+            newUser.firstName = loginUser.firstName ? loginUser.firstName : @"";
+            newUser.facebookId = loginUser.facebookId ? loginUser.facebookId : @"";
+            newUser.email = loginUser.email ? loginUser.email : @"";
             
             /*Always update info
             if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
@@ -73,13 +73,31 @@
                 newUser.email = appDelegate.email ? appDelegate.email : @"";
             */
             [newUser save:^(User *addedUser) {
-                completion(addedUser);
+                [addedUser getUserValues:^(User *finishedUser) {
+                    completion(finishedUser);
+                }];
             }];
 
         }
         else {
-            completion(deviceUser);
+            [deviceUser getUserValues:^(User *finishedUser) {
+                completion(finishedUser);
+            }];
         }
+    }];
+}
+
+-(void)getUserValues:(QSCompletionBlock)completion {
+    [self getUserGroups:^(NSArray *groups) {
+        self.groups = [groups mutableCopy];
+        [[Session sessionVariables] setObject:self forKey:@"currentUser"];
+        completion(self);
+    }];
+}
+
+-(void)getUserGroups:(QSCompletionBlock)completion {
+    [Group getByUser:self.userId completion:^(NSArray *groups) {
+        completion(groups);
     }];
 }
 
@@ -104,7 +122,17 @@
      }];
 }
 
-+(void)get:(id)deviceId completion:(QSCompletionBlock)completion
++(void)get:(NSString *)userId completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"Users"];
+    
+    [service get:userId completion:^(NSDictionary *item) {
+        User *user = [[User alloc] init:item];
+        completion(user);
+    }];
+}
+
++(void)getByDeviceId:(id)deviceId completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     NSString *whereStatement = [NSString stringWithFormat:@"deviceid = '%@'", deviceId];
@@ -159,23 +187,5 @@
         }];
     }
 }
-/*
-+(User *)CheckUserResults:(NSArray *)results {
-    if(results && [results count] > 1) {
-        for(int i = 0; i < [results count] - 1; i++) {
-            User *user = [[User alloc] init:results[i]];
-            QSAzureService *service = [QSAzureService defaultService:@"Users"];
-            [service deleteItem:user.userId completion:^(NSString *userId) {
-                NSLog(@"Deleted: %@", userId);
-            }];
-        }
-    }
-    if([results count] > 0)
-    {
-        User *user = [[User alloc] init:results[0]];
-        return user;
-    }
-    return nil;
-}
-*/
+
 @end

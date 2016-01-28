@@ -34,12 +34,31 @@
         self.latitude = [[group objectForKey:@"latitude"] isMemberOfClass:[NSNull class]] ? 0 : [[group objectForKey:@"latitude"] doubleValue];
         self.longitude = [[group objectForKey:@"longitude"] isMemberOfClass:[NSNull class]] ? 0 : [[group objectForKey:@"longitude"] doubleValue];
         self.city = [group objectForKey:@"city"];
-        self.isPublic = [[group objectForKey:@"ispublic"] isMemberOfClass:[NSNull class]] ? TRUE : [[group objectForKey:@"schoolid"] boolValue];
+        self.isPublic = [[group objectForKey:@"ispublic"] isMemberOfClass:[NSNull class]] ? TRUE : [[group objectForKey:@"ispublic"] boolValue];
         self.password = [group valueForKey:@"password"];
-        self.locations = [group objectForKey:@"locations"];
         self.orderBy = [[group objectForKey:@"orderby"] isMemberOfClass:[NSNull class]] ? 0 : [[group objectForKey:@"orderby"] intValue];
+        self.isInvitedtoEvent = NO;
     }
     return self;
+}
+
++(void)get:(NSString *)groupId completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"Group"];
+    NSString *whereStatement = [NSString stringWithFormat:@"id = '%@'", groupId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        for(id item in results) {
+            Group *group = [[Group alloc] init:item];
+            [group getMembers:^(NSArray *users) {
+                group.members = [NSArray arrayWithArray:users];
+                completion(group);
+            }];
+            //completion(group);
+            return;
+        }
+        completion(nil);
+    }];
 }
 
 +(void)getBySchool:(QSCompletionBlock)completion
@@ -60,22 +79,20 @@
     }];
 }
 
-+(void)get:(NSString *)groupId completion:(QSCompletionBlock)completion
++(void)getByUser:(NSString *)userId completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Group"];
-    NSString *whereStatement = [NSString stringWithFormat:@"id = '%@'", groupId];
     
-    [service getByWhere:whereStatement completion:^(NSArray *results) {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:[NSString stringWithFormat:@"%@", userId] forKey:@"userid"];
+    
+    [service getByProc:@"getgroupsbyuser" params:params completion:^(NSArray *results) {
+        NSMutableArray *list = [[NSMutableArray alloc] init];
         for(id item in results) {
             Group *group = [[Group alloc] init:item];
-            [group getMembers:^(NSArray *users) {
-                group.members = [NSArray arrayWithArray:users];
-                completion(group);
-            }];
-            //completion(group);
-            return;
+            [list addObject:group];
         }
-        completion(nil);
+        completion(list);
     }];
 }
 
@@ -112,17 +129,24 @@
 
 -(BOOL)isMember
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(appDelegate == nil || appDelegate.userId == nil)
-        return false;
-    
-    for(GroupUsers *member in self.members)
-    {
-        if([member.facebookId isEqualToString:appDelegate.facebookId])
-            return true;
+//    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+//    if(currentUser == nil || currentUser.userId == nil)
+//        return false;
+//    
+//    for(GroupUsers *member in self.members)
+//    {
+//        if([member.facebookId isEqualToString:currentUser.facebookId])
+//            return true;
+//    }
+//    
+    return NO;
+}
+
++(void)clearIsInvitedToEvent {
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    for(Group *group in currentUser.groups) {
+        group.isInvitedtoEvent = NO;
     }
-    
-    return false;
 }
 
 -(void)save:(QSCompletionBlock)completion
@@ -148,6 +172,16 @@
          }];
     }
     
+}
+
+-(void)sendMessageToGroup:(NSString *)message info:(NSString *)info  {
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    [self getMembers:^(NSArray *members) {
+        for(GroupUsers *member in members) {
+            if(![member.userId isEqualToString:currentUser.userId])
+                [PushMessage push:member.userId message:message info:info];
+        }
+    }];
 }
 
 @end

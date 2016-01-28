@@ -12,7 +12,7 @@
 
 @interface PushMessage : NSObject
 
-+(void)push:(NSString *)deviceToken  header:(NSString *)header message:(NSString *)message;
++(void)push:(NSString *)userId  message:(NSString *)message info:(NSString *)info;
 +(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message;
 +(void)inviteFriends:(NSArray *)facebookIds from:(NSString *)from event:(Event *)event;
 

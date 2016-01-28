@@ -15,6 +15,6 @@
 
 @interface QSAzureMessageService : NSObject
 
--(void)send:(NSString *)deviceToken alert:(NSString *)alert message:(NSString *)message;
+-(void)send:(NSString *)pushDeviceToken isiOS:(BOOL)isiOS alert:(NSString *)alert message:(NSString *)message;
 
 @end

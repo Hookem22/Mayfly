@@ -62,7 +62,7 @@
 -(void)applicationDidBecomeActive:(UIApplication *)application {
     
     self.hasNotifications = application.applicationIconBadgeNumber > 0;
-    self.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    //self.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     application.applicationIconBadgeNumber = 0;
     
     [FBSDKAppEvents activateApp];
@@ -79,12 +79,20 @@
                  //self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
                  
                  self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;
-                 self.facebookId = [result objectForKey:@"id"];
-                 self.name = [result objectForKey:@"name"];
-                 self.firstName = [result objectForKey:@"first_name"];
-                 self.email = [result objectForKey:@"email"];
                  
-                 [self LoginUser];
+                 
+                 User *user = [[User alloc] init];
+                 user.facebookId = [result objectForKey:@"id"];
+                 user.name = [result objectForKey:@"name"];
+                 user.firstName = [result objectForKey:@"first_name"];
+                 user.email = [result objectForKey:@"email"];
+                 
+//                 self.facebookId = [result objectForKey:@"id"];
+//                 self.name = [result objectForKey:@"name"];
+//                 self.firstName = [result objectForKey:@"first_name"];
+//                 self.email = [result objectForKey:@"email"];
+                 
+                 [self LoginUser:user];
              }
          }];
     }
@@ -142,15 +150,15 @@
     }];
 }
 
--(void)LoginUser {
+-(void)LoginUser:(User *)user {
 //    ViewController *vc = (ViewController *)self.window.rootViewController;
 //    MFView *mfView = (MFView *)vc.mainView;
 //    [mfView setup];
     
-    if(self.userId.length <= 0)
+    if([user isKindOfClass:[NSNull class]] || user.userId.length <= 0)
     {
-        [User login:^(User *user) {
-            self.userId = user.userId;
+        [User login:user completion:^(User *newUser) {
+            //self.appUser = user;
             //ViewController *vc = (ViewController *)self.window.rootViewController;
             //MFView *mfView = (MFView *)vc.mainView;
             //[mfView loadWebsite];
@@ -231,7 +239,7 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:
 (NSError *)error {
     NSLog(@"Failed to register for remote notifications: %@", error);
-    self.deviceToken = @"";
+    //self.deviceToken = @"";
 }
 
 

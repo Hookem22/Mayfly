@@ -42,12 +42,12 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 80, 50, 50) facebookId:appDelegate.facebookId];
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 80, 50, 50) facebookId:currentUser.facebookId];
     [self addSubview:postMessagePic];
     
     UILabel *postMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 95, wd - 90, 20)];
-    postMessageLabel.text = appDelegate.firstName;
+    postMessageLabel.text = currentUser.firstName;
     [self addSubview:postMessageLabel];
     
     UITextView *messageText = [[UITextView alloc] initWithFrame:CGRectMake(30, 150, wd - 60, 120)];
@@ -76,13 +76,13 @@
     {
         [MFHelpers showProgressView:self];
         
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         
         Message *message = [[Message alloc] init];
         message.eventId = self.event.eventId;
-        message.userId = appDelegate.userId;
-        message.facebookId = appDelegate.facebookId;
-        message.name = appDelegate.firstName;
+        message.userId = currentUser.userId;
+        message.facebookId = currentUser.facebookId;
+        message.name = currentUser.firstName;
         message.message = self.messageText.text;
         message.sentDate = [NSDate date];
         

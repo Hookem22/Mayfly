@@ -11,7 +11,7 @@
 #import "Session.h"
 #import "Event.h"
 #import "Notification.h"
-#import "AppDelegate.h"
+#import "Group.h"
 
 @interface User : NSObject
 
@@ -24,7 +24,12 @@
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSDate *lastSignedIn;
 
-+(void)login:(QSCompletionBlock)completion;
+@property (nonatomic, copy) NSMutableArray *goingEventIds;
+@property (nonatomic, copy) NSMutableArray *invitedEventIds;
+@property (nonatomic, copy) NSMutableArray *groups;
+
++(void)login:(User *)loginUser completion:(QSCompletionBlock)completion;
++(void)get:(NSString *)userId completion:(QSCompletionBlock)completion;
 +(void)getByFacebookId:(NSString *)facebookId completion:(QSCompletionBlock)completion;
 
 @end

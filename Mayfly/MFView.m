@@ -117,11 +117,11 @@
         }
     }
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(appDelegate.hasNotifications) {
-        [self.notificationButton setImage:[UIImage imageNamed:@"bellNotify"] forState:UIControlStateNormal];
-        appDelegate.hasNotifications = NO;
-    }
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    if(appDelegate.hasNotifications) {
+//        [self.notificationButton setImage:[UIImage imageNamed:@"bellNotify"] forState:UIControlStateNormal];
+//        appDelegate.hasNotifications = NO;
+//    }
 }
 
 

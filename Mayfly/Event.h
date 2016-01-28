@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AppDelegate.h"
 #import "QSAzureService.h"
 #import "Location.h"
 #import "Session.h"

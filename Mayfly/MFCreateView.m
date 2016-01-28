@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) UIScrollView *createView;
+@property (nonatomic, strong) NSArray *groupsList;
 @property (nonatomic, strong) NSArray *contactsList;
 @property (nonatomic, strong) UITextField *nameText;
 @property (nonatomic, strong) UITextView *descText;
@@ -55,6 +56,10 @@
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
+    
+    UISwipeGestureRecognizer *recognizer1 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
+    [recognizer1 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [self addGestureRecognizer:recognizer1];
     
     NSString *headerLabel = self.event ? @"Edit Event" : @"Create Event";
     [MFHelpers addTitleBar:self titleText:headerLabel];
@@ -187,6 +192,7 @@
 {
     MFAddressBook *addressBook = [[MFAddressBook alloc] init:self.contactsList];
     [MFHelpers open:addressBook onView:self];
+    [self dismissKeyboard:nil];
 }
 -(void)invite:(NSArray *)contactsList
 {
@@ -198,14 +204,44 @@
             [subview removeFromSuperview];
     }
     
-    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 265, wd - 60, 80)];
-    
-    self.contactsList = contactsList;
+    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 235, wd, 80)];
 
-    for(int i = 0; i < [contactsList count]; i++)
+    //Groups
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    int viewX = 0;
+    for (Group *group in currentUser.groups) {
+        if(group.isInvitedtoEvent) {
+            [groups addObject:group];
+            
+            UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(viewX, 0, 60, 80)];
+            
+            if([group.pictureUrl isKindOfClass:[NSNull class]] || group.pictureUrl.length <= 0) {
+                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+                [icon setImage:[UIImage imageNamed:@"group"]];
+                [groupView addSubview:icon];
+            }
+            else {
+                MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(0, 0, 50, 50) url:group.pictureUrl];
+                [groupView addSubview:pic];
+            }
+            
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+            label.text = group.name;
+            label.textAlignment = NSTextAlignmentCenter;
+            [groupView addSubview:label];
+            
+            [peopleView addSubview:groupView];
+            viewX += 60;
+        }
+    }
+    self.groupsList = groups;
+    
+    //Contacts
+    self.contactsList = contactsList;
+    for(NSDictionary *contact in contactsList)
     {
-        NSDictionary *contact = [contactsList objectAtIndex:i];
-        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(viewX, 0, 60, 80)];
         
         NSString *facebookId = [contact objectForKey:@"id"];
         if(facebookId != nil)
@@ -227,9 +263,11 @@
         [personView addSubview:label];
         
         [peopleView addSubview:personView];
-        peopleView.contentSize = CGSizeMake((i + 1) * 60, 80);
+        viewX += 60;
     }
-    
+    viewX += 30;
+    peopleView.contentSize = CGSizeMake(viewX, 80);
+    peopleView.contentOffset = CGPointMake(-30, 0);
     [self.createView addSubview:peopleView];
 
 }
@@ -237,11 +275,11 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-    if([[self superview] isMemberOfClass:[MFView class]]) {
-        MFView *view = (MFView *)[self superview];
-        [view refreshEvents];
-    }
-    
+//    if([[self superview] isMemberOfClass:[MFView class]]) {
+//        MFView *view = (MFView *)[self superview];
+//        [view refreshEvents];
+//    }
+    [Group clearIsInvitedToEvent];
     [MFHelpers closeRight:self];
 }
 -(void)saveButtonClick:(id)sender
@@ -315,19 +353,30 @@
         return;
     }
     
-    event.groupId = @""; //TODO
-    event.groupName = @"";
-    event.groupPictureUrl = @"";
-    event.groupIsPublic = YES;
+    event.groupId = self.event == nil ? @"" : event.groupId;
+    event.groupName = self.event == nil ? @"" : event.groupName;
+    event.groupPictureUrl = self.event == nil ? @"" : event.groupPictureUrl;
+    int privateCt = 0;
+    for(Group *group in self.groupsList) {
+        event.groupId = event.groupId.length == 0 ? group.groupId : [NSString stringWithFormat:@"%@|%@", event.groupId, group.groupId];
+        event.groupName = event.groupName.length == 0 ? group.name : [NSString stringWithFormat:@"%@|%@", event.groupName, group.name];
+        if(event.groupPictureUrl.length == 0 && group.pictureUrl.length > 0)
+            event.groupPictureUrl = group.pictureUrl;
+        if(group.isPublic == false)
+            privateCt++;
+    }
+    event.groupIsPublic = privateCt != self.groupsList.count;
+
     
     [self save:event];
+    [Group clearIsInvitedToEvent];
 }
 
 -(void)save:(Event *)event
 {
     [MFHelpers showProgressView:self];
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 //    if(event.going == nil || [event.going isEqualToString:@""])
 //        event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
 //    if(event.invited == nil || [event.invited isEqualToString:@""])
@@ -335,7 +384,8 @@
     
     [event save:^(Event *event)
     {
-        [event addGoing:appDelegate.userId isAdmin:YES];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        [event addGoing:currentUser.userId isAdmin:YES];
         [MFHelpers hideProgressView:self];
 
          if(self.event)
@@ -353,10 +403,16 @@
              [MFHelpers close:self];
              return;
          }
-         
+        
+         for(Group *group in self.groupsList) {
+            NSString *msg = [NSString stringWithFormat:@"New event in %@", group.name];
+            NSString *info = [NSString stringWithFormat:@"Invitation|%@", self.event.eventId];
+            [group sendMessageToGroup:msg info:info];
+         }
+        
          Notification *notification = [[Notification alloc] init];
          notification.eventId = event.eventId;
-         notification.facebookId = appDelegate.facebookId;
+         notification.facebookId = currentUser.facebookId;
          notification.message = [NSString stringWithFormat:@"Created: %@", event.name];
          [notification save:^(Notification *notification) { }];
          
@@ -377,7 +433,7 @@
                  [phoneNumbers addObject:phone];
          }
          if([facebookIds count] > 0) {
-             [PushMessage inviteFriends:facebookIds from:appDelegate.name event:event];
+             [PushMessage inviteFriends:facebookIds from:currentUser.name event:event];
              [event save:^(Event *event) { }];
          }
          
@@ -437,6 +493,10 @@
         textView.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     }
     [textView resignFirstResponder];
+}
+
+-(void)nothing:(id)sender {
+    
 }
 
 

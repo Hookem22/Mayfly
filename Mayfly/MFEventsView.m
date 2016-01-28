@@ -252,7 +252,7 @@
         [groupLabel sizeToFit];
         [eventView addSubview:groupLabel];
         
-        groupHeight = ceil(nameLabel.frame.size.height);
+        groupHeight = ceil(groupLabel.frame.size.height);
     }
     
     if(nameHeight + groupHeight + 30 > eventView.frame.size.height) {
@@ -285,8 +285,8 @@
 
 -(void)loadUserEvents
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(appDelegate.facebookId == nil || [appDelegate.facebookId length] == 0)
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    if(currentUser.facebookId == nil || currentUser.facebookId.length == 0)
         return;
     
     NSMutableArray *going = [[NSMutableArray alloc] init];

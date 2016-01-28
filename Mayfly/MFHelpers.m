@@ -198,8 +198,8 @@
 
 +(void)GetBranchUrl:(NSUInteger)referenceId eventName:(NSString *)eventName completion:(QSCompletionBlock)completion
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSDictionary *params = @{@"ReferenceName": appDelegate.firstName,
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    NSDictionary *params = @{@"ReferenceName": currentUser.firstName,
                              @"ReferenceId": [NSString stringWithFormat:@"%lu", (unsigned long)referenceId]};
     // ... insert code to start the spinner of your choice here ...
     [[Branch getInstance] getShortURLWithParams:params

@@ -51,8 +51,8 @@
     [MFHelpers showProgressView:self];
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     wd = (wd * 3) / 4;
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [Notification get:appDelegate.facebookId completion:^(NSArray *notifications)
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    [Notification get:currentUser.facebookId completion:^(NSArray *notifications)
      {
          self.notifications = notifications;
          for(int i = 0; i < [notifications count]; i++)

@@ -45,12 +45,12 @@
             NSString *invitedString = [params substringFromIndex:invitedRange.location + invitedRange.length];
             invitedString = [invitedString substringToIndex:[invitedString rangeOfString:@"Going%22:%22"].location];
             
-            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
             NSArray *people = [invitedString componentsSeparatedByString:@"%7C"];
             for(NSString *person in people)
             {
                 NSString *info = [person componentsSeparatedByString:@":"][0];
-                if(![info isEqualToString:appDelegate.facebookId])
+                if(![info isEqualToString:currentUser.facebookId])
                 {
                     if([info hasPrefix:@"p"])
                         info = [[info substringFromIndex:1] stringByReplacingOccurrencesOfString:@"%20" withString:@" "];
@@ -306,26 +306,14 @@
 -(void)setup:(NSArray *)invited
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    
-//    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, wd, 20)];
-//    headerLabel.textAlignment = NSTextAlignmentCenter;
-//    if([invited count] == 0 || self.event != nil)
-//        headerLabel.text = @"Recipients";
-//    else
-//        headerLabel.text = [NSString stringWithFormat:@"Recipients (%lu)", (unsigned long)[invited count]];
-//    self.headerLabel = headerLabel;
-//    [self addSubview:self.headerLabel];
-//    
-//    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-//    [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-//    cancelButton.frame = CGRectMake(25, 30, 80, 40);
-//    [self addSubview:cancelButton];
 
     
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
+    
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard:)];
+    [self addGestureRecognizer:singleTap];
     
     [MFHelpers addTitleBar:self titleText:@"Recipients"];
     
@@ -334,22 +322,35 @@
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelButton];
     
+    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    saveButton.frame = CGRectMake(wd - 75, 20, 80, 40);
+    [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    saveButton.titleLabel.font = [UIFont systemFontOfSize:20.f];
+    [self addSubview:saveButton];
+    
     if(self.event != nil)
     {
-        UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [saveButton setTitle:@"Invite" forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(inviteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
-        [self addSubview:saveButton];
     }
     else
     {
-        UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [saveButton setTitle:@"Add" forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        saveButton.frame = CGRectMake(wd - 85, 30, 80, 40);
-        [self addSubview:saveButton];
     }
+    
+    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 125, wd, 1)];
+    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
+    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+    bottomBorder.layer.shadowRadius = 3.0f;
+    bottomBorder.layer.shadowOpacity = 1.0f;
+    [self addSubview:bottomBorder];
+    
+    UIView *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 65, wd, 60)];
+    headerView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:headerView];
+    
     UITextField *searchText = [[UITextField alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 30)];
     [searchText addTarget:self action:@selector(refresh) forControlEvents:UIControlEventEditingChanged];
     searchText.borderStyle = UITextBorderStyleRoundedRect;
@@ -375,36 +376,84 @@
         }
     }
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 110, wd, ht-110)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 125, wd, ht-110)];
     [self addSubview:scrollView];
     
     NSString *search = [self.searchText.text uppercaseString];
-
-    //Friend List
-    int skipCt = 0;
-    int friendHt = 0;
+    int viewY = 0;
     
-    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, wd, 30)];
+    //Group List
+    UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, viewY, wd, 30)];
+    groupHeader.text = @"    Interests";
+    groupHeader.textColor = [UIColor whiteColor];
+    groupHeader.backgroundColor = [UIColor grayColor];
+    [scrollView addSubview:groupHeader];
+    viewY += 30;
+    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    for(int i = 0; i < currentUser.groups.count; i++)
+    {
+        Group *group = currentUser.groups[i];
+        
+        if(![search isEqualToString:@""] && ![[group.name uppercaseString] hasPrefix:search]) {
+            continue;
+        }
+        
+        UIButton *groupButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [groupButton addTarget:self action:@selector(groupButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        groupButton.frame = CGRectMake(30, viewY, wd - 60, 60);
+        groupButton.tag = i;
+        [scrollView addSubview:groupButton];
+        
+        if([group.pictureUrl isKindOfClass:[NSNull class]] || group.pictureUrl.length <= 0) {
+            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+            [icon setImage:[UIImage imageNamed:@"group"]];
+            [groupButton addSubview:icon];
+        }
+        else {
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(10, 5, 50, 50) url:group.pictureUrl];
+            [groupButton addSubview:pic];
+        }
+        
+        UILabel *groupNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 20, wd - 80, 20)];
+        groupNameLabel.text = group.name;
+        groupNameLabel.textColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0];
+        [groupButton addSubview:groupNameLabel];
+        
+        if(group.isInvitedtoEvent) {
+            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 20, 20, 20)];
+            [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+            [groupButton addSubview:invitedButton];
+        }     
+        
+        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, groupButton.frame.size.height - 1.0f, groupButton.frame.size.width, 1)];
+        bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+        [groupButton addSubview:bottomBorder];
+        
+        viewY += 60;
+    }
+    
+    //Friend List
+    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, viewY, wd, 30)];
     friendHeader.text = @"    Friends";
     friendHeader.textColor = [UIColor whiteColor];
     friendHeader.backgroundColor = [UIColor grayColor];
     [scrollView addSubview:friendHeader];
+    viewY += 30;
     
     for(int i = 0; i < [self.friendList count]; i++)
     {
         NSMutableDictionary *contact = [self.friendList objectAtIndex:i];
         NSString *name = [contact objectForKey:@"name"];
         
-        if(![search isEqualToString:@""] && ![[name uppercaseString] hasPrefix:search])
-        {
-            skipCt++;
+        if(![search isEqualToString:@""] && ![[name uppercaseString] hasPrefix:search]) {
             continue;
         }
         
         UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [nameButton setTitle:name forState:UIControlStateNormal];
         [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 40, wd - 60, 30);
+        nameButton.frame = CGRectMake(30, viewY, wd - 60, 30);
         nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
         nameButton.tag = i;
@@ -422,17 +471,17 @@
         bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
         [nameButton addSubview:bottomBorder];
         
-        friendHt = ((i - skipCt) + 2) * 30;
+        viewY += 30;
     }
     
     //Contact List
-    UILabel *contactHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 10 + friendHt, wd, 30)];
+    UILabel *contactHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, viewY, wd, 30)];
     contactHeader.text = @"    Address Book";
     contactHeader.textColor = [UIColor whiteColor];
     contactHeader.backgroundColor = [UIColor grayColor];
     [scrollView addSubview:contactHeader];
+    viewY += 30;
     
-    skipCt = 0;
     for(int i = 0; i < [self.contactList count]; i++)
     {
         NSMutableDictionary *contact = [self.contactList objectAtIndex:i];
@@ -443,9 +492,7 @@
             NSString *firstName = [[contact objectForKey:@"firstName"] uppercaseString];
             NSString *lastName = [[contact objectForKey:@"lastName"] uppercaseString];
             
-            if(![firstName hasPrefix:search] && ![lastName hasPrefix:search] && ![[name uppercaseString] hasPrefix:search])
-            {
-                skipCt++;
+            if(![firstName hasPrefix:search] && ![lastName hasPrefix:search] && ![[name uppercaseString] hasPrefix:search]) {
                 continue;
             }
         }
@@ -453,11 +500,12 @@
         UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [nameButton setTitle:name forState:UIControlStateNormal];
         [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        nameButton.frame = CGRectMake(30, ((i - skipCt) * 30) + 40 + friendHt, wd - 60, 30);
+        nameButton.frame = CGRectMake(30, viewY, wd - 60, 30);
         nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
         nameButton.tag = i + 1000;
         [scrollView addSubview:nameButton];
+        viewY += 30;
         
         NSString *invited = [contact objectForKey:@"invited"];
         if(![invited isEqualToString:@"NO"]) {
@@ -470,10 +518,32 @@
         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, nameButton.frame.size.height - 1.0f, nameButton.frame.size.width, 1)];
         bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
         [nameButton addSubview:bottomBorder];
-        
-        scrollView.contentSize = CGSizeMake(wd, (((i - skipCt) + 4) * 30) + friendHt);
+
     }
+    
+    scrollView.contentSize = CGSizeMake(wd, viewY + 30);
     [MFHelpers hideProgressView:self];
+}
+
+-(void)groupButtonClick:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    Group *group = currentUser.groups[button.tag];
+    
+    for(UIView *subview in button.subviews) {
+        if([subview isMemberOfClass:[UIButton class]]) {
+            [subview removeFromSuperview];
+            group.isInvitedtoEvent = NO;
+            return;
+        }
+    }
+    
+    group.isInvitedtoEvent = YES;
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 20, 20, 20)];
+    [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+    [button addSubview:invitedButton];
 }
 
 -(void)nameButtonClick:(id)sender
@@ -595,6 +665,25 @@
 
 -(void)inviteButtonClick:(id)sender
 {
+    if([[self superview] isMemberOfClass:[MFDetailView class]])
+    {
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        NSMutableArray *groups = [[NSMutableArray alloc] init];
+        for(Group *group in currentUser.groups) {
+            if(group.isInvitedtoEvent) {
+                [groups addObject:group];
+            }
+        }
+        
+        if(groups.count > 0)
+        {
+            MFDetailView *view = (MFDetailView *)[self superview];
+            [view addGroupsToEvent:groups];
+            
+            [Group clearIsInvitedToEvent];
+        }
+
+    }
     
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
     NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
@@ -632,8 +721,8 @@
             }
         }];
         
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [PushMessage inviteFriends:facebookIds from:appDelegate.name event:self.event];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        [PushMessage inviteFriends:facebookIds from:currentUser.name event:self.event];
         
         pushMessageContacts = [pushMessageContacts substringToIndex:[pushMessageContacts length] - 2];
         
@@ -676,6 +765,11 @@
     {
         [MFHelpers close:self];
     }
+}
+
+-(void)dismissKeyboard:(id)sender
+{
+    [self endEditing:YES];
 }
 
 @end

@@ -20,5 +20,6 @@
 -(id)init:(NSString *)eventId;
 -(void)refreshGoing;
 -(void)reset:(NSString *)eventId;
+-(void)addGroupsToEvent:(NSArray *)groups;
 
 @end

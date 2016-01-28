@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AppDelegate.h"
 #import "MFProgressView.h"
 #import "Event.h"
 #import "User.h"

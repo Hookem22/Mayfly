@@ -78,22 +78,17 @@
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
-    NSString *whereStatement = [NSString stringWithFormat:@"id = '%@'", eventId];
+    //NSString *whereStatement = [NSString stringWithFormat:@"id = '%@'", eventId];
     
-    [service getByWhere:whereStatement completion:^(NSArray *results) {
-        for(id item in results) {
-            Event *event = [[Event alloc] init:item];
-            [event getEventGoing:^(NSArray *goings) {
-                event.going = [NSArray arrayWithArray:goings];
-                [event getMessages:^(NSArray *messages) {
-                    event.messages = [NSArray arrayWithArray:messages];
-                    completion(event);
-                }];
+    [service get:eventId completion:^(NSDictionary *item) {
+        Event *event = [[Event alloc] init:item];
+        [event getEventGoing:^(NSArray *goings) {
+            event.going = [NSArray arrayWithArray:goings];
+            [event getMessages:^(NSArray *messages) {
+                event.messages = [NSArray arrayWithArray:messages];
+                completion(event);
             }];
-            //completion(event);
-            return;
-        }
-        completion(nil);
+        }];
     }];
 }
 
@@ -290,8 +285,8 @@
 
 -(BOOL)isGoing
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if(appDelegate == nil || appDelegate.facebookId == nil)
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    if(currentUser == nil || currentUser.facebookId == nil)
         return false;
     
     for(EventGoing *evgoing in self.going)
@@ -300,7 +295,7 @@
 
         NSString *fbId = evgoing.facebookId;
         NSLog(@"%@", fbId);
-        if([fbId isEqualToString:appDelegate.facebookId])
+        if([fbId isEqualToString:currentUser.facebookId])
             return true;
     }
     

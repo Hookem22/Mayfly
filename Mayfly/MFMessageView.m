@@ -95,13 +95,13 @@
 {
     if([self.messageTextField.text length] > 0)
     {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         
         Message *message = [[Message alloc] init];
         message.eventId = self.event.eventId;
-        message.userId = appDelegate.userId;
-        message.facebookId = appDelegate.facebookId;
-        message.name = appDelegate.firstName;
+        message.userId = currentUser.userId;
+        message.facebookId = currentUser.facebookId;
+        message.name = currentUser.firstName;
         message.message = self.messageTextField.text;
         message.sentDate = [NSDate date];
         
@@ -126,14 +126,14 @@
         for(UIView *subview in self.messageView.subviews)
             [subview removeFromSuperview];
         
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         
         NSUInteger viewY = 0;
         for(int i = (int)[messages count] - 1; i >= 0; i--)
         {
             Message *message = (Message *)[messages objectAtIndex:i];
             
-            bool isMe = [appDelegate.userId isEqualToString:message.userId];
+            bool isMe = [currentUser.userId isEqualToString:message.userId];
             NSString *userName = isMe ? @"" : message.name;
             UIView *view = [self addTextView:message.message from:userName date:[MFHelpers dateDiffBySeconds:message.secondsSince] isMe:isMe viewY:viewY];
             view.tag = 2;

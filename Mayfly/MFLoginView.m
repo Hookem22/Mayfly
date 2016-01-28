@@ -51,10 +51,10 @@
             // Process error
         } else if (result.isCancelled) {
             // Handle cancellations
-            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-            ViewController *vc = (ViewController *)appDelegate.window.rootViewController;
-            MFView *mfView = (MFView *)vc.mainView;
-            [mfView loadWebsite];
+//            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//            ViewController *vc = (ViewController *)appDelegate.window.rootViewController;
+//            MFView *mfView = (MFView *)vc.mainView;
+//            [mfView loadWebsite];
         } else {
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing

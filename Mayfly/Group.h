@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "QSAzureService.h"
-#import "AppDelegate.h"
 #import "Session.h"
 #import "School.h"
 #import "GroupUsers.h"
+#import "User.h"
+#import "PushMessage.h"
 
 @interface Group : NSObject
 
@@ -23,19 +24,23 @@
 @property (nonatomic, assign) double latitude;
 @property (nonatomic, assign) double longitude;
 @property (nonatomic, copy) NSString *city;
-@property (nonatomic, assign) bool isPublic;
+@property (nonatomic, assign) BOOL isPublic;
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *locations;
 @property (nonatomic, assign) int orderBy;
+@property (nonatomic, assign) BOOL isInvitedtoEvent;
 
 @property (nonatomic, copy) NSArray *members;
 
 -(id)init:(NSDictionary *)group;
 +(void)get:(NSString *)groupId completion:(QSCompletionBlock)completion;
 +(void)getBySchool:(QSCompletionBlock)completion;
++(void)getByUser:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)addMember:(NSString *)userId isAdmin:(BOOL)isAdmin;
 -(void)removeMember:(NSString *)userId;
++(void)clearIsInvitedToEvent;
 -(void)save:(QSCompletionBlock)completion;
+-(void)sendMessageToGroup:(NSString *)message info:(NSString *)info;
 
 -(BOOL)isMember;
 

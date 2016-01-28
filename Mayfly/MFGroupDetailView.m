@@ -105,7 +105,7 @@
 
 -(void)joinButtonClick:(id)sender
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
 
     UIButton *button = (UIButton *)sender;
     if([button.titleLabel.text isEqualToString:@"+ JOIN GROUP"])
@@ -115,12 +115,12 @@
         button.layer.borderColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
         button.layer.backgroundColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
         
-        [self.group addMember:appDelegate.userId isAdmin:NO];
+        [self.group addMember:currentUser.userId isAdmin:NO];
         
         GroupUsers *person = [[GroupUsers alloc] init];
-        person.firstName = appDelegate.firstName;
-        person.facebookId = appDelegate.facebookId;
-        person.userId = appDelegate.userId;
+        person.firstName = currentUser.firstName;
+        person.facebookId = currentUser.facebookId;
+        person.userId = currentUser.userId;
         NSMutableArray *members = [[NSMutableArray alloc] initWithArray:self.group.members];
         [members addObject:person];
         self.group.members = [[NSArray alloc] initWithArray:members];
@@ -135,12 +135,12 @@
         button.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
         button.layer.backgroundColor = [UIColor whiteColor].CGColor;
         
-        [self.group removeMember:appDelegate.userId];
+        [self.group removeMember:currentUser.userId];
         
         NSMutableArray *members = [[NSMutableArray alloc] init];
         for(GroupUsers *member in self.group.members)
         {
-            if(![member.userId isEqualToString:appDelegate.userId])
+            if(![member.userId isEqualToString:currentUser.userId])
                 [members addObject:member];
         }
         self.group.members = [[NSArray alloc] initWithArray:members];

@@ -212,8 +212,8 @@
         [detailView addSubview:postMessageButton];
         viewY += 70;
         
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 10, 50, 50) facebookId:appDelegate.facebookId];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 10, 50, 50) facebookId:currentUser.facebookId];
         [postMessageButton addSubview:postMessagePic];
         
         UILabel *postMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 25, wd - 90, 20)];
@@ -259,8 +259,6 @@
              [messageLabel sizeToFit];
              [messageView addSubview:messageLabel];
              
-             NSLog(@"%f", messageLabel.frame.size.height);
-             NSLog(@"%f", messageView.frame.size.height);
              if(messageLabel.frame.size.height + 90 > messageView.frame.size.height) {
                  messageView.frame = CGRectMake(0, viewY, wd, messageLabel.frame.size.height + 100);
              }
@@ -444,10 +442,10 @@
 
 -(void)joinButtonClick:(id)sender
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     Notification *notification = [[Notification alloc] init];
     notification.eventId = self.event.eventId;
-    notification.facebookId = appDelegate.facebookId;
+    notification.facebookId = currentUser.facebookId;
     
     UIButton *button = (UIButton *)sender;
     if([button.titleLabel.text isEqualToString:@"+ JOIN EVENT"])
@@ -457,12 +455,12 @@
         button.layer.borderColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
         button.layer.backgroundColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
         
-        [self.event addGoing:appDelegate.userId isAdmin:NO];
+        [self.event addGoing:currentUser.userId isAdmin:NO];
         
         EventGoing *person = [[EventGoing alloc] init];
-        person.firstName = appDelegate.firstName;
-        person.facebookId = appDelegate.facebookId;
-        person.userId = appDelegate.userId;
+        person.firstName = currentUser.firstName;
+        person.facebookId = currentUser.facebookId;
+        person.userId = currentUser.userId;
         NSMutableArray *going = [[NSMutableArray alloc] initWithArray:self.event.going];
         [going addObject:person];
         self.event.going = [[NSArray alloc] initWithArray:going];
@@ -479,12 +477,12 @@
         button.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
         button.layer.backgroundColor = [UIColor whiteColor].CGColor;
         
-        [self.event removeGoing:appDelegate.userId];
+        [self.event removeGoing:currentUser.userId];
         
         NSMutableArray *going = [[NSMutableArray alloc] init];
         for(EventGoing *eventGoing in self.event.going)
         {
-            if(![eventGoing.userId isEqualToString:appDelegate.userId])
+            if(![eventGoing.userId isEqualToString:currentUser.userId])
                 [going addObject:eventGoing];
         }
         self.event.going = [[NSArray alloc] initWithArray:going];
@@ -494,11 +492,23 @@
         notification.message = [NSString stringWithFormat:@"Unjoined: %@", self.event.name];
     }
     
-    [notification save:^(Notification *notification) { }];
+    [notification save:^(Notification *notification) {
+        [self refreshEventsScreen];
+    }];
     
 }
 -(void)addFriendsButtonClick:(id)sender
 {
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    for(NSString *groupId in [self.event.groupId componentsSeparatedByString: @"|"]) {
+        for(Group *group in currentUser.groups) {
+            if([groupId isEqualToString:group.groupId]) {
+                group.isInvitedtoEvent = true;
+                break;
+            }
+        }
+    }
+    
     MFAddressBook *addressBook = [[MFAddressBook alloc] init:[NSArray arrayWithObjects:self.event, nil]];
     [MFHelpers open:addressBook onView:self];
 }
@@ -508,13 +518,44 @@
     [MFHelpers open:view onView:self];
 }
 
--(void)cancelButtonClick:(id)sender
-{
+-(void)addGroupsToEvent:(NSArray *)groups {
+    NSMutableArray *newGroups = [[NSMutableArray alloc] init];
+    for (Group *group in groups) {
+        if([self.event.groupId rangeOfString:group.groupId].location == NSNotFound) {
+            [newGroups addObject:group];
+        }
+    }
+    
+    for(Group *group in newGroups) {
+        self.event.groupId = self.event.groupId.length == 0 ? group.groupId : [NSString stringWithFormat:@"%@|%@", self.event.groupId, group.groupId];
+        self.event.groupName = self.event.groupName.length == 0 ? group.name : [NSString stringWithFormat:@"%@|%@", self.event.groupName, group.name];
+        if(self.event.groupPictureUrl.length == 0 && group.pictureUrl.length > 0)
+            self.event.groupPictureUrl = group.pictureUrl;
+        if(group.isPublic == true)
+            self.event.groupIsPublic = true;
+        
+        NSString *msg = [NSString stringWithFormat:@"New event in %@", group.name];
+        NSString *info = [NSString stringWithFormat:@"Invitation|%@", self.event.eventId];
+        [group sendMessageToGroup:msg info:info];
+    }
+
+    [self.event save:^(Event *event)
+     {
+         [self refreshEventsScreen];
+     }];
+}
+
+-(void)refreshEventsScreen {
     if([[self superview] isMemberOfClass:[MFView class]])
     {
         MFView *mfView = (MFView *)[self superview];
         [mfView refreshEvents];
     }
+}
+
+-(void)cancelButtonClick:(id)sender
+{
+    [Group clearIsInvitedToEvent];
     [MFHelpers closeRight:self];
 }
 

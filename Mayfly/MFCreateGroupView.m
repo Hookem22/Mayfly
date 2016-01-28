@@ -163,8 +163,8 @@
     [MFHelpers showProgressView:self];
     [group save:^(Group *group) {
         [MFHelpers closeRight:self];
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [group addMember:appDelegate.userId isAdmin:YES];
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        [group addMember:currentUser.userId isAdmin:YES];
         
         for(id view in self.superview.subviews)
         {

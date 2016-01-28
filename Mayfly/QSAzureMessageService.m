@@ -26,12 +26,12 @@ NSString *HubSasKeyValue;
     return self;
 }
 
--(void)send:(NSString *)deviceToken alert:(NSString *)alert message:(NSString *)message
+-(void)send:(NSString *)pushDeviceToken isiOS:(BOOL)isiOS alert:(NSString *)alert message:(NSString *)message
 {
-    [self SendNotificationRESTAPI:deviceToken alert:alert message:message];
+    [self SendNotificationRESTAPI:pushDeviceToken isiOS:isiOS alert:alert message:message];
 }
 
--(void)SendNotificationRESTAPI:(NSString *)deviceToken alert:(NSString *)alert message:(NSString *)message
+-(void)SendNotificationRESTAPI:(NSString *)pushDeviceToken isiOS:(BOOL)isiOS alert:(NSString *)alert message:(NSString *)message
 {
     NSURLSession* session = [NSURLSession
                              sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
@@ -60,7 +60,7 @@ NSString *HubSasKeyValue;
     [request setValue:authorizationToken forHTTPHeaderField:@"Authorization"];
     
     //Send to Tag
-    NSString *tag = [deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *tag = [pushDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     [request setValue:tag forHTTPHeaderField:@"ServiceBusNotification-Tags"];
     
     //Add the notification message body
