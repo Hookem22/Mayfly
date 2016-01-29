@@ -44,8 +44,10 @@
 +(void)getBySchool:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 
++(void)getGoingByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin;
 -(void)removeGoing:(NSString *)userId;
++(void)getInvitedByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)addInvited:(NSString *)facebookId firstName:(NSString *)firstName;
 -(BOOL)isGoing;
 -(BOOL)isInvited;

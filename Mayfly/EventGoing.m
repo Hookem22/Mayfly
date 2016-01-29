@@ -25,6 +25,8 @@
         self.userId = [dict objectForKey:@"userid"];
         self.isAdmin = [[dict objectForKey:@"isadmin"] isMemberOfClass:[NSNull class]] ? 0 : [[dict objectForKey:@"isadmin"] boolValue];
         self.firstName = [dict objectForKey:@"firstname"];
+        if(self.firstName == nil)
+            self.firstName = [dict objectForKey:@"name"];
         self.facebookId = [dict objectForKey:@"facebookid"];
     }
     return self;
@@ -56,12 +58,11 @@
     [params setValue:[NSString stringWithFormat:@"%@", userId] forKey:@"userid"];
     
     [service getByProc:@"getgoingbyuser" params:params completion:^(NSArray *results) {
-        NSMutableArray *goings = [[NSMutableArray alloc] init];
+        NSMutableArray *goingEventIds = [[NSMutableArray alloc] init];
         for(id item in results) {
-            EventGoing *going = [[EventGoing alloc] init:item];
-            [goings addObject:going];
+            [goingEventIds addObject:[item objectForKey:@"eventid"]];
         }
-        completion(goings);
+        completion(goingEventIds);
     }];
 }
 

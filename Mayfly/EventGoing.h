@@ -18,6 +18,7 @@
 @property (nonatomic, copy) NSString *firstName;
 @property (nonatomic, copy) NSString *facebookId;
 
+-(id)init:(NSDictionary *)dict;
 +(void)getByEventId:(NSString *)eventId completion:(QSCompletionBlock)completion;
 +(void)getByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
 +(void)joinEvent:(NSString *)eventId userId:(NSString *)userId isAdmin:(BOOL)isAdmin;

@@ -13,9 +13,11 @@
 @synthesize userId = _userId;
 @synthesize deviceId = _deviceId;
 @synthesize name = _name;
+@synthesize firstName = _firstName;
 @synthesize pushDeviceToken = _pushDeviceToken;
 @synthesize facebookId = _facebookId;
 @synthesize lastSignedIn = _lastSignedIn;
+@synthesize isiOS = _isiOS;
 
 - (id)init {
     self = [super init];
@@ -23,6 +25,7 @@
         self.userId = @"";
         self.deviceId = @"";
         self.name = @"";
+        self.firstName = @"";
         self.pushDeviceToken = @"";
         self.facebookId = @"";
         self.lastSignedIn = [NSDate date];
@@ -36,10 +39,12 @@
         self.userId = [user objectForKey:@"id"];
         self.deviceId = [[user objectForKey:@"deviceid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"deviceid"];
         self.name = [[user objectForKey:@"name"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"name"];
+        self.firstName = [[user objectForKey:@"firstname"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"firstname"];
         self.pushDeviceToken = [[user objectForKey:@"pushdevicetoken"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"pushdevicetoken"];
         self.facebookId = [[user objectForKey:@"facebookid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"facebookid"];
         self.email = [[user objectForKey:@"email"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"email"];
         self.lastSignedIn = [user objectForKey:@"lastsignedin"];
+        self.isiOS = [[user objectForKey:@"isios"] isMemberOfClass:[NSNull class]] ? YES : [[user objectForKey:@"isios"] boolValue];
     }
     return self;
 }
@@ -61,6 +66,7 @@
             newUser.firstName = loginUser.firstName ? loginUser.firstName : @"";
             newUser.facebookId = loginUser.facebookId ? loginUser.facebookId : @"";
             newUser.email = loginUser.email ? loginUser.email : @"";
+            newUser.isiOS = YES;
             
             /*Always update info
             if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
@@ -90,14 +96,32 @@
 -(void)getUserValues:(QSCompletionBlock)completion {
     [self getUserGroups:^(NSArray *groups) {
         self.groups = [groups mutableCopy];
-        [[Session sessionVariables] setObject:self forKey:@"currentUser"];
-        completion(self);
+        [self getUserGoing:^(NSArray *going) {
+            self.goingEventIds = [going mutableCopy];
+            [self getUserInvited:^(NSArray *invited) {
+                self.invitedEventIds = [invited mutableCopy];
+                [[Session sessionVariables] setObject:self forKey:@"currentUser"];
+                completion(self);
+            }];
+        }];
     }];
 }
 
 -(void)getUserGroups:(QSCompletionBlock)completion {
     [Group getByUser:self.userId completion:^(NSArray *groups) {
         completion(groups);
+    }];
+}
+
+-(void)getUserGoing:(QSCompletionBlock)completion {
+    [Event getGoingByUserId:self.userId completion:^(NSArray *going) {
+        completion(going);
+    }];
+}
+
+-(void)getUserInvited:(QSCompletionBlock)completion {
+    [Event getInvitedByUserId:self.userId completion:^(NSArray *invited) {
+        completion(invited);
     }];
 }
 
@@ -167,7 +191,7 @@
     
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
-    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email /*, @"lastsignedin" : self.lastSignedIn */};
+    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email, @"isios": [NSNumber numberWithBool:self.isiOS] /*, @"lastsignedin" : self.lastSignedIn */};
     
     if([self.userId length] <= 0)
     {

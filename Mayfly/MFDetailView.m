@@ -305,9 +305,6 @@
 
 -(void)refreshGoing
 {
-    NSArray *going = self.event.going;
-    if(going.count == 0)
-        going = [[NSArray alloc] init];
 
     NSString *goingText = [NSString stringWithFormat:@"Going: %i | Invited: %i", self.event.going.count, self.event.invited.count];
     self.goingLabel.text = goingText;
@@ -315,11 +312,10 @@
     for(UIView *subview in self.peopleView.subviews)
         [subview removeFromSuperview];
 
-    for(int i = 0; i < [going count]; i++)
+    int viewX = 0;
+    for(EventGoing *person in self.event.going)
     {
-        EventGoing *person = [going objectAtIndex:i];
-        
-        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(i * 60, 0, 60, 80)];
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(viewX, 0, 60, 80)];
         
         NSString *facebookId = person.facebookId;
         MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
@@ -342,9 +338,55 @@
         [personView addSubview:label];
         
         [self.peopleView addSubview:personView];
-        self.peopleView.contentSize = CGSizeMake((i + 1) * 60 + 40, 80);
-        self.peopleView.contentOffset = CGPointMake(-30, 0);
+        viewX += 60;
     }
+    
+    for(EventGoing *person in self.event.invited)
+    {
+        if(person.facebookId.length == 0)
+            continue;
+        
+        BOOL isGoing = NO;
+        for(EventGoing *going in self.event.going)
+        {
+            if([going.userId isEqualToString:person.userId]) {
+                isGoing = YES;
+                break;
+            }
+        }
+        if(isGoing)
+            continue;
+        
+        UIView *personView = [[UIView alloc] initWithFrame:CGRectMake(viewX, 0, 60, 80)];
+        
+        NSString *facebookId = person.facebookId;
+        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
+        [personView addSubview:pic];
+        
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(35, 32, 20, 20)];
+        picBackground.backgroundColor = [UIColor whiteColor];
+        picBackground.layer.cornerRadius = 10;
+        picBackground.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+        picBackground.layer.borderWidth = 1;
+        [personView addSubview:picBackground];
+
+        UIImageView *invitePic = [[UIImageView alloc] initWithFrame:CGRectMake(37, 34, 16, 15)];
+        [invitePic setImage:[UIImage imageNamed:@"invited"]];
+        [personView addSubview:invitePic];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+        label.text = person.firstName;
+        label.textAlignment = NSTextAlignmentCenter;
+        [personView addSubview:label];
+        
+        [self.peopleView addSubview:personView];
+        viewX += 60;
+    }
+    viewX += 40;
+    
+    self.peopleView.contentSize = CGSizeMake(viewX, 80);
+    self.peopleView.contentOffset = CGPointMake(-30, 0);
+    
 //    NSMutableArray *invited = [[self.event.invited componentsSeparatedByString:@"|"] mutableCopy];
 //    if([self.event.invited length] == 0)
 //    {

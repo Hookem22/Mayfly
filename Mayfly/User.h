@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSString *facebookId;
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSDate *lastSignedIn;
+@property (nonatomic, assign) BOOL isiOS;
 
 @property (nonatomic, copy) NSMutableArray *goingEventIds;
 @property (nonatomic, copy) NSMutableArray *invitedEventIds;

@@ -44,25 +44,35 @@
          {
             Event *event = [self.Events objectAtIndex:i];
 
+             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+             [dateFormatter setDateFormat:@"EEEE, MMM d"];
+             NSString *dayText = [dateFormatter stringFromDate:event.startTime];
+             
             bool newDay = i == 0;
             if(!newDay)
             {
                 Event *prevEvent = [self.Events objectAtIndex:i - 1];
-                if(prevEvent.dayOfWeek != event.dayOfWeek)
+                if(![dayText isEqualToString:[dateFormatter stringFromDate:prevEvent.startTime]])
+                {
                     newDay = true;
+                }
             }
             if(newDay)
             {
-                NSDate *today = [NSDate date];
-                NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
-                [myFormatter setDateFormat:@"EEEE"]; // day, like "Saturday"
-                NSString *todayText = [myFormatter stringFromDate:today];
+//                NSDate *today = [NSDate date];
+//                NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
+//                [myFormatter setDateFormat:@"EEEE"]; // day, like "Saturday"
+//                NSString *todayText = [myFormatter stringFromDate:today];
                 
-                NSArray *daysOfWeek = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil ];
-                NSString *dayText = [daysOfWeek objectAtIndex:event.dayOfWeek];
+//                NSArray *daysOfWeek = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil ];
+//                NSString *dayText = [daysOfWeek objectAtIndex:event.dayOfWeek];
+                NSDate *today = [NSDate date];
+                NSString *todayText = [dateFormatter stringFromDate:today];
+                NSDate *tomorrow = [today dateByAddingTimeInterval:60*60*24];
+                NSString *tomorrowText = [dateFormatter stringFromDate:tomorrow];
                 if([todayText isEqualToString:dayText])
                     dayText = @"Today";
-                else if([todayText isEqualToString:[daysOfWeek objectAtIndex:(event.dayOfWeek + 6) % 7]])
+                else if([tomorrowText isEqualToString:dayText])
                     dayText = @"Tomorrow";
                 
                 UIControl *newDayView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
@@ -88,19 +98,22 @@
                 middleBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
                 [newDayView addSubview:middleBorder];
                 
-                UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 31, wd - 200, 20)];
+                UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 31, wd - 140, 20)];
                 dayLabel.text = [NSString stringWithFormat:@"%@", dayText];
                 dayLabel.textAlignment = NSTextAlignmentCenter;
                 dayLabel.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
                 [dayLabel setFont:[UIFont boldSystemFontOfSize:18]];
                 [newDayView addSubview:dayLabel];
                 
+                NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:dayLabel.font, NSFontAttributeName, nil];
+                int dayWidth = [[[NSAttributedString alloc] initWithString:dayLabel.text attributes:attributes] size].width;
+                dayLabel.frame = CGRectMake(((wd - dayWidth) / 2) - 20, 31, dayWidth + 40, 20);
+                
                 viewY += 80;
             }
              
             UIView *eventView = [self addEventView:event viewY:viewY i:i];
-            
-            
+             
 
 //            CLLocation *loc = [[CLLocation alloc] initWithLatitude:event.location.latitude longitude:event.location.longitude];
 //            CLLocationDistance distance = [currentLocation distanceFromLocation:loc];
@@ -160,10 +173,18 @@
 //            [eventView addSubview:manyLabel];
 
 
+            UIView *bottomShadow = [[UIView alloc] initWithFrame:CGRectMake(0, viewY + eventView.frame.size.height - 3.0f, eventView.frame.size.width, 1)];
+            bottomShadow.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+            bottomShadow.layer.shadowColor = [[UIColor blackColor] CGColor];
+            bottomShadow.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+            bottomShadow.layer.shadowRadius = 3.0f;
+            bottomShadow.layer.shadowOpacity = 1.0f;
+            [self addSubview:bottomShadow];
+
             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
             bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
             [eventView addSubview:bottomBorder];
-
+             
             [self addSubview:eventView];
              viewY += eventView.frame.size.height;
          }
@@ -187,7 +208,29 @@
     eventView.tag = i;
     
     //Icon
-    if([event.groupPictureUrl isKindOfClass:[NSNull class]] || event.groupPictureUrl.length <= 0) {
+    if(event.isGoing) {
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(10, 10, 50, 50) facebookId:currentUser.facebookId];
+        [eventView addSubview:pic];
+        
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(45, 42, 22, 22)];
+        picBackground.backgroundColor = [UIColor whiteColor];
+        picBackground.layer.cornerRadius = 11;
+        picBackground.layer.borderColor = [UIColor colorWithRed:7.0/255.0 green:149.0/255.0 blue:0.0/255.0 alpha:1.0].CGColor;
+        picBackground.layer.borderWidth = 1;
+        [eventView addSubview:picBackground];
+        
+        UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(50, 47, 13, 13)];
+        [checkPic setImage:[UIImage imageNamed:@"greenCheck"]];
+        [eventView addSubview:checkPic];
+    }
+    else if(event.isInvited) {
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        [icon setImage:[UIImage imageNamed:@"invited"]];
+        [eventView addSubview:icon];
+
+    }
+    else if([event.groupPictureUrl isKindOfClass:[NSNull class]] || event.groupPictureUrl.length <= 0) {
         NSString *iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
         
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
@@ -283,38 +326,38 @@
 //    return [[goingEvents arrayByAddingObjectsFromArray:invitedEvents] arrayByAddingObjectsFromArray:otherEvents];
 //}
 
--(void)loadUserEvents
-{
-    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-    if(currentUser.facebookId == nil || currentUser.facebookId.length == 0)
-        return;
-    
-    NSMutableArray *going = [[NSMutableArray alloc] init];
-    NSMutableArray *invited = [[NSMutableArray alloc] init];
-    for(Event *event in self.Events)
-    {
-//        if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
-//            [going addObject:event];
-//        if([event.invited rangeOfString:appDelegate.facebookId].location != NSNotFound)
-//            [invited addObject:event];
-    }
-    
-    NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
-    
-    if(referenceId != nil && [referenceId length] > 0)
-    {
-        [Event getByReferenceId:referenceId completion:^(Event *event){
-            NSMutableArray *currentInvited = (NSMutableArray *)[Session sessionVariables][@"currentInvited"];
-            if(currentInvited == nil)
-                currentInvited = [[NSMutableArray alloc] init];
-            
-            [currentInvited addObject:event];
-            [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
-        }];
-    }
-    [[Session sessionVariables] setObject:going forKey:@"currentGoing"];
-    [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
-}
+//-(void)loadUserEvents
+//{
+//    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+//    if(currentUser.facebookId == nil || currentUser.facebookId.length == 0)
+//        return;
+//    
+//    NSMutableArray *going = [[NSMutableArray alloc] init];
+//    NSMutableArray *invited = [[NSMutableArray alloc] init];
+//    for(Event *event in self.Events)
+//    {
+////        if([event.going rangeOfString:appDelegate.facebookId].location != NSNotFound)
+////            [going addObject:event];
+////        if([event.invited rangeOfString:appDelegate.facebookId].location != NSNotFound)
+////            [invited addObject:event];
+//    }
+//    
+//    NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
+//    
+//    if(referenceId != nil && [referenceId length] > 0)
+//    {
+//        [Event getByReferenceId:referenceId completion:^(Event *event){
+//            NSMutableArray *currentInvited = (NSMutableArray *)[Session sessionVariables][@"currentInvited"];
+//            if(currentInvited == nil)
+//                currentInvited = [[NSMutableArray alloc] init];
+//            
+//            [currentInvited addObject:event];
+//            [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
+//        }];
+//    }
+//    [[Session sessionVariables] setObject:going forKey:@"currentGoing"];
+//    [[Session sessionVariables] setObject:invited forKey:@"currentInvited"];
+//}
 
 -(void)eventClicked:(id)sender
 {

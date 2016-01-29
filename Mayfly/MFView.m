@@ -45,7 +45,7 @@
         [subview removeFromSuperview];
     
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
-    [eventsView loadEvents];
+    //[eventsView loadEvents];
     [self addSubview:eventsView];
     
     [MFHelpers addTitleBar:self titleText:@""];

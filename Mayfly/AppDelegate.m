@@ -19,25 +19,25 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    Branch *branch = [Branch getInstance];
-    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
-        // params are the deep linked params associated with the link that the user clicked before showing up.
-        NSLog(@"deep link data: %@", [params description]);
-        if(!error && params != nil && [params objectForKey:@"ReferenceId"] != nil) {
-            [[Session sessionVariables] setObject:[params objectForKey:@"ReferenceId"] forKey:@"referenceId"];
-             NSLog(@"%@", [params objectForKey:@"ReferenceId"]);
-            
-            self.hasNotifications = YES;
-            ViewController *vc = (ViewController *)self.window.rootViewController;
-            if(vc != nil) {
-                MFView *mfView = (MFView *)vc.mainView;
-                if(mfView != nil)
-                {
-                    [mfView goToEvent:[[params objectForKey:@"ReferenceId"] intValue]];
-                }
-            }
-        }
-    }];
+//    Branch *branch = [Branch getInstance];
+//    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+//        // params are the deep linked params associated with the link that the user clicked before showing up.
+//        NSLog(@"deep link data: %@", [params description]);
+//        if(!error && params != nil && [params objectForKey:@"ReferenceId"] != nil) {
+//            [[Session sessionVariables] setObject:[params objectForKey:@"ReferenceId"] forKey:@"referenceId"];
+//             NSLog(@"%@", [params objectForKey:@"ReferenceId"]);
+//            
+//            self.hasNotifications = YES;
+//            ViewController *vc = (ViewController *)self.window.rootViewController;
+//            if(vc != nil) {
+//                MFView *mfView = (MFView *)vc.mainView;
+//                if(mfView != nil)
+//                {
+//                    [mfView goToEvent:[[params objectForKey:@"ReferenceId"] intValue]];
+//                }
+//            }
+//        }
+//    }];
 
     /*
     if([launchOptions count] > 0) //ReferenceId on first launch
@@ -79,9 +79,10 @@
                  //self.firstName = @"Bob"; // [result objectForKey:@"first_name"];
                  
                  self.fbAccessToken = [FBSDKAccessToken currentAccessToken].tokenString;
-                 
-                 
+                                 
                  User *user = [[User alloc] init];
+                 user.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+                 user.pushDeviceToken = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
                  user.facebookId = [result objectForKey:@"id"];
                  user.name = [result objectForKey:@"name"];
                  user.firstName = [result objectForKey:@"first_name"];
@@ -94,7 +95,13 @@
                  
                  [self LoginUser:user];
              }
+             else {
+                 [self LoadEvents];
+             }
          }];
+    }
+    else {
+        [self LoadEvents];
     }
 }
 
@@ -151,19 +158,27 @@
 }
 
 -(void)LoginUser:(User *)user {
-//    ViewController *vc = (ViewController *)self.window.rootViewController;
-//    MFView *mfView = (MFView *)vc.mainView;
-//    [mfView setup];
-    
+
     if([user isKindOfClass:[NSNull class]] || user.userId.length <= 0)
     {
         [User login:user completion:^(User *newUser) {
+            NSLog(@"%@", newUser.goingEventIds);
+            NSLog(@"%@", newUser.invitedEventIds);
+            
+            [self LoadEvents];
             //self.appUser = user;
             //ViewController *vc = (ViewController *)self.window.rootViewController;
             //MFView *mfView = (MFView *)vc.mainView;
             //[mfView loadWebsite];
         }];
     }
+}
+
+-(void)LoadEvents
+{
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    MFView *mfView = (MFView *)vc.mainView;
+    [mfView refreshEvents];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
