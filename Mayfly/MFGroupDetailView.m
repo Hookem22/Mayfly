@@ -12,95 +12,208 @@
 
 @property (nonatomic, strong) Group *group;
 @property (nonatomic, strong) UILabel *detailsLabel;
-
+@property (nonatomic, strong) NSMutableArray *Events;
 @end
 
 @implementation MFGroupDetailView
 
--(id)init:(NSString *)groupId
+-(id)init:(Group *)group
 {
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        self.Events = [[NSMutableArray alloc] init];
         
         UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
         [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
         [self addGestureRecognizer:recognizer];
         
-        [self setup:groupId];
+        [self setup:group];
     }
     return self;
 }
 
--(void)setup:(NSString *)groupId
+-(void)setup:(Group *)group
 {
-    [Group get:groupId completion:^(Group *group)
-     {
-         self.group = group;
+    self.group = group;
+
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+
+    [MFHelpers addTitleBar:self titleText:group.name];
+
+    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
+    [cancelButton setImage:[UIImage imageNamed:@"whitebackarrow"] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:cancelButton];
+
+    
+    UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 80)];
+    [self addSubview:detailView];
+
+    int viewY = 20;
+    School *school = (School *)[Session sessionVariables][@"currentSchool"];
+
+    UILabel *detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
+    NSString *details = group.members.count > 5 ? [NSString stringWithFormat:@"%i Members - %@", group.members.count, school.name] : school.name;
+    detailsLabel.text = details;
+    detailsLabel.textAlignment = NSTextAlignmentCenter;
+    self.detailsLabel = detailsLabel;
+    [detailView addSubview:detailsLabel];
+    viewY += 40;
+    
+    UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]];
+    [joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    joinButton.frame = CGRectMake(30, viewY, wd - 60, 40);
+    joinButton.layer.cornerRadius = 4.0f;
+    joinButton.layer.borderWidth = 2.0f;
+    [detailView addSubview:joinButton];
+    
+    if(group.pictureUrl.length > 0) {
+         MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(30, 20, 70, 70) url:group.pictureUrl];
+         [detailView addSubview:pic];
          
-         NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-         NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-         
-         [MFHelpers addTitleBar:self titleText:group.name];
-         
-         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
-         [cancelButton setImage:[UIImage imageNamed:@"whitebackarrow"] forState:UIControlStateNormal];
-         [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-         [self addSubview:cancelButton];
-         
-         UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, wd, ht - 80)];
-         [self addSubview:detailView];
-         
-         School *school = (School *)[Session sessionVariables][@"currentSchool"];
-         
-         UILabel *detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, wd - 60, 20)];
-         detailsLabel.text = [NSString stringWithFormat:@"%i Members - %@", group.members.count, school.name];
-         detailsLabel.textAlignment = NSTextAlignmentCenter;
-         self.detailsLabel = detailsLabel;
-         [detailView addSubview:detailsLabel];
-         
-         UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-         [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]];
-         [joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-         joinButton.frame = CGRectMake(30, 40, wd - 60, 40);
-         joinButton.layer.cornerRadius = 4.0f;
-         joinButton.layer.borderWidth = 2.0f;
-         [detailView addSubview:joinButton];
-         
-         if(![group isMember])
-         {
-             [joinButton setTitle:@"+ JOIN GROUP" forState:UIControlStateNormal];
-             [joinButton setTitleColor:[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-             joinButton.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
-             joinButton.layer.backgroundColor = [UIColor whiteColor].CGColor;
-         }
-         else
-         {
-             [joinButton setTitle:@"MEMBER" forState:UIControlStateNormal];
-             [joinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-             joinButton.layer.borderColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
-             joinButton.layer.backgroundColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
-         }
-         
-         UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 90, wd - 60, 20)];
-         descriptionLabel.text = group.description;
-         descriptionLabel.numberOfLines = 0;
-         descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
-         [descriptionLabel sizeToFit];
-         [detailView addSubview:descriptionLabel];
-         
-         int descHt = descriptionLabel.frame.size.height;
-         
-         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, descHt + 100, wd, 1)];
-         bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-         [detailView addSubview:bottomBorder];
-     }];
+         detailsLabel.frame = CGRectMake(120, 20, wd - 140, 20);
+         joinButton.frame = CGRectMake(120, 60, wd - 140, 40);
+    }
+
+    if(![group isMember])
+    {
+        [joinButton setTitle:@"+ ADD INTEREST" forState:UIControlStateNormal];
+        [joinButton setTitleColor:[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        joinButton.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+        joinButton.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    }
+    else
+    {
+        [joinButton setTitle:@"MEMBER" forState:UIControlStateNormal];
+        [joinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        joinButton.layer.borderColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
+        joinButton.layer.backgroundColor = [UIColor colorWithRed:102.0/255.0 green:189.0/255.0 blue:43.0/255.0 alpha:1.0].CGColor;
+    }
+    viewY += 50;
+
+    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
+    descriptionLabel.text = group.description;
+    descriptionLabel.numberOfLines = 0;
+    descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [descriptionLabel sizeToFit];
+    [detailView addSubview:descriptionLabel];
+
+    viewY += descriptionLabel.frame.size.height;
+
+    //TODO: Invite Friends
+    viewY += 20;
+    
+    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [detailView addSubview:bottomBorder];
+    viewY += 1;
+    
+    int i = 0;
+    NSArray *events = (NSArray *)[Session sessionVariables][@"currentEvents"];
+    for(Event *event in events) {
+        if([event.groupId rangeOfString:group.groupId].location != NSNotFound)
+        {
+            [self.Events addObject:event];
+            
+            UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
+            [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
+            eventView.backgroundColor = [UIColor whiteColor];
+            eventView.tag = i;
+            [detailView addSubview:eventView];
+            i++;
+            
+            //Icon
+            if(event.isGoing) {
+                User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+                MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(10, 10, 50, 50) facebookId:currentUser.facebookId];
+                [eventView addSubview:pic];
+                
+                UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(45, 42, 22, 22)];
+                picBackground.backgroundColor = [UIColor whiteColor];
+                picBackground.layer.cornerRadius = 11;
+                picBackground.layer.borderColor = [UIColor colorWithRed:7.0/255.0 green:149.0/255.0 blue:0.0/255.0 alpha:1.0].CGColor;
+                picBackground.layer.borderWidth = 1;
+                [eventView addSubview:picBackground];
+                
+                UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(50, 47, 13, 13)];
+                [checkPic setImage:[UIImage imageNamed:@"greenCheck"]];
+                [eventView addSubview:checkPic];
+            }
+            else if(event.isInvited) {
+                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+                [icon setImage:[UIImage imageNamed:@"invited"]];
+                [eventView addSubview:icon];
+                
+            }
+            else if([event.groupPictureUrl isKindOfClass:[NSNull class]] || event.groupPictureUrl.length <= 0) {
+                NSString *iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
+                
+                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
+                [icon setImage:[UIImage imageNamed:iconImage]];
+                [eventView addSubview:icon];
+            }
+            else {
+                MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(10, 10, 50, 50) url:event.groupPictureUrl];
+                [eventView addSubview:pic];
+            }
+            
+            
+            int nameWidth = (int)(wd - (95 + (wd / 4)));
+            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, nameWidth, 20)];
+            nameLabel.text = event.name;
+            nameLabel.numberOfLines = 0;
+            nameLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [nameLabel sizeToFit];
+            [eventView addSubview:nameLabel];
+            
+            int nameHeight = ceil(nameLabel.frame.size.height);
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MMM d"];
+            NSString *dayText = [dateFormatter stringFromDate:event.startTime];
+            NSString *todayText = [dateFormatter stringFromDate:[NSDate date]];
+            NSString *tomorrowText = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:60*60*24]];
+            if([dayText isEqualToString:todayText])
+                dayText = @"Today";
+            else if([dayText isEqualToString:tomorrowText])
+                dayText = @"Tomorrow";
+            
+            UILabel *dayLabel = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/4 - 20, 15, wd/4 + 10, 20)];
+            dayLabel.text = dayText;
+            [dayLabel setFont:[UIFont systemFontOfSize:18]];
+            [eventView addSubview:dayLabel];
+            
+            UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((wd*3)/4 - 20, 40, wd/4 + 10, 20)];
+            timeLabel.text = event.localTime;
+            [timeLabel setFont:[UIFont systemFontOfSize:18]];
+            [eventView addSubview:timeLabel];
+            
+            if(nameHeight + 30 > eventView.frame.size.height) {
+                eventView.frame = CGRectMake(0, viewY, wd, nameHeight + 30);
+            }
+            
+            UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
+            bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+            [eventView addSubview:bottomBorder];
+            
+            viewY += eventView.frame.size.height;
+        }
+        detailView.contentSize = CGSizeMake(wd, viewY + 20);
+    }
+    
+
 }
 
 -(void)refreshGroup
 {
     School *school = (School *)[Session sessionVariables][@"currentSchool"];
-    self.detailsLabel.text = [NSString stringWithFormat:@"%luu Members - %@",(unsigned long)self.group.members.count, school.name];
+    if(self.group.members.count > 5)
+        self.detailsLabel.text = [NSString stringWithFormat:@"%lu Members - %@",(unsigned long)self.group.members.count, school.name];
+    else
+        self.detailsLabel.text = school.name;
 }
 
 -(void)joinButtonClick:(id)sender
@@ -108,7 +221,7 @@
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
 
     UIButton *button = (UIButton *)sender;
-    if([button.titleLabel.text isEqualToString:@"+ JOIN GROUP"])
+    if([button.titleLabel.text isEqualToString:@"+ ADD INTEREST"])
     {
         [button setTitle:@"MEMBER" forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -130,7 +243,7 @@
     else
     {
         
-        [button setTitle:@"+ JOIN GROUP" forState:UIControlStateNormal];
+        [button setTitle:@"+ ADD INTEREST" forState:UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] forState:UIControlStateNormal];
         button.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
         button.layer.backgroundColor = [UIColor whiteColor].CGColor;
@@ -147,7 +260,14 @@
         
         [self refreshGroup];
     }
+}
+
+-(void)eventClicked:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    Event *event = self.Events[button.tag];
     
+    MFDetailView *detailView = [[MFDetailView alloc] init:event];
+    [MFHelpers openFromRight:detailView onView:self.superview];
 }
 
 -(void)cancelButtonClick:(id)sender

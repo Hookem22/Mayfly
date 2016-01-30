@@ -162,10 +162,12 @@
 
     [service getByProc:@"geteventsbyschoolid" params:params completion:^(NSArray *results) {
         NSMutableArray *events = [[NSMutableArray alloc] init];
+        NSLog(@"%@", results);
         for(id item in results) {
             Event *event = [[Event alloc] init:item];
             [events addObject:event];
         }
+        [[Session sessionVariables] setObject:events forKey:@"currentEvents"];
         completion(events);
     }];
 }

@@ -31,12 +31,12 @@
     return self;
 }
 
-+(void)get:(NSString *)facebookId completion:(QSCompletionBlock)completion
++(void)get:(NSString *)userId completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Notification"];
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:[NSString stringWithFormat:@"%@", facebookId] forKey:@"facebookid"];
+    [params setValue:[NSString stringWithFormat:@"%@", userId] forKey:@"userid"];
     
     [service getByProc:@"getnotifications" params:params completion:^(NSArray *results) {
         NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -44,7 +44,7 @@
             Notification *notification = [[Notification alloc] init:item];
             [array addObject:notification];
         }
-        [array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"createdDate" ascending:NO]]];
+        //[array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"createdDate" ascending:NO]]];
         completion(array);
     }];
 }

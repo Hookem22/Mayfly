@@ -11,6 +11,6 @@
 
 @interface MFGroupDetailView : UIView
 
--(id)init:(NSString *)groupId;
+-(id)init:(Group *)group;
 
 @end

@@ -52,7 +52,7 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
     
-    NSString *headerLabel = self.group ? @"Edit Group" : @"Create Group";
+    NSString *headerLabel = self.group ? @"Edit Interest" : @"Add Interest";
     [MFHelpers addTitleBar:self titleText:headerLabel];
     
     UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
@@ -71,7 +71,7 @@
     nameText.borderStyle = UITextBorderStyleRoundedRect;
     nameText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     nameText.font = [UIFont systemFontOfSize:15];
-    nameText.placeholder = @"Your Group Name";
+    nameText.placeholder = @"Your Interest Name";
     [nameText setReturnKeyType:UIReturnKeyDone];
     nameText.delegate = self;
     self.nameText = nameText;
@@ -108,17 +108,21 @@
     passwordText.borderStyle = UITextBorderStyleRoundedRect;
     passwordText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
     passwordText.font = [UIFont systemFontOfSize:15];
-    passwordText.placeholder = @"Private Group Password";
+    passwordText.placeholder = @"Private Password";
     self.passwordText = passwordText;
     [createView addSubview:passwordText];
     
-    UITextField *pictureUrlText = [[UITextField alloc] initWithFrame:CGRectMake(30, 280, wd - 60, 30)];
-    pictureUrlText.borderStyle = UITextBorderStyleRoundedRect;
-    pictureUrlText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-    pictureUrlText.font = [UIFont systemFontOfSize:15];
-    pictureUrlText.placeholder = @"Picture URL";
-    self.pictureUrlText = pictureUrlText;
-    [createView addSubview:pictureUrlText];
+//    UITextField *pictureUrlText = [[UITextField alloc] initWithFrame:CGRectMake(30, 280, wd - 60, 30)];
+//    pictureUrlText.borderStyle = UITextBorderStyleRoundedRect;
+//    pictureUrlText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
+//    pictureUrlText.font = [UIFont systemFontOfSize:15];
+//    pictureUrlText.placeholder = @"Picture URL";
+//    self.pictureUrlText = pictureUrlText;
+//    [createView addSubview:pictureUrlText];
+    
+    UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
+    topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [createView addSubview:topBorder];
     
     UIButton *saveButton = [[UIButton alloc] initWithFrame:CGRectMake(20, createView.frame.size.height - 45, wd - 40, 40)];
     NSString *saveButtonTitle = self.group ? @"Save" : @"Create";
@@ -138,6 +142,9 @@
 
 -(void)saveButtonClick:(id)sender
 {
+    self.nameText.layer.borderColor = [[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor];
+    self.passwordText.layer.borderColor = [[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor];
+    
     if([self.nameText.text isEqualToString:@""])
     {
         self.nameText.layer.borderColor=[[UIColor redColor] CGColor];
@@ -145,7 +152,13 @@
         self.nameText.layer.borderWidth= 1.0f;
         return;
     }
-    
+    if(!self.publicButton.isYes && self.passwordText.text.length == 0)
+    {
+        self.passwordText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.passwordText.layer.cornerRadius=8.0f;
+        self.passwordText.layer.borderWidth= 1.0f;
+        return;
+    }
     
     Group *group = self.group == nil ? [[Group alloc] init] : self.group;
     group.name = self.nameText.text;
@@ -158,7 +171,7 @@
     
     group.isPublic = self.publicButton.isYes;
     group.password = self.passwordText.text;
-    group.pictureUrl = self.pictureUrlText.text;
+    group.pictureUrl = @""; //self.pictureUrlText.text;
     
     [MFHelpers showProgressView:self];
     [group save:^(Group *group) {

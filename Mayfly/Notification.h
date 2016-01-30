@@ -19,7 +19,7 @@
 @property (nonatomic, copy) NSDate *createdDate;
 
 -(id)init:(NSDictionary *)notification;
-+(void)get:(NSString *)facebookId completion:(QSCompletionBlock)completion;
++(void)get:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 
 @end

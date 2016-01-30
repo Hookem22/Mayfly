@@ -10,8 +10,9 @@
 #import "MFDetailView.h"
 #import "MFHelpers.h"
 
-@interface MFRightSideView : UIView
+@interface MFNotificationView : UIView
 
 -(id)init;
+-(void)loadNotifications;
 
 @end

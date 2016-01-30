@@ -12,7 +12,7 @@
 #import "MFEventsView.h"
 #import "MFCreateView.h"
 #import "MFLoginView.h"
-#import "MFRightSideView.h"
+#import "MFNotificationView.h"
 #import "MFHelpers.h"
 #import "MFGroupView.h"
 

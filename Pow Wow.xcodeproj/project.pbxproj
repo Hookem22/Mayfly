@@ -38,7 +38,7 @@
 		48185D531B2FD59F00B4EE08 /* nav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D501B2FD59F00B4EE08 /* nav@2x.png */; };
 		48185D541B2FD59F00B4EE08 /* _newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */; };
 		48185D561B30937E00B4EE08 /* whitenav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D551B30937E00B4EE08 /* whitenav@2x.png */; };
-		48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D581B3094DE00B4EE08 /* MFRightSideView.m */; };
+		48185D591B3094DE00B4EE08 /* MFNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D581B3094DE00B4EE08 /* MFNotificationView.m */; };
 		48185D5C1B30ADA400B4EE08 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D5B1B30ADA400B4EE08 /* Notification.m */; };
 		48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48214FD11B0E6B6100B4E54D /* MFLoginView.m */; };
 		4835C5B31C31DACF00BB8962 /* MFGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4835C5B21C31DACF00BB8962 /* MFGroupView.m */; };
@@ -50,6 +50,7 @@
 		4843EA2D1B163D6F00C510B4 /* MFLocationSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA2C1B163D6F00C510B4 /* MFLocationSelectView.m */; };
 		4843EA301B1653FD00C510B4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA2F1B1653FD00C510B4 /* Location.m */; };
 		4843EA731B1CE36A00C510B4 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA721B1CE36A00C510B4 /* User.m */; };
+		484A00B61C5C06F2002F1821 /* whitelock.png in Resources */ = {isa = PBXBuildFile; fileRef = 484A00B51C5C06F2002F1821 /* whitelock.png */; };
 		485AB36D1C20BA2C0035C79D /* grayadd.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3631C20BA2C0035C79D /* grayadd.png */; };
 		485AB36E1C20BA2C0035C79D /* graySearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3641C20BA2C0035C79D /* graySearch.png */; };
 		485AB36F1C20BA2C0035C79D /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3651C20BA2C0035C79D /* message.png */; };
@@ -165,8 +166,8 @@
 		48185D501B2FD59F00B4EE08 /* nav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav@2x.png"; path = "../../DishWish/DishWish/images/nav@2x.png"; sourceTree = "<group>"; };
 		48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "_newmessage@2x.png"; path = "../../DishWish/DishWish/images/_newmessage@2x.png"; sourceTree = "<group>"; };
 		48185D551B30937E00B4EE08 /* whitenav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "whitenav@2x.png"; path = "../../Downloads/whitenav@2x.png"; sourceTree = "<group>"; };
-		48185D571B3094DE00B4EE08 /* MFRightSideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFRightSideView.h; sourceTree = "<group>"; };
-		48185D581B3094DE00B4EE08 /* MFRightSideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFRightSideView.m; sourceTree = "<group>"; };
+		48185D571B3094DE00B4EE08 /* MFNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFNotificationView.h; sourceTree = "<group>"; };
+		48185D581B3094DE00B4EE08 /* MFNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFNotificationView.m; sourceTree = "<group>"; };
 		48185D5A1B30ADA400B4EE08 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		48185D5B1B30ADA400B4EE08 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		48214FD01B0E6B6100B4E54D /* MFLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFLoginView.h; sourceTree = "<group>"; };
@@ -187,6 +188,7 @@
 		4843EA2F1B1653FD00C510B4 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		4843EA711B1CE36A00C510B4 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		4843EA721B1CE36A00C510B4 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		484A00B51C5C06F2002F1821 /* whitelock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitelock.png; sourceTree = "<group>"; };
 		485AB3631C20BA2C0035C79D /* grayadd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayadd.png; sourceTree = "<group>"; };
 		485AB3641C20BA2C0035C79D /* graySearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graySearch.png; sourceTree = "<group>"; };
 		485AB3651C20BA2C0035C79D /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				485AB3691C20BA2C0035C79D /* whitebackarrow.png */,
 				485AB36A1C20BA2C0035C79D /* whitegroup.png */,
 				485AB36B1C20BA2C0035C79D /* whiteMenu.png */,
+				484A00B51C5C06F2002F1821 /* whitelock.png */,
 				485AB36C1C20BA2C0035C79D /* whiteSearch.png */,
 				48DF69561B597BDF00DCCE58 /* newmessage@2x.png */,
 				48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */,
@@ -421,8 +424,8 @@
 				48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
 				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
-				48185D571B3094DE00B4EE08 /* MFRightSideView.h */,
-				48185D581B3094DE00B4EE08 /* MFRightSideView.m */,
+				48185D571B3094DE00B4EE08 /* MFNotificationView.h */,
+				48185D581B3094DE00B4EE08 /* MFNotificationView.m */,
 				4877610E1C59D5CB006E5454 /* MFPostMessageView.h */,
 				4877610F1C59D5CB006E5454 /* MFPostMessageView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
@@ -617,6 +620,7 @@
 			files = (
 				48A0756B1B34A622008E4994 /* logo58@2x.png in Resources */,
 				48185D561B30937E00B4EE08 /* whitenav@2x.png in Resources */,
+				484A00B61C5C06F2002F1821 /* whitelock.png in Resources */,
 				48185D3C1B2A2DF900B4EE08 /* grayface1@2x.png in Resources */,
 				48A075761B34AA00008E4994 /* logo57@2x.png in Resources */,
 				48CC80621B3B50F70098412E /* lock@2x.png in Resources */,
@@ -726,7 +730,7 @@
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,
-				48185D591B3094DE00B4EE08 /* MFRightSideView.m in Sources */,
+				48185D591B3094DE00B4EE08 /* MFNotificationView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,
 				48C5BF011C33922B0036C9B1 /* GroupUsers.m in Sources */,

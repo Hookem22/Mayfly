@@ -45,19 +45,13 @@
 +(void)get:(NSString *)groupId completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Group"];
-    NSString *whereStatement = [NSString stringWithFormat:@"id = '%@'", groupId];
-    
-    [service getByWhere:whereStatement completion:^(NSArray *results) {
-        for(id item in results) {
-            Group *group = [[Group alloc] init:item];
-            [group getMembers:^(NSArray *users) {
-                group.members = [NSArray arrayWithArray:users];
-                completion(group);
-            }];
-            //completion(group);
-            return;
-        }
-        completion(nil);
+
+    [service get:groupId completion:^(NSDictionary *item) {
+        Group *group = [[Group alloc] init:item];
+        [group getMembers:^(NSArray *users) {
+            group.members = [NSArray arrayWithArray:users];
+            completion(group);
+        }];
     }];
 }
 
@@ -106,39 +100,53 @@
 -(void)addMember:(NSString *)userId isAdmin:(BOOL)isAdmin
 {
     [GroupUsers joinGroup:self.groupId userId:userId isAdmin:isAdmin];
+    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    [groups addObject:self];
+    for(Group *group in currentUser.groups)
+    {
+        [groups addObject:group];
+    }
+    currentUser.groups = [groups mutableCopy];
 }
 
 -(void)removeMember:(NSString *)userId
 {
     QSAzureService *service = [QSAzureService defaultService:@"GroupUsers"];
     
-    NSString *groupUserId = @"";
-    for(GroupUsers *user in self.members)
-    {
-        if([user.userId isEqualToString:userId])
+    [self getMembers:^(NSArray *members) {
+        for(GroupUsers *user in members)
         {
-            groupUserId = user.groupUserId;
-            break;
+            if([user.userId isEqualToString:userId])
+            {
+                [service deleteItem:user.groupUserId completion:^(NSDictionary *item) {   }];
+            }
         }
+    }];
+    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    for(Group *group in currentUser.groups)
+    {
+        if(![group.groupId isEqualToString:self.groupId])
+            [groups addObject:group];
     }
-    [service deleteItem:groupUserId completion:^(NSDictionary *item)
-     {
-         
-     }];
+    currentUser.groups = [groups mutableCopy];
 }
 
 -(BOOL)isMember
 {
-//    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-//    if(currentUser == nil || currentUser.userId == nil)
-//        return false;
-//    
-//    for(GroupUsers *member in self.members)
-//    {
-//        if([member.facebookId isEqualToString:currentUser.facebookId])
-//            return true;
-//    }
-//    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    if(currentUser == nil || currentUser.userId == nil)
+        return NO;
+    
+    for(Group *group in currentUser.groups) {
+        if([group.groupId isEqualToString:self.groupId]) {
+            return YES;
+        }
+    }
+    
     return NO;
 }
 

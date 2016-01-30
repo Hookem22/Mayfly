@@ -10,7 +10,6 @@
 
 @interface MFEventsView ()
 
-@property (nonatomic, strong) NSMutableArray *Events;
 
 @end
 
@@ -22,7 +21,6 @@
     if (self) {
         self.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
         self.delegate = self;
-        self.Events = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -37,12 +35,10 @@
          for(UIView *subview in self.subviews)
              [subview removeFromSuperview];
          
-         self.Events = [events mutableCopy];
-         
          int viewY = 0;
-         for(int i = 0; i < [self.Events count]; i++)
+         for(int i = 0; i < [events count]; i++)
          {
-            Event *event = [self.Events objectAtIndex:i];
+            Event *event = [events objectAtIndex:i];
 
              NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
              [dateFormatter setDateFormat:@"EEEE, MMM d"];
@@ -51,7 +47,7 @@
             bool newDay = i == 0;
             if(!newDay)
             {
-                Event *prevEvent = [self.Events objectAtIndex:i - 1];
+                Event *prevEvent = [events objectAtIndex:i - 1];
                 if(![dayText isEqualToString:[dateFormatter stringFromDate:prevEvent.startTime]])
                 {
                     newDay = true;
@@ -68,9 +64,13 @@
 //                NSString *dayText = [daysOfWeek objectAtIndex:event.dayOfWeek];
                 NSDate *today = [NSDate date];
                 NSString *todayText = [dateFormatter stringFromDate:today];
+                NSDate *yesterday = [today dateByAddingTimeInterval:(-1)*60*60*24];
+                NSString *yesterdayText = [dateFormatter stringFromDate:yesterday];
                 NSDate *tomorrow = [today dateByAddingTimeInterval:60*60*24];
                 NSString *tomorrowText = [dateFormatter stringFromDate:tomorrow];
-                if([todayText isEqualToString:dayText])
+                if([yesterdayText isEqualToString:dayText])
+                    dayText = @"Yesterday";
+                else if([todayText isEqualToString:dayText])
                     dayText = @"Today";
                 else if([tomorrowText isEqualToString:dayText])
                     dayText = @"Tomorrow";
@@ -372,7 +372,14 @@
 }
 
 -(void)openEvent:(long)tagId {
-    Event *event = (Event *)[self.Events objectAtIndex:tagId];
+    
+    NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
+    Event *event = (Event *)currentEvents[tagId];
+    
+    MFDetailView *detailView = [[MFDetailView alloc] init:event];
+    [MFHelpers openFromRight:detailView onView:self.superview];
+    
+    
     //    if(event.isPrivate && !event.isInvited && ![FBSDKAccessToken currentAccessToken])
     //    {
     //        MFLoginView *loginView = [[MFLoginView alloc] init];
@@ -388,10 +395,10 @@
     //        [alert show];
     //    }
     //    else
-    {
-        MFDetailView *detailView = [[MFDetailView alloc] init:event.eventId];
-        [MFHelpers open:detailView onView:self.superview];
-    }
+//    {
+//        MFDetailView *detailView = [[MFDetailView alloc] init:event.eventId];
+//        [MFHelpers open:detailView onView:self.superview];
+//    }
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {

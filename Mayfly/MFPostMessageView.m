@@ -89,7 +89,7 @@
         [message save:^(Message *newMessage)
          {
              MFDetailView *detailView = (MFDetailView *)self.superview;
-             [detailView reset:self.event.eventId];
+             [detailView initialSetup:self.event];
 
              [MFHelpers hideProgressView:self];
              [MFHelpers close:self];

@@ -17,9 +17,9 @@
 
 @interface MFDetailView : UIView
 
--(id)init:(NSString *)eventId;
+-(id)init:(Event *)event;
 -(void)refreshGoing;
--(void)reset:(NSString *)eventId;
 -(void)addGroupsToEvent:(NSArray *)groups;
+-(void)initialSetup:(Event *)event;
 
 @end

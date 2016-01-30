@@ -9,13 +9,13 @@
 #import "MFView.h"
 #import "ViewController.h"
 
-@interface MFView ()
-
-@property (nonatomic, strong) UIButton *groupButton;
-@property (nonatomic, strong) UIButton *notificationButton;
-@property (nonatomic, strong) UIWebView *webView;
-
-@end
+//@interface MFView ()
+//
+//@property (nonatomic, strong) UIButton *groupButton;
+//@property (nonatomic, strong) UIButton *notificationButton;
+//@property (nonatomic, strong) UIWebView *webView;
+//
+//@end
 
 @implementation MFView
 
@@ -50,9 +50,14 @@
     
     [MFHelpers addTitleBar:self titleText:@""];
     
-    UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
-    [header setImage:[UIImage imageNamed:@"title"]];
-    [self addSubview:header];
+    UIButton *stEdsButton = [[UIButton alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
+    [stEdsButton setImage:[UIImage imageNamed:@"title"] forState:UIControlStateNormal];
+    [stEdsButton addTarget:self action:@selector(switchToStEds:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:stEdsButton];
+    
+//    UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
+//    [header setImage:[UIImage imageNamed:@"title"]];
+//    [self addSubview:header];
     
     
    
@@ -69,18 +74,31 @@
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:addButton];
     
+    MFNotificationView *notificationView = [[MFNotificationView alloc] init];
+    notificationView.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+    [self addSubview:notificationView];
+    
+    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 32, 28, 18)];
+    [menuButton setImage:[UIImage imageNamed:@"whiteMenu"] forState:UIControlStateNormal];
+    [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:menuButton];
+    
+    UISwipeGestureRecognizer *menuRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(menuButtonClick:)];
+    [menuRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self addGestureRecognizer:menuRecognizer];
+    
     
     MFGroupView *groupView = [[MFGroupView alloc] init];
     groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
     [groupView loadGroups];
     [self addSubview:groupView];
     
-    self.groupButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 36, 36)];
-    [self.groupButton setImage:[UIImage imageNamed:@"whitegroup"] forState:UIControlStateNormal];
-    [self.groupButton addTarget:self action:@selector(groupButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.groupButton];
+    UIButton *groupButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 36, 36)];
+    [groupButton setImage:[UIImage imageNamed:@"whitegroup"] forState:UIControlStateNormal];
+    [groupButton addTarget:self action:@selector(groupButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:groupButton];
     
-    UISwipeGestureRecognizer *groupRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openGroup)];
+    UISwipeGestureRecognizer *groupRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(groupButtonClick:)];
     [groupRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self addGestureRecognizer:groupRecognizer];
     
@@ -165,44 +183,73 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    for(UIView *subview in self.subviews)
-    {
-        if([subview isMemberOfClass:[MFGroupView class]])
-        {
-            MFGroupView *groupView = (MFGroupView *)subview;
-            CGRect frame = CGRectMake(wd, 60, wd, ht- 60);
-            if(groupView.frame.origin.x > 0)
-                frame = CGRectMake(0, 60, wd, ht- 60);
-
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 groupView.frame = frame;
-                             }
-                             completion:^(BOOL finished){ }];
-        }
-    }
-}
-
--(void)openGroup
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+//    for(UIView *subview in self.subviews)
+//    {
+//        if([subview isMemberOfClass:[MFGroupView class]])
+//        {
+//            MFGroupView *groupView = (MFGroupView *)subview;
+//            CGRect frame = CGRectMake(wd, 60, wd, ht- 60);
+//            if(groupView.frame.origin.x > 0)
+//                frame = CGRectMake(0, 60, wd, ht- 60);
+//
+//            [UIView animateWithDuration:0.3
+//                             animations:^{
+//                                 groupView.frame = frame;
+//                             }
+//                             completion:^(BOOL finished){ }];
+//        }
+//    }
     
+    MFNotificationView *notificationView;
+    MFGroupView *groupView;
+    MFEventsView *eventsView;
     for(UIView *subview in self.subviews)
     {
-        if([subview isMemberOfClass:[MFGroupView class]])
-        {
-            MFGroupView *groupView = (MFGroupView *)subview;
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 groupView.frame = CGRectMake(0, 60, wd, ht- 60);
-                             }
-                             completion:^(BOOL finished){ }];
-        }
+        if([subview isMemberOfClass:[MFNotificationView class]])
+            notificationView = (MFNotificationView *)subview;
+        else if([subview isMemberOfClass:[MFGroupView class]])
+            groupView = (MFGroupView *)subview;
+        else if([subview isMemberOfClass:[MFEventsView class]])
+            eventsView = (MFEventsView *)subview;
     }
+    
+    CGRect notificationFrame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+    CGRect groupFrame = CGRectMake(wd, 60, wd, ht- 60);
+    CGRect eventFrame = CGRectMake(0, 60, wd, ht - 60);
+    if(groupView.frame.origin.x > 0) {
+        groupFrame = CGRectMake(0, 60, wd, ht- 60);
+        eventFrame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+    }
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         notificationView.frame = notificationFrame;
+                         groupView.frame = groupFrame;
+                         eventsView.frame = eventFrame;
+                     }
+                     completion:^(BOOL finished){ }];
 }
 
--(void)notificationButtonClick:(id)sender
+//-(void)openGroup
+//{
+//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+//    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+//    
+//    for(UIView *subview in self.subviews)
+//    {
+//        if([subview isMemberOfClass:[MFGroupView class]])
+//        {
+//            MFGroupView *groupView = (MFGroupView *)subview;
+//            [UIView animateWithDuration:0.3
+//                             animations:^{
+//                                 groupView.frame = CGRectMake(0, 60, wd, ht- 60);
+//                             }
+//                             completion:^(BOOL finished){ }];
+//        }
+//    }
+//}
+
+-(void)menuButtonClick:(id)sender
 {
     if(![FBSDKAccessToken currentAccessToken])
     {
@@ -214,54 +261,97 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    UIButton *notificationButton = (UIButton *)sender;
-    [notificationButton setImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
-    
-    MFRightSideView *rightSideView;
+    MFNotificationView *notificationView;
+    MFGroupView *groupView;
+    MFEventsView *eventsView;
     for(UIView *subview in self.subviews)
     {
-        if([subview isMemberOfClass:[MFRightSideView class]])
-            rightSideView = (MFRightSideView *)subview;
+        if([subview isMemberOfClass:[MFNotificationView class]])
+            notificationView = (MFNotificationView *)subview;
+        else if([subview isMemberOfClass:[MFEventsView class]])
+            eventsView = (MFEventsView *)subview;
+        else if([subview isMemberOfClass:[MFGroupView class]])
+            groupView = (MFGroupView *)subview;
     }
-    if(rightSideView == nil)
-    {
-        MFRightSideView *rightSideView = [[MFRightSideView alloc] init];
-        [self addSubview:rightSideView];
-        
-        rightSideView.frame = CGRectMake(wd, 60, (wd * 3) / 4, ht);
-        
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                                 rightSideView.frame = CGRectMake(wd / 4, 60, (wd * 3) / 4, ht - 60);
-                         }
-                         completion:^(BOOL finished){ }];
+    
+    CGRect notificationFrame = CGRectMake((int)(-1 * wd), 60, wd, ht- 60);
+    CGRect groupFrame = CGRectMake(wd, 60, wd, ht - 60);
+    CGRect eventFrame = CGRectMake(0, 60, wd, ht - 60);
+    if(notificationView.frame.origin.x < 0) {
+        [notificationView loadNotifications];
+        notificationFrame = CGRectMake(0, 60, wd, ht- 60);
+        eventFrame = CGRectMake((wd * 3) / 4, 60, wd, ht - 60);
     }
-    else
-    {
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             rightSideView.frame = CGRectMake(wd, 60, (wd * 3) / 4, ht - 60);
-                         }
-                         completion:^(BOOL finished){
-                             [rightSideView removeFromSuperview];
-                         }];
-    }
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         notificationView.frame = notificationFrame;
+                         groupView.frame = groupFrame;
+                         eventsView.frame = eventFrame;
+                     }
+                     completion:^(BOOL finished){ }];
+
+    
+//    MFNotificationView *notificationView;
+//    MFEventsView *eventsView;
+//    for(UIView *subview in self.subviews)
+//    {
+//        if([subview isMemberOfClass:[MFNotificationView class]])
+//            notificationView = (MFNotificationView *)subview;
+//        else if([subview isMemberOfClass:[MFEventsView class]])
+//            eventsView = (MFEventsView *)subview;
+//    }
+//    if(notificationView == nil)
+//    {
+//        MFNotificationView *notificationView = [[MFNotificationView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+//        [self addSubview:notificationView];
+//
+//        [UIView animateWithDuration:0.3
+//                         animations:^{
+//                             //notificationView.frame = CGRectMake(0, 60, wd, ht - 60);
+//                             eventsView.frame = CGRectMake((wd * 3) / 4, 60, wd, ht - 60);
+//                         }
+//                         completion:^(BOOL finished){ }];
+//    }
+//    else
+//    {
+//        [UIView animateWithDuration:0.3
+//                         animations:^{
+//                             notificationView.frame = CGRectMake(-1 * wd, 60, wd, ht - 60);
+//                         }
+//                         completion:^(BOOL finished){
+//                             [notificationView removeFromSuperview];
+//                         }];
+//    }
 
 }
 
--(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging
-{
-     MFDetailView *detailView = [[MFDetailView alloc] init:eventId];
-     [MFHelpers open:detailView onView:self.superview];
-     
-     if(toMessaging)
-     {
-         [Event get:^(Event *event)
-          {
-              MFMessageView *messageView = [[MFMessageView alloc] init:event];
-              [MFHelpers open:messageView onView:detailView];
-          }];
-     }
+//-(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging
+//{
+//     MFDetailView *detailView = [[MFDetailView alloc] init:eventId];
+//     [MFHelpers open:detailView onView:self.superview];
+//     
+//     if(toMessaging)
+//     {
+//         [Event get:^(Event *event)
+//          {
+//              MFMessageView *messageView = [[MFMessageView alloc] init:event];
+//              [MFHelpers open:messageView onView:detailView];
+//          }];
+//     }
+//}
+
+-(void)switchToStEds:(id)sender {
+    Location *location = [[Location alloc] init];
+    location.latitude = 30.2290; //St. Edward's
+    location.longitude = -97.7560;
+    [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+
+    NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
+    [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+
+    [self setup];
+    [self refreshEvents];
 }
 
 
