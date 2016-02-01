@@ -37,9 +37,7 @@ NSString *HubSasKeyValue;
                              sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                              delegate:nil delegateQueue:nil];
     
-    // Apple Notification format of the notification message
-    NSString *json = [NSString stringWithFormat:@"{\"aps\":{\"badge\":1,\"alert\":\"%@\",\"message\":\"%@\"}}",
-                      alert, message];
+
     
     // Construct the messages REST endpoint
     NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/messages/%@", HubEndpoint,
@@ -53,8 +51,20 @@ NSString *HubSasKeyValue;
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-    // Signify apple notification format
-    [request setValue:@"apple" forHTTPHeaderField:@"ServiceBusNotification-Format"];
+    NSString *json = @"";
+    if(isiOS) {
+        // Signify apple notification format
+        [request setValue:@"apple" forHTTPHeaderField:@"ServiceBusNotification-Format"];
+        // Apple Notification format of the notification message
+        json = [NSString stringWithFormat:@"{\"aps\":{\"badge\":1,\"alert\":\"%@\",\"message\":\"%@\"}}", alert, message];
+    }
+    else {
+        // Android
+        [request setValue:@"gcm" forHTTPHeaderField:@"ServiceBusNotification-Format"];
+        // Apple Notification format of the notification message
+        json = [NSString stringWithFormat:@"{\"data\":{\"message\":\"%@\"}}", alert];
+    }
+    
     
     //Authenticate the notification message POST request with the SaS token
     [request setValue:authorizationToken forHTTPHeaderField:@"Authorization"];

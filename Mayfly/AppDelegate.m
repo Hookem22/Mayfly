@@ -47,14 +47,14 @@
             [[Session sessionVariables] setObject:[url query] forKey:@"referenceId"];
     }
     */
-    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
-                                                    UIUserNotificationTypeBadge |
-                                                    UIUserNotificationTypeSound);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
-                                                                             categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
+//    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+//                                                    UIUserNotificationTypeBadge |
+//                                                    UIUserNotificationTypeSound);
+//    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+//                                                                             categories:nil];
+//    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+//    [[UIApplication sharedApplication] registerForRemoteNotifications];
+//    
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                didFinishLaunchingWithOptions:launchOptions];
 }
@@ -98,6 +98,15 @@
              else {
                  [self LoadEvents];
              }
+             
+             //Register for push notifications after login
+             UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                             UIUserNotificationTypeBadge |
+                                                             UIUserNotificationTypeSound);
+             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                                      categories:nil];
+             [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+             [[UIApplication sharedApplication] registerForRemoteNotifications];
          }];
     }
     else {
@@ -141,7 +150,7 @@
     
     NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSSet *set = [[NSSet alloc] initWithObjects:uuid, nil];
-    
+    //NSLog(@"%@", set);
     [hub registerNativeWithDeviceToken:deviceToken tags:set completion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Error registering for notifications: %@", error);
@@ -162,8 +171,8 @@
     if([user isKindOfClass:[NSNull class]] || user.userId.length <= 0)
     {
         [User login:user completion:^(User *newUser) {
-            NSLog(@"%@", newUser.goingEventIds);
-            NSLog(@"%@", newUser.invitedEventIds);
+            //NSLog(@"%@", newUser.goingEventIds);
+            //NSLog(@"%@", newUser.invitedEventIds);
             
             [self LoadEvents];
             //self.appUser = user;

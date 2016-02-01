@@ -42,7 +42,6 @@
     [service getByProc:@"getgoingbyevent" params:params completion:^(NSArray *results) {
         NSMutableArray *goings = [[NSMutableArray alloc] init];
         for(id item in results) {
-            NSLog(@"%@", item);
             EventGoing *evgoing = [[EventGoing alloc] init:item];
             [goings addObject:evgoing];
         }

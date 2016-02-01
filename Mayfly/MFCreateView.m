@@ -144,6 +144,12 @@
         }
         [self.startText setTime:self.event.startTime];
         
+        UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [deleteButton setTitle:@"Delete Event" forState:UIControlStateNormal];
+        [deleteButton addTarget:self action:@selector(deleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        deleteButton.frame = CGRectMake(20, 190, wd-40, 30);
+        [deleteButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
+        [createView addSubview:deleteButton];
         
 //        self.locationView.locationText.text = self.event.location.name;
 //        self.locationView.location = self.event.location;
@@ -455,6 +461,15 @@
      }];
 }
 
+-(void)deleteButtonClick:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Event"
+                                                    message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.event.name]
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch(buttonIndex) {
@@ -462,9 +477,28 @@
             //self.event.isPrivate = YES;
             break;
         case 1: //"Yes" pressed
-            [self save:self.event];
+            [self deleteEvent];
             break;
     }
+}
+
+-(void)deleteEvent{
+    
+    [MFHelpers showProgressView:self];
+    [self.event deleteEvent:^(NSDictionary *item) {
+        if([self.superview.superview isMemberOfClass:[MFView class]])
+        {
+            MFView *view = (MFView *)self.superview.superview;
+            [view refreshEvents];
+        }
+        if([self.superview isMemberOfClass:[MFDetailView class]])
+        {
+            [self.superview removeFromSuperview];
+        }
+        
+        [MFHelpers hideProgressView:self];
+        [self cancelButtonClick:nil];
+    }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

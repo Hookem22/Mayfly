@@ -52,5 +52,7 @@
 -(void)addInvite:(NSString *)facebookId name:(NSString *)name completion:(QSCompletionBlock)completion;
 -(BOOL)isGoing;
 -(BOOL)isInvited;
+-(void)sendMessageToEvent:(NSString *)message info:(NSString *)info;
+-(void)deleteEvent:(QSCompletionBlock)completion;
 
 @end

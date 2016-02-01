@@ -93,6 +93,8 @@
 
              [MFHelpers hideProgressView:self];
              [MFHelpers close:self];
+             
+              [self.event sendMessageToEvent:[NSString stringWithFormat:@"%@: %@", currentUser.firstName, message.message] info:[NSString stringWithFormat: @"New Message|%@", message.eventId]];
          }];
     }
     

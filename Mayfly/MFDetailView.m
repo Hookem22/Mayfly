@@ -290,7 +290,7 @@
         [personView addSubview:checkPic];
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
-        label.text = person.firstName;
+        label.text = [person.firstName isMemberOfClass:[NSNull class]] ? @"" : person.firstName;
         label.textAlignment = NSTextAlignmentCenter;
         [personView addSubview:label];
         

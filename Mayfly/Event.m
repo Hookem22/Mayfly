@@ -60,7 +60,7 @@
 {
     NSError* error;
     url = [url stringByRemovingPercentEncoding];
-    NSLog(@"%@", url);
+
     NSData* data = [url dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableDictionary *dJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -115,7 +115,6 @@
     [service getByProc:@"getinvitedbyevent" params:params completion:^(NSArray *results) {
         NSMutableArray *invited = [[NSMutableArray alloc] init];
         for(id item in results) {
-            NSLog(@"%@", item);
             EventGoing *ev = [[EventGoing alloc] init:item];
             [invited addObject:ev];
         }
@@ -165,7 +164,6 @@
 
     [service getByProc:@"geteventsbyschoolid" params:params completion:^(NSArray *results) {
         NSMutableArray *events = [[NSMutableArray alloc] init];
-        NSLog(@"%@", results);
         for(id item in results) {
             Event *event = [[Event alloc] init:item];
             [events addObject:event];
@@ -345,7 +343,7 @@
                       self.invited = [NSArray arrayWithArray:invites];
                       completion(item);
                       
-                      //TODO: Send Push message
+                      [PushMessage inviteFriend:user.pushDeviceToken deviceId:user.deviceId from:currentUser.firstName event:self];
                   }];
              }
          }];
@@ -386,6 +384,23 @@
         eventGoing.isAdmin = false;
         completion(eventGoing);
     }];
+}
+
+-(void)sendMessageToEvent:(NSString *)message info:(NSString *)info
+{
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    for(EventGoing *eg in self.going) {
+        if(![eg.userId isEqualToString:currentUser.userId])
+            [PushMessage push:eg.userId message:message info:info];
+    }
+}
+
+-(void)deleteEvent:(QSCompletionBlock)completion {
+    QSAzureService *service = [QSAzureService defaultService:@"Event"];
+    [service deleteItem:self.eventId completion:^(NSDictionary *item)
+     {
+         completion(item);
+     }];
 }
 
 -(NSString *)listToString:(NSMutableArray *)list
