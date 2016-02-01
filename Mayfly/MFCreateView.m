@@ -408,32 +408,36 @@
         
          Notification *notification = [[Notification alloc] init];
          notification.eventId = event.eventId;
-         notification.facebookId = currentUser.facebookId;
+         notification.userId = currentUser.userId;
          notification.message = [NSString stringWithFormat:@"Created: %@", event.name];
          [notification save:^(Notification *notification) { }];
-         
-         NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
+        
+         NSMutableArray *firstNames = [[NSMutableArray alloc] init];
          NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
          for(NSDictionary *contact in self.contactsList)
          {
-             NSString *fb = [contact valueForKey:@"id"];
+             NSString *facebookId = [contact valueForKey:@"id"];
              NSString *phone = [contact valueForKey:@"Phone"];
              NSString *firstName = [contact valueForKey:@"firstName"];
-             if(fb != nil)
-             {
-                 [facebookIds addObject:fb];
-                 NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
-                 //event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
+             if(facebookId != nil) {
+                 [event addInvite:facebookId name:firstName completion:^(EventGoing *eventGoing) {
+                     
+                 }];
              }
-             else if(phone != nil)
+             if(phone != nil) {
                  [phoneNumbers addObject:phone];
+                 [firstNames addObject:firstName];
+             }
          }
-         if([facebookIds count] > 0) {
-             [PushMessage inviteFriends:facebookIds from:currentUser.name event:event];
-             [event save:^(Event *event) { }];
-         }
-         
+//         if([facebookIds count] > 0) {
+//             [PushMessage inviteFriends:facebookIds from:currentUser.name event:event];
+//             [event save:^(Event *event) { }];
+//         }
+        
          if([phoneNumbers count] > 0) {
+             [[Session sessionVariables] setObject:event forKey:@"currentEvent"];
+             [[Session sessionVariables] setObject:firstNames forKey:@"currentInvites"];
+             
              [MFHelpers GetBranchUrl:event.referenceId eventName:event.name completion:^(NSString *url) {
                  ViewController *vc = (ViewController *)self.window.rootViewController;
                  [vc sendTextMessage:phoneNumbers message:url];

@@ -349,13 +349,25 @@
 //}
 
 -(void)switchToStEds:(id)sender {
-    Location *location = [[Location alloc] init];
-    location.latitude = 30.2290; //St. Edward's
-    location.longitude = -97.7560;
-    [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
-
-    NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
-    [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+    Location *loc = (Location *)[Session sessionVariables][@"currentLocation"];
+    if(loc.latitude < 1) {
+        Location *location = [[Location alloc] init];
+        location.latitude = 30.2290; //St. Edward's
+        location.longitude = -97.7560;
+        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+        
+        NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
+        [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+    }
+    else {
+        Location *location = [[Location alloc] init];
+        location.latitude = 0.1; //Test
+        location.longitude = 0.1;
+        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+        
+        NSDictionary *schoolDict = @{@"id": @"32F991FE-15A0-4436-8CD2-C46413ABB1CA", @"name": @"Test School", @"latitude": @"0", @"longitude": @"0" };
+        [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+    }
 
     [self setup];
     [self refreshEvents];

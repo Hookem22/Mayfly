@@ -443,7 +443,7 @@
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     Notification *notification = [[Notification alloc] init];
     notification.eventId = self.event.eventId;
-    notification.facebookId = currentUser.facebookId;
+    notification.userId = currentUser.userId;
     
     UIButton *button = (UIButton *)sender;
     if([button.titleLabel.text isEqualToString:@"+ JOIN EVENT"])

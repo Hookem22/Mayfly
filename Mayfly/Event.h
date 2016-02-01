@@ -49,7 +49,7 @@
 -(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin;
 -(void)removeGoing:(NSString *)userId;
 +(void)getInvitedByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
--(void)addInvited:(NSString *)facebookId firstName:(NSString *)firstName;
+-(void)addInvite:(NSString *)facebookId name:(NSString *)name completion:(QSCompletionBlock)completion;
 -(BOOL)isGoing;
 -(BOOL)isInvited;
 

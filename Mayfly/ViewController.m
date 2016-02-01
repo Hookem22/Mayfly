@@ -163,7 +163,8 @@
 
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
     
-    //Event *event = (Event *)[Session sessionVariables][@"eventToSend"];
+    Event *currentEvent = (Event *)[Session sessionVariables][@"currentEvent"];
+    NSArray *invites = (NSArray *)[Session sessionVariables][@"currentInvites"];
     //[[Session sessionVariables] removeObjectForKey:@"eventToSend"];
     switch (result) {
         case MessageComposeResultCancelled:
@@ -178,9 +179,9 @@
             
         case MessageComposeResultSent:
         {
-            //[event save:^(Event *event) {
-            //   [self.mainView goToEvent:event.referenceId];
-            //}];
+            for(NSString *name in invites) {
+                [currentEvent addInvite:nil name:name completion:^(EventGoing *eventGoing) { }];
+            }
             break;
         }
             
@@ -188,13 +189,17 @@
             break;
     }
     
+    [[Session sessionVariables] removeObjectForKey:@"currentEvent"];
+    [[Session sessionVariables] removeObjectForKey:@"currentInvites"];
+    
     for(UIView *subview in self.mainView.subviews) {
-        if(![subview isMemberOfClass:[UIWebView class]])
+        //if(![subview isMemberOfClass:[UIWebView class]])
             [subview removeFromSuperview];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
-    //[self.mainView setup];
+    [self.mainView setup];
+    [self.mainView refreshEvents];
     //[self.mainView loadWebsite];
 }
 

@@ -336,7 +336,7 @@
     else
     {
         [saveButton setTitle:@"Add" forState:UIControlStateNormal];
-        [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [saveButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 125, wd, 1)];
@@ -605,7 +605,7 @@
 {
     [MFHelpers closeRight:self];
 }
--(void)saveButtonClick:(id)sender
+-(void)addButtonClick:(id)sender
 {
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
     for(int i = 0; i < [self.friendList count]; i++)
@@ -665,6 +665,7 @@
 
 -(void)inviteButtonClick:(id)sender
 {
+    MFDetailView *detailView = [[MFDetailView alloc] init];
     if([[self superview] isMemberOfClass:[MFDetailView class]])
     {
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
@@ -677,8 +678,8 @@
         
         if(groups.count > 0)
         {
-            MFDetailView *view = (MFDetailView *)[self superview];
-            [view addGroupsToEvent:groups];
+            detailView = (MFDetailView *)[self superview];
+            [detailView addGroupsToEvent:groups];
             
             [Group clearIsInvitedToEvent];
         }
@@ -686,7 +687,7 @@
     }
     
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
-    NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
+    //NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
     NSString *pushMessageContacts = @"";
     for(int i = 0; i < [self.friendList count]; i++)
     {
@@ -695,14 +696,18 @@
         if(![invited isEqualToString:@"NO"]) {
             [contacts addObject:contact];
             
-            NSString *fb = [contact valueForKey:@"id"];
+            NSString *facebookId = [contact valueForKey:@"id"];
             NSString *firstName = [contact valueForKey:@"firstName"];
             
-            [facebookIds addObject:fb];
+            //[facebookIds addObject:fb];
             pushMessageContacts = [NSString stringWithFormat:@"%@, %@", firstName, pushMessageContacts];
             
+            [self.event addInvite:facebookId name:firstName completion:^(EventGoing *invited) {
+                [detailView refreshGoing];
+            }];
+            
             //Add to invited
-            NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
+//            NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
             
 //            if([self.event.invited rangeOfString:fb].location == NSNotFound)
 //                self.event.invited = [self.event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", self.event.invited, person];
@@ -710,19 +715,19 @@
     }
     if([contacts count] > 0)
     {
-        ViewController *vc = (ViewController *)self.window.rootViewController;
-        [self.event save:^(Event *event) {
-            
+//        ViewController *vc = (ViewController *)self.window.rootViewController;
+//        [self.event save:^(Event *event) {
+        
 //            [vc.mainView goToEvent:event.referenceId];
 //            if([[self superview] isMemberOfClass:[MFDetailView class]])
 //            {
 //                MFDetailView *detailView = (MFDetailView *)[self superview];
 //                [detailView refreshGoing];
 //            }
-        }];
+ //       }];
         
-        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-        [PushMessage inviteFriends:facebookIds from:currentUser.name event:self.event];
+        //User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        //[PushMessage inviteFriends:facebookIds from:currentUser.name event:self.event];
         
         pushMessageContacts = [pushMessageContacts substringToIndex:[pushMessageContacts length] - 2];
         
@@ -739,6 +744,7 @@
     }
     
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+    NSMutableArray *firstNames = [[NSMutableArray alloc] init];
     for(int i = 0; i < [self.contactList count]; i++)
     {
         NSDictionary *contact = [self.contactList objectAtIndex:i];
@@ -748,14 +754,20 @@
             if(phone != nil)
             {
                 [phoneNumbers addObject:phone];
-                NSString *invitedPhone = [NSString stringWithFormat:@"p%@", phone];
+                NSString *firstName = [contact valueForKey:@"firstName"];
+                [firstNames addObject:firstName];
+                //NSString *invitedPhone = [NSString stringWithFormat:@"p%@", phone];
+                
+                
 //                if([self.event.invited rangeOfString:invitedPhone].location == NSNotFound)
 //                    self.event.invited = [NSString stringWithFormat:@"%@|%@:%@", self.event.invited, invitedPhone, [contact valueForKey:@"firstName"]];
             }
         }
     }
     if([phoneNumbers count] > 0) {
-        [[Session sessionVariables] setObject:self.event forKey:@"eventToSend"];
+        [[Session sessionVariables] setObject:self.event forKey:@"currentEvent"];
+        [[Session sessionVariables] setObject:firstNames forKey:@"currentInvites"];
+        
         [MFHelpers GetBranchUrl:self.event.referenceId eventName:self.event.name completion:^(NSString *url) {
             ViewController *vc = (ViewController *)self.window.rootViewController;
             [vc sendTextMessage:phoneNumbers message:url];

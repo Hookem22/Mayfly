@@ -12,7 +12,7 @@
 @interface Notification : NSObject
 
 @property (nonatomic, copy) NSString *notificationId;
-@property (nonatomic, copy) NSString *facebookId;
+@property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *eventId;
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, assign) NSInteger secondsSince;

@@ -50,9 +50,6 @@
     {
         [User getByFacebookId:facebookId completion:^(User* user)
          {
-             Notification *notification = [[Notification alloc] init: @{ @"facebookid": facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
-             [notification save:^(Notification *notification) { }];
-            
             if(user.pushDeviceToken != nil && ![user.pushDeviceToken isEqualToString:@""])
             {
 //                [messageService send:user.pushDeviceToken alert:[NSString stringWithFormat:@"%@ invited you to %@", from, event.name] message:[NSString stringWithFormat:@"Invitation|%@", event.eventId]];

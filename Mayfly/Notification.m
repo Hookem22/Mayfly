@@ -11,7 +11,7 @@
 @implementation Notification
 
 @synthesize notificationId = _notificationId;
-@synthesize facebookId = _facebookId;
+@synthesize userId = _userId;
 @synthesize eventId = _eventId;
 @synthesize message = _message;
 @synthesize secondsSince = _secondsSince;
@@ -22,7 +22,7 @@
     self = [super init];
     if (self) {
         self.notificationId = [notification valueForKey:@"id"];
-        self.facebookId = [notification objectForKey:@"facebookid"];
+        self.userId = [notification objectForKey:@"userid"];
         self.eventId = [notification objectForKey:@"eventid"];
         self.message = [notification objectForKey:@"message"];
         self.secondsSince = [[notification objectForKey:@"Seconds"] isMemberOfClass:[NSNull class]] ? 0 : [[notification objectForKey:@"Seconds"] intValue];
@@ -52,7 +52,7 @@
 -(void)save:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Notification"];
-    NSDictionary *dict = @{@"facebookid":self.facebookId, @"eventid": self.eventId, @"message": self.message };
+    NSDictionary *dict = @{@"userid":self.userId, @"eventid": self.eventId, @"message": self.message };
     
     if([self.notificationId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [dict mutableCopy];

@@ -295,21 +295,65 @@
     }];
 }
 
-
--(void)addInvited:(NSString *)facebookId firstName:(NSString *)firstName
+-(void)addInvite:(NSString *)facebookId name:(NSString *)name completion:(QSCompletionBlock)completion
 {
-//    [Event get:self.eventId completion:^(Event *event)
-//     {
-//         if(![facebookId isEqualToString:@""] && [self.invited rangeOfString:facebookId].location == NSNotFound)
-//         {
-//             NSString *person = [NSString stringWithFormat:@"%@:%@", facebookId, firstName];
-//             event.invited = [event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", event.invited, person];
-//             [event save:^(Event *event)
-//              {
-//                  
-//              }];
-//         }
-//     }];
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    if(facebookId == nil) {
+        QSAzureService *service = [QSAzureService defaultService:@"EventInvited"];
+        NSDictionary *eventInvited = @{@"eventid": self.eventId, @"facebookid": @"", @"name":name, @"invitedby": currentUser.userId, @"userid": @"" };
+        
+        [service addItem:eventInvited completion:^(NSDictionary *item)
+         {
+             EventGoing *eventGoing = [[EventGoing alloc] init:item];
+             
+             NSMutableArray *invites = [[NSMutableArray alloc] init];
+             [invites addObject:eventGoing];
+             for(EventGoing *invite in self.invited){
+                 [invites addObject:invite];
+             }
+             self.invited = [NSArray arrayWithArray:invites];
+             completion(item);
+         }];
+    }
+    else
+    {
+        [User getByFacebookId:facebookId completion:^(User * user)
+         {
+             if(user == nil)
+                 return;
+             
+             BOOL alreadyInvited = NO;
+             for(EventGoing *invited in self.invited){
+                 if([user.userId isEqualToString:invited.userId]) {
+                     alreadyInvited = YES;
+                     break;
+                 }
+             }
+             
+             if(!alreadyInvited) {
+                 QSAzureService *service = [QSAzureService defaultService:@"EventInvited"];
+                 NSDictionary *eventInvited = @{@"eventid": self.eventId, @"facebookid": user.facebookId, @"name":user.firstName, @"invitedby": currentUser.userId, @"userid": user.userId };
+                 
+                 [service addItem:eventInvited completion:^(NSDictionary *item)
+                  {
+                      EventGoing *eventGoing = [[EventGoing alloc] init:item];
+                      NSMutableArray *invites = [[NSMutableArray alloc] init];
+                      [invites addObject:eventGoing];
+                      for(EventGoing *invite in self.invited){
+                          [invites addObject:invite];
+                      }
+                      self.invited = [NSArray arrayWithArray:invites];
+                      completion(item);
+                      
+                      //TODO: Send Push message
+                  }];
+             }
+         }];
+    }
+    
+    Notification *notification = [[Notification alloc] init: @{ @"userid": currentUser.userId, @"eventid": self.eventId, @"message": [NSString stringWithFormat:@"Invited %@ to %@", name, self.name] }];
+    [notification save:^(Notification *notification) { }];
+
 }
 
 -(BOOL)isInvited
