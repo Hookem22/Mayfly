@@ -471,8 +471,9 @@
 //        [group sendMessageToGroup:msg info:info];
     }
     
-    [Group inviteGroups:newGroups event:self.event completion:^(NSDictionary *item) {
-        [self refreshEventsScreen];
+    [Group inviteGroups:newGroups event:self.event completion:^(Event *event) {
+        //self.event.invited = [NSArray arrayWithArray:event.invited];
+        [self refreshGoing];
     }];
 
     [self.event save:^(Event *event)

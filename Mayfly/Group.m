@@ -228,7 +228,7 @@
                              [invites addObject:invite];
                          }
                          event.invited = [NSArray arrayWithArray:invites];
-                         completion(item);
+                         completion(event);
                          
                          NSString *msg = [NSString stringWithFormat:@"New Event: %@", event.name];
                          NSString *info = [NSString stringWithFormat:@"Invitation|%@", event.eventId];
