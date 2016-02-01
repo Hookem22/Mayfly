@@ -339,11 +339,12 @@
              return;
          }
         
-         for(Group *group in self.groupsList) {
-            NSString *msg = [NSString stringWithFormat:@"New event in %@", group.name];
-            NSString *info = [NSString stringWithFormat:@"Invitation|%@", self.event.eventId];
-            [group sendMessageToGroup:msg info:info];
-         }
+        [Group inviteGroups:self.groupsList event:self.event completion:^(NSDictionary *item) {}];
+//         for(Group *group in self.groupsList) {
+//            NSString *msg = [NSString stringWithFormat:@"New event in %@", group.name];
+//            NSString *info = [NSString stringWithFormat:@"Invitation|%@", self.event.eventId];
+//            [group sendMessageToGroup:msg info:info];
+//         }
         
          Notification *notification = [[Notification alloc] init];
          notification.eventId = event.eventId;

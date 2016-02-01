@@ -297,7 +297,6 @@
     [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     editButton.layer.cornerRadius = 5;
     [self.menuView addSubview:editButton];
-    
 }
 
 -(void)closeMenu

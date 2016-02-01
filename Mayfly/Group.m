@@ -199,12 +199,107 @@
     
 }
 
++(void)inviteGroups:(NSArray *)groups event:(Event *)event completion:(QSCompletionBlock)completion
+{
+    [Group getfilteredMembers:groups event:event completion:^(NSArray *users) {
+        for(EventGoing *going in users) {
+            [User get:going.userId completion:^(User *user) {
+               if(user == nil || user.userId == nil || user.firstName == nil)
+                   return;
+                
+                BOOL alreadyInvited = NO;
+                for(EventGoing *invited in event.invited){
+                    if([user.userId isEqualToString:invited.userId]) {
+                        alreadyInvited = YES;
+                        break;
+                    }
+                }
+                
+                if(!alreadyInvited) {
+                    QSAzureService *service = [QSAzureService defaultService:@"EventInvited"];
+                    NSDictionary *eventInvited = @{@"eventid": event.eventId, @"facebookid": user.facebookId, @"name":user.firstName, @"invitedby": @"", @"userid": user.userId };
+                    
+                    [service addItem:eventInvited completion:^(NSDictionary *item)
+                     {
+                         EventGoing *eventGoing = [[EventGoing alloc] init:item];
+                         NSMutableArray *invites = [[NSMutableArray alloc] init];
+                         [invites addObject:eventGoing];
+                         for(EventGoing *invite in event.invited){
+                             [invites addObject:invite];
+                         }
+                         event.invited = [NSArray arrayWithArray:invites];
+                         completion(item);
+                         
+                         NSString *msg = [NSString stringWithFormat:@"New Event: %@", event.name];
+                         NSString *info = [NSString stringWithFormat:@"Invitation|%@", event.eventId];
+                         [PushMessage push:user.userId message:msg info:info];
+                     }];
+                }
+                
+                Notification *notification = [[Notification alloc] init: @{ @"userid": user.userId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"New Event: %@", event.name] }];
+                [notification save:^(Notification *notification) { }];
+            }];
+        }
+        
+
+    }];
+
+}
+
++(void)getfilteredMembers:(NSArray *)groups event:(Event *)event completion:(QSCompletionBlock)completion
+{
+    [Group getGroupsMembers:groups completion:^(NSArray *groupUsers) {
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        NSMutableArray *users = [[NSMutableArray alloc] init];
+        for(GroupUsers *groupUser in groupUsers) {
+            BOOL isInGroup = NO;
+            for(EventGoing *going in users) {
+                if([going.userId isEqualToString:groupUser.userId]) {
+                    isInGroup = YES;
+                    break;
+                }
+            }
+            if(!isInGroup && ![groupUser.userId isEqualToString:currentUser.userId]) {
+                EventGoing *add = [[EventGoing alloc] init];
+                add.userId = groupUser.userId;
+                add.eventId = event.eventId;
+                add.firstName = groupUser.firstName;
+                [users addObject:add];
+            }
+        }
+        completion(users);
+    }];
+
+    
+}
+
++(void)getGroupsMembers:(NSArray *)groups completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"GroupUsers"];
+    NSString *groupText = @"";
+    for(Group *group in groups) {
+        groupText = [groupText isEqualToString:@""] ? [NSString stringWithFormat:@"groupid == '%@'", group.groupId] : [NSString stringWithFormat:@"%@ OR groupid == '%@'", groupText, group.groupId];
+    }
+    NSString *whereStatement = groupText;
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        NSMutableArray *users = [[NSMutableArray alloc] init];
+        for(id item in results) {
+            GroupUsers *groupUser = [[GroupUsers alloc] init:item];
+            [users addObject:groupUser];
+        }
+        completion(users);
+    }];
+}
+
 -(void)sendMessageToGroup:(NSString *)message info:(NSString *)info  {
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     [self getMembers:^(NSArray *members) {
         for(GroupUsers *member in members) {
-            if(![member.userId isEqualToString:currentUser.userId])
+            if(![member.userId isEqualToString:currentUser.userId]) {
+                
                 [PushMessage push:member.userId message:message info:info];
+            }
         }
     }];
 }

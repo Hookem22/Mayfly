@@ -58,7 +58,6 @@
     for(UIView *subview in self.notificationsView.subviews)
         [subview removeFromSuperview];
     
-    [MFHelpers showProgressView:self];
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     wd = (wd * 3) / 4;
     int viewY = 0;
@@ -144,7 +143,6 @@
          }
          
          self.notificationsView.contentSize = CGSizeMake(wd, newViewY + 70);
-         [MFHelpers hideProgressView:self];
      }];
 }
 

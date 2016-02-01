@@ -286,7 +286,7 @@
     int invitedCt = 0;
     for(EventGoing *person in self.event.invited)
     {
-        if(person.facebookId.length == 0)
+        if([person.facebookId isMemberOfClass:[NSNull class]] || person.facebookId.length == 0)
             continue;
         
         BOOL isGoing = NO;
@@ -331,7 +331,7 @@
     self.peopleView.contentSize = CGSizeMake(viewX, 80);
     self.peopleView.contentOffset = CGPointMake(-30, 0);
     
-    NSString *goingText = [NSString stringWithFormat:@"Going: %i | Invited: %i", self.event.going.count, invitedCt];
+    NSString *goingText = [NSString stringWithFormat:@"Going: %lu | Invited: %i", (unsigned long)self.event.going.count, invitedCt];
     self.goingLabel.text = goingText;
     
 }
@@ -457,6 +457,7 @@
         }
     }
     
+
     for(Group *group in newGroups) {
         self.event.groupId = self.event.groupId.length == 0 ? group.groupId : [NSString stringWithFormat:@"%@|%@", self.event.groupId, group.groupId];
         self.event.groupName = self.event.groupName.length == 0 ? group.name : [NSString stringWithFormat:@"%@|%@", self.event.groupName, group.name];
@@ -465,10 +466,14 @@
         if(group.isPublic == true)
             self.event.groupIsPublic = true;
         
-        NSString *msg = [NSString stringWithFormat:@"New event in %@", group.name];
-        NSString *info = [NSString stringWithFormat:@"Invitation|%@", self.event.eventId];
-        [group sendMessageToGroup:msg info:info];
+//        NSString *msg = [NSString stringWithFormat:@"New event in %@", group.name];
+//        NSString *info = [NSString stringWithFormat:@"Invitation|%@", self.event.eventId];
+//        [group sendMessageToGroup:msg info:info];
     }
+    
+    [Group inviteGroups:newGroups event:self.event completion:^(NSDictionary *item) {
+        [self refreshEventsScreen];
+    }];
 
     [self.event save:^(Event *event)
      {

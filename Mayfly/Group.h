@@ -41,7 +41,7 @@
 -(void)isAdmin:(QSCompletionBlock)completion;
 +(void)clearIsInvitedToEvent;
 -(void)save:(QSCompletionBlock)completion;
--(void)sendMessageToGroup:(NSString *)message info:(NSString *)info;
++(void)inviteGroups:(NSArray *)groups event:(Event *)event completion:(QSCompletionBlock)completion;
 
 -(BOOL)isMember;
 
