@@ -28,26 +28,6 @@
 }
 
 
-//+(void)pushByEvent:(Event *)event header:(NSString *)header message:(NSString *)message
-//{
-//    for(EventGoing *eventGoing in event.going) {
-//        [User get:eventGoing.userId completion:^(User *user) {
-//            
-//        }];
-//    }
-////    for(NSString *facebookId in [event.going componentsSeparatedByString:@"|"])
-////    {
-////        if([facebookId rangeOfString:appDelegate.facebookId].location == NSNotFound)
-////        {
-////            NSString *fbId = [facebookId substringToIndex:[facebookId rangeOfString:@":"].location];
-////            [User getByFacebookId:fbId completion:^(User *user)
-////             {
-////                 [self push:user.pushDeviceToken header:header message:message];
-////             }];
-////        }
-////    }
-//}
-
 +(void)inviteFriend:(NSString *)pushToken deviceId:(NSString *)deviceId from:(NSString *)from event:(Event *)event;
 {
     NSString *header = [NSString stringWithFormat:@"%@ invited you to %@", from, event.name];

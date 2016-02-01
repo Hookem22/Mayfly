@@ -86,10 +86,6 @@
     self.nameText = nameText;
     [createView addSubview:nameText];
     
-    //self.locationView = [[MFLocationView alloc] initWithFrame:CGRectMake(30, 60, (wd * 3) / 5 - 35, 30) mapFrame:CGRectMake(30, 385, wd - 60, ht - 445)];
-    //[createView addSubview:self.locationView];
-    
-    //self.startText = [[MFClockView alloc] initWithFrame:CGRectMake((wd * 3) / 5 + 5, 60, (wd * 2) / 5 - 35, 30) placeHolder:@"Start Time"];
     self.startText = [[MFClockView alloc] initWithFrame:CGRectMake(30, 60, wd - 60, 30) placeHolder:@"Start Time"];
     [createView addSubview:self.startText];
     
@@ -107,34 +103,6 @@
     self.descText = descText;
     [createView addSubview:descText];
     
-//    UILabel *participantsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 190, wd, 30)];
-//    participantsLabel.text = @"Total People?";
-//    [createView addSubview:participantsLabel];
-    
-//    UITextField *minText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 3) / 5, 190, (wd / 5) - 20, 30)];
-//    minText.borderStyle = UITextBorderStyleRoundedRect;
-//    minText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-//    minText.font = [UIFont systemFontOfSize:15];
-//    minText.placeholder = @"Min";
-//    minText.keyboardType = UIKeyboardTypeNumberPad;
-//    minText.delegate = self;
-//    self.minText = minText;
-//    [createView addSubview:minText];
-//    
-//    UITextField *maxText = [[UITextField alloc] initWithFrame:CGRectMake((wd * 4) / 5 - 10, 190, (wd / 5) - 20, 30)];
-//    maxText.borderStyle = UITextBorderStyleRoundedRect;
-//    maxText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-//    maxText.font = [UIFont systemFontOfSize:15];
-//    maxText.placeholder = @"Max";
-//    maxText.keyboardType = UIKeyboardTypeNumberPad;
-//    maxText.delegate = self;
-//    self.maxText = maxText;
-//    [createView addSubview:maxText];
-    
-//    self.publicButton = [[MFPillButton alloc] initWithFrame:CGRectMake(30, 230, wd - 60, 40) yesText:@"Public" noText:@"Private"];
-//    [self.publicButton switchButton]; //Start as private
-//    [createView addSubview:self.publicButton];
-    
     if(self.event)
     {
         nameText.text = self.event.name;
@@ -151,13 +119,6 @@
         [deleteButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
         [createView addSubview:deleteButton];
         
-//        self.locationView.locationText.text = self.event.location.name;
-//        self.locationView.location = self.event.location;
-//        
-//        minText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.minParticipants - 1];
-//        if(self.event.maxParticipants)
-//            maxText.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.event.maxParticipants - 1];
-        
     }
     else
     {
@@ -171,10 +132,6 @@
     
     UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
     topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-//    topBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
-//    topBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
-//    topBorder.layer.shadowRadius = 3.0f;
-//    topBorder.layer.shadowOpacity = 1.0f;
     [createView addSubview:topBorder];
     
     UIButton *saveButton = [[UIButton alloc] initWithFrame:CGRectMake(20, createView.frame.size.height - 45, wd - 40, 40)];
@@ -275,10 +232,6 @@
 
 -(void)cancelButtonClick:(id)sender
 {
-//    if([[self superview] isMemberOfClass:[MFView class]]) {
-//        MFView *view = (MFView *)[self superview];
-//        [view refreshEvents];
-//    }
     [Group clearIsInvitedToEvent];
     [MFHelpers closeRight:self];
 }
@@ -298,13 +251,6 @@
         self.nameText.layer.borderWidth= 1.0f;
         error = true;
     }
-//    if([self.locationView.locationText.text isEqualToString:@""])
-//    {
-//        self.locationView.locationText.layer.borderColor=[[UIColor redColor] CGColor];
-//        self.locationView.locationText.layer.cornerRadius=8.0f;
-//        self.locationView.locationText.layer.borderWidth= 1.0f;
-//        error = true;
-//    }
     if([self.startText.timeText.text isEqualToString:@""])
     {
         self.startText.timeText.layer.borderColor=[[UIColor redColor] CGColor];
@@ -312,13 +258,6 @@
         self.startText.timeText.layer.borderWidth= 1.0f;
         error = true;
     }
-//    if([self.minText.text isEqualToString:@""])
-//    {
-//        self.minText.layer.borderColor=[[UIColor redColor] CGColor];
-//        self.minText.layer.cornerRadius=8.0f;
-//        self.minText.layer.borderWidth= 1.0f;
-//        error = true;
-//    }
     if(error)
         return;
     
@@ -376,12 +315,6 @@
 {
     [MFHelpers showProgressView:self];
     
-//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//    if(event.going == nil || [event.going isEqualToString:@""])
-//        event.going = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
-//    if(event.invited == nil || [event.invited isEqualToString:@""])
-//        event.invited = [NSString stringWithFormat:@"%@:%@", appDelegate.facebookId, appDelegate.firstName];
-    
     [event save:^(Event *event)
     {
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
@@ -435,10 +368,6 @@
                  [firstNames addObject:firstName];
              }
          }
-//         if([facebookIds count] > 0) {
-//             [PushMessage inviteFriends:facebookIds from:currentUser.name event:event];
-//             [event save:^(Event *event) { }];
-//         }
         
          if([phoneNumbers count] > 0) {
              [[Session sessionVariables] setObject:event forKey:@"currentEvent"];

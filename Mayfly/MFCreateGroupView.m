@@ -112,14 +112,6 @@
     self.passwordText = passwordText;
     [createView addSubview:passwordText];
     
-//    UITextField *pictureUrlText = [[UITextField alloc] initWithFrame:CGRectMake(30, 280, wd - 60, 30)];
-//    pictureUrlText.borderStyle = UITextBorderStyleRoundedRect;
-//    pictureUrlText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-//    pictureUrlText.font = [UIFont systemFontOfSize:15];
-//    pictureUrlText.placeholder = @"Picture URL";
-//    self.pictureUrlText = pictureUrlText;
-//    [createView addSubview:pictureUrlText];
-    
     UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
     topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [createView addSubview:topBorder];

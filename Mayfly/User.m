@@ -73,16 +73,6 @@
             School *school = (School *)[Session sessionVariables][@"currentSchool"];
             newUser.schoolId = school.schoolId;
             
-            /*Always update info
-            if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
-                newUser.pushDeviceToken = appDelegate.deviceToken ? appDelegate.deviceToken : @"";
-            if(!newUser.name || [newUser.name isEqualToString:@""])
-                newUser.name = appDelegate.name ? appDelegate.name : @"";
-            if(!newUser.facebookId || [newUser.facebookId isEqualToString:@""])
-                newUser.facebookId = appDelegate.facebookId ? appDelegate.facebookId : @"";
-            if(!newUser.email || [newUser.email isEqualToString:@""])
-                newUser.email = appDelegate.email ? appDelegate.email : @"";
-            */
             [newUser save:^(User *addedUser) {
                 [addedUser getUserValues:^(User *finishedUser) {
                     completion(finishedUser);
@@ -129,27 +119,6 @@
         completion(invited);
     }];
 }
-
-//+(void)addReferralEvent:(User *)user completion:(QSCompletionBlock)completion
-//{
-//    NSString *referenceId = (NSString *)[Session sessionVariables][@"referenceId"];
-//    
-//    [Event getByReferenceId:referenceId completion:^(Event *event)
-//     {
-//         NSString *firstName = user.name;
-//         if([firstName rangeOfString:@" "].location != NSNotFound)
-//             firstName = [firstName substringToIndex:[firstName rangeOfString:@" "].location];
-//         
-//         [event addInvited:user.facebookId firstName:firstName];
-//         if(user.facebookId == nil || [user.facebookId isEqualToString:@""])
-//             return;
-//         
-//         Notification *notification = [[Notification alloc] init: @{@"facebookid": user.facebookId, @"eventid": event.eventId, @"message": [NSString stringWithFormat:@"Invited: %@", event.name] }];
-//         [notification save:^(Notification *notification) {
-//             completion(nil);
-//         }];
-//     }];
-//}
 
 +(void)get:(NSString *)userId completion:(QSCompletionBlock)completion
 {

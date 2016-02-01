@@ -20,13 +20,5 @@
 
 -(void)setup;
 -(void)refreshEvents;
--(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging;
-
-
-
-//-(void)loadWebsite;
-//-(void)returnAddressList:(NSString *)params;
-//-(void)goToEvent:(NSUInteger)referenceId;
-//-(void)sendLatLngToWeb;
 
 @end

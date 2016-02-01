@@ -26,13 +26,6 @@
     
     self.backgroundColor = [UIColor whiteColor];
     
-    //NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    //NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    //UIImageView *launch = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
-    //[launch setImage:[UIImage imageNamed:@"launch1242x2208"]];
-    //[self addSubview:launch];
-    
     return self;
 }
 
@@ -54,21 +47,7 @@
     [stEdsButton setImage:[UIImage imageNamed:@"title"] forState:UIControlStateNormal];
     [stEdsButton addTarget:self action:@selector(switchToStEds:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:stEdsButton];
-    
-//    UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
-//    [header setImage:[UIImage imageNamed:@"title"]];
-//    [self addSubview:header];
-    
-    
-   
-//    self.notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 35, 30)];
-//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//    BOOL notify = appDelegate.hasNotifications || (NSString *)[Session sessionVariables][@"referenceId"] != nil;
-//    NSString *imageName = notify ? @"bellNotify" : @"bell";
-//    [self.notificationButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-//    [self.notificationButton addTarget:self action:@selector(notificationButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self addSubview:self.notificationButton];
-    
+
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
     [addButton setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
     [addButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -134,12 +113,6 @@
             [eventsView loadEvents];
         }
     }
-    
-//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//    if(appDelegate.hasNotifications) {
-//        [self.notificationButton setImage:[UIImage imageNamed:@"bellNotify"] forState:UIControlStateNormal];
-//        appDelegate.hasNotifications = NO;
-//    }
 }
 
 
@@ -156,56 +129,12 @@
     MFCreateView *createView = [[MFCreateView alloc] init];
     [MFHelpers open:createView onView:self];
     
-    /*
-    if ([FBSDKAccessToken currentAccessToken]) {
-        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/friends" parameters:nil]
-         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-             if (!error) {
-                 NSLog(@"fetched user:%@", result);
-             }
-         }];
-    }*/
-    /*
-    NSMutableString *facebookRequest = [NSMutableString new];
-    [facebookRequest appendString:@"/me/friends"];
-    [facebookRequest appendString:@"?limit=100"];
-    
-    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                                  initWithGraphPath:facebookRequest
-                                  parameters:nil
-                                  HTTPMethod:@"GET"];
-    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        if (!error) {
-            NSLog(@"fetched user:%@", result);
-        }
-    }];
-    
-    return;
-    */
-    
 }
 
 -(void)groupButtonClick:(id)sender
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-//    for(UIView *subview in self.subviews)
-//    {
-//        if([subview isMemberOfClass:[MFGroupView class]])
-//        {
-//            MFGroupView *groupView = (MFGroupView *)subview;
-//            CGRect frame = CGRectMake(wd, 60, wd, ht- 60);
-//            if(groupView.frame.origin.x > 0)
-//                frame = CGRectMake(0, 60, wd, ht- 60);
-//
-//            [UIView animateWithDuration:0.3
-//                             animations:^{
-//                                 groupView.frame = frame;
-//                             }
-//                             completion:^(BOOL finished){ }];
-//        }
-//    }
     
     MFNotificationView *notificationView;
     MFGroupView *groupView;
@@ -236,25 +165,6 @@
                      }
                      completion:^(BOOL finished){ }];
 }
-
-//-(void)openGroup
-//{
-//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-//    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-//    
-//    for(UIView *subview in self.subviews)
-//    {
-//        if([subview isMemberOfClass:[MFGroupView class]])
-//        {
-//            MFGroupView *groupView = (MFGroupView *)subview;
-//            [UIView animateWithDuration:0.3
-//                             animations:^{
-//                                 groupView.frame = CGRectMake(0, 60, wd, ht- 60);
-//                             }
-//                             completion:^(BOOL finished){ }];
-//        }
-//    }
-//}
 
 -(void)menuButtonClick:(id)sender
 {
@@ -298,55 +208,7 @@
                      }
                      completion:^(BOOL finished){ }];
 
-    
-//    MFNotificationView *notificationView;
-//    MFEventsView *eventsView;
-//    for(UIView *subview in self.subviews)
-//    {
-//        if([subview isMemberOfClass:[MFNotificationView class]])
-//            notificationView = (MFNotificationView *)subview;
-//        else if([subview isMemberOfClass:[MFEventsView class]])
-//            eventsView = (MFEventsView *)subview;
-//    }
-//    if(notificationView == nil)
-//    {
-//        MFNotificationView *notificationView = [[MFNotificationView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
-//        [self addSubview:notificationView];
-//
-//        [UIView animateWithDuration:0.3
-//                         animations:^{
-//                             //notificationView.frame = CGRectMake(0, 60, wd, ht - 60);
-//                             eventsView.frame = CGRectMake((wd * 3) / 4, 60, wd, ht - 60);
-//                         }
-//                         completion:^(BOOL finished){ }];
-//    }
-//    else
-//    {
-//        [UIView animateWithDuration:0.3
-//                         animations:^{
-//                             notificationView.frame = CGRectMake(-1 * wd, 60, wd, ht - 60);
-//                         }
-//                         completion:^(BOOL finished){
-//                             [notificationView removeFromSuperview];
-//                         }];
-//    }
-
 }
-
-//-(void)openEvent:(NSString *)eventId toMessaging:(BOOL)toMessaging
-//{
-//     MFDetailView *detailView = [[MFDetailView alloc] init:eventId];
-//     [MFHelpers open:detailView onView:self.superview];
-//     
-//     if(toMessaging)
-//     {
-//         [Event get:^(Event *event)
-//          {
-//              MFMessageView *messageView = [[MFMessageView alloc] init:event];
-//              [MFHelpers open:messageView onView:detailView];
-//          }];
-//     }
-//}
 
 -(void)switchToStEds:(id)sender {
     Location *loc = (Location *)[Session sessionVariables][@"currentLocation"];
