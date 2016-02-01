@@ -13,6 +13,7 @@
 @property (nonatomic, strong) Group *group;
 @property (nonatomic, strong) UILabel *detailsLabel;
 @property (nonatomic, strong) NSMutableArray *Events;
+@property (nonatomic, strong) UIView *menuView;
 @end
 
 @implementation MFGroupDetailView
@@ -35,6 +36,9 @@
 
 -(void)setup:(Group *)group
 {
+    for(UIView *subview in self.subviews)
+        [subview removeFromSuperview];
+    
     self.group = group;
 
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
@@ -47,15 +51,23 @@
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelButton];
 
+    [group isAdmin:^(GroupUsers *groupUser) {
+        if(groupUser.isAdmin == true) {
+            UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 30, 28, 25, 25)];
+            [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
+            [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:menuButton];
+        }
+    }];
     
-    UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 80)];
+    UIScrollView *detailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [self addSubview:detailView];
 
     int viewY = 20;
     School *school = (School *)[Session sessionVariables][@"currentSchool"];
 
     UILabel *detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
-    NSString *details = group.members.count > 5 ? [NSString stringWithFormat:@"%i Members - %@", group.members.count, school.name] : school.name;
+    NSString *details = group.members.count > 5 ? [NSString stringWithFormat:@"%lu Members - %@", (unsigned long)group.members.count, school.name] : school.name;
     detailsLabel.text = details;
     detailsLabel.textAlignment = NSTextAlignmentCenter;
     self.detailsLabel = detailsLabel;
@@ -95,7 +107,7 @@
     viewY += 50;
 
     UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 20)];
-    descriptionLabel.text = group.description;
+    descriptionLabel.text = [group.description stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];;
     descriptionLabel.numberOfLines = 0;
     descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [descriptionLabel sizeToFit];
@@ -148,18 +160,13 @@
                 [eventView addSubview:icon];
                 
             }
-            else if([event.groupPictureUrl isKindOfClass:[NSNull class]] || event.groupPictureUrl.length <= 0) {
+            else {
                 NSString *iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
                 
                 UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
                 [icon setImage:[UIImage imageNamed:iconImage]];
                 [eventView addSubview:icon];
             }
-            else {
-                MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(10, 10, 50, 50) url:event.groupPictureUrl];
-                [eventView addSubview:pic];
-            }
-            
             
             int nameWidth = (int)(wd - (95 + (wd / 4)));
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, nameWidth, 20)];
@@ -268,6 +275,41 @@
     
     MFDetailView *detailView = [[MFDetailView alloc] init:event];
     [MFHelpers openFromRight:detailView onView:self.superview];
+}
+
+-(void)menuButtonClick:(id)sender
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    self.menuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+    self.menuView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
+    [self addSubview:self.menuView];
+    
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeMenu)];
+    [self.menuView addGestureRecognizer:singleTap];
+    
+    UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [editButton setTitle:@"Edit Interest" forState:UIControlStateNormal];
+    [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    editButton.frame = CGRectMake(20, ht - 60, wd - 40, 40);
+    editButton.backgroundColor = [UIColor whiteColor];
+    [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    editButton.layer.cornerRadius = 5;
+    [self.menuView addSubview:editButton];
+    
+}
+
+-(void)closeMenu
+{
+    [self.menuView removeFromSuperview];
+}
+
+-(void)editButtonClick:(id)sender
+{
+    MFCreateGroupView *createView = [[MFCreateGroupView alloc] init:self.group];
+    [MFHelpers openFromRight:createView onView:self.superview];
+    [self closeMenu];
 }
 
 -(void)cancelButtonClick:(id)sender

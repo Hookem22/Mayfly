@@ -11,7 +11,7 @@
 @interface MFGroupView ()
 
 @property (nonatomic, strong) NSMutableArray *Groups;
-@property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign) long currentIndex;
 
 @end
 
@@ -121,12 +121,26 @@
 
 -(void)createGroupClicked:(id)sender
 {
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self.superview];
+        return;
+    }
+    
     MFCreateGroupView *view = [[MFCreateGroupView alloc] init];
     [MFHelpers open:view onView:self.superview];
 }
 
 -(void)groupClicked:(id)sender
 {
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self.superview];
+        return;
+    }
+    
     UIControl *button = (UIControl *)sender;
     long tagId = button.tag;
     

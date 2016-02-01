@@ -180,12 +180,6 @@
     saveButton.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
     self.saveButton = saveButton;
     [createView addSubview:saveButton];
-       
-    if(![FBSDKAccessToken currentAccessToken])
-    {
-        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
-        [self addSubview:loginView];
-    }
 }
 
 -(void)addFriendsButtonClick:(id)sender
@@ -365,7 +359,7 @@
         if(group.isPublic == false)
             privateCt++;
     }
-    event.groupIsPublic = privateCt != self.groupsList.count;
+    event.groupIsPublic = privateCt == 0 || privateCt != self.groupsList.count;
 
     
     [self save:event];
@@ -390,16 +384,18 @@
 
          if(self.event)
          {
-             /*TODO: Refresh detail view on save
-             if([[self superview]isMemberOfClass:[MFDetailView class]])
+             if([self.superview isMemberOfClass:[MFDetailView class]])
              {
-                 MFDetailView *detailView = (MFDetailView *)[self superview];
-                 for(UIView *subview in detailView.subviews)
-                     [subview removeFromSuperview];
+                 MFDetailView *detailView = (MFDetailView *)self.superview;
+                 [detailView initialSetup:event];
                  
-                 detailView = [[MFDetailView alloc] init:event.eventId];
+                 if([self.superview.superview isMemberOfClass:[MFView class]])
+                 {
+                     MFView *view = (MFView *)self.superview.superview;
+                     [view refreshEvents];
+                 }
              }
-            */
+
              [MFHelpers close:self];
              return;
          }
@@ -445,9 +441,9 @@
          }
          else
          {
-             if([[self superview]isMemberOfClass:[MFView class]])
+             if([self.superview isMemberOfClass:[MFView class]])
              {
-                 MFView *view = (MFView *)[self superview];
+                 MFView *view = (MFView *)self.superview;
                  [view refreshEvents];
              }
              [MFHelpers close:self];

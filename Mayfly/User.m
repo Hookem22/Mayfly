@@ -16,6 +16,7 @@
 @synthesize firstName = _firstName;
 @synthesize pushDeviceToken = _pushDeviceToken;
 @synthesize facebookId = _facebookId;
+@synthesize schoolId = _schoolId;
 @synthesize lastSignedIn = _lastSignedIn;
 @synthesize isiOS = _isiOS;
 
@@ -43,6 +44,7 @@
         self.pushDeviceToken = [[user objectForKey:@"pushdevicetoken"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"pushdevicetoken"];
         self.facebookId = [[user objectForKey:@"facebookid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"facebookid"];
         self.email = [[user objectForKey:@"email"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"email"];
+        self.schoolId = [[user objectForKey:@"schoolId"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"schoolId"];
         self.lastSignedIn = [user objectForKey:@"lastsignedin"];
         self.isiOS = [[user objectForKey:@"isios"] isMemberOfClass:[NSNull class]] ? YES : [[user objectForKey:@"isios"] boolValue];
     }
@@ -67,6 +69,9 @@
             newUser.facebookId = loginUser.facebookId ? loginUser.facebookId : @"";
             newUser.email = loginUser.email ? loginUser.email : @"";
             newUser.isiOS = YES;
+            
+            School *school = (School *)[Session sessionVariables][@"currentSchool"];
+            newUser.schoolId = school.schoolId;
             
             /*Always update info
             if(!newUser.pushDeviceToken || [newUser.pushDeviceToken isEqualToString:@""])
@@ -191,7 +196,7 @@
     
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
-    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email, @"isios": [NSNumber numberWithBool:self.isiOS] /*, @"lastsignedin" : self.lastSignedIn */};
+    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email, @"schoolid": self.schoolId, @"isios": [NSNumber numberWithBool:self.isiOS] /*, @"lastsignedin" : self.lastSignedIn */};
     
     if([self.userId length] <= 0)
     {

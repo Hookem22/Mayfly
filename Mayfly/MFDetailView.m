@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UIScrollView *peopleView;
 @property (nonatomic, strong) UILabel *goingLabel;
 @property (nonatomic, assign) int initialHeight;
+@property (nonatomic, strong) UIView *menuView;
 
 @end
 
@@ -128,7 +129,13 @@
         self.event = event;
         
         NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-        NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+        
+        if(event.isAdmin == true) {
+            UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 30, 28, 25, 25)];
+            [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
+            [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:menuButton];
+        }
         
         UIScrollView *detailView = self.detailView;
         int viewY = self.initialHeight;
@@ -145,7 +152,7 @@
         viewY += 80;
         
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [addFriendsButton setTitle:@"Invite Friends or Groups" forState:UIControlStateNormal];
+        [addFriendsButton setTitle:@"Invite Friends or Interests" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         addFriendsButton.frame = CGRectMake(30, viewY, wd-60, 30);
         [addFriendsButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
@@ -251,12 +258,6 @@
 //        topBorder.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
 //        [joinButton addSubview:topBorder];
 
-
-        if(![FBSDKAccessToken currentAccessToken])
-        {
-            MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
-            [self addSubview:loginView];
-        }
     
     }];
     
@@ -430,12 +431,6 @@
 //    }
 }
 
--(void)editButtonClick:(id)sender
-{
-    MFCreateView *detailView = [[MFCreateView alloc] init:self.event];
-    [MFHelpers open:detailView onView:self];
-}
-
 //-(void)messageButtonClick:(id)sender
 //{
 //    MFMessageView *messageView = [[MFMessageView alloc] init:self.event];
@@ -519,6 +514,41 @@
 -(void)postMessageClick:(id)sender {
     MFPostMessageView *view = [[MFPostMessageView alloc] init:self.event];
     [MFHelpers open:view onView:self];
+}
+
+-(void)menuButtonClick:(id)sender
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    self.menuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+    self.menuView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
+    [self addSubview:self.menuView];
+    
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeMenu)];
+    [self.menuView addGestureRecognizer:singleTap];
+    
+    UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [editButton setTitle:@"Edit Event" forState:UIControlStateNormal];
+    [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    editButton.frame = CGRectMake(20, ht - 60, wd - 40, 40);
+    editButton.backgroundColor = [UIColor whiteColor];
+    [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    editButton.layer.cornerRadius = 5;
+    [self.menuView addSubview:editButton];
+    
+}
+
+-(void)closeMenu
+{
+    [self.menuView removeFromSuperview];
+}
+
+-(void)editButtonClick:(id)sender
+{
+    MFCreateView *createView = [[MFCreateView alloc] init:self.event];
+    [MFHelpers open:createView onView:self];
+    [self closeMenu];
 }
 
 -(void)addGroupsToEvent:(NSArray *)groups {

@@ -88,7 +88,10 @@
                 event.invited = [NSArray arrayWithArray:invited];
                 [event getMessages:^(NSArray *messages) {
                     event.messages = [NSArray arrayWithArray:messages];
-                    completion(event);
+                    [event getIsAdmin:^(EventGoing *eventGoing) {
+                        event.isAdmin = eventGoing.isAdmin;
+                        completion(event);
+                    }];
                 }];
             }];
         }];
@@ -322,6 +325,23 @@
     }
     
     return NO;
+}
+
+-(void)getIsAdmin:(QSCompletionBlock)completion {
+    QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    NSString *whereStatement = [NSString stringWithFormat:@"userid = '%@' AND eventid = '%@'", currentUser.userId, self.eventId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        for(id item in results) {
+            EventGoing *eventGoing = [[EventGoing alloc] init:item];
+            completion(eventGoing);
+            return;
+        }
+        EventGoing *eventGoing = [[EventGoing alloc] init];
+        eventGoing.isAdmin = false;
+        completion(eventGoing);
+    }];
 }
 
 -(NSString *)listToString:(NSMutableArray *)list

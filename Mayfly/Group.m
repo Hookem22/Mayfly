@@ -97,6 +97,23 @@
     }];
 }
 
+-(void)isAdmin:(QSCompletionBlock)completion {
+    QSAzureService *service = [QSAzureService defaultService:@"GroupUsers"];
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    NSString *whereStatement = [NSString stringWithFormat:@"userid = '%@' AND groupid = '%@'", currentUser.userId, self.groupId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        for(id item in results) {
+            GroupUsers *groupUser = [[GroupUsers alloc] init:item];
+            completion(groupUser);
+            return;
+        }
+        GroupUsers *groupUser = [[GroupUsers alloc] init];
+        groupUser.isAdmin = false;
+        completion(groupUser);
+    }];
+}
+
 -(void)addMember:(NSString *)userId isAdmin:(BOOL)isAdmin
 {
     [GroupUsers joinGroup:self.groupId userId:userId isAdmin:isAdmin];

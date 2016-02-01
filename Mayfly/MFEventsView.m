@@ -373,8 +373,38 @@
 
 -(void)openEvent:(long)tagId {
     
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self.superview];
+        return;
+    }
+    
     NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
     Event *event = (Event *)currentEvents[tagId];
+    
+    if(event.groupIsPublic == false && event.isGoing == false && event.isInvited == false) {
+        BOOL isMember = NO;
+        NSArray *groups = [event.groupId componentsSeparatedByString: @"|"];
+        for (NSString *groupId in groups) {
+            Group *group = [[Group alloc] init];
+            group.groupId = groupId;
+            if(group.isMember == YES) {
+                isMember = YES;
+                break;
+            }
+        }
+        
+        if(!isMember ) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
+                                                            message:@"This event is private. Please join the interest to attend this event."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
+        }
+    }
     
     MFDetailView *detailView = [[MFDetailView alloc] init:event];
     [MFHelpers openFromRight:detailView onView:self.superview];

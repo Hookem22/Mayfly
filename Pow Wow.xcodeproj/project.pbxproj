@@ -51,6 +51,7 @@
 		4843EA301B1653FD00C510B4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA2F1B1653FD00C510B4 /* Location.m */; };
 		4843EA731B1CE36A00C510B4 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA721B1CE36A00C510B4 /* User.m */; };
 		484A00B61C5C06F2002F1821 /* whitelock.png in Resources */ = {isa = PBXBuildFile; fileRef = 484A00B51C5C06F2002F1821 /* whitelock.png */; };
+		484A00B81C5EAE96002F1821 /* appScreenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 484A00B71C5EAE96002F1821 /* appScreenshot.png */; };
 		485AB36D1C20BA2C0035C79D /* grayadd.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3631C20BA2C0035C79D /* grayadd.png */; };
 		485AB36E1C20BA2C0035C79D /* graySearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3641C20BA2C0035C79D /* graySearch.png */; };
 		485AB36F1C20BA2C0035C79D /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3651C20BA2C0035C79D /* message.png */; };
@@ -189,6 +190,7 @@
 		4843EA711B1CE36A00C510B4 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		4843EA721B1CE36A00C510B4 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		484A00B51C5C06F2002F1821 /* whitelock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitelock.png; sourceTree = "<group>"; };
+		484A00B71C5EAE96002F1821 /* appScreenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appScreenshot.png; sourceTree = "<group>"; };
 		485AB3631C20BA2C0035C79D /* grayadd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayadd.png; sourceTree = "<group>"; };
 		485AB3641C20BA2C0035C79D /* graySearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graySearch.png; sourceTree = "<group>"; };
 		485AB3651C20BA2C0035C79D /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				48185D1B1B28BF8F00B4EE08 /* face0@2x.png */,
 				48185D0D1B2760F000B4EE08 /* add@2x.png */,
 				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
+				484A00B71C5EAE96002F1821 /* appScreenshot.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 				485AB3721C20BA2C0035C79D /* smallmenu.png in Resources */,
 				485AB3751C20BA2C0035C79D /* whiteMenu.png in Resources */,
 				48185D3B1B2A2DF900B4EE08 /* grayface0@2x.png in Resources */,
+				484A00B81C5EAE96002F1821 /* appScreenshot.png in Resources */,
 				48A075771B34AA00008E4994 /* logo114@2x.png in Resources */,
 				4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */,
 				4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */,

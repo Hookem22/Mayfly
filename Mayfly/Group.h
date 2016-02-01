@@ -38,6 +38,7 @@
 +(void)getByUser:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)addMember:(NSString *)userId isAdmin:(BOOL)isAdmin;
 -(void)removeMember:(NSString *)userId;
+-(void)isAdmin:(QSCompletionBlock)completion;
 +(void)clearIsInvitedToEvent;
 -(void)save:(QSCompletionBlock)completion;
 -(void)sendMessageToGroup:(NSString *)message info:(NSString *)info;

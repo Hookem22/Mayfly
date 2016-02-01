@@ -31,6 +31,7 @@
 @property (nonatomic, assign) NSUInteger dayOfWeek;
 @property (nonatomic, copy) NSString *localTime;
 @property (nonatomic, copy) NSString *schoolId;
+@property (nonatomic, assign) BOOL isAdmin;
 
 @property (nonatomic, copy) NSArray *going;
 @property (nonatomic, copy) NSArray *invited;

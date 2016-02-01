@@ -47,7 +47,7 @@
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
+        
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cancelButtonClick:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
@@ -133,10 +133,16 @@
     saveButton.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
     [createView addSubview:saveButton];
     
-    if(![FBSDKAccessToken currentAccessToken])
-    {
-        MFLoginView *loginView = [[MFLoginView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
-        [self addSubview:loginView];
+    if(self.group) {
+        self.nameText.text = self.group.name;
+        if(self.group.description.length > 0) {
+            self.descText.text = self.group.description;
+            self.descText.textColor = [UIColor blackColor];
+        }
+        if(self.group.isPublic == false)
+            [self.publicButton switchButton];
+        if(self.group.password.length > 0)
+            self.passwordText.text = self.group.password;
     }
 }
 
@@ -185,6 +191,11 @@
             {
                 MFGroupView *groupView = (MFGroupView *)view;
                 [groupView loadGroups];
+            }
+            else if([view isMemberOfClass:[MFGroupDetailView class]])
+            {
+                MFGroupDetailView *groupDetailView = (MFGroupDetailView *)view;
+                [groupDetailView setup:group];
             }
         }
         [MFHelpers hideProgressView:self];

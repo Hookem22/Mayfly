@@ -24,9 +24,9 @@
 
 
 
--(void)loadWebsite;
--(void)returnAddressList:(NSString *)params;
--(void)goToEvent:(NSUInteger)referenceId;
--(void)sendLatLngToWeb;
+//-(void)loadWebsite;
+//-(void)returnAddressList:(NSString *)params;
+//-(void)goToEvent:(NSUInteger)referenceId;
+//-(void)sendLatLngToWeb;
 
 @end

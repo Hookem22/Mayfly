@@ -625,40 +625,40 @@
         }
     }
     
-    if(self.params != nil && [self.params length] > 0)
-    {
-        if([self.params containsString:@"Invited%22:%22"] && [self.params containsString:@"%22,%22Going%22:%22"] && [contacts count] > 0)
-        {
-            NSRange invitedRange = [self.params rangeOfString:@"Invited%22:%22"];
-            NSString *toInvitedString = [self.params substringToIndex:invitedRange.location + invitedRange.length];
-            NSString *fromGoingString = [self.params substringFromIndex:[self.params rangeOfString:@"%22,%22Going%22:%22"].location];
-            
-            NSString *invitedString = @"";
-            for(NSDictionary *contact in contacts)
-            {
-                NSString *fb = [contact valueForKey:@"id"];
-                NSString *phone = [contact valueForKey:@"Phone"];
-                NSString *firstName = [contact valueForKey:@"firstName"];
-                if(fb != nil)
-                    invitedString = [NSString stringWithFormat:@"%@%@:%@|", invitedString, fb, firstName];
-                else if(phone != nil)
-                    invitedString = [NSString stringWithFormat:@"%@p%@:%@|", invitedString, phone, firstName];
-            }
-            if([invitedString length] > 0)
-                invitedString = [invitedString substringToIndex:[invitedString length] - 1];
-            
-            invitedString = [invitedString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-            self.params = [NSString stringWithFormat:@"%@%@%@", toInvitedString, invitedString, fromGoingString];
-            
-            MFView *view = (MFView *)[self superview];
-            [view returnAddressList:self.params];
-        }
-    }
-    else
-    {
+//    if(self.params != nil && [self.params length] > 0)
+//    {
+//        if([self.params containsString:@"Invited%22:%22"] && [self.params containsString:@"%22,%22Going%22:%22"] && [contacts count] > 0)
+//        {
+//            NSRange invitedRange = [self.params rangeOfString:@"Invited%22:%22"];
+//            NSString *toInvitedString = [self.params substringToIndex:invitedRange.location + invitedRange.length];
+//            NSString *fromGoingString = [self.params substringFromIndex:[self.params rangeOfString:@"%22,%22Going%22:%22"].location];
+//            
+//            NSString *invitedString = @"";
+//            for(NSDictionary *contact in contacts)
+//            {
+//                NSString *fb = [contact valueForKey:@"id"];
+//                NSString *phone = [contact valueForKey:@"Phone"];
+//                NSString *firstName = [contact valueForKey:@"firstName"];
+//                if(fb != nil)
+//                    invitedString = [NSString stringWithFormat:@"%@%@:%@|", invitedString, fb, firstName];
+//                else if(phone != nil)
+//                    invitedString = [NSString stringWithFormat:@"%@p%@:%@|", invitedString, phone, firstName];
+//            }
+//            if([invitedString length] > 0)
+//                invitedString = [invitedString substringToIndex:[invitedString length] - 1];
+//            
+//            invitedString = [invitedString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+//            self.params = [NSString stringWithFormat:@"%@%@%@", toInvitedString, invitedString, fromGoingString];
+//            
+//            MFView *view = (MFView *)[self superview];
+//            [view returnAddressList:self.params];
+//        }
+//    }
+//    else
+//    {
         MFCreateView *createView = (MFCreateView *)[self superview];
         [createView invite:contacts];
-    }
+//    }
 
     [MFHelpers close:self];
 }
@@ -713,12 +713,12 @@
         ViewController *vc = (ViewController *)self.window.rootViewController;
         [self.event save:^(Event *event) {
             
-            [vc.mainView goToEvent:event.referenceId];
-            if([[self superview] isMemberOfClass:[MFDetailView class]])
-            {
-                MFDetailView *detailView = (MFDetailView *)[self superview];
-                [detailView refreshGoing];
-            }
+//            [vc.mainView goToEvent:event.referenceId];
+//            if([[self superview] isMemberOfClass:[MFDetailView class]])
+//            {
+//                MFDetailView *detailView = (MFDetailView *)[self superview];
+//                [detailView refreshGoing];
+//            }
         }];
         
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];

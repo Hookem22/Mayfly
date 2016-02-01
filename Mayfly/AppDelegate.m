@@ -209,32 +209,32 @@
     [alert show];
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch(buttonIndex) {
-        case 0: //"No" pressed
-            break;
-        case 1: //"Yes" pressed
-            if([alertView.title rangeOfString:@"Message"].location != NSNotFound)
-                [self openEvent:YES];
-            else
-                [self openEvent:NO];
-            break;
-    }
-}
+//-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    switch(buttonIndex) {
+//        case 0: //"No" pressed
+//            break;
+//        case 1: //"Yes" pressed
+//            if([alertView.title rangeOfString:@"Message"].location != NSNotFound)
+//                [self openEvent:YES];
+//            else
+//                [self openEvent:NO];
+//            break;
+//    }
+//}
 
--(void)openEvent:(BOOL)toMessaging
-{
-    ViewController *vc = (ViewController *)self.window.rootViewController;
-    MFView *mfView = (MFView *)vc.mainView;
-    //[mfView openEvent:self.eventId toMessaging:toMessaging];
-    
-    [[Session sessionVariables] setValue:[NSNumber numberWithBool:toMessaging] forKey:@"toMessaging"];
-    [Event get:self.eventId completion:^(Event *event) {
-        [mfView goToEvent:event.referenceId];
-    }];
-    
-}
+//-(void)openEvent:(BOOL)toMessaging
+//{
+//    ViewController *vc = (ViewController *)self.window.rootViewController;
+//    MFView *mfView = (MFView *)vc.mainView;
+//    //[mfView openEvent:self.eventId toMessaging:toMessaging];
+//    
+//    [[Session sessionVariables] setValue:[NSNumber numberWithBool:toMessaging] forKey:@"toMessaging"];
+//    [Event get:self.eventId completion:^(Event *event) {
+//        [mfView goToEvent:event.referenceId];
+//    }];
+//    
+//}
 
 // We are registered, so now store the device token (as a string) on the AppDelegate instance
 // taking care to remove the angle brackets first.

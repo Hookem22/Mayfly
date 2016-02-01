@@ -146,6 +146,13 @@
 -(void) addButtonClick:(id)sender
 {
     
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self];
+        return;
+    }
+    
     MFCreateView *createView = [[MFCreateView alloc] init];
     [MFHelpers open:createView onView:self];
     
