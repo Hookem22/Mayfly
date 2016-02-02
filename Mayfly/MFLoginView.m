@@ -30,39 +30,14 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
     
-    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 90, wd, 1)];
-    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
-    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
-    bottomBorder.layer.shadowRadius = 3.0f;
-    bottomBorder.layer.shadowOpacity = 1.0f;
-    [self addSubview:bottomBorder];
-    
-    UIView *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 90)];
-    headerView.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
-    [self addSubview:headerView];
-    
+    [MFHelpers addTitleBar:self titleText:@"Log in to join events"];
     
     UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
     [cancelButton setImage:[UIImage imageNamed:@"whitebackarrow"] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelButton];
-    
-    UILabel *signInText1 = [[UILabel alloc] initWithFrame:CGRectMake(45, 30, wd - 90, 22)];
-    signInText1.text = @"Log in to find and join";
-    [signInText1 setFont:[UIFont systemFontOfSize:20]];
-    signInText1.textAlignment = NSTextAlignmentCenter;
-    signInText1.textColor = [UIColor whiteColor];
-    [self addSubview:signInText1];
-    
-    UILabel *signInText2 = [[UILabel alloc] initWithFrame:CGRectMake(45, 54, wd - 90, 22)];
-    signInText2.text = @"events at St. Edward's";
-    [signInText2 setFont:[UIFont systemFontOfSize:20]];
-    signInText2.textAlignment = NSTextAlignmentCenter;
-    signInText2.textColor = [UIColor whiteColor];
-    [self addSubview:signInText2];
-    
-    UIImageView *appPic = [[UIImageView alloc] initWithFrame:CGRectMake(80, 120, wd - 160, ht - 240)];
+
+    UIImageView *appPic = [[UIImageView alloc] initWithFrame:CGRectMake(80, 80, wd - 160, ht - 200)];
     [appPic setImage:[UIImage imageNamed:@"appScreenshot"]];
     [self addSubview:appPic];
     

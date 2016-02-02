@@ -15,6 +15,7 @@
 #import "MFNotificationView.h"
 #import "MFHelpers.h"
 #import "MFGroupView.h"
+#import "MFInstructionsView.h"
 
 @interface MFView : UIView <UIWebViewDelegate>
 

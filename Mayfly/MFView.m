@@ -45,7 +45,7 @@
     
     UIButton *stEdsButton = [[UIButton alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
     [stEdsButton setImage:[UIImage imageNamed:@"title"] forState:UIControlStateNormal];
-    [stEdsButton addTarget:self action:@selector(switchToStEds:) forControlEvents:UIControlEventTouchUpInside];
+    [stEdsButton addTarget:self action:@selector(addInstructions) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:stEdsButton];
 
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-80, 60, 60)];
@@ -83,6 +83,12 @@
     
     [MFHelpers showProgressView:self];
     
+
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        [self addInstructions];
+    }
+    
     /*
     if ([FBSDKAccessToken currentAccessToken]) {
         [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
@@ -100,7 +106,6 @@
     //loginButton.center = self.center;
     [self addSubview:loginButton];
     */
-    
 }
 
 -(void)refreshEvents
@@ -208,6 +213,15 @@
                      }
                      completion:^(BOOL finished){ }];
 
+}
+
+-(void)addInstructions {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    MFInstructionsView *view = [[MFInstructionsView alloc] init];
+    view.frame = CGRectMake(0, 0, wd, ht);
+    [self addSubview:view];
 }
 
 -(void)switchToStEds:(id)sender {
