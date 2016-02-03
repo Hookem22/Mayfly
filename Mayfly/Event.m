@@ -403,6 +403,26 @@
      }];
 }
 
+-(BOOL)isPrivate {
+    if(self.groupIsPublic == false && self.isGoing == false && self.isInvited == false) {
+        BOOL isMember = NO;
+        NSArray *groups = [self.groupId componentsSeparatedByString: @"|"];
+        for (NSString *groupId in groups) {
+            Group *group = [[Group alloc] init];
+            group.groupId = groupId;
+            if(group.isMember == YES) {
+                isMember = YES;
+                break;
+            }
+        }
+        
+        if(!isMember ) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 -(NSString *)listToString:(NSMutableArray *)list
 {
     NSString *string = @"";

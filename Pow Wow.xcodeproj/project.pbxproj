@@ -54,8 +54,10 @@
 		484A00B81C5EAE96002F1821 /* appScreenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 484A00B71C5EAE96002F1821 /* appScreenshot.png */; };
 		4852DB7B1C60648E00679E4F /* appScreenshot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB7A1C60648E00679E4F /* appScreenshot2.png */; };
 		4852DB7E1C60653700679E4F /* MFInstructionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4852DB7D1C60653700679E4F /* MFInstructionsView.m */; };
-		4852DB801C6083C000679E4F /* circles1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB7F1C6083C000679E4F /* circles1.png */; };
-		4852DB821C6083C600679E4F /* circles2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB811C6083C600679E4F /* circles2.png */; };
+		4852DB841C617A8500679E4F /* appScreenshot3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB831C617A8500679E4F /* appScreenshot3.png */; };
+		4852DB8A1C617AA400679E4F /* circles3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB891C617AA400679E4F /* circles3.png */; };
+		4852DB8C1C617B2800679E4F /* circles1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB8B1C617B2800679E4F /* circles1.png */; };
+		4852DB8E1C617B3500679E4F /* circles2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4852DB8D1C617B3500679E4F /* circles2.png */; };
 		485AB36D1C20BA2C0035C79D /* grayadd.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3631C20BA2C0035C79D /* grayadd.png */; };
 		485AB36E1C20BA2C0035C79D /* graySearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3641C20BA2C0035C79D /* graySearch.png */; };
 		485AB36F1C20BA2C0035C79D /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 485AB3651C20BA2C0035C79D /* message.png */; };
@@ -198,8 +200,10 @@
 		4852DB7A1C60648E00679E4F /* appScreenshot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appScreenshot2.png; sourceTree = "<group>"; };
 		4852DB7C1C60653700679E4F /* MFInstructionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFInstructionsView.h; sourceTree = "<group>"; };
 		4852DB7D1C60653700679E4F /* MFInstructionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFInstructionsView.m; sourceTree = "<group>"; };
-		4852DB7F1C6083C000679E4F /* circles1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circles1.png; sourceTree = "<group>"; };
-		4852DB811C6083C600679E4F /* circles2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circles2.png; sourceTree = "<group>"; };
+		4852DB831C617A8500679E4F /* appScreenshot3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appScreenshot3.png; sourceTree = "<group>"; };
+		4852DB891C617AA400679E4F /* circles3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circles3.png; sourceTree = "<group>"; };
+		4852DB8B1C617B2800679E4F /* circles1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circles1.png; sourceTree = "<group>"; };
+		4852DB8D1C617B3500679E4F /* circles2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circles2.png; sourceTree = "<group>"; };
 		485AB3631C20BA2C0035C79D /* grayadd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayadd.png; sourceTree = "<group>"; };
 		485AB3641C20BA2C0035C79D /* graySearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graySearch.png; sourceTree = "<group>"; };
 		485AB3651C20BA2C0035C79D /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
@@ -385,8 +389,10 @@
 				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
 				484A00B71C5EAE96002F1821 /* appScreenshot.png */,
 				4852DB7A1C60648E00679E4F /* appScreenshot2.png */,
-				4852DB7F1C6083C000679E4F /* circles1.png */,
-				4852DB811C6083C600679E4F /* circles2.png */,
+				4852DB831C617A8500679E4F /* appScreenshot3.png */,
+				4852DB8B1C617B2800679E4F /* circles1.png */,
+				4852DB8D1C617B3500679E4F /* circles2.png */,
+				4852DB891C617AA400679E4F /* circles3.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -647,11 +653,11 @@
 				48185D211B28BF8F00B4EE08 /* face6@2x.png in Resources */,
 				4835C5B81C33250F00BB8962 /* group.png in Resources */,
 				48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */,
-				4852DB821C6083C600679E4F /* circles2.png in Resources */,
 				48185D521B2FD59F00B4EE08 /* _message@2x.png in Resources */,
 				485AB3741C20BA2C0035C79D /* whitegroup.png in Resources */,
 				48A0756C1B34A622008E4994 /* logo76@2x.png in Resources */,
 				4852DB7B1C60648E00679E4F /* appScreenshot2.png in Resources */,
+				4852DB8E1C617B3500679E4F /* circles2.png in Resources */,
 				48DF69631B6012A600DCCE58 /* Branch-SDK in Resources */,
 				48185D231B28BF8F00B4EE08 /* face0@2x.png in Resources */,
 				48CC80641B446FEB0098412E /* images in Resources */,
@@ -675,16 +681,17 @@
 				484A00B81C5EAE96002F1821 /* appScreenshot.png in Resources */,
 				48A075771B34AA00008E4994 /* logo114@2x.png in Resources */,
 				4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */,
+				4852DB841C617A8500679E4F /* appScreenshot3.png in Resources */,
 				4886C9EC1B0BBAA900909747 /* Images.xcassets in Resources */,
 				48CC805B1B39D4950098412E /* bellNotify@2x.png in Resources */,
 				48185D1D1B28BF8F00B4EE08 /* face2@2x.png in Resources */,
 				48185D1F1B28BF8F00B4EE08 /* face4@2x.png in Resources */,
-				4852DB801C6083C000679E4F /* circles1.png in Resources */,
 				48A0757D1B34AB78008E4994 /* launch1242x2208@2x.png in Resources */,
 				485AB36F1C20BA2C0035C79D /* message.png in Resources */,
 				48A0756F1B34A622008E4994 /* logo180@2x.png in Resources */,
 				48185D1C1B28BF8F00B4EE08 /* face1@2x.png in Resources */,
 				48A0757B1B34AB78008E4994 /* launch320x480@2x.png in Resources */,
+				4852DB8C1C617B2800679E4F /* circles1.png in Resources */,
 				48DF69551B585A5A00DCCE58 /* greenCheck@2x.png in Resources */,
 				48185D401B2A2DF900B4EE08 /* grayface5@2x.png in Resources */,
 				48CC80611B3B50F70098412E /* invited@2x.png in Resources */,
@@ -692,6 +699,7 @@
 				48185D201B28BF8F00B4EE08 /* face5@2x.png in Resources */,
 				48A075711B34A840008E4994 /* launch640x960@2x.png in Resources */,
 				48A075611B34A097008E4994 /* arrowplus@2x.png in Resources */,
+				4852DB8A1C617AA400679E4F /* circles3.png in Resources */,
 				48185D3E1B2A2DF900B4EE08 /* grayface3@2x.png in Resources */,
 				485AB3711C20BA2C0035C79D /* plus.png in Resources */,
 				48A0756E1B34A622008E4994 /* logo87@2x.png in Resources */,

@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UIView *view1;
 @property (nonatomic, strong) UIView *view2;
+@property (nonatomic, strong) UIView *view3;
 @property (nonatomic, strong) UIImageView *circles;
 @property (nonatomic, strong) UIButton *button;
 
@@ -74,29 +75,49 @@
     [self addSubview:view2];
     
     UILabel *text3 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 22)];
-    text3.text = @"Add interests to hear";
+    text3.text = @"Create your own activites";
     [text3 setFont:[UIFont systemFontOfSize:20]];
     text3.textAlignment = NSTextAlignmentCenter;
     [view2 addSubview:text3];
     
     UILabel *text4 = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, wd, 22)];
-    text4.text = @"when they post new events";
+    text4.text = @"and invite your friends";
     [text4 setFont:[UIFont systemFontOfSize:20]];
     text4.textAlignment = NSTextAlignmentCenter;
     [view2 addSubview:text4];
     
     UIImageView *appPic2 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic2 setImage:[UIImage imageNamed:@"appScreenshot2"]];
+    [appPic2 setImage:[UIImage imageNamed:@"appScreenshot3"]];
     [view2 addSubview:appPic2];
     
-    UIImageView *circles = [[UIImageView alloc] initWithFrame:CGRectMake((wd / 2) - 10, ht - 84, 20, 14)];
+    UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(wd, 80, wd, ht - 100)];
+    self.view3 = view3;
+    [self addSubview:view3];
+    
+    UILabel *text5 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 22)];
+    text5.text = @"Add interests to hear";
+    [text5 setFont:[UIFont systemFontOfSize:20]];
+    text5.textAlignment = NSTextAlignmentCenter;
+    [view3 addSubview:text5];
+    
+    UILabel *text6 = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, wd, 22)];
+    text6.text = @"when they post new events";
+    [text6 setFont:[UIFont systemFontOfSize:20]];
+    text6.textAlignment = NSTextAlignmentCenter;
+    [view3 addSubview:text6];
+    
+    UIImageView *appPic3 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
+    [appPic3 setImage:[UIImage imageNamed:@"appScreenshot2"]];
+    [view3 addSubview:appPic3];
+    
+    UIImageView *circles = [[UIImageView alloc] initWithFrame:CGRectMake((wd / 2) - 27, ht - 84, 54, 14)];
     [circles setImage:[UIImage imageNamed:@"circles1"]];
     self.circles = circles;
     [self addSubview:circles];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(50, ht - 60, wd - 100, 40);
-    [button setTitle:@"Alright, next" forState:UIControlStateNormal];
+    [button setTitle:@"Ok, cool" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [button.layer setBorderColor:[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor];
     [button.layer setBorderWidth:1.0];
@@ -112,7 +133,7 @@
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     UIButton *button = self.button;
-    if([button.titleLabel.text isEqualToString:@"Alright, next"]) {
+    if([button.titleLabel.text isEqualToString:@"Ok, cool"]) {
         [UIView animateWithDuration:0.3
                          animations:^{
                              self.view1.frame = CGRectMake((int)(-1 * wd), 80, wd, 22);
@@ -120,6 +141,17 @@
                          }
                          completion:^(BOOL finished){
                              [self.circles setImage:[UIImage imageNamed:@"circles2"]];
+                             [button setTitle:@"Alright, next" forState:UIControlStateNormal];
+                         }];
+    }
+    else if([button.titleLabel.text isEqualToString:@"Alright, next"]) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.view2.frame = CGRectMake((int)(-1 * wd), 80, wd, 22);
+                             self.view3.frame = CGRectMake(0, 80, wd, 22);
+                         }
+                         completion:^(BOOL finished){
+                             [self.circles setImage:[UIImage imageNamed:@"circles3"]];
                              [button setTitle:@"Got it, let's go" forState:UIControlStateNormal];
                          }];
     }
@@ -139,7 +171,7 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
     UIButton *button = self.button;
-    if([button.titleLabel.text isEqualToString:@"Got it, let's go"]) {
+    if([button.titleLabel.text isEqualToString:@"Alright, next"]) {
         [UIView animateWithDuration:0.3
                          animations:^{
                              self.view1.frame = CGRectMake(0, 80, wd, 22);
@@ -147,6 +179,17 @@
                          }
                          completion:^(BOOL finished){
                              [self.circles setImage:[UIImage imageNamed:@"circles1"]];
+                             [button setTitle:@"Ok, cool" forState:UIControlStateNormal];
+                         }];
+    }
+    else if([button.titleLabel.text isEqualToString:@"Got it, let's go"]) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             self.view2.frame = CGRectMake(0, 80, wd, 22);
+                             self.view3.frame = CGRectMake(wd, 80, wd, 22);
+                         }
+                         completion:^(BOOL finished){
+                             [self.circles setImage:[UIImage imageNamed:@"circles2"]];
                              [button setTitle:@"Alright, next" forState:UIControlStateNormal];
                          }];
     }

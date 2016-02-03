@@ -30,10 +30,16 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    [Event getBySchool:^(NSArray *events)
+    [Event getBySchool:^(NSArray *allEvents)
      {
          for(UIView *subview in self.subviews)
              [subview removeFromSuperview];
+         
+         NSMutableArray *events = [[NSMutableArray alloc] init];
+         for(Event *event in allEvents) {
+             if(!event.isPrivate)
+                 [events addObject:event];
+         }
          
          int viewY = 0;
          for(int i = 0; i < [events count]; i++)
@@ -94,7 +100,7 @@
                 
                 viewY += 80;
             }
-             
+            
             UIView *eventView = [self addEventView:event viewY:viewY i:i];
              
             UIView *bottomShadow = [[UIView alloc] initWithFrame:CGRectMake(0, viewY + eventView.frame.size.height - 3.0f, eventView.frame.size.width, 1)];
@@ -237,27 +243,14 @@
     NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
     Event *event = (Event *)currentEvents[tagId];
     
-    if(event.groupIsPublic == false && event.isGoing == false && event.isInvited == false) {
-        BOOL isMember = NO;
-        NSArray *groups = [event.groupId componentsSeparatedByString: @"|"];
-        for (NSString *groupId in groups) {
-            Group *group = [[Group alloc] init];
-            group.groupId = groupId;
-            if(group.isMember == YES) {
-                isMember = YES;
-                break;
-            }
-        }
-        
-        if(!isMember ) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
-                                                            message:@"This event is private. Please join the interest to attend this event."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-            return;
-        }
+    if(event.isPrivate) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Private Event"
+                                                        message:@"This event is private. Please join the interest to attend this event."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
     }
     
     MFDetailView *detailView = [[MFDetailView alloc] init:event];

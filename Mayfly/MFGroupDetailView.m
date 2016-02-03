@@ -267,6 +267,11 @@
         
         [self refreshGroup];
     }
+    
+    if(self.group.isPublic == NO && [self.superview isMemberOfClass:[MFView class]]) {
+        MFView *view = (MFView *)self.superview;
+        [view refreshEvents];
+    }
 }
 
 -(void)eventClicked:(id)sender {

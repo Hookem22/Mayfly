@@ -37,7 +37,7 @@
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelButton];
 
-    UIImageView *appPic = [[UIImageView alloc] initWithFrame:CGRectMake(80, 80, wd - 160, ht - 200)];
+    UIImageView *appPic = [[UIImageView alloc] initWithFrame:CGRectMake(70, 80, wd - 140, ht - 200)];
     [appPic setImage:[UIImage imageNamed:@"appScreenshot"]];
     [self addSubview:appPic];
     
