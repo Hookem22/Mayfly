@@ -32,6 +32,7 @@
 @property (nonatomic, copy) NSString *localTime;
 @property (nonatomic, copy) NSString *schoolId;
 @property (nonatomic, assign) BOOL isAdmin;
+@property (nonatomic, assign) int tagId;
 
 @property (nonatomic, copy) NSArray *going;
 @property (nonatomic, copy) NSArray *invited;

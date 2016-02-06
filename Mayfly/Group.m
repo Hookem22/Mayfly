@@ -201,10 +201,13 @@
 
 +(void)inviteGroups:(NSArray *)groups event:(Event *)event completion:(QSCompletionBlock)completion
 {
+    if(groups == nil || groups.count == 0 || event == nil)
+        return;
+    
     [Group getfilteredMembers:groups event:event completion:^(NSArray *users) {
         for(EventGoing *going in users) {
             [User get:going.userId completion:^(User *user) {
-               if(user == nil || user.userId == nil || user.firstName == nil)
+                if(user == nil || user.userId == nil || user.firstName == nil)
                    return;
                 
                 BOOL alreadyInvited = NO;

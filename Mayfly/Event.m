@@ -29,6 +29,7 @@
 @synthesize going = _going;
 @synthesize invited = _invited;
 @synthesize messages = _messages;
+@synthesize tagId = _tagId;
 
 -(id)init:(NSDictionary *)event {
     self = [super init];
@@ -82,16 +83,22 @@
     
     [service get:eventId completion:^(NSDictionary *item) {
         Event *event = [[Event alloc] init:item];
-        [event getEventGoing:^(NSArray *goings) {
-            event.going = [NSArray arrayWithArray:goings];
-            [event getEventInvited:^(NSArray *invited) {
-                event.invited = [NSArray arrayWithArray:invited];
-                [event getMessages:^(NSArray *messages) {
-                    event.messages = [NSArray arrayWithArray:messages];
-                    [event getIsAdmin:^(EventGoing *eventGoing) {
-                        event.isAdmin = eventGoing.isAdmin;
-                        completion(event);
-                    }];
+        [event getCompleted:^(Event *event) {
+            completion(event);
+        }];
+    }];
+}
+
+-(void)getCompleted:(QSCompletionBlock)completion {
+    [self getEventGoing:^(NSArray *goings) {
+        self.going = [NSArray arrayWithArray:goings];
+        [self getEventInvited:^(NSArray *invited) {
+            self.invited = [NSArray arrayWithArray:invited];
+            [self getMessages:^(NSArray *messages) {
+                self.messages = [NSArray arrayWithArray:messages];
+                [self getIsAdmin:^(EventGoing *eventGoing) {
+                    self.isAdmin = eventGoing.isAdmin;
+                    completion(self);
                 }];
             }];
         }];
@@ -166,10 +173,21 @@
         NSMutableArray *events = [[NSMutableArray alloc] init];
         for(id item in results) {
             Event *event = [[Event alloc] init:item];
-            [events addObject:event];
+            [event getCompleted:^(Event *event) {
+                [events addObject:event];
+                if(events.count == results.count) {
+                    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startTime" ascending:TRUE];
+                    [events sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+                    for(int i = 0; i < events.count; i++) {
+                        Event *event = [events objectAtIndex:i];
+                        event.tagId = i;
+                    }
+                    
+                    [[Session sessionVariables] setObject:events forKey:@"currentEvents"];
+                    completion(events);
+                }
+            }];
         }
-        [[Session sessionVariables] setObject:events forKey:@"currentEvents"];
-        completion(events);
     }];
 }
 
@@ -269,7 +287,7 @@
         return NO;
     
     for(NSString *eventId in currentUser.goingEventIds)
-    {
+    {       
         if([self.eventId isEqualToString:eventId])
             return YES;
     }

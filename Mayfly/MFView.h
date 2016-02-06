@@ -16,10 +16,14 @@
 #import "MFHelpers.h"
 #import "MFGroupView.h"
 #import "MFInstructionsView.h"
+#import "MFAddButtonView.h"
 
 @interface MFView : UIView <UIWebViewDelegate>
 
 -(void)setup;
 -(void)refreshEvents;
+-(void)eventsButtonClick:(id)sender;
+-(void)scrollUp;
+-(void)scrollDown;
 
 @end

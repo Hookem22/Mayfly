@@ -102,6 +102,7 @@
 		48A0757D1B34AB78008E4994 /* launch1242x2208@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757A1B34AB78008E4994 /* launch1242x2208@2x.png */; };
 		48A0757F1B34AF80008E4994 /* launchwhitearrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */; };
 		48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A82A491B0D203000A8E978 /* MFCreateView.m */; };
+		48C1020D1C6539CE005216A0 /* MFAddButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1020C1C6539CE005216A0 /* MFAddButtonView.m */; };
 		48C5BEFB1C3331820036C9B1 /* MFCreateGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */; };
 		48C5BEFE1C3382EC0036C9B1 /* MFGroupDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFD1C3382EC0036C9B1 /* MFGroupDetailView.m */; };
 		48C5BF011C33922B0036C9B1 /* GroupUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BF001C33922B0036C9B1 /* GroupUsers.m */; };
@@ -264,6 +265,8 @@
 		48A0757E1B34AF80008E4994 /* launchwhitearrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "launchwhitearrow@2x.png"; path = "../../Downloads/launchwhitearrow@2x.png"; sourceTree = "<group>"; };
 		48A82A481B0D203000A8E978 /* MFCreateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateView.h; sourceTree = "<group>"; };
 		48A82A491B0D203000A8E978 /* MFCreateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateView.m; sourceTree = "<group>"; };
+		48C1020B1C6539CD005216A0 /* MFAddButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MFAddButtonView.h; path = ../MFAddButtonView.h; sourceTree = "<group>"; };
+		48C1020C1C6539CE005216A0 /* MFAddButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MFAddButtonView.m; path = ../MFAddButtonView.m; sourceTree = "<group>"; };
 		48C5BEF91C3331820036C9B1 /* MFCreateGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateGroupView.h; sourceTree = "<group>"; };
 		48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateGroupView.m; sourceTree = "<group>"; };
 		48C5BEFC1C3382EC0036C9B1 /* MFGroupDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGroupDetailView.h; sourceTree = "<group>"; };
@@ -431,6 +434,8 @@
 				4886CA181B0BC0CC00909747 /* MFView.m */,
 				4890BB991B0D074800F2DE8D /* MFEventsView.h */,
 				4890BB9A1B0D074800F2DE8D /* MFEventsView.m */,
+				48C1020B1C6539CD005216A0 /* MFAddButtonView.h */,
+				48C1020C1C6539CE005216A0 /* MFAddButtonView.m */,
 				48A82A481B0D203000A8E978 /* MFCreateView.h */,
 				48A82A491B0D203000A8E978 /* MFCreateView.m */,
 				488E57B01B0E400B00E2DA64 /* MFDetailView.h */,
@@ -760,6 +765,7 @@
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,
+				48C1020D1C6539CE005216A0 /* MFAddButtonView.m in Sources */,
 				48185D591B3094DE00B4EE08 /* MFNotificationView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,

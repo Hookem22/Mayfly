@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSMutableArray *Groups;
 @property (nonatomic, assign) long currentIndex;
+@property (nonatomic, assign) CGFloat lastContentOffset;
 
 @end
 
@@ -44,34 +45,34 @@
         [subview removeFromSuperview];
     
     int viewY = 0;
-    UIControl *createGroupView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 69)];
-    [createGroupView addTarget:self action:@selector(createGroupClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:createGroupView];
-    viewY += 70;
+//    UIControl *createGroupView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 69)];
+//    [createGroupView addTarget:self action:@selector(createGroupClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:createGroupView];
+//    viewY += 70;
+//    
+//    UIImageView *createGroupImg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20, 31, 31)];
+//    [createGroupImg setImage:[UIImage imageNamed:@"grayadd"]];
+//    [createGroupView addSubview:createGroupImg];
+//    
+//    UILabel *createGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 18, wd - 100, 40)];
+//    [createGroupLabel setText:@"Add Interest"];
+//    createGroupLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
+//    [createGroupLabel setFont:[UIFont boldSystemFontOfSize:24]];
+//    [createGroupView addSubview:createGroupLabel];
     
-    UIImageView *createGroupImg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20, 31, 31)];
-    [createGroupImg setImage:[UIImage imageNamed:@"grayadd"]];
-    [createGroupView addSubview:createGroupImg];
-    
-    UILabel *createGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 18, wd - 100, 40)];
-    [createGroupLabel setText:@"Add Interest"];
-    createGroupLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
-    [createGroupLabel setFont:[UIFont boldSystemFontOfSize:24]];
-    [createGroupView addSubview:createGroupLabel];
-    
-    School *school = (School *)[Session sessionVariables][@"currentSchool"];
-    
-    UIView *schoolLabelView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
-    schoolLabelView.backgroundColor = [UIColor colorWithRed:67.0/255.0 green:74.0/255.0 blue:94.0/255.0 alpha:1.0];
-    [self addSubview:schoolLabelView];
-    viewY += 5;
-    
-    UILabel *schoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, viewY, wd - 25, 30)];
-    [schoolLabel setText:[NSString stringWithFormat:@"%@ INTERESTS", [school.name uppercaseString]]];
-    schoolLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
-    [schoolLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    [self addSubview:schoolLabel];
-    viewY += 35;
+//    School *school = (School *)[Session sessionVariables][@"currentSchool"];
+//    
+//    UIView *schoolLabelView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
+//    schoolLabelView.backgroundColor = [UIColor colorWithRed:67.0/255.0 green:74.0/255.0 blue:94.0/255.0 alpha:1.0];
+//    [self addSubview:schoolLabelView];
+//    viewY += 5;
+//    
+//    UILabel *schoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, viewY, wd - 25, 30)];
+//    [schoolLabel setText:[NSString stringWithFormat:@"%@ INTERESTS", [school.name uppercaseString]]];
+//    schoolLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
+//    [schoolLabel setFont:[UIFont boldSystemFontOfSize:18]];
+//    [self addSubview:schoolLabel];
+//    viewY += 35;
     
     [Group getBySchool:^(NSArray *groups)
      {
@@ -114,7 +115,7 @@
              [groupView addSubview:bottomBorder];
              newViewY += 50;
          }
-         self.contentSize = CGSizeMake(wd, newViewY + 20);
+         self.contentSize = CGSizeMake(wd, newViewY + 70);
          
      }];
 }
@@ -170,22 +171,11 @@
 
 -(void)closeGroups:(id)sender
 {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-
-    MFEventsView *eventsView;
-    for(UIView *subview in self.superview.subviews)
+    if([self.superview isMemberOfClass:[MFView class]])
     {
-        if([subview isMemberOfClass:[MFEventsView class]])
-            eventsView = (MFEventsView *)subview;
+        MFView *view = (MFView *)self.superview;
+        [view eventsButtonClick:sender];
     }
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.frame = CGRectMake(wd, 60, wd, ht- 60);
-                         eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
-                     }
-                     completion:^(BOOL finished){ }];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -204,6 +194,19 @@
             [alert show];
         }
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if([self.superview isMemberOfClass:[MFView class]])
+    {
+        MFView *view = (MFView *)self.superview;
+        if (self.lastContentOffset > scrollView.contentOffset.y || scrollView.contentOffset.y < 30)
+            [view scrollUp];
+        else if (self.lastContentOffset < scrollView.contentOffset.y)
+            [view scrollDown];
+    }
+    self.lastContentOffset = scrollView.contentOffset.y;
 }
 
 -(void)nothing:(id)sender {
