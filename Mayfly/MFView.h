@@ -22,7 +22,6 @@
 
 -(void)setup;
 -(void)refreshEvents;
--(void)eventsButtonClick:(id)sender;
 -(void)scrollUp;
 -(void)scrollDown;
 

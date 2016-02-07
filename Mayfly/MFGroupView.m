@@ -171,11 +171,11 @@
 
 -(void)closeGroups:(id)sender
 {
-    if([self.superview isMemberOfClass:[MFView class]])
-    {
-        MFView *view = (MFView *)self.superview;
-        [view eventsButtonClick:sender];
-    }
+//    if([self.superview isMemberOfClass:[MFView class]])
+//    {
+//        MFView *view = (MFView *)self.superview;
+//        [view eventsButtonClick:sender];
+//    }
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{

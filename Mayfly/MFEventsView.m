@@ -28,18 +28,36 @@
 
 -(void)loadEvents
 {
-    [Event getBySchool:^(NSArray *allEvents)
+    [Event getBySchool:^(NSArray *events)
      {
-         NSMutableArray *events = [[NSMutableArray alloc] init];
-         for(Event *event in allEvents) {
-             if(!event.isPrivate)
-                 [events addObject:event];
-         }
-         [self populateEvents:events];
-         
+         [[Session sessionVariables] setObject:events forKey:@"currentEvents"];
+         [self populateAllEvents];
+
          [MFHelpers hideProgressView:self.superview];
      }];
+}
 
+-(void)populateAllEvents
+{
+    NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
+     NSMutableArray *events = [[NSMutableArray alloc] init];
+     for(Event *event in currentEvents) {
+         if(!event.isPrivate)
+             [events addObject:event];
+     }
+     [self populateEvents:events];
+}
+
+
+-(void)populateMyEvents
+{
+    NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
+    NSMutableArray *events = [[NSMutableArray alloc] init];
+    for(Event *event in currentEvents) {
+         if(event.isGoing || event.isInvited)
+             [events addObject:event];
+    }
+    [self populateEvents:events];
 }
 
 -(void)populateEvents:(NSArray *)events
@@ -292,6 +310,8 @@
     [MFHelpers openFromRight:detailView onView:self.superview];
     
 }
+
+
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     

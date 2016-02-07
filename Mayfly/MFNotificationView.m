@@ -21,6 +21,7 @@
 {
     self = [super init];
     if (self) {
+        self.backgroundColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:0.75];
         [self setup];
     }
     return self;
@@ -200,13 +201,14 @@
             eventsView = (MFEventsView *)subview;
     }
     
+    self.backgroundColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:0.0];
     [UIView animateWithDuration:0.3
                      animations:^{
                          self.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
                          eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
                      }
                      completion:^(BOOL finished){
-
+                        self.backgroundColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:0.75];
                      }];
     
 }

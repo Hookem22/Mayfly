@@ -16,7 +16,6 @@
 //@property (nonatomic, strong) UIWebView *webView;
 
 @property (nonatomic, strong) UIView *addView;
-@property (nonatomic, strong) UIView *filterButtonsView;
 
 @end
 
@@ -43,14 +42,7 @@
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     //[eventsView loadEvents];
     [self addSubview:eventsView];
-    
-    MFGroupView *groupView = [[MFGroupView alloc] init];
-    groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
-    [groupView loadGroups];
-    [self addSubview:groupView];
-    
-    [self addFilterButtons];
-    
+
     [MFHelpers addTitleBar:self titleText:@""];
     
     UIButton *stEdsButton = [[UIButton alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
@@ -62,8 +54,8 @@
     notificationView.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
     [self addSubview:notificationView];
     
-    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 32, 28, 18)];
-    [menuButton setImage:[UIImage imageNamed:@"whiteMenu"] forState:UIControlStateNormal];
+    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(12, 28, 25, 25)];
+    [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
     [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:menuButton];
     
@@ -71,15 +63,19 @@
     [menuRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:menuRecognizer];
     
+    MFGroupView *groupView = [[MFGroupView alloc] init];
+    groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
+    [groupView loadGroups];
+    [self addSubview:groupView];
     
 //    UIButton *groupButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 36, 36)];
 //    [groupButton setImage:[UIImage imageNamed:@"whitegroup"] forState:UIControlStateNormal];
 //    [groupButton addTarget:self action:@selector(groupButtonClick:) forControlEvents:UIControlEventTouchUpInside];
 //    [self addSubview:groupButton];
     
-    UISwipeGestureRecognizer *groupRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(groupButtonClick:)];
-    [groupRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-    [self addGestureRecognizer:groupRecognizer];
+//    UISwipeGestureRecognizer *groupRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(groupButtonClick:)];
+//    [groupRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+//    [self addGestureRecognizer:groupRecognizer];
     
     [self addAddView];
     
@@ -129,64 +125,64 @@
     [MFHelpers open:addButtonView onView:self];  
 }
 
--(void)groupButtonClick:(id)sender
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
-    
-    MFNotificationView *notificationView;
-    MFGroupView *groupView;
-    MFEventsView *eventsView;
-    for(UIView *subview in self.subviews)
-    {
-        if([subview isMemberOfClass:[MFNotificationView class]])
-            notificationView = (MFNotificationView *)subview;
-        else if([subview isMemberOfClass:[MFGroupView class]])
-            groupView = (MFGroupView *)subview;
-        else if([subview isMemberOfClass:[MFEventsView class]])
-            eventsView = (MFEventsView *)subview;
-    }
-    
-    CGRect notificationFrame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
-    CGRect groupFrame = CGRectMake(wd, 60, wd, ht- 60);
-    CGRect eventFrame = CGRectMake(0, 60, wd, ht - 60);
-    if(groupView.frame.origin.x > 0) {
-        groupFrame = CGRectMake(0, 60, wd, ht- 60);
-        eventFrame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
-    }
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         notificationView.frame = notificationFrame;
-                         groupView.frame = groupFrame;
-                         eventsView.frame = eventFrame;
-                     }
-                     completion:^(BOOL finished){
-                         for(UIView *subview in self.filterButtonsView.subviews){
-                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
-                                 School *school = (School *)[Session sessionVariables][@"currentSchool"];
-                                 UIButton *all = (UIButton *)subview;
-                                 [all setTitle:[NSString stringWithFormat:@"%@", [school.name uppercaseString]] forState:UIControlStateNormal];
-                             }
-                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
-                                 UIButton *mine = (UIButton *)subview;
-                                 [mine setTitle:@"MY INTERESTS" forState:UIControlStateNormal];
-                             }
-                         }
-                         for(UIView *subview in self.addView.subviews){
-                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
-                                 UIButton *eventsButton = (UIButton *)subview;
-                                 [eventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                                 [eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
-                             }
-                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
-                                 UIButton *interestsButton = (UIButton *)subview;
-                                 [interestsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                                 [interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
-                             }
-                         }
-                     }];
-}
+//-(void)groupButtonClick:(id)sender
+//{
+//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+//    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+//    
+//    MFNotificationView *notificationView;
+//    MFGroupView *groupView;
+//    MFEventsView *eventsView;
+//    for(UIView *subview in self.subviews)
+//    {
+//        if([subview isMemberOfClass:[MFNotificationView class]])
+//            notificationView = (MFNotificationView *)subview;
+//        else if([subview isMemberOfClass:[MFGroupView class]])
+//            groupView = (MFGroupView *)subview;
+//        else if([subview isMemberOfClass:[MFEventsView class]])
+//            eventsView = (MFEventsView *)subview;
+//    }
+//    
+//    CGRect notificationFrame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+//    CGRect groupFrame = CGRectMake(wd, 60, wd, ht- 60);
+//    CGRect eventFrame = CGRectMake(0, 60, wd, ht - 60);
+//    if(groupView.frame.origin.x > 0) {
+//        groupFrame = CGRectMake(0, 60, wd, ht- 60);
+//        eventFrame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+//    }
+//    
+//    [UIView animateWithDuration:0.3
+//                     animations:^{
+//                         notificationView.frame = notificationFrame;
+//                         groupView.frame = groupFrame;
+//                         eventsView.frame = eventFrame;
+//                     }
+//                     completion:^(BOOL finished){
+//                         for(UIView *subview in self.filterButtonsView.subviews){
+//                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+//                                 School *school = (School *)[Session sessionVariables][@"currentSchool"];
+//                                 UIButton *all = (UIButton *)subview;
+//                                 [all setTitle:[NSString stringWithFormat:@"%@", [school.name uppercaseString]] forState:UIControlStateNormal];
+//                             }
+//                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+//                                 UIButton *mine = (UIButton *)subview;
+//                                 [mine setTitle:@"MY INTERESTS" forState:UIControlStateNormal];
+//                             }
+//                         }
+//                         for(UIView *subview in self.addView.subviews){
+//                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+//                                 UIButton *eventsButton = (UIButton *)subview;
+//                                 [eventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//                                 [eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+//                             }
+//                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+//                                 UIButton *interestsButton = (UIButton *)subview;
+//                                 [interestsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//                                 [interestsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+//                             }
+//                         }
+//                     }];
+//}
 
 -(void)menuButtonClick:(id)sender
 {
@@ -241,43 +237,43 @@
     [self addSubview:view];
 }
 
--(void)addFilterButtons
-{
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-
-    self.filterButtonsView = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 40)];
-    [self addSubview:self.filterButtonsView];
-    
-    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 40, wd, 1)];
-    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
-    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
-    bottomBorder.layer.shadowRadius = 3.0f;
-    bottomBorder.layer.shadowOpacity = 1.0f;
-    [self.filterButtonsView addSubview:bottomBorder];
-    
-    UIButton *allEventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, wd/2, 40)];
-    [allEventsButton setTitle:@"UPCOMING" forState:UIControlStateNormal];
-    [allEventsButton addTarget:self action:@selector(allEventsClick:) forControlEvents:UIControlEventTouchUpInside];
-    [allEventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [allEventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
-    allEventsButton.backgroundColor = [UIColor whiteColor];
-    allEventsButton.tag = 0;
-    [self.filterButtonsView addSubview:allEventsButton];
-    
-    UIButton *myEventsButton = [[UIButton alloc] initWithFrame:CGRectMake(wd/2, 0, wd/2, 40)];
-    [myEventsButton setTitle:@"MY EVENTS" forState:UIControlStateNormal];
-    [myEventsButton addTarget:self action:@selector(myEventsClick:) forControlEvents:UIControlEventTouchUpInside];
-    [myEventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [myEventsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
-    myEventsButton.backgroundColor = [UIColor whiteColor];
-    myEventsButton.tag = 1;
-    [self.filterButtonsView addSubview:myEventsButton];
-    
-    UIView *selected = [[UIView alloc] initWithFrame:CGRectMake(0, 36, wd/2, 5)];
-    selected.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
-    [self.filterButtonsView addSubview:selected];
-}
+//-(void)addFilterButtons
+//{
+//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+//
+//    self.filterButtonsView = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 40)];
+//    [self addSubview:self.filterButtonsView];
+//    
+//    UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 40, wd, 1)];
+//    bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+//    bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
+//    bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+//    bottomBorder.layer.shadowRadius = 3.0f;
+//    bottomBorder.layer.shadowOpacity = 1.0f;
+//    [self.filterButtonsView addSubview:bottomBorder];
+//    
+//    UIButton *allEventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, wd/2, 40)];
+//    [allEventsButton setTitle:@"UPCOMING" forState:UIControlStateNormal];
+//    [allEventsButton addTarget:self action:@selector(allEventsClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [allEventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [allEventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+//    allEventsButton.backgroundColor = [UIColor whiteColor];
+//    allEventsButton.tag = 0;
+//    [self.filterButtonsView addSubview:allEventsButton];
+//    
+//    UIButton *myEventsButton = [[UIButton alloc] initWithFrame:CGRectMake(wd/2, 0, wd/2, 40)];
+//    [myEventsButton setTitle:@"MY EVENTS" forState:UIControlStateNormal];
+//    [myEventsButton addTarget:self action:@selector(myEventsClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [myEventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [myEventsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+//    myEventsButton.backgroundColor = [UIColor whiteColor];
+//    myEventsButton.tag = 1;
+//    [self.filterButtonsView addSubview:myEventsButton];
+//    
+//    UIView *selected = [[UIView alloc] initWithFrame:CGRectMake(0, 36, wd/2, 5)];
+//    selected.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+//    [self.filterButtonsView addSubview:selected];
+//}
 
 -(void)addAddView
 {
@@ -288,23 +284,25 @@
     self.addView = addView;
     [self addSubview:addView];
     
-    UIButton *eventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, wd/2, 40)];
-    [eventsButton setTitle:@"Events" forState:UIControlStateNormal];
-    [eventsButton addTarget:self action:@selector(eventsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [eventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
-    eventsButton.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:0.75];
-    eventsButton.tag = 0;
-    [addView addSubview:eventsButton];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 20, wd, 40)];
+    backgroundView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:0.75];
+    [addView addSubview:backgroundView];
     
-    UIButton *interestsButton = [[UIButton alloc] initWithFrame:CGRectMake(wd/2, 20, wd/2, 40)];
-    [interestsButton setTitle:@"Interests" forState:UIControlStateNormal];
-    [interestsButton addTarget:self action:@selector(groupButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [interestsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
-    interestsButton.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:0.75];
-    eventsButton.tag = 1;
-    [addView addSubview:interestsButton];
+    UIButton *allButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, wd/2 -25, 40)];
+    [allButton setTitle:@"UPCOMING" forState:UIControlStateNormal];
+    [allButton addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [allButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [allButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+    allButton.tag = 0;
+    [addView addSubview:allButton];
+    
+    UIButton *myButton = [[UIButton alloc] initWithFrame:CGRectMake(wd/2 + 25, 20, wd/2 - 25, 40)];
+    [myButton setTitle:@"MY EVENTS" forState:UIControlStateNormal];
+    [myButton addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [myButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [myButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+    myButton.tag = 1;
+    [addView addSubview:myButton];
     
     UIView *addButtonContainer = [[UIView alloc] initWithFrame:CGRectMake((wd / 2) - 30, 0, 60, 60)];
     addButtonContainer.backgroundColor = [UIColor whiteColor];
@@ -319,9 +317,21 @@
     [addView addSubview:addButton];
 }
 
--(void)eventsButtonClick:(id)sender {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+-(void)filterButtonClick:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    NSLog(@"%i", button.tag);
+    for(UIView *subview in self.addView.subviews){
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == button.tag) {
+            UIButton *interestsButton = (UIButton *)subview;
+            [interestsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+        }
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag != button.tag) {
+            UIButton *eventsButton = (UIButton *)subview;
+            [eventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+        }
+    }
     
     MFGroupView *groupView;
     MFEventsView *eventsView;
@@ -332,38 +342,65 @@
         else if([subview isMemberOfClass:[MFGroupView class]])
             groupView = (MFGroupView *)subview;
     }
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         groupView.frame = CGRectMake(wd, 60, wd, ht - 60);;
-                         eventsView.frame = CGRectMake(0, 60, wd, ht - 60);;
-                     }
-                     completion:^(BOOL finished){
-                         for(UIView *subview in self.filterButtonsView.subviews){
-                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
-                                 UIButton *all = (UIButton *)subview;
-                                 [all setTitle:@"UPCOMING" forState:UIControlStateNormal];
-                             }
-                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
-                                 UIButton *mine = (UIButton *)subview;
-                                 [mine setTitle:@"MY EVENTS" forState:UIControlStateNormal];
-                             }
-                         }
-                         for(UIView *subview in self.addView.subviews){
-                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
-                                 UIButton *eventsButton = (UIButton *)subview;
-                                 [eventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                                 [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
-                             }
-                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
-                                 UIButton *interestsButton = (UIButton *)subview;
-                                 [interestsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                                 [interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
-                             }
-                         }
-                     }];
-    
+    if(groupView.frame.origin.x > 0) { //Events
+        if(button.tag == 0) {
+            [eventsView populateAllEvents];
+        }
+        else if(button.tag == 1) {
+            [eventsView populateMyEvents];
+        }
+    }
+    else { //Group
+        
+    }
+
 }
+
+//-(void)eventsButtonClick:(id)sender {
+//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+//    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+//    
+//    MFGroupView *groupView;
+//    MFEventsView *eventsView;
+//    for(UIView *subview in self.subviews)
+//    {
+//        if([subview isMemberOfClass:[MFEventsView class]])
+//            eventsView = (MFEventsView *)subview;
+//        else if([subview isMemberOfClass:[MFGroupView class]])
+//            groupView = (MFGroupView *)subview;
+//    }
+//    
+//    [UIView animateWithDuration:0.3
+//                     animations:^{
+//                         groupView.frame = CGRectMake(wd, 60, wd, ht - 60);;
+//                         eventsView.frame = CGRectMake(0, 60, wd, ht - 60);;
+//                     }
+//                     completion:^(BOOL finished){
+//                         for(UIView *subview in self.filterButtonsView.subviews){
+//                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+//                                 UIButton *all = (UIButton *)subview;
+//                                 [all setTitle:@"UPCOMING" forState:UIControlStateNormal];
+//                             }
+//                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+//                                 UIButton *mine = (UIButton *)subview;
+//                                 [mine setTitle:@"MY EVENTS" forState:UIControlStateNormal];
+//                             }
+//                         }
+//                         for(UIView *subview in self.addView.subviews){
+//                             if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+//                                 UIButton *eventsButton = (UIButton *)subview;
+//                                 [eventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//                                 [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+//                             }
+//                             else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+//                                 UIButton *interestsButton = (UIButton *)subview;
+//                                 [interestsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//                                 [interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+//                             }
+//                         }
+//                     }];
+//    
+//}
 
 
 -(void)scrollDown {
@@ -373,7 +410,6 @@
     [UIView animateWithDuration:0.3
                      animations:^{
                          self.addView.frame = CGRectMake(0, ht, wd, 60);
-                         self.filterButtonsView.frame = CGRectMake(0, 0, wd, 40);
                      }
                      completion:^(BOOL finished){ }];
 }
@@ -385,7 +421,6 @@
     [UIView animateWithDuration:0.3
                      animations:^{
                          self.addView.frame = CGRectMake(0, ht-60, wd, 60);
-                         self.filterButtonsView.frame = CGRectMake(0, 60, wd, 40);
                      }
                      completion:^(BOOL finished){ }];
 }
