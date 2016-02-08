@@ -421,7 +421,7 @@
         [groupButton addSubview:groupNameLabel];
         
         if(group.isInvitedtoEvent) {
-            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 20, 20, 20)];
+            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 90, 20, 24, 24)];
             [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
             [groupButton addSubview:invitedButton];
         }     
@@ -453,7 +453,7 @@
         UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [nameButton setTitle:name forState:UIControlStateNormal];
         [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        nameButton.frame = CGRectMake(30, viewY, wd - 60, 30);
+        nameButton.frame = CGRectMake(30, viewY, wd - 60, 36);
         nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
         nameButton.tag = i;
@@ -461,7 +461,7 @@
         
         NSString *invited = [contact objectForKey:@"invited"];
         if(![invited isEqualToString:@"NO"]) {
-            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 5, 20, 20)];
+            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 90, 5, 24, 24)];
             [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
             [nameButton addSubview:invitedButton];
         }
@@ -471,7 +471,7 @@
         bottomBorder.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
         [nameButton addSubview:bottomBorder];
         
-        viewY += 30;
+        viewY += 36;
     }
     
     //Contact List
@@ -500,16 +500,16 @@
         UIButton *nameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [nameButton setTitle:name forState:UIControlStateNormal];
         [nameButton addTarget:self action:@selector(nameButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        nameButton.frame = CGRectMake(30, viewY, wd - 60, 30);
+        nameButton.frame = CGRectMake(30, viewY, wd - 60, 36);
         nameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [nameButton setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0] forState:UIControlStateNormal];
         nameButton.tag = i + 1000;
         [scrollView addSubview:nameButton];
-        viewY += 30;
+        viewY += 36;
         
         NSString *invited = [contact objectForKey:@"invited"];
         if(![invited isEqualToString:@"NO"]) {
-            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 5, 20, 20)];
+            UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 90, 5, 24, 24)];
             [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
             [nameButton addSubview:invitedButton];
         }
@@ -521,7 +521,7 @@
 
     }
     
-    scrollView.contentSize = CGSizeMake(wd, viewY + 30);
+    scrollView.contentSize = CGSizeMake(wd, viewY + 36);
     [MFHelpers hideProgressView:self];
 }
 
@@ -541,7 +541,7 @@
     
     group.isInvitedtoEvent = YES;
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-    UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 20, 20, 20)];
+    UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 90, 20, 24, 24)];
     [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
     [button addSubview:invitedButton];
 }
@@ -563,7 +563,7 @@
     {
         [contact setValue:@"YES" forKey:@"invited"];
         NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-        UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 100, 5, 20, 20)];
+        UIButton *invitedButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 90, 5, 24, 24)];
         [invitedButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
         [button addSubview:invitedButton];
     }

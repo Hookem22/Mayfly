@@ -22,6 +22,7 @@
 @synthesize password = _password;
 @synthesize locations = _locations;
 @synthesize orderBy = _orderBy;
+@synthesize tagId = _tagId;
 
 -(id)init:(NSDictionary *)group {
     self = [super init];
@@ -65,8 +66,11 @@
 
     [service getByProc:@"getgroupsbyschool" params:params completion:^(NSArray *results) {
         NSMutableArray *list = [[NSMutableArray alloc] init];
+        int i = 0;
         for(id item in results) {
             Group *group = [[Group alloc] init:item];
+            group.tagId = i;
+            i++;
             [list addObject:group];
         }
         completion(list);

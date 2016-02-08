@@ -17,7 +17,7 @@
         dispatch_queue_t queue = dispatch_queue_create("Facebook Profile Image Queue", NULL);
         
         dispatch_async(queue, ^{
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture", facebookId]];
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=100&height=100", facebookId]];
             NSData *data = [NSData dataWithContentsOfURL:url];
             UIImage *img = [UIImage imageWithData:data];
             dispatch_async(dispatch_get_main_queue(), ^{

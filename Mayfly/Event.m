@@ -241,7 +241,11 @@
 
 -(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin
 {
-    [EventGoing joinEvent:self.eventId userId:userId isAdmin:isAdmin];
+    [EventGoing joinEvent:self.eventId userId:userId isAdmin:isAdmin completion:^(NSDictionary *eventGoing) {
+        [self getEventGoing:^(NSArray *goings) {
+            self.going = goings;
+        }];
+    }];
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     NSMutableArray *goingIds = [[NSMutableArray alloc] init];
     [goingIds addObject:self.eventId];

@@ -65,7 +65,7 @@
     }];
 }
 
-+(void)joinEvent:(NSString *)eventId userId:(NSString *)userId isAdmin:(BOOL)isAdmin
++(void)joinEvent:(NSString *)eventId userId:(NSString *)userId isAdmin:(BOOL)isAdmin completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
 
@@ -76,7 +76,7 @@
     [service getByProc:@"getgoingdeleted" params:params completion:^(NSArray *results) {
         if(results.count > 0) {
             [service getByProc:@"undeletegoing" params:params completion:^(NSArray *results) {
-
+                completion(results);
             }];
         }
         else
@@ -84,7 +84,7 @@
             NSDictionary *going = @{@"eventid": eventId, @"userid": userId, @"isadmin": [NSNumber numberWithBool:isAdmin] };
             [service addItem:going completion:^(NSDictionary *item)
              {
-
+                 completion(item);
              }];
         }
     }];

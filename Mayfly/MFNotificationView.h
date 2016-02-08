@@ -13,6 +13,7 @@
 @interface MFNotificationView : UIView
 
 -(id)init;
--(void)loadNotifications;
+-(void)setup;
+//-(void)loadNotifications;
 
 @end

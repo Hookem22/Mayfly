@@ -20,9 +20,13 @@
 
 @interface MFView : UIView <UIWebViewDelegate>
 
+@property (nonatomic, strong) UIView *addView;
+
 -(void)setup;
 -(void)refreshEvents;
 -(void)scrollUp;
 -(void)scrollDown;
+-(void)eventsButtonClick;
+-(void)interestsButtonClick;
 
 @end

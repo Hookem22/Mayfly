@@ -15,8 +15,6 @@
 //@property (nonatomic, strong) UIButton *notificationButton;
 //@property (nonatomic, strong) UIWebView *webView;
 
-@property (nonatomic, strong) UIView *addView;
-
 @end
 
 @implementation MFView
@@ -50,19 +48,6 @@
     [stEdsButton addTarget:self action:@selector(addInstructions) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:stEdsButton];
     
-    MFNotificationView *notificationView = [[MFNotificationView alloc] init];
-    notificationView.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
-    [self addSubview:notificationView];
-    
-    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(12, 28, 25, 25)];
-    [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
-    [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:menuButton];
-    
-    UISwipeGestureRecognizer *menuRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(menuButtonClick:)];
-    [menuRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-    [self addGestureRecognizer:menuRecognizer];
-    
     MFGroupView *groupView = [[MFGroupView alloc] init];
     groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
     [groupView loadGroups];
@@ -78,6 +63,19 @@
 //    [self addGestureRecognizer:groupRecognizer];
     
     [self addAddView];
+    
+    MFNotificationView *notificationView = [[MFNotificationView alloc] init];
+    notificationView.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+    [self addSubview:notificationView];
+    
+    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(12, 28, 25, 25)];
+    [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
+    [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:menuButton];
+    
+    UISwipeGestureRecognizer *menuRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(menuButtonClick:)];
+    [menuRecognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self addGestureRecognizer:menuRecognizer];
     
     [MFHelpers showProgressView:self];
     
@@ -114,6 +112,11 @@
         {
             MFEventsView *eventsView = (MFEventsView *)subview;
             [eventsView loadEvents];
+        }
+        else if([subview isMemberOfClass:[MFNotificationView class]])
+        {
+            MFNotificationView *notificationView = (MFNotificationView *)subview;
+            [notificationView setup];
         }
     }
 }
@@ -210,19 +213,23 @@
     }
     
     CGRect notificationFrame = CGRectMake((int)(-1 * wd), 60, wd, ht- 60);
-    CGRect groupFrame = CGRectMake(wd, 60, wd, ht - 60);
     CGRect eventFrame = CGRectMake(0, 60, wd, ht - 60);
+    CGRect addFrame = CGRectMake(0, ht-60, wd, 60);
     if(notificationView.frame.origin.x < 0) {
-        [notificationView loadNotifications];
+        //[notificationView loadNotifications];
         notificationFrame = CGRectMake(0, 60, wd, ht- 60);
         eventFrame = CGRectMake((wd * 3) / 4, 60, wd, ht - 60);
+        addFrame = CGRectMake((wd * 3) / 4, ht-60, wd, 60);
     }
     
     [UIView animateWithDuration:0.3
                      animations:^{
                          notificationView.frame = notificationFrame;
-                         groupView.frame = groupFrame;
                          eventsView.frame = eventFrame;
+                         self.addView.frame = addFrame;
+                         if(groupView.frame.origin.x < wd) {
+                             groupView.frame = eventFrame;
+                         }
                      }
                      completion:^(BOOL finished){ }];
 
@@ -320,13 +327,17 @@
 -(void)filterButtonClick:(id)sender {
     UIButton *button = (UIButton *)sender;
     NSLog(@"%i", button.tag);
+    [self filter:button.tag];
+}
+
+-(void)filter:(int)tagId {
     for(UIView *subview in self.addView.subviews){
-        if([subview isMemberOfClass:[UIButton class]] && subview.tag == button.tag) {
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == tagId) {
             UIButton *interestsButton = (UIButton *)subview;
             [interestsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
             [interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
         }
-        if([subview isMemberOfClass:[UIButton class]] && subview.tag != button.tag) {
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag != tagId) {
             UIButton *eventsButton = (UIButton *)subview;
             [eventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
             [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
@@ -343,17 +354,77 @@
             groupView = (MFGroupView *)subview;
     }
     if(groupView.frame.origin.x > 0) { //Events
-        if(button.tag == 0) {
+        if(tagId == 0) {
             [eventsView populateAllEvents];
         }
-        else if(button.tag == 1) {
+        else if(tagId == 1) {
             [eventsView populateMyEvents];
         }
     }
     else { //Group
-        
+        if(tagId == 0) {
+            [groupView populateAllInterests];
+        }
+        else if(tagId == 1) {
+            [groupView populateMyInterests];
+        }
+    }
+}
+
+-(void)eventsButtonClick {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFGroupView class]]) {
+            MFGroupView *groupView = (MFGroupView *)subview;
+            groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
+    }
+    for(UIView *subview in self.addView.subviews)
+    {
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+            UIButton *allButton = (UIButton *)subview;
+            [allButton setTitle:@"UPCOMING" forState:UIControlStateNormal];
+        }
+        else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+            UIButton *myButton = (UIButton *)subview;
+            [myButton setTitle:@"MY EVENTS" forState:UIControlStateNormal];
+        }
+    }
+    
+    [self filter:0];
+}
+
+-(void)interestsButtonClick {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFGroupView class]]) {
+            MFGroupView *groupView = (MFGroupView *)subview;
+            [UIView animateWithDuration:0.3
+                    animations:^{
+                        groupView.frame = CGRectMake(0, 60, wd, ht - 60);
+                    }
+                    completion:^(BOOL finished){ }];
+        }
+    }
+    for(UIView *subview in self.addView.subviews)
+    {
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+            UIButton *allButton = (UIButton *)subview;
+            [allButton setTitle:@"ST. EDWARD'S" forState:UIControlStateNormal];
+        }
+        else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+            UIButton *myButton = (UIButton *)subview;
+            [myButton setTitle:@"MY INTERESTS" forState:UIControlStateNormal];
+        }
     }
 
+    [self filter:0];
 }
 
 //-(void)eventsButtonClick:(id)sender {

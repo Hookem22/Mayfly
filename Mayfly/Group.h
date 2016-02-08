@@ -29,6 +29,7 @@
 @property (nonatomic, copy) NSString *locations;
 @property (nonatomic, assign) int orderBy;
 @property (nonatomic, assign) BOOL isInvitedtoEvent;
+@property (nonatomic, assign) int tagId;
 
 @property (nonatomic, copy) NSArray *members;
 

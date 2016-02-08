@@ -26,9 +26,9 @@
         self.delegate = self;
         self.Groups = [[NSMutableArray alloc] init];
         
-        UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeGroups:)];
-        [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-        [self addGestureRecognizer:recognizer];
+//        UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeGroups:)];
+//        [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+//        [self addGestureRecognizer:recognizer];
         
         UISwipeGestureRecognizer *recognizer1 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
         [recognizer1 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
@@ -39,12 +39,8 @@
 
 -(void)loadGroups
 {
-    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
-    for(UIView *subview in self.subviews)
-        [subview removeFromSuperview];
-    
-    int viewY = 0;
+//    int viewY = 0;
 //    UIControl *createGroupView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 69)];
 //    [createGroupView addTarget:self action:@selector(createGroupClicked:) forControlEvents:UIControlEventTouchUpInside];
 //    [self addSubview:createGroupView];
@@ -76,48 +72,68 @@
     
     [Group getBySchool:^(NSArray *groups)
      {
-         int newViewY = viewY;
-         self.Groups = [[NSMutableArray alloc] initWithArray:groups];
-         for(int i = 0; i < groups.count; i++)
-         {
-             Group *group = [groups objectAtIndex:i];
-             
-             UIButton *groupView = [[UIButton alloc] initWithFrame:CGRectMake(0, newViewY, wd, 50)];
-             [groupView addTarget:self action:@selector(groupClicked:) forControlEvents:UIControlEventTouchUpInside];
-             groupView.tag = i;
-             [self addSubview:groupView];
-             
-             if([group.pictureUrl length] > 0)
-             {
-                 MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(5, 5, 40, 40) url:group.pictureUrl];
-                 [groupView addSubview:pic];
-             }
-             else {
-                 UIImageView *groupImg = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
-                 [groupImg setImage:[UIImage imageNamed:@"group"]];
-                 [groupView addSubview:groupImg];
-             }
-             
-             UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, wd - 60, 50)];
-             [groupLabel setText:[NSString stringWithFormat:@"%@", group.name]];
-             groupLabel.textColor = [UIColor whiteColor];
-             [groupLabel setFont:[UIFont boldSystemFontOfSize:16]];
-             [groupView addSubview:groupLabel];
-             
-             if(group.isPublic == false) {
-                 UIImageView *privateImg = [[UIImageView alloc] initWithFrame:CGRectMake(wd - 40, 12, 25, 25)];
-                 [privateImg setImage:[UIImage imageNamed:@"whitelock"]];
-                 [groupView addSubview:privateImg];
-             }
-             
-             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, groupView.frame.size.height - 1.0f, groupView.frame.size.width, 1)];
-             bottomBorder.backgroundColor = [UIColor colorWithRed:63.0/255.0 green:69.0/255.0 blue:82.0/255.0 alpha:1.0];
-             [groupView addSubview:bottomBorder];
-             newViewY += 50;
-         }
-         self.contentSize = CGSizeMake(wd, newViewY + 70);
-         
+         self.Groups = [NSMutableArray arrayWithArray: groups];
+         [self populateInterests:groups];
      }];
+}
+
+-(void)populateAllInterests {
+    [self populateInterests:self.Groups];
+}
+
+-(void)populateMyInterests {
+    NSMutableArray *myGroups = [[NSMutableArray alloc] init];
+    for(Group *group in self.Groups) {
+        if(group.isMember) {
+            [myGroups addObject:group];
+        }
+    }
+    [self populateInterests:myGroups];
+}
+
+-(void)populateInterests:(NSArray *)groups {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    for(UIView *subview in self.subviews)
+        [subview removeFromSuperview];
+    
+    int viewY = 0;
+    for(Group *group in groups)
+    {
+        UIButton *groupView = [[UIButton alloc] initWithFrame:CGRectMake(0, viewY, wd, 50)];
+        [groupView addTarget:self action:@selector(groupClicked:) forControlEvents:UIControlEventTouchUpInside];
+        groupView.tag = group.tagId;
+        [self addSubview:groupView];
+        
+        if([group.pictureUrl length] > 0)
+        {
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(5, 5, 40, 40) url:group.pictureUrl];
+            [groupView addSubview:pic];
+        }
+        else {
+            UIImageView *groupImg = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
+            [groupImg setImage:[UIImage imageNamed:@"group"]];
+            [groupView addSubview:groupImg];
+        }
+        
+        UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, wd - 60, 50)];
+        [groupLabel setText:[NSString stringWithFormat:@"%@", group.name]];
+        groupLabel.textColor = [UIColor whiteColor];
+        [groupLabel setFont:[UIFont boldSystemFontOfSize:16]];
+        [groupView addSubview:groupLabel];
+        
+        if(group.isPublic == false) {
+            UIImageView *privateImg = [[UIImageView alloc] initWithFrame:CGRectMake(wd - 40, 12, 25, 25)];
+            [privateImg setImage:[UIImage imageNamed:@"whitelock"]];
+            [groupView addSubview:privateImg];
+        }
+        
+        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, groupView.frame.size.height - 1.0f, groupView.frame.size.width, 1)];
+        bottomBorder.backgroundColor = [UIColor colorWithRed:63.0/255.0 green:69.0/255.0 blue:82.0/255.0 alpha:1.0];
+        [groupView addSubview:bottomBorder];
+        viewY += 50;
+    }
+    self.contentSize = CGSizeMake(wd, viewY + 70);
 }
 
 -(void)createGroupClicked:(id)sender

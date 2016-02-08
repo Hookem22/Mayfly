@@ -16,5 +16,8 @@
 
 
 -(void)loadGroups;
+-(void)populateAllInterests;
+-(void)populateMyInterests;
+
 
 @end
