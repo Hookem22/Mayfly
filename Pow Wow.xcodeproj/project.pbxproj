@@ -114,6 +114,8 @@
 		48C1022A1C698B91005216A0 /* solidgrayinvited.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C102201C698B91005216A0 /* solidgrayinvited.png */; };
 		48C1022B1C698B91005216A0 /* solidgraylock.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C102211C698B91005216A0 /* solidgraylock.png */; };
 		48C1022D1C698DBB005216A0 /* solidgraycheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C1022C1C698DBB005216A0 /* solidgraycheck.png */; };
+		48C1023A1C6A5267005216A0 /* MFCalendarAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C102391C6A5267005216A0 /* MFCalendarAccess.m */; };
+		48C1023D1C6A6E45005216A0 /* MFSettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1023C1C6A6E45005216A0 /* MFSettingsView.m */; };
 		48C5BEFB1C3331820036C9B1 /* MFCreateGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */; };
 		48C5BEFE1C3382EC0036C9B1 /* MFGroupDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BEFD1C3382EC0036C9B1 /* MFGroupDetailView.m */; };
 		48C5BF011C33922B0036C9B1 /* GroupUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C5BF001C33922B0036C9B1 /* GroupUsers.m */; };
@@ -289,6 +291,10 @@
 		48C102201C698B91005216A0 /* solidgrayinvited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = solidgrayinvited.png; sourceTree = "<group>"; };
 		48C102211C698B91005216A0 /* solidgraylock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = solidgraylock.png; sourceTree = "<group>"; };
 		48C1022C1C698DBB005216A0 /* solidgraycheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = solidgraycheck.png; sourceTree = "<group>"; };
+		48C102381C6A5267005216A0 /* MFCalendarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCalendarAccess.h; sourceTree = "<group>"; };
+		48C102391C6A5267005216A0 /* MFCalendarAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCalendarAccess.m; sourceTree = "<group>"; };
+		48C1023B1C6A6E45005216A0 /* MFSettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSettingsView.h; sourceTree = "<group>"; };
+		48C1023C1C6A6E45005216A0 /* MFSettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSettingsView.m; sourceTree = "<group>"; };
 		48C5BEF91C3331820036C9B1 /* MFCreateGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateGroupView.h; sourceTree = "<group>"; };
 		48C5BEFA1C3331820036C9B1 /* MFCreateGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateGroupView.m; sourceTree = "<group>"; };
 		48C5BEFC1C3382EC0036C9B1 /* MFGroupDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGroupDetailView.h; sourceTree = "<group>"; };
@@ -358,6 +364,8 @@
 				48185D471B2B517B00B4EE08 /* MFProgressView.m */,
 				48185D431B2B507A00B4EE08 /* MBProgressHUD.h */,
 				48185D441B2B507A00B4EE08 /* MBProgressHUD.m */,
+				48C102381C6A5267005216A0 /* MFCalendarAccess.h */,
+				48C102391C6A5267005216A0 /* MFCalendarAccess.m */,
 				48185D491B2B52E900B4EE08 /* MFHelpers.h */,
 				48185D4A1B2B52E900B4EE08 /* MFHelpers.m */,
 			);
@@ -489,6 +497,8 @@
 				4877610F1C59D5CB006E5454 /* MFPostMessageView.m */,
 				4852DB7C1C60653700679E4F /* MFInstructionsView.h */,
 				4852DB7D1C60653700679E4F /* MFInstructionsView.m */,
+				48C1023B1C6A6E45005216A0 /* MFSettingsView.h */,
+				48C1023C1C6A6E45005216A0 /* MFSettingsView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
@@ -783,12 +793,14 @@
 				48185D281B28D34600B4EE08 /* MFPillButton.m in Sources */,
 				48185D451B2B507A00B4EE08 /* MBProgressHUD.m in Sources */,
 				48185D5C1B30ADA400B4EE08 /* Notification.m in Sources */,
+				48C1023D1C6A6E45005216A0 /* MFSettingsView.m in Sources */,
 				4886C9E71B0BBAA900909747 /* ViewController.m in Sources */,
 				48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */,
 				4843EA301B1653FD00C510B4 /* Location.m in Sources */,
 				4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */,
 				4886CA1C1B0BC41100909747 /* Session.m in Sources */,
 				48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */,
+				48C1023A1C6A5267005216A0 /* MFCalendarAccess.m in Sources */,
 				48185D4E1B2F6A2500B4EE08 /* MFMessageView.m in Sources */,
 				485AB3791C20CC450035C79D /* School.m in Sources */,
 				48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */,

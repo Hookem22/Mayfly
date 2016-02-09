@@ -347,6 +347,10 @@
         [event addGoing:currentUser.userId isAdmin:YES];
         [MFHelpers hideProgressView:self];
         
+        MFCalendarAccess *addToCalendar = [[MFCalendarAccess alloc] init];
+        [self.superview addSubview:addToCalendar];
+        [addToCalendar addToCalendar:event];
+        
         if(self.groupsList != nil && self.groupsList.count > 0) {
             [Group inviteGroups:self.groupsList event:event completion:^(NSDictionary *item) {}];
         }

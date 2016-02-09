@@ -363,6 +363,10 @@
         
         [self refreshGoing];
         
+        MFCalendarAccess *addToCalendar = [[MFCalendarAccess alloc] init];
+        [self addSubview:addToCalendar];
+        [addToCalendar addToCalendar:self.event];
+        
         notification.message = [NSString stringWithFormat:@"Joined: %@", self.event.name];
     }
     else

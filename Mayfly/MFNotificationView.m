@@ -94,6 +94,17 @@
     interestsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:interestsBorderView];
     
+    UIButton *settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, ht - 100, wd, 40)];
+    [settingsButton setTitle:@"Settings" forState:UIControlStateNormal];
+    [settingsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [settingsButton addTarget:self action:@selector(settingsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [settingsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [view addSubview:settingsButton];
+    
+    UIView *settingsBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, settingsButton.frame.origin.y, wd, 1)];
+    settingsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [view addSubview:settingsBorderView];
+    
 //    self.notificationsView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, (wd * 3) / 4, ht - 60)];
 //    self.notificationsView.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:57.0/255.0 blue:74.0/255.0 alpha:1.0];
 //    [self addSubview:self.notificationsView];
@@ -123,6 +134,12 @@
         MFView *mfView = (MFView *)self.superview;
         [mfView interestsButtonClick];
     }
+}
+
+-(void)settingsButtonClick:(id)sender {
+    MFSettingsView *settingsView = [[MFSettingsView alloc] init];
+    [self.superview addSubview:settingsView];
+    [self cancelButtonClick:sender];
 }
 
 -(void)cancelButtonClick:(id)sender

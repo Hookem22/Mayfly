@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSString *schoolId;
 @property (nonatomic, copy) NSDate *lastSignedIn;
 @property (nonatomic, assign) BOOL isiOS;
+@property (nonatomic, assign) int addToCalendar;
 
 @property (nonatomic, copy) NSMutableArray *goingEventIds;
 @property (nonatomic, copy) NSMutableArray *invitedEventIds;
@@ -33,5 +34,6 @@
 +(void)login:(User *)loginUser completion:(QSCompletionBlock)completion;
 +(void)get:(NSString *)userId completion:(QSCompletionBlock)completion;
 +(void)getByFacebookId:(NSString *)facebookId completion:(QSCompletionBlock)completion;
+-(void)save:(QSCompletionBlock)completion;
 
 @end

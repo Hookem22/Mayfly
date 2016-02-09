@@ -19,6 +19,7 @@
 @synthesize schoolId = _schoolId;
 @synthesize lastSignedIn = _lastSignedIn;
 @synthesize isiOS = _isiOS;
+@synthesize addToCalendar = _addToCalendar; //1: Always, 2: Ask Me, 3: Never
 
 - (id)init {
     self = [super init];
@@ -44,9 +45,11 @@
         self.pushDeviceToken = [[user objectForKey:@"pushdevicetoken"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"pushdevicetoken"];
         self.facebookId = [[user objectForKey:@"facebookid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"facebookid"];
         self.email = [[user objectForKey:@"email"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"email"];
-        self.schoolId = [[user objectForKey:@"schoolId"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"schoolId"];
+        self.schoolId = [[user objectForKey:@"schoolid"] isMemberOfClass:[NSNull class]] ? @"" : [user objectForKey:@"schoolid"];
         self.lastSignedIn = [user objectForKey:@"lastsignedin"];
         self.isiOS = [[user objectForKey:@"isios"] isMemberOfClass:[NSNull class]] ? YES : [[user objectForKey:@"isios"] boolValue];
+        self.addToCalendar = [[user objectForKey:@"addtocalendar"] isMemberOfClass:[NSNull class]] ? 0 : [[user objectForKey:@"addtocalendar"] intValue];
+
     }
     return self;
 }
@@ -69,6 +72,7 @@
             newUser.facebookId = loginUser.facebookId ? loginUser.facebookId : @"";
             newUser.email = loginUser.email ? loginUser.email : @"";
             newUser.isiOS = YES;
+            newUser.addToCalendar = 2;
             
             School *school = (School *)[Session sessionVariables][@"currentSchool"];
             newUser.schoolId = school.schoolId;
@@ -165,7 +169,7 @@
     
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
-    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email, @"schoolid": self.schoolId, @"isios": [NSNumber numberWithBool:self.isiOS] /*, @"lastsignedin" : self.lastSignedIn */};
+    NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email, @"schoolid": self.schoolId, @"isios": [NSNumber numberWithBool:self.isiOS], @"addtocalendar": [NSNumber numberWithInt:self.addToCalendar] /*, @"lastsignedin" : self.lastSignedIn */};
     
     if([self.userId length] <= 0)
     {

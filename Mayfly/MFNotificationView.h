@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MFDetailView.h"
+#import "MFSettingsView.h"
 #import "MFHelpers.h"
 
 @interface MFNotificationView : UIView

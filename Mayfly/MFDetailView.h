@@ -14,6 +14,7 @@
 #import "MFAddressBook.h"
 #import "MFMessageView.h"
 #import "MFPostMessageView.h"
+#import "MFCalendarAccess.h"
 
 @interface MFDetailView : UIView
 

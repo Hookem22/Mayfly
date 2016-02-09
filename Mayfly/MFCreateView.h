@@ -18,6 +18,7 @@
 #import "MFInviteFriendsView.h"
 #import "MFAddressBook.h"
 #import "MFHelpers.h"
+#import "MFCalendarAccess.h"
 
 @interface MFCreateView : UIView <UITextFieldDelegate, UITextViewDelegate>
 
