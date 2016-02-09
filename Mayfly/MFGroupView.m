@@ -22,7 +22,8 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:57.0/255.0 blue:74.0/255.0 alpha:1.0];
+        self.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        //self.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:57.0/255.0 blue:74.0/255.0 alpha:1.0];
         self.delegate = self;
         self.Groups = [[NSMutableArray alloc] init];
         
@@ -40,6 +41,7 @@
 -(void)loadGroups
 {
     
+//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
 //    int viewY = 0;
 //    UIControl *createGroupView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 69)];
 //    [createGroupView addTarget:self action:@selector(createGroupClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -58,15 +60,16 @@
     
 //    School *school = (School *)[Session sessionVariables][@"currentSchool"];
 //    
-//    UIView *schoolLabelView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
+//    UIView *schoolLabelView = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 40)];
 //    schoolLabelView.backgroundColor = [UIColor colorWithRed:67.0/255.0 green:74.0/255.0 blue:94.0/255.0 alpha:1.0];
 //    [self addSubview:schoolLabelView];
 //    viewY += 5;
 //    
-//    UILabel *schoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, viewY, wd - 25, 30)];
+//    UILabel *schoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 65, wd - 25, 30)];
 //    [schoolLabel setText:[NSString stringWithFormat:@"%@ INTERESTS", [school.name uppercaseString]]];
 //    schoolLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
 //    [schoolLabel setFont:[UIFont boldSystemFontOfSize:18]];
+//    schoolLabel.textAlignment = NSTextAlignmentCenter;
 //    [self addSubview:schoolLabel];
 //    viewY += 35;
     
@@ -98,6 +101,22 @@
         [subview removeFromSuperview];
     
     int viewY = 0;
+    School *school = (School *)[Session sessionVariables][@"currentSchool"];
+    
+    UIView *schoolLabelView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
+    schoolLabelView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [self addSubview:schoolLabelView];
+    viewY += 5;
+    
+    UILabel *schoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, viewY, wd - 25, 30)];
+    [schoolLabel setText:[NSString stringWithFormat:@"%@ INTERESTS", [school.name uppercaseString]]];
+    schoolLabel.textColor = [UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0];
+    [schoolLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    schoolLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:schoolLabel];
+    viewY += 35;
+    
+    NSArray *events = (NSArray *)[Session sessionVariables][@"currentEvents"];
     for(Group *group in groups)
     {
         UIButton *groupView = [[UIButton alloc] initWithFrame:CGRectMake(0, viewY, wd, 50)];
@@ -118,18 +137,35 @@
         
         UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, wd - 60, 50)];
         [groupLabel setText:[NSString stringWithFormat:@"%@", group.name]];
-        groupLabel.textColor = [UIColor whiteColor];
-        [groupLabel setFont:[UIFont boldSystemFontOfSize:16]];
+        //groupLabel.textColor = [UIColor whiteColor];
+        [groupLabel setFont:[UIFont systemFontOfSize:16]];
         [groupView addSubview:groupLabel];
+
+        int eventCt = 0;
+        for(Event *event in events) {
+            if([event.groupId rangeOfString:group.groupId].location != NSNotFound) {
+                eventCt++;
+            }
+        }
+        if (eventCt > 0) {
+            groupLabel.frame = CGRectMake(60, 0, wd - 60, 32);
+            
+            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 26, wd - 60, 20)];
+            NSString *eventText = eventCt == 1 ? @"1 upcoming event" : [NSString stringWithFormat:@"%i upcoming events", eventCt];
+            [eventLabel setText:eventText];
+            eventLabel.textColor = [UIColor colorWithRed:119.0/255.0 green:119.0/255.0 blue:119.0/255.0 alpha:1.0];
+            [eventLabel setFont:[UIFont boldSystemFontOfSize:12]];
+            [groupView addSubview:eventLabel];
+        }
         
         if(group.isPublic == false) {
             UIImageView *privateImg = [[UIImageView alloc] initWithFrame:CGRectMake(wd - 40, 12, 25, 25)];
-            [privateImg setImage:[UIImage imageNamed:@"whitelock"]];
+            [privateImg setImage:[UIImage imageNamed:@"solidgraylock"]];
             [groupView addSubview:privateImg];
         }
         
-        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, groupView.frame.size.height - 1.0f, groupView.frame.size.width, 1)];
-        bottomBorder.backgroundColor = [UIColor colorWithRed:63.0/255.0 green:69.0/255.0 blue:82.0/255.0 alpha:1.0];
+        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(10, groupView.frame.size.height - 1.0f, groupView.frame.size.width - 25, 1)];
+        bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
         [groupView addSubview:bottomBorder];
         viewY += 50;
     }

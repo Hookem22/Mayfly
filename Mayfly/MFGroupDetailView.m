@@ -130,7 +130,7 @@
         {
             [self.Events addObject:event];
             
-            UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
+            UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 75)];
             [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
             eventView.backgroundColor = [UIColor whiteColor];
             eventView.tag = i;
@@ -202,7 +202,7 @@
                 eventView.frame = CGRectMake(0, viewY, wd, nameHeight + 30);
             }
             
-            UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, eventView.frame.size.height - 1.0f, eventView.frame.size.width, 1)];
+            UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(15, eventView.frame.size.height - 1.0f, eventView.frame.size.width - 35, 1)];
             bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
             [eventView addSubview:bottomBorder];
             
@@ -210,7 +210,6 @@
         }
         detailView.contentSize = CGSizeMake(wd, viewY + 20);
     }
-    
 
 }
 

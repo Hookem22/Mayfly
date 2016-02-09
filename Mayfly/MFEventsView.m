@@ -220,9 +220,9 @@
     UIView *goingContainer = [[UIView alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 42, goingWd, 20)];
     [eventView addSubview:goingContainer];
     
-    UIImageView *goingIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 60, 0, 20, 20)];
-    NSString *goingImg = [NSString stringWithFormat:@"grayface%d", (arc4random() % 8)];
-    [goingIcon setImage:[UIImage imageNamed:goingImg]];
+    UIImageView *goingIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 60, 3, 14, 14)];
+    //NSString *goingImg = [NSString stringWithFormat:@"solidgrayface%d", (arc4random() % 8)];
+    [goingIcon setImage:[UIImage imageNamed:@"solidgraycheck"]];
     [goingContainer addSubview:goingIcon];
     
     UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, goingWd - 62, 20)];
@@ -232,8 +232,13 @@
     [goingLabel setFont:[UIFont systemFontOfSize:18]];
     [goingContainer addSubview:goingLabel];
     
+    if(event.invited.count < 10) {
+        goingIcon.frame = CGRectMake(goingWd - 52, 3, 14, 14);
+        goingLabel.frame = CGRectMake(8, 0, goingWd - 62, 20);
+    }
+    
     UIImageView *invitedIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 16, 2, 16, 16)];
-    [invitedIcon setImage:[UIImage imageNamed:@"invited"]];
+    [invitedIcon setImage:[UIImage imageNamed:@"solidgrayinvited"]];
     [goingContainer addSubview:invitedIcon];
     
     UILabel *invitedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, goingWd - 18, 20)];

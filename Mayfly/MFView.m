@@ -40,18 +40,18 @@
     MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     //[eventsView loadEvents];
     [self addSubview:eventsView];
-
+    
+    MFGroupView *groupView = [[MFGroupView alloc] init];
+    groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
+    [groupView loadGroups];
+    [self addSubview:groupView];
+    
     [MFHelpers addTitleBar:self titleText:@""];
     
     UIButton *stEdsButton = [[UIButton alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
     [stEdsButton setImage:[UIImage imageNamed:@"title"] forState:UIControlStateNormal];
     [stEdsButton addTarget:self action:@selector(addInstructions) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:stEdsButton];
-    
-    MFGroupView *groupView = [[MFGroupView alloc] init];
-    groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
-    [groupView loadGroups];
-    [self addSubview:groupView];
     
 //    UIButton *groupButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 50, 25, 36, 36)];
 //    [groupButton setImage:[UIImage imageNamed:@"whitegroup"] forState:UIControlStateNormal];
@@ -326,8 +326,7 @@
 
 -(void)filterButtonClick:(id)sender {
     UIButton *button = (UIButton *)sender;
-    NSLog(@"%i", button.tag);
-    [self filter:button.tag];
+    [self filter:(int)button.tag];
 }
 
 -(void)filter:(int)tagId {
