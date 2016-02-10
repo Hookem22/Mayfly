@@ -51,6 +51,9 @@
 
 -(void)save:(QSCompletionBlock)completion
 {
+    if(self.userId == nil || self.eventId == nil)
+        return;
+    
     QSAzureService *service = [QSAzureService defaultService:@"Notification"];
     NSDictionary *dict = @{@"userid":self.userId, @"eventid": self.eventId, @"message": self.message };
     

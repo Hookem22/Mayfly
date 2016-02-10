@@ -60,6 +60,14 @@
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelButton];
     
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    if([currentUser.facebookId isEqualToString:@"10106153174286280"]) {
+        UIButton *stEdstn = [[UIButton alloc] initWithFrame:CGRectMake(wd - 40, 25, 30, 30)];
+        [stEdstn setImage:[UIImage imageNamed:@"grayadd"] forState:UIControlStateNormal];
+        [stEdstn addTarget:self action:@selector(switchToStEds:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:stEdstn];
+    }
+    
     UIScrollView *createView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 50, wd, ht - 60)];
     self.createView = createView;
     [self addSubview:createView];
@@ -122,7 +130,7 @@
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [saveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     saveButton.layer.cornerRadius = 20;
-    saveButton.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+    saveButton.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
     [createView addSubview:saveButton];
     
     if(self.group) {
@@ -160,7 +168,7 @@
     
     Group *group = self.group == nil ? [[Group alloc] init] : self.group;
     group.name = self.nameText.text;
-    group.description = [self.descText.text isEqualToString:@"Desciption"] ? @"" : self.descText.text;
+    group.description = [self.descText.text isEqualToString:@"Description"] ? @"" : self.descText.text;
     
     School *school = (School *)[Session sessionVariables][@"currentSchool"];
     group.schoolId = school.schoolId;
@@ -222,5 +230,36 @@
     }
     [textView resignFirstResponder];
 }
+
+-(void)switchToStEds:(id)sender {
+    Location *loc = (Location *)[Session sessionVariables][@"currentLocation"];
+    if(loc.latitude < 1) {
+        Location *location = [[Location alloc] init];
+        location.latitude = 30.2290; //St. Edward's
+        location.longitude = -97.7560;
+        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+        
+        NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
+        [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+    }
+    else {
+        Location *location = [[Location alloc] init];
+        location.latitude = 0.1; //Test
+        location.longitude = 0.1;
+        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+        
+        NSDictionary *schoolDict = @{@"id": @"32F991FE-15A0-4436-8CD2-C46413ABB1CA", @"name": @"Test School", @"latitude": @"0", @"longitude": @"0" };
+        [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+    }
+    
+    if([self.superview isMemberOfClass:[MFView class]])
+    {
+        MFView *view = (MFView *)self.superview;
+        [view setup];
+        [view refreshEvents];
+    }
+    [MFHelpers close:self];
+}
+
 
 @end

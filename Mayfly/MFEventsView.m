@@ -216,37 +216,55 @@
     [timeLabel setFont:[UIFont systemFontOfSize:18]];
     [timeLabelContainer addSubview:timeLabel];
     
-    int goingWd = (int)(wd*2)/5;
-    UIView *goingContainer = [[UIView alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 42, goingWd, 20)];
-    [eventView addSubview:goingContainer];
-    
-    UIImageView *goingIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 60, 3, 14, 14)];
-    //NSString *goingImg = [NSString stringWithFormat:@"solidgrayface%d", (arc4random() % 8)];
-    [goingIcon setImage:[UIImage imageNamed:@"solidgraycheck"]];
-    [goingContainer addSubview:goingIcon];
-    
-    UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, goingWd - 62, 20)];
-    goingLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)event.going.count];
-    goingLabel.textAlignment = NSTextAlignmentRight;
-    goingLabel.textColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
-    [goingLabel setFont:[UIFont systemFontOfSize:18]];
-    [goingContainer addSubview:goingLabel];
-    
-    if(event.invited.count < 10) {
-        goingIcon.frame = CGRectMake(goingWd - 52, 3, 14, 14);
-        goingLabel.frame = CGRectMake(8, 0, goingWd - 62, 20);
-    }
-    
-    UIImageView *invitedIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 16, 2, 16, 16)];
-    [invitedIcon setImage:[UIImage imageNamed:@"solidgrayinvited"]];
-    [goingContainer addSubview:invitedIcon];
-    
-    UILabel *invitedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, goingWd - 18, 20)];
-    invitedLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)event.invited.count];
-    invitedLabel.textAlignment = NSTextAlignmentRight;
-    invitedLabel.textColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
-    [invitedLabel setFont:[UIFont systemFontOfSize:18]];
-    [goingContainer addSubview:invitedLabel];
+//    int goingWd = (int)(wd*2)/5;
+//    UIView *goingContainer = [[UIView alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 42, goingWd, 20)];
+//    [eventView addSubview:goingContainer];
+//    
+//    UIImageView *goingIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 60, 3, 14, 14)];
+//    //NSString *goingImg = [NSString stringWithFormat:@"solidgrayface%d", (arc4random() % 8)];
+//    [goingIcon setImage:[UIImage imageNamed:@"solidgraycheck"]];
+//    [goingContainer addSubview:goingIcon];
+//    
+//    UILabel *goingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, goingWd - 62, 20)];
+//    goingLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)event.going.count];
+//    goingLabel.textAlignment = NSTextAlignmentRight;
+//    goingLabel.textColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
+//    [goingLabel setFont:[UIFont systemFontOfSize:18]];
+//    [goingContainer addSubview:goingLabel];
+//    
+//    if(event.invited.count < 10) {
+//        goingIcon.frame = CGRectMake(goingWd - 52, 3, 14, 14);
+//        goingLabel.frame = CGRectMake(8, 0, goingWd - 62, 20);
+//    }
+//    
+//    UIImageView *invitedIcon = [[UIImageView alloc] initWithFrame:CGRectMake(goingWd - 16, 2, 16, 16)];
+//    [invitedIcon setImage:[UIImage imageNamed:@"solidgrayinvited"]];
+//    [goingContainer addSubview:invitedIcon];
+//    
+//    int invitedCt = 0;
+//    for(EventGoing *person in event.invited)
+//    {
+//        if([person.facebookId isMemberOfClass:[NSNull class]] || person.facebookId.length == 0)
+//            continue;
+//        
+//        BOOL isGoing = NO;
+//        for(EventGoing *going in event.going)
+//        {
+//            if([going.userId isEqualToString:person.userId]) {
+//                isGoing = YES;
+//                break;
+//            }
+//        }
+//        if(!isGoing)
+//            invitedCt++;
+//    }
+//    
+//    UILabel *invitedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, goingWd - 18, 20)];
+//    invitedLabel.text = [NSString stringWithFormat:@"%i", invitedCt];
+//    invitedLabel.textAlignment = NSTextAlignmentRight;
+//    invitedLabel.textColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
+//    [invitedLabel setFont:[UIFont systemFontOfSize:18]];
+//    [goingContainer addSubview:invitedLabel];
     
     
     int groupHeight = 0;

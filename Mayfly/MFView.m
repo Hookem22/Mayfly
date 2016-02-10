@@ -49,7 +49,7 @@
     [MFHelpers addTitleBar:self titleText:@""];
     
     UIButton *stEdsButton = [[UIButton alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
-    [stEdsButton setImage:[UIImage imageNamed:@"title"] forState:UIControlStateNormal];
+    [stEdsButton setImage:[UIImage imageNamed:@"powwowtitle"] forState:UIControlStateNormal];
     [stEdsButton addTarget:self action:@selector(addInstructions) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:stEdsButton];
     

@@ -66,7 +66,7 @@
     [postButton addTarget:self action:@selector(postButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [postButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     postButton.layer.cornerRadius = 20;
-    postButton.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+    postButton.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
     [self addSubview:postButton];
 }
 

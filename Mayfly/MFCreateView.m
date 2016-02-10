@@ -64,14 +64,6 @@
     NSString *headerLabel = self.event ? @"Edit Event" : @"Create Event";
     [MFHelpers addTitleBar:self titleText:headerLabel];
     
-    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-    if([currentUser.facebookId isEqualToString:@"10106153174286280"]) {
-        UIButton *stEdstn = [[UIButton alloc] initWithFrame:CGRectMake(wd - 40, 25, 30, 30)];
-        [stEdstn setImage:[UIImage imageNamed:@"grayadd"] forState:UIControlStateNormal];
-        [stEdstn addTarget:self action:@selector(switchToStEds:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:stEdstn];
-    }
-    
     UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 30, 30)];
     [cancelButton setImage:[UIImage imageNamed:@"whitebackarrow"] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -130,12 +122,36 @@
     }
     else
     {
+        UIView *topBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 180, wd, 1)];
+        topBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [createView addSubview:topBorder1];
+        
+        UIView *middle1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 179, wd, 10)];
+        middle1.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        [createView addSubview:middle1];
+        
+        UIView *bottomBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 170, wd, 1)];
+        bottomBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [createView addSubview:bottomBorder1];
+        
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [addFriendsButton setTitle:@"Invite Friends or Groups" forState:UIControlStateNormal];
+        [addFriendsButton setTitle:@"Invite Friends or Interests" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        addFriendsButton.frame = CGRectMake(20, 190, wd-40, 30);
+        addFriendsButton.frame = CGRectMake(20, createView.frame.size.height - 162, wd-40, 20);
         [addFriendsButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
         [createView addSubview:addFriendsButton];
+        
+//        UIView *topBorder2 = [[UIView alloc] initWithFrame:CGRectMake(0, 310, wd, 1)];
+//        topBorder2.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+//        [createView addSubview:topBorder2];
+//        
+//        UIView *middle2 = [[UIView alloc] initWithFrame:CGRectMake(0, 311, wd, 8)];
+//        middle2.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+//        [createView addSubview:middle2];
+//        
+//        UIView *bottomBorder2 = [[UIView alloc] initWithFrame:CGRectMake(0, 319, wd, 1)];
+//        bottomBorder2.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+//        [createView addSubview:bottomBorder2];
     }
     
     UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
@@ -148,7 +164,7 @@
     [saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [saveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     saveButton.layer.cornerRadius = 20;
-    saveButton.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+    saveButton.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
     self.saveButton = saveButton;
     [createView addSubview:saveButton];
 }
@@ -169,7 +185,7 @@
             [subview removeFromSuperview];
     }
     
-    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 235, wd, 80)];
+    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.createView.frame.size.height - 137, wd, 80)];
 
     //Groups
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
@@ -477,35 +493,6 @@
     
 }
 
--(void)switchToStEds:(id)sender {
-    Location *loc = (Location *)[Session sessionVariables][@"currentLocation"];
-    if(loc.latitude < 1) {
-        Location *location = [[Location alloc] init];
-        location.latitude = 30.2290; //St. Edward's
-        location.longitude = -97.7560;
-        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
-        
-        NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
-        [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
-    }
-    else {
-        Location *location = [[Location alloc] init];
-        location.latitude = 0.1; //Test
-        location.longitude = 0.1;
-        [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
-        
-        NSDictionary *schoolDict = @{@"id": @"32F991FE-15A0-4436-8CD2-C46413ABB1CA", @"name": @"Test School", @"latitude": @"0", @"longitude": @"0" };
-        [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
-    }
-    
-    if([self.superview isMemberOfClass:[MFView class]])
-    {
-        MFView *view = (MFView *)self.superview;
-        [view setup];
-        [view refreshEvents];
-    }
-    [MFHelpers close:self];
-}
 
 
 

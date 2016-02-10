@@ -161,7 +161,7 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
     UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 60, wd, 1)];
-    bottomBorder.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+    bottomBorder.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0];
     bottomBorder.layer.shadowColor = [[UIColor blackColor] CGColor];
     bottomBorder.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
     bottomBorder.layer.shadowRadius = 3.0f;
@@ -169,7 +169,7 @@
     [view addSubview:bottomBorder];
     
     UIView *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 60)];
-    headerView.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+    headerView.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0];
     [view addSubview:headerView];
     
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 10, wd - 90, 60)];

@@ -29,12 +29,12 @@
         backgroundButton.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.2];
         backgroundButton.layer.cornerRadius = frame.size.height / 2;
         backgroundButton.layer.borderWidth = 1.0f;
-        backgroundButton.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+        backgroundButton.layer.borderColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
         [self addSubview:backgroundButton];
         
         UIButton *yesButton = [[UIButton alloc] initWithFrame:CGRectMake(2, 2, frame.size.width / 2, frame.size.height - 4)];
         [yesButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        yesButton.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+        yesButton.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0];
         yesButton.layer.cornerRadius = (frame.size.height - 4) / 2;
         yesButton.tag = 1;
         self.yesButton = yesButton;

@@ -69,7 +69,7 @@
     viewY += 25;
     
     UIView *calendarBorderView = [[UIView alloc] initWithFrame:CGRectMake(20, viewY, wd - 40, 40)];
-    [calendarBorderView.layer setBorderColor:[[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] CGColor]];
+    [calendarBorderView.layer setBorderColor:[[UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
     [calendarBorderView.layer setBorderWidth:1.0];
     calendarBorderView.layer.cornerRadius = 12.0;
     [self addSubview:calendarBorderView];
@@ -89,7 +89,7 @@
     askMeButton.frame = CGRectMake(((wd - 40) / 3) + 20, viewY, ((wd - 40) / 3), 40);
     [askMeButton setTitle:@"Ask Me" forState:UIControlStateNormal];
     [askMeButton addTarget:self action:@selector(calendarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [askMeButton.layer setBorderColor:[[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] CGColor]];
+    [askMeButton.layer setBorderColor:[[UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
     [askMeButton.layer setBorderWidth:1.0];
     askMeButton.tag = 2;
     [self addSubview:askMeButton];
@@ -132,10 +132,10 @@
             UIButton *button = (UIButton *)subview;
             if(subview.tag == tagId) {
                 [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                button.layer.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+                button.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
             }
             else if(subview.tag == 1 || subview.tag == 2 || subview.tag == 3) {
-                [button setTitleColor:[UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+                [button setTitleColor:[UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0] forState:UIControlStateNormal];
                 button.layer.backgroundColor = [UIColor whiteColor].CGColor;
             }
         }
