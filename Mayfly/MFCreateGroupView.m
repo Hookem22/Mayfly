@@ -61,7 +61,7 @@
     [self addSubview:cancelButton];
     
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-    if([currentUser.facebookId isEqualToString:@"10106153174286280"]) {
+    if([currentUser.facebookId isEqualToString:@"10106153174286280"] || [currentUser.facebookId isEqualToString:@"10106610968977054"]) {
         UIButton *stEdstn = [[UIButton alloc] initWithFrame:CGRectMake(wd - 40, 25, 30, 30)];
         [stEdstn setImage:[UIImage imageNamed:@"grayadd"] forState:UIControlStateNormal];
         [stEdstn addTarget:self action:@selector(switchToStEds:) forControlEvents:UIControlEventTouchUpInside];

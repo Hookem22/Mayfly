@@ -22,6 +22,9 @@
 @property (nonatomic, strong) UITextField *maxText;
 @property (nonatomic, strong) MFClockView *startText;
 @property (nonatomic, strong) UIButton *saveButton;
+@property (nonatomic, strong) NSArray *eventIcons;
+@property (nonatomic, strong) UIView *selectedView;
+@property (nonatomic, strong) NSString *selectedImage;
 
 @end
 
@@ -103,6 +106,18 @@
     self.descText = descText;
     [createView addSubview:descText];
     
+    UIView *topBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 180, wd, 1)];
+    topBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [createView addSubview:topBorder1];
+    
+    UIView *middle1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 179, wd, 10)];
+    middle1.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+    [createView addSubview:middle1];
+    
+    UIView *bottomBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 170, wd, 1)];
+    bottomBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [createView addSubview:bottomBorder1];
+    
     if(self.event)
     {
         nameText.text = self.event.name;
@@ -115,25 +130,13 @@
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [deleteButton setTitle:@"Delete Event" forState:UIControlStateNormal];
         [deleteButton addTarget:self action:@selector(deleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        deleteButton.frame = CGRectMake(20, 190, wd-40, 30);
+        deleteButton.frame = CGRectMake(20, createView.frame.size.height - 162, wd-40, 20);
         [deleteButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
         [createView addSubview:deleteButton];
         
     }
     else
     {
-        UIView *topBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 180, wd, 1)];
-        topBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-        [createView addSubview:topBorder1];
-        
-        UIView *middle1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 179, wd, 10)];
-        middle1.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
-        [createView addSubview:middle1];
-        
-        UIView *bottomBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 170, wd, 1)];
-        bottomBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-        [createView addSubview:bottomBorder1];
-        
         UIButton *addFriendsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [addFriendsButton setTitle:@"Invite Friends or Interests" forState:UIControlStateNormal];
         [addFriendsButton addTarget:self action:@selector(addFriendsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -154,6 +157,8 @@
 //        [createView addSubview:bottomBorder2];
     }
     
+    [self populateIcons];
+    
     UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
     topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [createView addSubview:topBorder];
@@ -167,6 +172,88 @@
     saveButton.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
     self.saveButton = saveButton;
     [createView addSubview:saveButton];
+}
+
+-(void)populateIcons {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger top = 187;
+    NSUInteger bottom = self.createView.frame.size.height - 177;
+    NSUInteger height = bottom - top;
+    NSUInteger iconHeight = (height - 10) / 3;
+    NSUInteger imgHeight = (iconHeight * 85) / 100;
+    
+    UIScrollView *iconView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, top, wd, height)];
+    [self.createView addSubview:iconView];
+    
+    NSArray *icons = @[@"Sunny", @"Lightning", @"Sunglasses", @"Castle", @"Firework", @"Spaceship", @"Hammock", @"Tent", @"Flipflops", @"Pool", @"Jetski", @"Canoe", @"Cloudy", @"Snow", @"Storm", @"WindmillPaper", @"OldCar", @"Motorbike", @"Segway", @"Hat", @"Boots", @"Books", @"Science", @"MovieEvent", @"MovieSlate", @"Television", @"Ticket", @"Money", @"VideoCamera", @"Microphone", @"Guitar", @"Cassette", @"Dj", @"RecordPlayer", @"Speaker", @"Trumpet", @"Astronaut", @"CaptainShield", @"Darth-Vader", @"Minion", @"Pacman", @"PacmanGhost", @"WallE", @"PirateFlag", @"Xbox", @"Joystick", @"Cards", @"Chessboard", @"PingPong", @"Bowling", @"Snooker", @"Telescope", @"MagicBunny", @"Crown", @"Flag", @"Podium", @"PrizeCup", @"Football", @"Helmet", @"Backboard", @"Baseball", @"Soccer", @"SoccerField", @"Tennis", @"Karate", @"Dumbbell", @"Rollerblade", @"Bottle", @"Beer", @"Beermug", @"Champagne", @"Cocktail", @"Whiskey", @"Wine", @"Coffee", @"Watermelon", @"TableSet", @"Sushi", @"Pizza", @"Noodles", @"FrenchFries", @"ChickenWing", @"Grill", @"BirthdayCake", @"Candycane", @"Cupcake", @"Icecream"];
+    self.eventIcons = icons;
+    
+    UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, imgHeight + 10, imgHeight + 10)];
+    selectedView.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+    selectedView.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+    selectedView.layer.borderWidth = 3.0;
+    selectedView.layer.cornerRadius = 5.0;
+    self.selectedView = selectedView;
+    [iconView addSubview:selectedView];
+    
+    int selected = 0;
+    if(self.event != nil && self.event.groupPictureUrl != nil && ![self.event.groupPictureUrl isEqualToString:@""]) {
+        for(int i = 0; i < icons.count; i++) {
+            if([icons[i] isEqualToString:self.event.groupPictureUrl]) {
+                selected = i;
+                break;
+            }
+        }
+    }
+    [self selectIcon:selected];
+    
+    int viewX = 5;
+    int i = 0;
+    for(NSString *icon in icons) {
+        UIButton *iconButton = [[UIButton alloc] init];
+        [iconButton setImage:[UIImage imageNamed:icon] forState:UIControlStateNormal];
+        [iconButton addTarget:self action:@selector(iconButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        iconButton.tag = i;
+        [iconView addSubview:iconButton];
+        
+        if(i % 3 == 0) {
+            iconButton.frame = CGRectMake(viewX, 5, imgHeight, imgHeight);
+        }
+        else if(i % 3 == 1) {
+            iconButton.frame = CGRectMake(viewX, iconHeight + 5, imgHeight, imgHeight);
+        }
+        if(i % 3 == 2) {
+            iconButton.frame = CGRectMake(viewX, (iconHeight * 2) + 5, imgHeight, imgHeight);
+            viewX += iconHeight;
+        }
+        i++;
+    }
+    iconView.contentSize = CGSizeMake(viewX, height);
+    int offset = ((int)iconHeight * (selected / 3)) - 30;
+    if(offset > viewX - (int)wd)
+        offset = viewX - (int)wd;
+    iconView.contentOffset = CGPointMake(offset, 0);
+}
+
+-(void)iconButtonClick:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    [self selectIcon:(int)button.tag];
+}
+
+-(void)selectIcon:(int)tag
+{
+    self.selectedImage = self.eventIcons[tag];
+    
+    NSUInteger top = 187;
+    NSUInteger bottom = self.createView.frame.size.height - 177;
+    NSUInteger height = bottom - top;
+    NSUInteger iconHeight = (height - 10) / 3;
+    NSUInteger imgHeight = (iconHeight * 85) / 100;
+    
+    int row = tag % 3;
+    int col = tag / 3;
+    
+    self.selectedView.frame = CGRectMake(col * iconHeight, row * iconHeight, imgHeight + 10, imgHeight + 10);
 }
 
 -(void)addFriendsButtonClick:(id)sender
@@ -318,13 +405,13 @@
     
     event.groupId = self.event == nil ? @"" : event.groupId;
     event.groupName = self.event == nil ? @"" : event.groupName;
-    event.groupPictureUrl = self.event == nil ? @"" : event.groupPictureUrl;
+    event.groupPictureUrl = self.selectedImage;
     int privateCt = 0;
     for(Group *group in self.groupsList) {
         event.groupId = event.groupId.length == 0 ? group.groupId : [NSString stringWithFormat:@"%@|%@", event.groupId, group.groupId];
         event.groupName = event.groupName.length == 0 ? group.name : [NSString stringWithFormat:@"%@|%@", event.groupName, group.name];
-        if(event.groupPictureUrl.length == 0 && group.pictureUrl.length > 0)
-            event.groupPictureUrl = group.pictureUrl;
+//        if(event.groupPictureUrl.length == 0 && group.pictureUrl.length > 0)
+//            event.groupPictureUrl = group.pictureUrl;
         if(group.isPublic == false)
             privateCt++;
     }

@@ -47,7 +47,7 @@
     [MFHelpers addTitleBar:self titleText:@""];
     
     UIImageView *titlePic = [[UIImageView alloc] initWithFrame:CGRectMake(90, 25, wd - 180, 30)];
-    [titlePic setImage:[UIImage imageNamed:@"title"]];
+    [titlePic setImage:[UIImage imageNamed:@"powwowtitle"]];
     [self addSubview:titlePic];
     
     UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 80, wd, ht - 100)];

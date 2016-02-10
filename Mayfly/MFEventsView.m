@@ -157,48 +157,53 @@
 -(UIView *)addEventView:(Event *)event viewY:(int)viewY {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
-    UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 80)];
+    UIControl *eventView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 90)];
     [eventView addTarget:self action:@selector(eventClicked:) forControlEvents:UIControlEventTouchUpInside];
     eventView.backgroundColor = [UIColor whiteColor];
     eventView.tag = event.tagId;
     
     //Icon
+    if(![event.groupPictureUrl isKindOfClass:[NSNull class]] && event.groupPictureUrl.length > 0) {
+        if([event.groupPictureUrl rangeOfString:@".com"].location == NSNotFound)
+        {
+            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+            [icon setImage:[UIImage imageNamed:event.groupPictureUrl]];
+            [eventView addSubview:icon];
+        }
+        else {
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(10, 10, 60, 60) url:event.groupPictureUrl];
+            [eventView addSubview:pic];
+        }
+    }
+    
     if(event.isGoing) {
-        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(10, 10, 50, 50) facebookId:currentUser.facebookId];
-        [eventView addSubview:pic];
-        
-        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(45, 42, 22, 22)];
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(50, 47, 22, 22)];
         picBackground.backgroundColor = [UIColor whiteColor];
         picBackground.layer.cornerRadius = 11;
         picBackground.layer.borderColor = [UIColor colorWithRed:7.0/255.0 green:149.0/255.0 blue:0.0/255.0 alpha:1.0].CGColor;
         picBackground.layer.borderWidth = 1;
         [eventView addSubview:picBackground];
         
-        UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(50, 47, 13, 13)];
+        UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(55, 52, 13, 13)];
         [checkPic setImage:[UIImage imageNamed:@"greenCheck"]];
         [eventView addSubview:checkPic];
     }
     else if(event.isInvited) {
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-        [icon setImage:[UIImage imageNamed:@"invited"]];
-        [eventView addSubview:icon];
-
-    }
-    else if([event.groupPictureUrl isKindOfClass:[NSNull class]] || event.groupPictureUrl.length <= 0) {
-        NSString *iconImage = [NSString stringWithFormat:@"face%d", (arc4random() % 8)];
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(52, 49, 22, 22)];
+        picBackground.backgroundColor = [UIColor whiteColor];
+        picBackground.layer.cornerRadius = 11;
+        picBackground.layer.borderColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0].CGColor;
+        picBackground.layer.borderWidth = 1;
+        [eventView addSubview:picBackground];
         
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
-        [icon setImage:[UIImage imageNamed:iconImage]];
-        [eventView addSubview:icon];
-    }
-    else {
-        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(10, 10, 50, 50) url:event.groupPictureUrl];
-        [eventView addSubview:pic];
+        UIImageView *invitePic = [[UIImageView alloc] initWithFrame:CGRectMake(55, 52, 16, 16)];
+        [invitePic setImage:[UIImage imageNamed:@"invited"]];
+        [eventView addSubview:invitePic];
     }
 
-    int nameWidth = (int)(wd - (70 + (wd / 4)));
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, nameWidth, 20)];
+
+    int nameWidth = (int)(wd - (90 + (wd / 4)));
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 15, nameWidth, 20)];
     nameLabel.text = event.name;
     nameLabel.numberOfLines = 0;
     nameLabel.lineBreakMode = NSLineBreakByWordWrapping;
