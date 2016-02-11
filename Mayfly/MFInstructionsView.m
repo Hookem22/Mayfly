@@ -67,7 +67,7 @@
     [view1 addSubview:text2];
     
     UIImageView *appPic1 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic1 setImage:[UIImage imageNamed:@"appScreenshot"]];
+    [appPic1 setImage:[UIImage imageNamed:@"appscreenshot1"]];
     [view1 addSubview:appPic1];
     
     UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(wd, 80, wd, ht - 100)];
@@ -87,7 +87,7 @@
     [view2 addSubview:text4];
     
     UIImageView *appPic2 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic2 setImage:[UIImage imageNamed:@"appScreenshot3"]];
+    [appPic2 setImage:[UIImage imageNamed:@"appscreenshot2"]];
     [view2 addSubview:appPic2];
     
     UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(wd, 80, wd, ht - 100)];
@@ -107,7 +107,7 @@
     [view3 addSubview:text6];
     
     UIImageView *appPic3 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic3 setImage:[UIImage imageNamed:@"appScreenshot2"]];
+    [appPic3 setImage:[UIImage imageNamed:@"appscreenshot3"]];
     [view3 addSubview:appPic3];
     
     UIImageView *circles = [[UIImageView alloc] initWithFrame:CGRectMake((wd / 2) - 27, ht - 84, 54, 14)];

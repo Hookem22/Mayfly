@@ -266,14 +266,15 @@
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
-    for(id subview in self.createView.subviews)
+    for(UIView *subview in self.createView.subviews)
     {
-        if([subview isMemberOfClass:[UIScrollView class]])
+        if([subview isMemberOfClass:[UIScrollView class]] && subview.tag == 2)
             [subview removeFromSuperview];
     }
     
     UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.createView.frame.size.height - 137, wd, 80)];
-
+    peopleView.tag = 2;
+    
     //Groups
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     NSMutableArray *groups = [[NSMutableArray alloc] init];

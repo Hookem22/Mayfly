@@ -48,7 +48,7 @@
     [self.eventButton addTarget:self action:@selector(eventButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.eventButton];
     
-    self.eventLabel = [[UILabel alloc] init];
+    self.eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd/4, ht, wd/2, 20)];
     self.eventLabel.text = @"Add Event";
     self.eventLabel.textColor = [UIColor whiteColor];
     self.eventLabel.textAlignment = NSTextAlignmentCenter;
@@ -59,7 +59,7 @@
     [self.interestButton addTarget:self action:@selector(interestButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.interestButton];
     
-    self.interestLabel = [[UILabel alloc] init];
+    self.interestLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd/4, ht, wd/2, 20)];
     self.interestLabel.text = @"Add Interest";
     self.interestLabel.textColor = [UIColor whiteColor];
     self.interestLabel.textAlignment = NSTextAlignmentCenter;
@@ -81,11 +81,12 @@
                      animations: ^{
                          self.eventButton.frame = CGRectMake(wd / 4 - 30, ht - 160, 60, 60);
                          self.interestButton.frame = CGRectMake((wd * 3) / 4 - 30, ht - 160, 60, 60);
+                         self.eventLabel.frame = CGRectMake(0, ht - 95, wd/2, 20);
+                         self.interestLabel.frame = CGRectMake(wd/2, ht - 95, wd/2, 20);
                          self.closeButton.transform = CGAffineTransformRotate(self.closeButton.transform, M_PI * (-0.75));
                      }
                      completion: ^(BOOL finished) {
-                         self.eventLabel.frame = CGRectMake(0, ht - 95, wd/2, 20);
-                         self.interestLabel.frame = CGRectMake(wd/2, ht - 95, wd/2, 20);
+                         
                      }];
     
 }
@@ -123,13 +124,13 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    [self.eventLabel removeFromSuperview];
-    [self.interestLabel removeFromSuperview];
     
     [UIView animateWithDuration: 0.3
                      animations: ^{
                          self.eventButton.frame = CGRectMake((wd / 2) - 30, ht-60, 60, 60);
                          self.interestButton.frame = CGRectMake((wd / 2) - 30, ht-60, 60, 60);
+                         self.eventLabel.frame = CGRectMake(wd/4, ht, wd/2, 20);
+                         self.interestLabel.frame = CGRectMake(wd/4, ht, wd/2, 20);
                          self.closeButton.transform = CGAffineTransformRotate(self.closeButton.transform, M_PI * (0.75));
                      }
                      completion: ^(BOOL finished) {
