@@ -229,6 +229,8 @@
                  messageView.frame = CGRectMake(0, viewY, wd, messageLabel.frame.size.height + 100);
              }
              viewY += messageView.frame.size.height;
+             
+             [message markViewed];
          }
         
         UIView *topBorder3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];

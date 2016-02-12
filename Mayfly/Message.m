@@ -7,6 +7,7 @@
 //
 
 #import "Message.h"
+#import "User.h"
 
 @implementation Message
 
@@ -17,6 +18,7 @@
 @synthesize name = _name;
 @synthesize message = _message;
 @synthesize secondsSince = _secondsSince;
+@synthesize viewedBy = _viewedBy;
 @synthesize sentDate = _sentDate;
 
 -(id)init:(NSDictionary *)message
@@ -30,6 +32,7 @@
         self.name = [message objectForKey:@"name"];
         self.message = [message objectForKey:@"message"];
         self.secondsSince = [[message objectForKey:@"Seconds"] isMemberOfClass:[NSNull class]] ? 0 : [[message objectForKey:@"Seconds"] intValue];
+        self.viewedBy = [message objectForKey:@"viewedby"];
         self.sentDate = [message objectForKey:@"__createdAt"];
     }
     return self;
@@ -57,7 +60,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Message"];
     
-    NSDictionary *dict = @{@"eventid": self.eventId, @"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message };
+    NSDictionary *dict = @{@"eventid": self.eventId, @"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"viewedby": self.viewedBy };
     
     if([self.messageId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [dict mutableCopy];
@@ -74,6 +77,24 @@
              self.messageId = [item objectForKey:@"id"];
              completion(self);
          }];
+    }
+}
+
+-(bool)isViewed {
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+
+    if([self.viewedBy rangeOfString:currentUser.userId].location != NSNotFound) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(void)markViewed {
+    if(self.isViewed == NO) {
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        self.viewedBy = [NSString stringWithFormat:@"%@|%@", self.viewedBy, currentUser.userId];
+        [self save:^(Message *message) {}];
     }
     
 }

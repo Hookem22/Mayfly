@@ -84,6 +84,7 @@
         message.facebookId = currentUser.facebookId;
         message.name = currentUser.firstName;
         message.message = self.messageText.text;
+        message.viewedBy = currentUser.userId;
         message.sentDate = [NSDate date];
         
         [message save:^(Message *newMessage)

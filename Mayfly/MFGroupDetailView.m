@@ -176,6 +176,26 @@
                 [eventView addSubview:invitePic];
             }
             
+            int messageCt = 0;
+            for (Message *message in event.messages) {
+                if(message.isViewed == NO) {
+                    messageCt++;
+                }
+            }
+            if(messageCt > 0) {
+                UIView *messageBackground = [[UIView alloc] initWithFrame:CGRectMake(54, 8, 22, 22)];
+                messageBackground.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+                messageBackground.layer.cornerRadius = 11;
+                messageBackground.tag = 1;
+                [eventView addSubview:messageBackground];
+                
+                UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+                messageLabel.text = [NSString stringWithFormat:@"%i", messageCt];
+                messageLabel.textColor = [UIColor whiteColor];
+                messageLabel.textAlignment = NSTextAlignmentCenter;
+                [messageBackground addSubview:messageLabel];
+            }
+            
             int nameWidth = (int)(wd - (105 + (wd / 4)));
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 15, nameWidth, 20)];
             nameLabel.text = event.name;
@@ -287,6 +307,12 @@
     
     MFDetailView *detailView = [[MFDetailView alloc] init:event];
     [MFHelpers openFromRight:detailView onView:self.superview];
+    
+    for(UIView *subview in button.subviews) {
+        if(subview.tag == 1) {
+            [subview removeFromSuperview];
+        }
+    }
 }
 
 -(void)menuButtonClick:(id)sender

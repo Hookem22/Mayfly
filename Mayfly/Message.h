@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QSAzureService.h"
+#import "Session.h"
 
 @interface Message : NSObject
 
@@ -18,10 +19,13 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, assign) NSInteger secondsSince;
+@property (nonatomic, copy) NSString *viewedBy;
 @property (nonatomic, copy) NSDate *sentDate;
 
 -(id)init:(NSDictionary *)message;
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
+-(bool)isViewed;
+-(void)markViewed;
 
 @end

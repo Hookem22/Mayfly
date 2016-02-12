@@ -177,14 +177,14 @@
     }
     
     if(event.isGoing) {
-        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(50, 47, 22, 22)];
+        UIView *picBackground = [[UIView alloc] initWithFrame:CGRectMake(52, 49, 22, 22)];
         picBackground.backgroundColor = [UIColor whiteColor];
         picBackground.layer.cornerRadius = 11;
         picBackground.layer.borderColor = [UIColor colorWithRed:7.0/255.0 green:149.0/255.0 blue:0.0/255.0 alpha:1.0].CGColor;
         picBackground.layer.borderWidth = 1;
         [eventView addSubview:picBackground];
         
-        UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(55, 52, 13, 13)];
+        UIImageView *checkPic = [[UIImageView alloc] initWithFrame:CGRectMake(57, 54, 13, 13)];
         [checkPic setImage:[UIImage imageNamed:@"greenCheck"]];
         [eventView addSubview:checkPic];
     }
@@ -200,7 +200,26 @@
         [invitePic setImage:[UIImage imageNamed:@"invited"]];
         [eventView addSubview:invitePic];
     }
-
+    
+    int messageCt = 0;
+    for (Message *message in event.messages) {
+        if(message.isViewed == NO) {
+            messageCt++;
+        }
+    }
+    if(messageCt > 0) {
+        UIView *messageBackground = [[UIView alloc] initWithFrame:CGRectMake(54, 8, 22, 22)];
+        messageBackground.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+        messageBackground.layer.cornerRadius = 11;
+        messageBackground.tag = 1;
+        [eventView addSubview:messageBackground];
+        
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+        messageLabel.text = [NSString stringWithFormat:@"%i", messageCt];
+        messageLabel.textColor = [UIColor whiteColor];
+        messageLabel.textAlignment = NSTextAlignmentCenter;
+        [messageBackground addSubview:messageLabel];
+    }
 
     int nameWidth = (int)(wd - (90 + (wd / 4)));
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 15, nameWidth, 20)];
@@ -304,16 +323,7 @@
 {
     UIControl *button = (UIControl *)sender;
     long tagId = button.tag;
-    [self openEvent:tagId];
-}
 
--(void)eventNameClicked:(UITapGestureRecognizer *)gesture{
-    long tagId = gesture.view.tag;
-    [self openEvent:tagId];
-}
-
--(void)openEvent:(long)tagId {
-    
     if(![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] init];
@@ -333,9 +343,15 @@
         [alert show];
         return;
     }
-    
+
     MFDetailView *detailView = [[MFDetailView alloc] init:event];
     [MFHelpers openFromRight:detailView onView:self.superview];
+    
+    for(UIView *subview in button.subviews) {
+        if(subview.tag == 1) {
+            [subview removeFromSuperview];
+        }
+    }
     
 }
 
