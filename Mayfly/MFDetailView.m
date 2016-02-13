@@ -202,13 +202,21 @@
     postMessageLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
     [postMessageButton addSubview:postMessageLabel];
     
+    UIView *topBorder3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
+    topBorder3.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [detailView addSubview:topBorder3];
+    
+    UIView *middle3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY + 1, wd, 300)];
+    middle3.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+    [detailView addSubview:middle3];
+    
     self.detailView = detailView;
     
     self.initialHeight = viewY;
     self.messagesView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 0)];
     [detailView addSubview:self.messagesView];
-    [self loadMessageImages];
     [self populateMessages];
+    [self loadMessageImages];
 }
 
 -(void)loadMessageImages {
@@ -231,7 +239,7 @@
                     float imgHt = (imgWd / img.size.width) * img.size.height;
                     imageView.frame = CGRectMake(30, 0, imgWd, imgHt);
                     [self.messageImageViews setObject:imageView forKey:message.messageId];
-                    [self populateMessages];
+                    [self refreshMessageImages];
                 });
             });
         }
@@ -247,81 +255,112 @@
     
     int viewY = 0;
     for(Message *message in self.event.messages) {
-        UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
-        topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-        [self.messagesView addSubview:topBorder];
-        viewY += 1;
-        
-        UIView *middle = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 10)];
-        middle.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
-        [self.messagesView addSubview:middle];
-        viewY += 10;
-        
-        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
-        bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-        [self.messagesView addSubview:bottomBorder];
-        viewY += 1;
-        
         UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 120)];
+        messageView.backgroundColor = [UIColor whiteColor];
         [self.messagesView addSubview:messageView];
         
-        MFProfilePicView *messagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 10, 50, 50) facebookId:message.facebookId];
+        UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, 1)];
+        topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [messageView addSubview:topBorder];
+        
+        UIView *middle = [[UIView alloc] initWithFrame:CGRectMake(0, 1, wd, 10)];
+        middle.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        [messageView addSubview:middle];
+        
+        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 11, wd, 1)];
+        bottomBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [messageView addSubview:bottomBorder];
+        
+        MFProfilePicView *messagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 22, 50, 50) facebookId:message.facebookId];
         [messageView addSubview:messagePic];
         
-        UILabel *nameMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 15, wd - 90, 20)];
+        UILabel *nameMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 27, wd - 90, 20)];
         nameMessageLabel.text = message.name;
         [messageView addSubview:nameMessageLabel];
         
-        UILabel *dateMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 40, wd - 90, 20)];
+        UILabel *dateMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 52, wd - 90, 20)];
         dateMessageLabel.text = [MFHelpers dateDiffBySeconds:message.secondsSince];
         dateMessageLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         [messageView addSubview:dateMessageLabel];
         
-        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 80, wd - 60, 20)];
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 92, wd - 60, 20)];
         messageLabel.text = message.message;
         messageLabel.numberOfLines = 0;
         messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        messageLabel.tag = 1;
         [messageLabel sizeToFit];
         [messageView addSubview:messageLabel];
         
         int imgHt = 0;
         if(message.hasImage) {
-            UIImageView *imageView = (UIImageView *)[self.messageImageViews objectForKey:message.messageId];
-            if(imageView != nil) {
-                imageView.frame = CGRectMake(30, messageLabel.frame.size.height + 90, imageView.frame.size.width, imageView.frame.size.height);
-                
-                [messageView addSubview:imageView];
-                imgHt = imageView.frame.size.height + 20;
-                [messageView addSubview:imageView];
-            }
-            else {
-                imageView = [[UIImageView alloc] init];
-                imageView.frame = CGRectMake(60, messageLabel.frame.size.height + 90, 80, 80);
-                [imageView setImage:[UIImage imageNamed:@"portrait"]];
-                [messageView addSubview:imageView];
-                imgHt = imageView.frame.size.height + 10;
-            }
+            UIImageView *imageView = [[UIImageView alloc] init];
+            imageView.frame = CGRectMake(60, messageLabel.frame.size.height + 102, 80, 80);
+            [imageView setImage:[UIImage imageNamed:@"portrait"]];
+            [messageView addSubview:imageView];
+            imageView.tag = 2;
+            imgHt = imageView.frame.size.height + 10;
         }
         
-        if(messageLabel.frame.size.height + imgHt + 90 > messageView.frame.size.height) {
-            messageView.frame = CGRectMake(0, viewY, wd, messageLabel.frame.size.height + imgHt + 100);
+        if(messageLabel.frame.size.height + imgHt + 102 > messageView.frame.size.height) {
+            messageView.frame = CGRectMake(0, viewY, wd, messageLabel.frame.size.height + imgHt + 112);
         }
+        //Bottom border
+        Message *lastMessage = self.event.messages[self.event.messages.count - 1];
+        if([message.messageId isEqualToString:lastMessage.messageId] && !message.hasImage) {
+            UIView *topBorder2 = [[UIView alloc] initWithFrame:CGRectMake(0, messageView.frame.size.height, wd, 1)];
+            topBorder2.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+            [messageView addSubview:topBorder2];
+            
+            UIView *middle2 = [[UIView alloc] initWithFrame:CGRectMake(0, messageView.frame.size.height + 1, wd, 300)];
+            middle2.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+            [messageView addSubview:middle2];
+            messageView.frame = CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y, messageView.frame.size.width, messageView.frame.size.height + 40);
+        }
+        
         viewY += messageView.frame.size.height;
         
         [message markViewed];
     }
     
-    UIView *topBorder3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 1)];
-    topBorder3.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-    [self.messagesView addSubview:topBorder3];
-    viewY += 1;
-    
-    UIView *middle3 = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 300)];
-    middle3.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
-    [self.messagesView addSubview:middle3];
-    viewY += 30;
-    
     self.detailView.contentSize = CGSizeMake(wd, self.initialHeight + viewY);
+}
+
+-(void)refreshMessageImages {
+    int viewY = 0;
+    int i = 0;
+    for(UIView *messageView in self.messagesView.subviews) {
+        Message *message = self.event.messages[i];
+        messageView.frame = CGRectMake(0, viewY, messageView.frame.size.width, messageView.frame.size.height);
+        if(message.hasImage) {
+            int messageLabelHt = 0;
+            for(UIView *subview in messageView.subviews) {
+                if(subview.tag == 1) {
+                    messageLabelHt = subview.frame.size.height;
+                }
+            }
+            int imgHt = 0;
+            for(UIView *subview in messageView.subviews) {
+                if ([subview isMemberOfClass:[UIImageView class]] && subview.tag == 2) {
+                    UIImageView *imageView = (UIImageView *)subview;
+                    UIImageView *imageViewWithPic = (UIImageView *)[self.messageImageViews objectForKey:message.messageId];
+                    if(imageViewWithPic != nil) {
+                        [imageView setImage:imageViewWithPic.image];
+                        imageView.frame = CGRectMake(30, messageLabelHt + 102, imageViewWithPic.frame.size.width, imageViewWithPic.frame.size.height);
+                        
+                        imgHt = imageView.frame.size.height + 20;
+                    }
+                }
+            }
+            
+            if(messageLabelHt + imgHt + 102 > messageView.frame.size.height) {
+                messageView.frame = CGRectMake(0, viewY, messageView.frame.size.width, messageLabelHt + imgHt + 112);
+            }
+        }
+        viewY += messageView.frame.size.height;
+        i++;
+    }
+    
+    self.detailView.contentSize = CGSizeMake(self.detailView.frame.size.width, self.initialHeight + viewY);
 }
 
 -(void)refreshGoing
