@@ -417,7 +417,7 @@
 
 -(void)postMessageClick:(id)sender {
     MFPostMessageView *view = [[MFPostMessageView alloc] init:self.event];
-    [MFHelpers open:view onView:self];
+    [MFHelpers open:view onView:self.superview];
 }
 
 -(void)menuButtonClick:(id)sender

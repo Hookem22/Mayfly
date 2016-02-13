@@ -4,18 +4,27 @@
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "6C0B72DD6E541A45C9F3FE352351235C5E7E4722" : 0,
-    "035F48A43C46F13D3233D5DAF8633B9D011CBAEC" : 0
+    "035F48A43C46F13D3233D5DAF8633B9D011CBAEC" : 0,
+    "D0A253D1DADCE80FC532536B6959E8E0D41BC330" : 0,
+    "006B8B622F19DD7D73D63BD52534A41B5B2564FB" : 0,
+    "6C0B72DD6E541A45C9F3FE352351235C5E7E4722" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "878997C5-A46F-44C6-A3B2-37AE3950088D",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "6C0B72DD6E541A45C9F3FE352351235C5E7E4722" : "DishWish\/",
-    "035F48A43C46F13D3233D5DAF8633B9D011CBAEC" : "Mayfly\/"
+    "035F48A43C46F13D3233D5DAF8633B9D011CBAEC" : "Mayfly\/",
+    "D0A253D1DADCE80FC532536B6959E8E0D41BC330" : "azure-storage-ios\/",
+    "006B8B622F19DD7D73D63BD52534A41B5B2564FB" : "BlobExample\/",
+    "6C0B72DD6E541A45C9F3FE352351235C5E7E4722" : "DishWish\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Pow Wow",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Pow Wow.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Hookem22\/BlobExample.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "006B8B622F19DD7D73D63BD52534A41B5B2564FB"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Hookem22\/Mayfly.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
@@ -25,6 +34,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Hookem22\/DishWish.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6C0B72DD6E541A45C9F3FE352351235C5E7E4722"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Azure\/azure-storage-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D0A253D1DADCE80FC532536B6959E8E0D41BC330"
     }
   ]
 }

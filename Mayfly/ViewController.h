@@ -15,12 +15,13 @@
 
 @class MFView;
 
-@interface ViewController : UIViewController <CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate>
+@interface ViewController : UIViewController <CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property(nonatomic, strong) MFView *mainView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 -(void)sendTextMessage:(NSArray *)phoneNumbers message:(NSString *)message;
+- (void)selectMessagePhoto;
 
 @end
 

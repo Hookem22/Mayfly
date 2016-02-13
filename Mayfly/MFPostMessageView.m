@@ -11,7 +11,9 @@
 @interface MFPostMessageView ()
 
 @property (atomic, strong) Event *event;
+@property (atomic, strong) UIScrollView *contentView;
 @property (atomic, strong) UITextView *messageText;
+@property (atomic, strong) UIImageView *imageView;
 
 @end
 
@@ -30,6 +32,13 @@
 
 -(void)setup {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard:)];
+    [self addGestureRecognizer:singleTap];
+    
+    self.contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+    [self addSubview:self.contentView];
     
     [MFHelpers addTitleBar:self titleText:self.event.name];
     
@@ -42,15 +51,24 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self addGestureRecognizer:recognizer];
     
+    int viewY = 20;
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-    MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 80, 50, 50) facebookId:currentUser.facebookId];
-    [self addSubview:postMessagePic];
+    MFProfilePicView *postMessagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, viewY, 50, 50) facebookId:currentUser.facebookId];
+    [self.contentView addSubview:postMessagePic];
+    viewY += 15;
     
-    UILabel *postMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 95, wd - 90, 20)];
+    UILabel *postMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, viewY, wd - 90, 20)];
     postMessageLabel.text = currentUser.firstName;
-    [self addSubview:postMessageLabel];
+    [self.contentView addSubview:postMessageLabel];
     
-    UITextView *messageText = [[UITextView alloc] initWithFrame:CGRectMake(30, 150, wd - 60, 120)];
+    
+    UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 56, viewY, 26, 20)];
+    [imageButton setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+    [imageButton addTarget:self action:@selector(imageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:imageButton];
+    viewY += 55;
+    
+    UITextView *messageText = [[UITextView alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 120)];
     [messageText.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor]];
     [messageText.layer setBorderWidth:1.0];
     [messageText.layer setBackgroundColor:[[[UIColor grayColor] colorWithAlphaComponent:0.1] CGColor]];
@@ -58,16 +76,17 @@
     messageText.layer.cornerRadius = 5;
     messageText.clipsToBounds = YES;
     self.messageText = messageText;
-    [self addSubview:messageText];
+    [self.contentView addSubview:messageText];
     [messageText becomeFirstResponder];
+    viewY += 130;
     
-    UIButton *postButton = [[UIButton alloc] initWithFrame:CGRectMake(30, 280, wd - 60, 40)];
+    UIButton *postButton = [[UIButton alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 40)];
     [postButton setTitle:@"Post" forState:UIControlStateNormal];
     [postButton addTarget:self action:@selector(postButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [postButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
     postButton.layer.cornerRadius = 20;
     postButton.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
-    [self addSubview:postButton];
+    [self.contentView addSubview:postButton];
 }
 
 -(void)postButtonClick:(id)sender
@@ -99,6 +118,45 @@
          }];
     }
     
+    [self endEditing:YES];
+}
+
+- (void)imageButtonClick:(id)sender {
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    [vc selectMessagePhoto];
+}
+
+-(void)newImage:(UIImage *)img {
+    [self endEditing:YES];
+    
+    NSLog(@"%f, %f", img.size.height, img.size.width);
+    NSLog(@"%f, %f", self.messageText.frame.size.height, self.messageText.frame.size.width);
+    float imgWd = self.messageText.frame.size.width;
+    float imgHt = (imgWd / img.size.width) * img.size.height;
+    
+    
+    self.imageView = [[UIImageView alloc] initWithImage:img];
+    [self.imageView setFrame:CGRectMake(30, 330, imgWd, imgHt)];
+    [self.contentView addSubview:self.imageView];
+    self.contentView.contentSize = CGSizeMake(imgWd + 60, imgHt + 350);
+    
+    Message *message = [[Message alloc] init];
+    [message addImage:img];
+    
+//    CGRect aRect = CGRectMake(156, 8, 16, 16);
+//    [imageView setFrame:aRect];
+//    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(CGRectGetMinX(imageView.frame), CGRectGetMinY(imageView.frame), CGRectGetWidth(self.messageText.frame), CGRectGetHeight(imageView.frame))];
+//    self.messageText.textContainer.exclusionPaths = @[exclusionPath];
+    //[self.messageText addSubview:imageView];
+
+    
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+//    [imageView setFrame:CGRectMake(0, 0, 90, 90)];
+//    [self.messageText addSubview:imageView];
+    
+}
+
+-(void)dismissKeyboard:(id)sender {
     [self endEditing:YES];
 }
 

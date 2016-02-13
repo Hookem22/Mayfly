@@ -12,7 +12,6 @@
 
 
 - (void)loadView {
-    
     self.mainView = [[MFView alloc] init];
     self.view = self.mainView;
     
@@ -201,6 +200,34 @@
     [self.mainView setup];
     [self.mainView refreshEvents];
     //[self.mainView loadWebsite];
+}
+
+- (void)selectMessagePhoto {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = NO;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    //self.imageView.image = chosenImage;
+    
+    for(UIView *subview in self.mainView.subviews) {
+        if([subview isMemberOfClass:[MFPostMessageView class]]){
+            MFPostMessageView *view = (MFPostMessageView *)subview;
+            [view newImage:chosenImage];
+        }
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

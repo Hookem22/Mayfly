@@ -32,7 +32,7 @@
         self.name = [message objectForKey:@"name"];
         self.message = [message objectForKey:@"message"];
         self.secondsSince = [[message objectForKey:@"Seconds"] isMemberOfClass:[NSNull class]] ? 0 : [[message objectForKey:@"Seconds"] intValue];
-        self.viewedBy = [message objectForKey:@"viewedby"];
+        self.viewedBy = [[message objectForKey:@"viewedby"] isMemberOfClass:[NSNull class]] ? @"" : [message objectForKey:@"viewedby"];
         self.sentDate = [message objectForKey:@"__createdAt"];
     }
     return self;
@@ -96,7 +96,12 @@
         self.viewedBy = [NSString stringWithFormat:@"%@|%@", self.viewedBy, currentUser.userId];
         [self save:^(Message *message) {}];
     }
-    
+}
+
+-(void)addImage:(UIImage *)image {
+    [QSAzureImageService uploadImage:@"messages" image:image name:@"Test" completionHandler:^(NSURL *url) {
+        NSLog(@"%@", url);
+    }];
 }
 
 @end

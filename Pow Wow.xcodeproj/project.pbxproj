@@ -115,6 +115,10 @@
 		48028D141C6C0A340060A4E8 /* appscreenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48028D111C6C0A340060A4E8 /* appscreenshot1.png */; };
 		48028D151C6C0A340060A4E8 /* appscreenshot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48028D121C6C0A340060A4E8 /* appscreenshot2.png */; };
 		48028D161C6C0A340060A4E8 /* appscreenshot3.png in Resources */ = {isa = PBXBuildFile; fileRef = 48028D131C6C0A340060A4E8 /* appscreenshot3.png */; };
+		48028D591C6E7AF70060A4E8 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 48028D581C6E7AF70060A4E8 /* camera.png */; };
+		48028DF11C6EAB0F0060A4E8 /* QSAzureImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48028DF01C6EAB0F0060A4E8 /* QSAzureImageService.m */; };
+		48028EE81C6EB4460060A4E8 /* Azure Storage Client Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48028EE71C6EB4460060A4E8 /* Azure Storage Client Library.framework */; };
+		48028EEA1C6EB58F0060A4E8 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 48028EE91C6EB58F0060A4E8 /* libxml2.2.tbd */; };
 		48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D0B1B262DB600B4EE08 /* PushMessage.m */; };
 		48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D101B277BAE00B4EE08 /* MFProfilePicView.m */; };
 		48185D1C1B28BF8F00B4EE08 /* face1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D141B28BF8F00B4EE08 /* face1@2x.png */; };
@@ -346,6 +350,12 @@
 		48028D111C6C0A340060A4E8 /* appscreenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appscreenshot1.png; sourceTree = "<group>"; };
 		48028D121C6C0A340060A4E8 /* appscreenshot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appscreenshot2.png; sourceTree = "<group>"; };
 		48028D131C6C0A340060A4E8 /* appscreenshot3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appscreenshot3.png; sourceTree = "<group>"; };
+		48028D581C6E7AF70060A4E8 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		48028DEF1C6EAB0F0060A4E8 /* QSAzureImageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAzureImageService.h; sourceTree = "<group>"; };
+		48028DF01C6EAB0F0060A4E8 /* QSAzureImageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAzureImageService.m; sourceTree = "<group>"; };
+		48028E6A1C6EAEFF0060A4E8 /* Azure Storage Client Library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Azure Storage Client Library.framework"; path = "../Desktop/Azure Storage Client Library.framework"; sourceTree = "<group>"; };
+		48028EE71C6EB4460060A4E8 /* Azure Storage Client Library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Azure Storage Client Library.framework"; path = "../Documents/Azure Storage Client Library.framework"; sourceTree = "<group>"; };
+		48028EE91C6EB58F0060A4E8 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		48185D0A1B262DB600B4EE08 /* PushMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushMessage.h; sourceTree = "<group>"; };
 		48185D0B1B262DB600B4EE08 /* PushMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushMessage.m; sourceTree = "<group>"; };
 		48185D0F1B277BAE00B4EE08 /* MFProfilePicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFProfilePicView.h; sourceTree = "<group>"; };
@@ -507,6 +517,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48028EEA1C6EB58F0060A4E8 /* libxml2.2.tbd in Frameworks */,
+				48028EE81C6EB4460060A4E8 /* Azure Storage Client Library.framework in Frameworks */,
 				48CC80521B38B9FD0098412E /* WindowsAzureMobileServices.framework in Frameworks */,
 				48C5BF1B1C3DEF070036C9B1 /* FBSDKCoreKit.framework in Frameworks */,
 				48C5BF1D1C3DEF140036C9B1 /* FBSDKLoginKit.framework in Frameworks */,
@@ -722,6 +734,7 @@
 				48C102401C6AF8BF005216A0 /* add@2x.png */,
 				48028CEE1C6BE6310060A4E8 /* addevent.png */,
 				48028CF21C6BE8210060A4E8 /* addgroup.png */,
+				48028D581C6E7AF70060A4E8 /* camera.png */,
 				48028D111C6C0A340060A4E8 /* appscreenshot1.png */,
 				48028D121C6C0A340060A4E8 /* appscreenshot2.png */,
 				48028D131C6C0A340060A4E8 /* appscreenshot3.png */,
@@ -830,6 +843,8 @@
 				4886CA071B0BBBF700909747 /* QSAzureService.m */,
 				48CC80531B38C15B0098412E /* QSAzureMessageService.h */,
 				48CC80541B38C15B0098412E /* QSAzureMessageService.m */,
+				48028DEF1C6EAB0F0060A4E8 /* QSAzureImageService.h */,
+				48028DF01C6EAB0F0060A4E8 /* QSAzureImageService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -866,6 +881,9 @@
 		4886CA0A1B0BBDC600909747 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48028EE91C6EB58F0060A4E8 /* libxml2.2.tbd */,
+				48028EE71C6EB4460060A4E8 /* Azure Storage Client Library.framework */,
+				48028E6A1C6EAEFF0060A4E8 /* Azure Storage Client Library.framework */,
 				48C5BF1C1C3DEF140036C9B1 /* FBSDKLoginKit.framework */,
 				48C5BF1A1C3DEF070036C9B1 /* FBSDKCoreKit.framework */,
 				48DF69601B60126B00DCCE58 /* Branch.framework */,
@@ -1052,6 +1070,7 @@
 				48185D1E1B28BF8F00B4EE08 /* face3@2x.png in Resources */,
 				48028CBB1C6BA6A60060A4E8 /* Lightning.png in Resources */,
 				485AB36D1C20BA2C0035C79D /* grayadd.png in Resources */,
+				48028D591C6E7AF70060A4E8 /* camera.png in Resources */,
 				485AB3721C20BA2C0035C79D /* smallmenu.png in Resources */,
 				48028CDD1C6BA6A60060A4E8 /* Telescope.png in Resources */,
 				485AB3751C20BA2C0035C79D /* whiteMenu.png in Resources */,
@@ -1189,6 +1208,7 @@
 				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				485AB37C1C2348130035C79D /* EventGoing.m in Sources */,
+				48028DF11C6EAB0F0060A4E8 /* QSAzureImageService.m in Sources */,
 				48C5BEFB1C3331820036C9B1 /* MFCreateGroupView.m in Sources */,
 				48185D481B2B517B00B4EE08 /* MFProgressView.m in Sources */,
 				4890BB9B1B0D074800F2DE8D /* MFEventsView.m in Sources */,
@@ -1341,7 +1361,9 @@
 					"$(PROJECT_DIR)",
 					/Users/willparks/Documents/FacebookSDK,
 					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
+					/Users/willparks/Documents,
 				);
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1364,7 +1386,9 @@
 					"$(PROJECT_DIR)",
 					/Users/willparks/Documents/FacebookSDK,
 					"/Users/willparks/Downloads/azuresdk-iOS-v1.2.4",
+					/Users/willparks/Documents,
 				);
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Mayfly/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -68,7 +68,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mayfly/QSAzureService.m"
-            timestampString = "476055635.648411"
+            timestampString = "477017886.452301"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "111"
@@ -355,13 +355,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mayfly/Message.m"
-            timestampString = "477000566.268378"
+            filePath = "Mayfly/ViewController.m"
+            timestampString = "477019939.088911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "-isViewed"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -371,13 +371,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mayfly/Message.m"
-            timestampString = "477000567.516665"
+            filePath = "Mayfly/ViewController.m"
+            timestampString = "477019939.088911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "-markViewed"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "-selectMessagePhoto"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -387,30 +387,46 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mayfly/Message.m"
-            timestampString = "477000597.867666"
+            filePath = "Mayfly/ViewController.m"
+            timestampString = "477019939.088911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-isViewed"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Mayfly/Message.m"
-            timestampString = "477000632.99484"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "-markViewed"
-            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ViewController imagePickerController:didFinishPickingMediaWithInfo:]"
+                  moduleName = "Pow Wow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/willparks/Mayfly/Mayfly/ViewController.m"
+                  timestampString = "477007487.192046"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "220"
+                  endingLineNumber = "220"
+                  offsetFromSymbolStart = "154">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ViewController imagePickerController:didFinishPickingMediaWithInfo:]"
+                  moduleName = "Pow Wow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/willparks/Mayfly/Mayfly/ViewController.m"
+                  timestampString = "477007487.192303"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "220"
+                  endingLineNumber = "220"
+                  offsetFromSymbolStart = "172">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

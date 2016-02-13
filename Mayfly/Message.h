@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QSAzureService.h"
+#import "QSAzureImageService.h"
 #import "Session.h"
 
 @interface Message : NSObject
@@ -27,5 +28,6 @@
 -(void)save:(QSCompletionBlock)completion;
 -(bool)isViewed;
 -(void)markViewed;
+-(void)addImage:(UIImage *)image;
 
 @end

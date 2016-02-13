@@ -14,5 +14,6 @@
 @interface MFPostMessageView : UIView
 
 -(id)init:(Event *)event;
+-(void)newImage:(UIImage *)img;
 
 @end
