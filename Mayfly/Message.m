@@ -20,6 +20,7 @@
 @synthesize secondsSince = _secondsSince;
 @synthesize viewedBy = _viewedBy;
 @synthesize sentDate = _sentDate;
+@synthesize hasImage = _hasImage;
 
 -(id)init:(NSDictionary *)message
 {
@@ -34,6 +35,7 @@
         self.secondsSince = [[message objectForKey:@"Seconds"] isMemberOfClass:[NSNull class]] ? 0 : [[message objectForKey:@"Seconds"] intValue];
         self.viewedBy = [[message objectForKey:@"viewedby"] isMemberOfClass:[NSNull class]] ? @"" : [message objectForKey:@"viewedby"];
         self.sentDate = [message objectForKey:@"__createdAt"];
+        self.hasImage = [[message objectForKey:@"hasimage"] isMemberOfClass:[NSNull class]] ? NO : [[message objectForKey:@"hasimage"] boolValue];
     }
     return self;
 }
@@ -60,7 +62,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Message"];
     
-    NSDictionary *dict = @{@"eventid": self.eventId, @"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"viewedby": self.viewedBy };
+    NSDictionary *dict = @{@"eventid": self.eventId, @"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"viewedby": self.viewedBy, @"hasimage": [NSNumber numberWithBool:self.hasImage] };
     
     if([self.messageId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [dict mutableCopy];
@@ -98,9 +100,9 @@
     }
 }
 
--(void)addImage:(UIImage *)image {
-    [QSAzureImageService uploadImage:@"messages" image:image name:@"Test" completionHandler:^(NSURL *url) {
-        NSLog(@"%@", url);
+-(void)addImage:(UIImage *)image completion:(QSCompletionBlock)completion {
+    [QSAzureImageService uploadImage:@"messages" image:image name:self.messageId completionHandler:^(NSURL *url) {
+        completion([NSString stringWithFormat:@"%@", url]);
     }];
 }
 

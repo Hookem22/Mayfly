@@ -91,7 +91,7 @@
 
 -(void)postButtonClick:(id)sender
 {
-    if([self.messageText.text length] > 0)
+    if([self.messageText.text length] > 0 || self.imageView != nil)
     {
         [MFHelpers showProgressView:self];
         
@@ -105,20 +105,45 @@
         message.message = self.messageText.text;
         message.viewedBy = currentUser.userId;
         message.sentDate = [NSDate date];
+        message.hasImage = self.imageView != nil;
         
         [message save:^(Message *newMessage)
          {
-             MFDetailView *detailView = (MFDetailView *)self.superview;
-             [detailView initialSetup:self.event];
-
-             [MFHelpers hideProgressView:self];
-             [MFHelpers close:self];
-             
-              [self.event sendMessageToEvent:[NSString stringWithFormat:@"%@: %@", currentUser.firstName, message.message] info:[NSString stringWithFormat: @"New Message|%@", message.eventId]];
+             if(newMessage.hasImage){
+                 [newMessage addImage:self.imageView.image completion:^(NSURL *url) {
+                     [self refreshEvent:message];
+                 }];
+             }
+             else {
+                 [self refreshEvent:message];
+             }
          }];
     }
     
     [self endEditing:YES];
+}
+
+-(void)refreshEvent:(Message *)message {
+    message.secondsSince = 0;
+    NSMutableArray *messages = [[NSMutableArray alloc] init];
+    [messages addObject:message];
+    for(Message *m in self.event.messages) {
+        [messages addObject:m];
+    }
+    self.event.messages = messages;
+    
+    for(UIView *subview in self.superview.subviews) {
+        if([subview isMemberOfClass:[MFDetailView class]]) {
+            MFDetailView *detailView = (MFDetailView *)subview;
+            [detailView initialSetup:self.event refresh:NO];
+        }
+    }
+
+    [MFHelpers hideProgressView:self];
+    [MFHelpers close:self];
+    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    [self.event sendMessageToEvent:[NSString stringWithFormat:@"%@: %@", currentUser.firstName, message.message] info:[NSString stringWithFormat: @"New Message|%@", message.eventId]];
 }
 
 - (void)imageButtonClick:(id)sender {
@@ -129,31 +154,13 @@
 -(void)newImage:(UIImage *)img {
     [self endEditing:YES];
     
-    NSLog(@"%f, %f", img.size.height, img.size.width);
-    NSLog(@"%f, %f", self.messageText.frame.size.height, self.messageText.frame.size.width);
     float imgWd = self.messageText.frame.size.width;
     float imgHt = (imgWd / img.size.width) * img.size.height;
-    
     
     self.imageView = [[UIImageView alloc] initWithImage:img];
     [self.imageView setFrame:CGRectMake(30, 330, imgWd, imgHt)];
     [self.contentView addSubview:self.imageView];
     self.contentView.contentSize = CGSizeMake(imgWd + 60, imgHt + 350);
-    
-    Message *message = [[Message alloc] init];
-    [message addImage:img];
-    
-//    CGRect aRect = CGRectMake(156, 8, 16, 16);
-//    [imageView setFrame:aRect];
-//    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(CGRectGetMinX(imageView.frame), CGRectGetMinY(imageView.frame), CGRectGetWidth(self.messageText.frame), CGRectGetHeight(imageView.frame))];
-//    self.messageText.textContainer.exclusionPaths = @[exclusionPath];
-    //[self.messageText addSubview:imageView];
-
-    
-//    UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
-//    [imageView setFrame:CGRectMake(0, 0, 90, 90)];
-//    [self.messageText addSubview:imageView];
-    
 }
 
 -(void)dismissKeyboard:(id)sender {

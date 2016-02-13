@@ -22,12 +22,13 @@
 @property (nonatomic, assign) NSInteger secondsSince;
 @property (nonatomic, copy) NSString *viewedBy;
 @property (nonatomic, copy) NSDate *sentDate;
+@property (nonatomic, assign) BOOL hasImage;
 
 -(id)init:(NSDictionary *)message;
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 -(bool)isViewed;
 -(void)markViewed;
--(void)addImage:(UIImage *)image;
+-(void)addImage:(UIImage *)image completion:(QSCompletionBlock)completion;
 
 @end

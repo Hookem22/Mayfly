@@ -10,8 +10,7 @@
 
 @implementation ViewController
 
-
-- (void)loadView {
+-(void)loadView {
     self.mainView = [[MFView alloc] init];
     self.view = self.mainView;
     

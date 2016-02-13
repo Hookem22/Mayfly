@@ -27,32 +27,32 @@
     // Get a reference to a container
     AZSCloudBlobContainer *blobContainer = [blobClient containerReferenceFromName:container];
     
-    // Ensure that the container exists
-    [blobContainer createContainerWithAccessType:AZSContainerPublicAccessTypeBlob
-                                  requestOptions:[blobClient defaultRequestOptions] operationContext:nil completionHandler:^(NSError * _Nullable createError) {
-                                      
-                                      // Validate response
-                                      if (createError != nil) {
-                                          NSString *errorCode= [createError.userInfo valueForKey:@"Code"];
-                                          
-                                          // Unless it was a ContainerAlreadyExists error - return
-                                          if (![errorCode isEqualToString:@"ContainerAlreadyExists"]) {
-                                              NSLog(@"Error: %@", errorCode);
-                                              return;
-                                          }
-                                      }
-                                      
-                                      // Get the block blob reference
-                                      AZSCloudBlockBlob *blob = [blobContainer blockBlobReferenceFromName:blobName];
-                                      
-                                      // Upload data
-                                      [blob uploadFromData:data completionHandler:^(NSError * _Nullable uploadError) {
-                                          // Call the callback
-                                          completionHandler(uploadError == nil
-                                                            ? blob.storageUri.primaryUri
-                                                            : nil);
-                                      }];
-                                  }];
+//    // Ensure that the container exists
+//    [blobContainer createContainerWithAccessType:AZSContainerPublicAccessTypeBlob
+//                                  requestOptions:[blobClient defaultRequestOptions] operationContext:nil completionHandler:^(NSError * _Nullable createError) {
+//                                      
+//                                      // Validate response
+//                                      if (createError != nil) {
+//                                          NSString *errorCode= [createError.userInfo valueForKey:@"Code"];
+//                                          
+//                                          // Unless it was a ContainerAlreadyExists error - return
+//                                          if (![errorCode isEqualToString:@"ContainerAlreadyExists"]) {
+//                                              NSLog(@"Error: %@", errorCode);
+//                                              return;
+//                                          }
+//                                      }
+    
+    // Get the block blob reference
+    AZSCloudBlockBlob *blob = [blobContainer blockBlobReferenceFromName:blobName];
+
+    // Upload data
+    [blob uploadFromData:data completionHandler:^(NSError * _Nullable uploadError) {
+      // Call the callback
+      completionHandler(uploadError == nil
+                        ? blob.storageUri.primaryUri
+                        : nil);
+    }];
+                                  //}];
 }
 
 //

@@ -83,11 +83,11 @@
     [detailView addSubview:joinButton];
     
     if(group.pictureUrl.length > 0) {
-         MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(30, 20, 70, 70) url:group.pictureUrl];
-         [detailView addSubview:pic];
+        MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(30, 20, 70, 70) url:group.pictureUrl];
+        [detailView addSubview:pic];
          
-         detailsLabel.frame = CGRectMake(120, 20, wd - 140, 20);
-         joinButton.frame = CGRectMake(120, 60, wd - 140, 40);
+        detailsLabel.frame = CGRectMake(120, 20, wd - 140, 20);
+        joinButton.frame = CGRectMake(120, 60, wd - 140, 40);
     }
 
     if(![group isMember])

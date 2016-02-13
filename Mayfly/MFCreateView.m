@@ -434,7 +434,7 @@
              if([self.superview isMemberOfClass:[MFDetailView class]])
              {
                  MFDetailView *detailView = (MFDetailView *)self.superview;
-                 [detailView initialSetup:event];
+                 [detailView initialSetup:event refresh:YES];
                  
                  if([self.superview.superview isMemberOfClass:[MFView class]])
                  {

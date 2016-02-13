@@ -21,6 +21,6 @@
 -(id)init:(Event *)event;
 -(void)refreshGoing;
 -(void)addGroupsToEvent:(NSArray *)groups;
--(void)initialSetup:(Event *)event;
+-(void)initialSetup:(Event *)event refresh:(BOOL)refresh;
 
 @end
