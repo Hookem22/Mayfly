@@ -254,6 +254,7 @@
     int col = tag / 3;
     
     self.selectedView.frame = CGRectMake(col * iconHeight, row * iconHeight, imgHeight + 10, imgHeight + 10);
+    [self dismissKeyboard:nil];
 }
 
 -(void)addFriendsButtonClick:(id)sender

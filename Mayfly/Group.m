@@ -1,3 +1,4 @@
+
 //
 //  Group.m
 //  Pow Wow
@@ -23,6 +24,7 @@
 @synthesize locations = _locations;
 @synthesize orderBy = _orderBy;
 @synthesize tagId = _tagId;
+@synthesize hasImage = _hasImage;
 
 -(id)init:(NSDictionary *)group {
     self = [super init];
@@ -39,6 +41,9 @@
         self.password = [group valueForKey:@"password"];
         self.orderBy = [[group objectForKey:@"orderby"] isMemberOfClass:[NSNull class]] ? 0 : [[group objectForKey:@"orderby"] intValue];
         self.isInvitedtoEvent = NO;
+        self.hasImage = [[group objectForKey:@"hasimage"] isMemberOfClass:[NSNull class]] ? NO : [[group objectForKey:@"hasimage"] boolValue];
+        if(self.hasImage)
+            self.pictureUrl = [NSString stringWithFormat:@"https://mayflyapp.blob.core.windows.net/groups/%@.jpeg", self.groupId];
     }
     return self;
 }
@@ -182,7 +187,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Group"];
     
-    NSDictionary *group = @{@"name": self.name, @"description": self.description, @"pictureurl": self.pictureUrl, @"schoolid": self.schoolId, @"latitude": [NSNumber numberWithDouble:self.latitude], @"longitude": [NSNumber numberWithDouble:self.longitude], @"ispublic": [NSNumber numberWithBool:self.isPublic], @"password": self.password, @"orderBy": [NSNumber numberWithInt:self.orderBy] };
+    NSDictionary *group = @{@"name": self.name, @"description": self.description, @"pictureurl": self.pictureUrl, @"schoolid": self.schoolId, @"latitude": [NSNumber numberWithDouble:self.latitude], @"longitude": [NSNumber numberWithDouble:self.longitude], @"ispublic": [NSNumber numberWithBool:self.isPublic], @"password": self.password, @"hasimage": [NSNumber numberWithBool:self.hasImage] }; //, @"orderBy": [NSNumber numberWithInt:self.orderBy] };
     
     if([self.groupId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [group mutableCopy];
@@ -197,6 +202,8 @@
         [service addItem:group completion:^(NSDictionary *item)
          {
              self.groupId = [item objectForKey:@"id"];
+             if(self.hasImage)
+                 self.pictureUrl = [NSString stringWithFormat:@"https://mayflyapp.blob.core.windows.net/groups/%@.jpeg", self.groupId];
              completion(self);
          }];
     }
@@ -304,10 +311,16 @@
     [self getMembers:^(NSArray *members) {
         for(GroupUsers *member in members) {
             if(![member.userId isEqualToString:currentUser.userId]) {
-                
                 [PushMessage push:member.userId message:message info:info];
             }
         }
+    }];
+}
+
+-(void)addImage:(UIImage *)image completion:(QSCompletionBlock)completion {
+    [QSAzureImageService uploadImage:@"groups" image:image name:self.groupId completionHandler:^(NSURL *url) {
+        self.pictureUrl = [NSString stringWithFormat:@"%@", url];
+        completion(self);
     }];
 }
 

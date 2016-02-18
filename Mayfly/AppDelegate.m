@@ -12,7 +12,7 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) NSString *eventId;
+
 
 @end
 
@@ -54,7 +54,19 @@
 //                                                                             categories:nil];
 //    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 //    [[UIApplication sharedApplication] registerForRemoteNotifications];
-//    
+//
+    //Send to event on app launch
+    if (launchOptions) {
+        NSDictionary *userInfo = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
+        
+        if (apsInfo) {
+            
+            NSString *event = [apsInfo valueForKey:@"message"];
+            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+        }
+    }
+
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                didFinishLaunchingWithOptions:launchOptions];
 }
@@ -193,19 +205,18 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
 //    NSLog(@"%@", userInfo);
 //    
-//    NSDictionary *message = [userInfo objectForKey:@"aps"];
-//    if(message)
-//    {
-//        NSString *event = [message valueForKey:@"message"];
-//        if(event && [event rangeOfString:@"|"].location != NSNotFound)
-//        {
-//            NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
-//            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
-//            
-//            [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
-//        }
-//    }
-    
+    NSDictionary *message = [userInfo objectForKey:@"aps"];
+    if(message)
+    {
+        NSString *event = [message valueForKey:@"message"];
+        if(event && [event rangeOfString:@"|"].location != NSNotFound)
+        {
+            NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
+            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+            
+            [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+        }
+    }
 }
 
 -(void)MessageBox:(NSString *)title message:(NSString *)messageText
@@ -218,22 +229,24 @@
     [alert show];
 }
 
-//-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    switch(buttonIndex) {
-//        case 0: //"No" pressed
-//            break;
-//        case 1: //"Yes" pressed
-//            if([alertView.title rangeOfString:@"Message"].location != NSNotFound)
-//                [self openEvent:YES];
-//            else
-//                [self openEvent:NO];
-//            break;
-//    }
-//}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0: //"No" pressed
+            break;
+        case 1: //"Yes" pressed
+            [self openEvent];
+            break;
+    }
+}
 
-//-(void)openEvent:(BOOL)toMessaging
-//{
+-(void)openEvent
+{
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    MFView *mfView = (MFView *)vc.mainView;
+    [mfView goToEvent:self.eventId];
+    self.eventId = @"";
+    
 //    ViewController *vc = (ViewController *)self.window.rootViewController;
 //    MFView *mfView = (MFView *)vc.mainView;
 //    //[mfView openEvent:self.eventId toMessaging:toMessaging];
@@ -242,8 +255,8 @@
 //    [Event get:self.eventId completion:^(Event *event) {
 //        [mfView goToEvent:event.referenceId];
 //    }];
-//    
-//}
+    
+}
 
 // We are registered, so now store the device token (as a string) on the AppDelegate instance
 // taking care to remove the angle brackets first.

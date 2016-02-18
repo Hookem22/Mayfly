@@ -412,8 +412,12 @@
 {
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     for(EventGoing *eg in self.going) {
-        if(![eg.userId isEqualToString:currentUser.userId])
+        if(![eg.userId isEqualToString:currentUser.userId]) {
             [PushMessage push:eg.userId message:message info:info];
+            
+            Notification *notification = [[Notification alloc] init: @{ @"userid": eg.userId, @"eventid": eg.eventId, @"message": message }];
+            [notification save:^(Notification *notification) { }];
+        }
     }
 }
 

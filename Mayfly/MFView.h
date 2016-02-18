@@ -12,13 +12,13 @@
 #import "MFEventsView.h"
 #import "MFCreateView.h"
 #import "MFLoginView.h"
-#import "MFNotificationView.h"
+#import "MFSidebarView.h"
 #import "MFHelpers.h"
 #import "MFGroupView.h"
 #import "MFInstructionsView.h"
 #import "MFAddButtonView.h"
 
-@interface MFView : UIView <UIWebViewDelegate>
+@interface MFView : UIView
 
 @property (nonatomic, strong) UIView *addView;
 
@@ -28,5 +28,6 @@
 -(void)scrollDown;
 -(void)eventsButtonClick;
 -(void)interestsButtonClick;
+-(void)goToEvent:(NSString *)eventId;
 
 @end

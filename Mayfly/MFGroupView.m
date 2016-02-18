@@ -80,6 +80,31 @@
      }];
 }
 
+-(void)addInterest:(Group *)newGroup {
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    int tag = 0;
+    for(int i = 0; i < self.Groups.count; i++) {
+        Group *group = self.Groups[i];
+        if (i > 4) {
+            Group *prevGroup = self.Groups[i - 1];
+            if(([prevGroup.name compare:newGroup.name] == NSOrderedAscending && [newGroup.name compare:group.name] == NSOrderedAscending) || (i == 5 && [newGroup.name compare:group.name] == NSOrderedAscending)) {
+                newGroup.tagId = tag;
+                tag++;
+                [groups addObject:newGroup];
+            }
+        }
+        group.tagId = tag;
+        [groups addObject:group];
+        if(i == self.Groups.count - 1 && [group.name compare:newGroup.name] == NSOrderedAscending) {
+            newGroup.tagId = tag + 1;
+            [groups addObject:newGroup];
+        }
+        tag++;
+    }
+    self.Groups = groups;
+    [self populateAllInterests];
+}
+
 -(void)populateAllInterests {
     [self populateInterests:self.Groups];
 }

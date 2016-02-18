@@ -18,6 +18,6 @@
 -(void)loadGroups;
 -(void)populateAllInterests;
 -(void)populateMyInterests;
-
+-(void)addInterest:(Group *)group;
 
 @end

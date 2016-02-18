@@ -41,10 +41,23 @@
     //[eventsView loadEvents];
     [self addSubview:eventsView];
     
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if(appDelegate.eventId.length > 0) {
+        [eventsView goToEvent:appDelegate.eventId];
+        [MFHelpers hideProgressView:self.superview];
+        appDelegate.eventId = @"";
+    }
+    
     MFGroupView *groupView = [[MFGroupView alloc] init];
     groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
     [groupView loadGroups];
     [self addSubview:groupView];
+    
+    [self addAddView];
+    
+    MFNotificationsView *notificationsView = [[MFNotificationsView alloc] init];
+    notificationsView.frame = CGRectMake(wd, 60, wd, ht - 60);
+    [self addSubview:notificationsView];
     
     [MFHelpers addTitleBar:self titleText:@""];
     
@@ -62,11 +75,9 @@
 //    [groupRecognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
 //    [self addGestureRecognizer:groupRecognizer];
     
-    [self addAddView];
-    
-    MFNotificationView *notificationView = [[MFNotificationView alloc] init];
-    notificationView.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
-    [self addSubview:notificationView];
+    MFSidebarView *sidebarView = [[MFSidebarView alloc] init];
+    sidebarView.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
+    [self addSubview:sidebarView];
     
     UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(12, 28, 25, 25)];
     [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
@@ -113,10 +124,10 @@
             MFEventsView *eventsView = (MFEventsView *)subview;
             [eventsView loadEvents];
         }
-        else if([subview isMemberOfClass:[MFNotificationView class]])
+        else if([subview isMemberOfClass:[MFSidebarView class]])
         {
-            MFNotificationView *notificationView = (MFNotificationView *)subview;
-            [notificationView setup];
+            MFSidebarView *sidebarView = (MFSidebarView *)subview;
+            [sidebarView setup];
         }
     }
 }
@@ -199,39 +210,47 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    MFNotificationView *notificationView;
+    MFSidebarView *sidebarView;
     MFGroupView *groupView;
     MFEventsView *eventsView;
+    MFNotificationsView *notificationsView;
     for(UIView *subview in self.subviews)
     {
-        if([subview isMemberOfClass:[MFNotificationView class]])
-            notificationView = (MFNotificationView *)subview;
+        if([subview isMemberOfClass:[MFSidebarView class]])
+            sidebarView = (MFSidebarView *)subview;
         else if([subview isMemberOfClass:[MFEventsView class]])
             eventsView = (MFEventsView *)subview;
         else if([subview isMemberOfClass:[MFGroupView class]])
             groupView = (MFGroupView *)subview;
+        else if([subview isMemberOfClass:[MFNotificationsView class]])
+            notificationsView = (MFNotificationsView *)subview;
     }
     
-    CGRect notificationFrame = CGRectMake((int)(-1 * wd), 60, wd, ht- 60);
+    CGRect sidebarFrame = CGRectMake((int)(-1 * wd), 60, wd, ht- 60);
     CGRect eventFrame = CGRectMake(0, 60, wd, ht - 60);
     CGRect addFrame = CGRectMake(0, ht-60, wd, 60);
-    if(notificationView.frame.origin.x < 0) {
+    if(sidebarView.frame.origin.x < 0) {
         //[notificationView loadNotifications];
-        notificationFrame = CGRectMake(0, 60, wd, ht- 60);
+        sidebarFrame = CGRectMake(0, 60, wd, ht- 60);
         eventFrame = CGRectMake((wd * 3) / 4, 60, wd, ht - 60);
         addFrame = CGRectMake((wd * 3) / 4, ht-60, wd, 60);
     }
     
     [UIView animateWithDuration:0.3
                      animations:^{
-                         notificationView.frame = notificationFrame;
+                         sidebarView.frame = sidebarFrame;
                          eventsView.frame = eventFrame;
                          self.addView.frame = addFrame;
                          if(groupView.frame.origin.x < wd) {
                              groupView.frame = eventFrame;
                          }
+                         if(notificationsView.frame.origin.x < wd) {
+                             notificationsView.frame = eventFrame;
+                         }
                      }
-                     completion:^(BOOL finished){ }];
+                     completion:^(BOOL finished){
+                         [sidebarView loadUserPoints];
+                     }];
 
 }
 
@@ -380,6 +399,10 @@
             MFGroupView *groupView = (MFGroupView *)subview;
             groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
         }
+        if([subview isMemberOfClass:[MFNotificationsView class]]) {
+            MFNotificationsView *notificationsView = (MFNotificationsView *)subview;
+            notificationsView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
     }
     for(UIView *subview in self.addView.subviews)
     {
@@ -410,6 +433,10 @@
                     }
                     completion:^(BOOL finished){ }];
         }
+        if([subview isMemberOfClass:[MFNotificationsView class]]) {
+            MFNotificationsView *notificationsView = (MFNotificationsView *)subview;
+            notificationsView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
     }
     for(UIView *subview in self.addView.subviews)
     {
@@ -424,6 +451,16 @@
     }
 
     [self filter:0];
+}
+
+-(void)goToEvent:(NSString *)eventId {
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFEventsView class]]) {
+            MFEventsView *eventsView = (MFEventsView *)subview;
+            [eventsView goToEvent:eventId];
+        }
+    }
 }
 
 //-(void)eventsButtonClick:(id)sender {

@@ -15,21 +15,21 @@
     self.view = self.mainView;
     
     //Default to St. Edward's
-//    Location *location = [[Location alloc] init];
-//    location.latitude = 30.2290; //St. Edward's
-//    location.longitude = -97.7560;
-//    [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
-//    
-//    NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
-//    [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
-
     Location *location = [[Location alloc] init];
-    location.latitude = 0.1; //Test
-    location.longitude = 0.1;
+    location.latitude = 30.2290; //St. Edward's
+    location.longitude = -97.7560;
     [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
     
-    NSDictionary *schoolDict = @{@"id": @"32F991FE-15A0-4436-8CD2-C46413ABB1CA", @"name": @"Test School", @"latitude": @"0", @"longitude": @"0" };
+    NSDictionary *schoolDict = @{@"id": @"E1668987-C219-484C-B5BB-1ACACDCADE17", @"name": @"St. Edward's", @"latitude": @"30.231", @"longitude": @"-97.758" };
     [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
+
+//    Location *location = [[Location alloc] init];
+//    location.latitude = 0.1; //Test
+//    location.longitude = 0.1;
+//    [[Session sessionVariables] setObject:location forKey:@"currentLocation"];
+//    
+//    NSDictionary *schoolDict = @{@"id": @"32F991FE-15A0-4436-8CD2-C46413ABB1CA", @"name": @"Test School", @"latitude": @"0", @"longitude": @"0" };
+//    [[Session sessionVariables] setObject:[[School alloc] init: schoolDict] forKey:@"currentSchool"];
     
     [self.mainView setup];
     
@@ -213,11 +213,14 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
-    //self.imageView.image = chosenImage;
     
     for(UIView *subview in self.mainView.subviews) {
         if([subview isMemberOfClass:[MFPostMessageView class]]){
             MFPostMessageView *view = (MFPostMessageView *)subview;
+            [view newImage:chosenImage];
+        }
+        else if([subview isMemberOfClass:[MFCreateGroupView class]]) {
+            MFCreateGroupView *view = (MFCreateGroupView *)subview;
             [view newImage:chosenImage];
         }
     }

@@ -17,6 +17,8 @@
 @property (nonatomic, strong) MFPillButton *publicButton;
 @property (nonatomic, strong) UITextField *passwordText;
 @property (nonatomic, strong) UITextField *pictureUrlText;
+@property (nonatomic, strong) UIView *pictureBackground;
+@property (nonatomic, strong) UIImageView *pictureView;
 
 @end
 
@@ -120,6 +122,17 @@
     self.passwordText = passwordText;
     [createView addSubview:passwordText];
     
+    self.pictureBackground = [[UIView alloc] initWithFrame:CGRectMake(90, 280, wd - 180, 80)];
+    self.pictureBackground.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    self.pictureBackground.layer.cornerRadius = 5.0;
+    [createView addSubview:self.pictureBackground];
+    
+    UIButton *pictureButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 30, wd - 180, 20)];
+    [pictureButton setTitle:@"Add Picture" forState:UIControlStateNormal];
+    pictureButton.titleLabel.textColor = [UIColor whiteColor];
+    [pictureButton addTarget:self action:@selector(pictureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.pictureBackground addSubview:pictureButton];
+    
     UIView *topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 60, wd, 2)];
     topBorder.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [createView addSubview:topBorder];
@@ -143,7 +156,55 @@
             [self.publicButton switchButton];
         if(self.group.password.length > 0)
             self.passwordText.text = self.group.password;
+        
+        if(self.group.hasImage || self.group.pictureUrl.length > 0)
+        {
+            self.pictureBackground.frame = CGRectMake(90, 360, wd - 180, 40);
+            for(UIView *subview in self.pictureBackground.subviews) {
+                if([subview isMemberOfClass:[UIButton class]]) {
+                    UIButton *button = (UIButton *)subview;
+                    button.frame = CGRectMake(0, 10, wd - 180, 20);
+                    [button setTitle:@"Change Picture" forState:UIControlStateNormal];
+                }
+            }
+            
+            self.pictureView = [[UIImageView alloc] initWithFrame:CGRectMake((wd - 70) / 2, 280, 70, 70)];
+            dispatch_queue_t queue = dispatch_queue_create("Image Queue", NULL);
+            dispatch_async(queue, ^{
+                NSURL *nsurl = [NSURL URLWithString:self.group.pictureUrl];
+                NSData *data = [NSData dataWithContentsOfURL:nsurl];
+                UIImage *img = [UIImage imageWithData:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.pictureView setImage:img];
+                    self.pictureView.layer.cornerRadius = 35.0;
+                });
+            });
+            [self.createView addSubview:self.pictureView];
+        }
     }
+}
+
+-(void)pictureButtonClick:(id)sender {
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    [vc selectMessagePhoto];
+}
+
+-(void)newImage:(UIImage *)image {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    self.pictureBackground.frame = CGRectMake(90, 360, wd - 180, 40);
+    for(UIView *subview in self.pictureBackground.subviews) {
+        if([subview isMemberOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)subview;
+            button.frame = CGRectMake(0, 10, wd - 180, 20);
+            [button setTitle:@"Change Picture" forState:UIControlStateNormal];
+        }
+    }
+    
+    self.pictureView = [[UIImageView alloc] initWithFrame:CGRectMake((wd - 70) / 2, 280, 70, 70)];
+    [self.pictureView setImage:image];
+    self.pictureView.layer.cornerRadius = 35.0;
+    [self.createView addSubview:self.pictureView];
 }
 
 -(void)saveButtonClick:(id)sender
@@ -177,30 +238,42 @@
     
     group.isPublic = self.publicButton.isYes;
     group.password = self.passwordText.text;
-    group.pictureUrl = @""; //self.pictureUrlText.text;
+    group.pictureUrl = @"";
+    group.hasImage = self.pictureView != nil;
     
     [MFHelpers showProgressView:self];
     [group save:^(Group *group) {
-        [MFHelpers closeRight:self];
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         [group addMember:currentUser.userId isAdmin:YES];
         
-        for(id view in self.superview.subviews)
-        {
-            if([view isMemberOfClass:[MFGroupView class]])
-            {
-                MFGroupView *groupView = (MFGroupView *)view;
-                [groupView loadGroups];
-            }
-            else if([view isMemberOfClass:[MFGroupDetailView class]])
-            {
-                MFGroupDetailView *groupDetailView = (MFGroupDetailView *)view;
-                [groupDetailView setup:group];
-            }
+        if(self.pictureView != nil) {
+            [group addImage:self.pictureView.image completion:^(Group *imgGroup) {
+                [self finishSaving:imgGroup];
+            }];
         }
-        [MFHelpers hideProgressView:self];
-        
+        else {
+            [self finishSaving:group];
+        }
      }];
+}
+
+-(void)finishSaving:(Group *)group {
+
+    for(id view in self.superview.subviews)
+    {
+        if([view isMemberOfClass:[MFGroupView class]])
+        {
+            MFGroupView *groupView = (MFGroupView *)view;
+            [groupView addInterest:group];
+        }
+        else if([view isMemberOfClass:[MFGroupDetailView class]])
+        {
+            MFGroupDetailView *groupDetailView = (MFGroupDetailView *)view;
+            [groupDetailView setup:group];
+        }
+    }
+    [MFHelpers closeRight:self];
+    [MFHelpers hideProgressView:self];
 }
 
 -(void)cancelButtonClick:(id)sender

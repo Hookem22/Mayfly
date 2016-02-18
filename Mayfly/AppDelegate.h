@@ -17,6 +17,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *fbAccessToken;
 @property (assign, nonatomic) BOOL hasNotifications;
+@property (nonatomic, strong) NSString *eventId;
 
 @end
 

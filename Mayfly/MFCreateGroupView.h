@@ -15,5 +15,6 @@
 @interface MFCreateGroupView : UIView <UITextFieldDelegate, UITextViewDelegate>
 
 -(id)init:(Group *)group;
+-(void)newImage:(UIImage *)image;
 
 @end

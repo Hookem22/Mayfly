@@ -38,7 +38,7 @@
     [self addSubview:cancelButton];
 
     UIImageView *appPic = [[UIImageView alloc] initWithFrame:CGRectMake(70, 80, wd - 140, ht - 200)];
-    [appPic setImage:[UIImage imageNamed:@"appScreenshot"]];
+    [appPic setImage:[UIImage imageNamed:@"appScreenshot1"]];
     [self addSubview:appPic];
     
     UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(20, ht - 110, wd - 40, 60)];

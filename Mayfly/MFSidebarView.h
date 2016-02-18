@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "MFDetailView.h"
 #import "MFSettingsView.h"
+#import "MFNotificationsView.h"
 #import "MFHelpers.h"
 
-@interface MFNotificationView : UIView
+@interface MFSidebarView : UIView
 
 -(id)init;
 -(void)setup;
-//-(void)loadNotifications;
+-(void)loadUserPoints;
 
 @end

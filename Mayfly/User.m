@@ -56,7 +56,7 @@
 
 +(void)login:(User *)loginUser completion:(QSCompletionBlock)completion
 {
-
+   
     if([loginUser isKindOfClass:[NSNull class]] || [loginUser.facebookId isKindOfClass:[NSNull class]] || loginUser.facebookId.length <= 0)
         return;
     
@@ -164,9 +164,27 @@
     }];
 }
 
+-(void)getPoints:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
+    NSString *whereStatement = [NSString stringWithFormat:@"userid = '%@' AND isadmin = true", self.userId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        self.points = results.count > 0 ? 50 : 0;
+        for(id item in results) {
+            EventGoing *admin = [[EventGoing alloc] init:item];
+            [EventGoing getByEventId:admin.eventId completion:^(NSArray *goings) {
+                self.points += ((int)goings.count * 105);
+                completion(self.points);
+            }];
+        }
+        completion(self.points);
+    }];
+
+}
+
 -(void)save:(QSCompletionBlock)completion
 {
-    
     QSAzureService *service = [QSAzureService defaultService:@"Users"];
     
     NSDictionary *user = @{@"deviceid" : self.deviceId, @"name" : self.name, @"firstname" : self.firstName, @"pushdevicetoken" : self.pushDeviceToken, @"facebookid" : self.facebookId, @"email" : self.email, @"schoolid": self.schoolId, @"isios": [NSNumber numberWithBool:self.isiOS], @"addtocalendar": [NSNumber numberWithInt:self.addToCalendar] /*, @"lastsignedin" : self.lastSignedIn */};

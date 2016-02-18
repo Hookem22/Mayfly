@@ -10,6 +10,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "AppDelegate.h"
 #import "MFDetailView.h"
 #import "MFLoginView.h"
 
@@ -18,5 +19,6 @@
 -(void)loadEvents;
 -(void)populateAllEvents;
 -(void)populateMyEvents;
+-(void)goToEvent:(NSString *)eventId;
 
 @end

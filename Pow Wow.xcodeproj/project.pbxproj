@@ -119,6 +119,8 @@
 		48028DF11C6EAB0F0060A4E8 /* QSAzureImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 48028DF01C6EAB0F0060A4E8 /* QSAzureImageService.m */; };
 		48028EE81C6EB4460060A4E8 /* Azure Storage Client Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48028EE71C6EB4460060A4E8 /* Azure Storage Client Library.framework */; };
 		48028EEA1C6EB58F0060A4E8 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 48028EE91C6EB58F0060A4E8 /* libxml2.2.tbd */; };
+		4813CFAE1C750C980060F53D /* match.png in Resources */ = {isa = PBXBuildFile; fileRef = 4813CFAD1C750C980060F53D /* match.png */; };
+		4813CFB01C751A640060F53D /* questionmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4813CFAF1C751A640060F53D /* questionmark.png */; };
 		48185D0C1B262DB600B4EE08 /* PushMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D0B1B262DB600B4EE08 /* PushMessage.m */; };
 		48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D101B277BAE00B4EE08 /* MFProfilePicView.m */; };
 		48185D1C1B28BF8F00B4EE08 /* face1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D141B28BF8F00B4EE08 /* face1@2x.png */; };
@@ -149,7 +151,7 @@
 		48185D531B2FD59F00B4EE08 /* nav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D501B2FD59F00B4EE08 /* nav@2x.png */; };
 		48185D541B2FD59F00B4EE08 /* _newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */; };
 		48185D561B30937E00B4EE08 /* whitenav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48185D551B30937E00B4EE08 /* whitenav@2x.png */; };
-		48185D591B3094DE00B4EE08 /* MFNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D581B3094DE00B4EE08 /* MFNotificationView.m */; };
+		48185D591B3094DE00B4EE08 /* MFSidebarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D581B3094DE00B4EE08 /* MFSidebarView.m */; };
 		48185D5C1B30ADA400B4EE08 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 48185D5B1B30ADA400B4EE08 /* Notification.m */; };
 		48214FD21B0E6B6100B4E54D /* MFLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48214FD11B0E6B6100B4E54D /* MFLoginView.m */; };
 		4835C5B31C31DACF00BB8962 /* MFGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4835C5B21C31DACF00BB8962 /* MFGroupView.m */; };
@@ -230,6 +232,7 @@
 		48DF69571B597BDF00DCCE58 /* newmessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69561B597BDF00DCCE58 /* newmessage@2x.png */; };
 		48DF69611B60126B00DCCE58 /* Branch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DF69601B60126B00DCCE58 /* Branch.framework */; };
 		48DF69631B6012A600DCCE58 /* Branch-SDK in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69621B6012A600DCCE58 /* Branch-SDK */; };
+		48E968361C765EC900E1B23D /* MFNotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E968351C765EC900E1B23D /* MFNotificationsView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -357,6 +360,8 @@
 		48028E6A1C6EAEFF0060A4E8 /* Azure Storage Client Library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Azure Storage Client Library.framework"; path = "../Desktop/Azure Storage Client Library.framework"; sourceTree = "<group>"; };
 		48028EE71C6EB4460060A4E8 /* Azure Storage Client Library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Azure Storage Client Library.framework"; path = "../Documents/Azure Storage Client Library.framework"; sourceTree = "<group>"; };
 		48028EE91C6EB58F0060A4E8 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
+		4813CFAD1C750C980060F53D /* match.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = match.png; sourceTree = "<group>"; };
+		4813CFAF1C751A640060F53D /* questionmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = questionmark.png; sourceTree = "<group>"; };
 		48185D0A1B262DB600B4EE08 /* PushMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushMessage.h; sourceTree = "<group>"; };
 		48185D0B1B262DB600B4EE08 /* PushMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushMessage.m; sourceTree = "<group>"; };
 		48185D0F1B277BAE00B4EE08 /* MFProfilePicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFProfilePicView.h; sourceTree = "<group>"; };
@@ -396,8 +401,8 @@
 		48185D501B2FD59F00B4EE08 /* nav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav@2x.png"; path = "../../DishWish/DishWish/images/nav@2x.png"; sourceTree = "<group>"; };
 		48185D511B2FD59F00B4EE08 /* _newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "_newmessage@2x.png"; path = "../../DishWish/DishWish/images/_newmessage@2x.png"; sourceTree = "<group>"; };
 		48185D551B30937E00B4EE08 /* whitenav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "whitenav@2x.png"; path = "../../Downloads/whitenav@2x.png"; sourceTree = "<group>"; };
-		48185D571B3094DE00B4EE08 /* MFNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFNotificationView.h; sourceTree = "<group>"; };
-		48185D581B3094DE00B4EE08 /* MFNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFNotificationView.m; sourceTree = "<group>"; };
+		48185D571B3094DE00B4EE08 /* MFSidebarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSidebarView.h; sourceTree = "<group>"; };
+		48185D581B3094DE00B4EE08 /* MFSidebarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSidebarView.m; sourceTree = "<group>"; };
 		48185D5A1B30ADA400B4EE08 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		48185D5B1B30ADA400B4EE08 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		48214FD01B0E6B6100B4E54D /* MFLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFLoginView.h; sourceTree = "<group>"; };
@@ -512,6 +517,8 @@
 		48DF69561B597BDF00DCCE58 /* newmessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newmessage@2x.png"; path = "../../Downloads/newmessage@2x.png"; sourceTree = "<group>"; };
 		48DF69601B60126B00DCCE58 /* Branch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Branch.framework; sourceTree = "<group>"; };
 		48DF69621B6012A600DCCE58 /* Branch-SDK */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Branch-SDK"; sourceTree = "<group>"; };
+		48E968341C765EC900E1B23D /* MFNotificationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MFNotificationsView.h; path = ../MFNotificationsView.h; sourceTree = "<group>"; };
+		48E968351C765EC900E1B23D /* MFNotificationsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MFNotificationsView.m; path = ../MFNotificationsView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -727,6 +734,8 @@
 				48DF69541B585A5A00DCCE58 /* greenCheck@2x.png */,
 				48CC805F1B3B50F70098412E /* invited@2x.png */,
 				48185D241B28C2B600B4EE08 /* check@2x.png */,
+				4813CFAD1C750C980060F53D /* match.png */,
+				4813CFAF1C751A640060F53D /* questionmark.png */,
 				48C102211C698B91005216A0 /* solidgraylock.png */,
 				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
 				4852DB8B1C617B2800679E4F /* circles1.png */,
@@ -796,8 +805,10 @@
 				48185D4D1B2F6A2500B4EE08 /* MFMessageView.m */,
 				48214FD01B0E6B6100B4E54D /* MFLoginView.h */,
 				48214FD11B0E6B6100B4E54D /* MFLoginView.m */,
-				48185D571B3094DE00B4EE08 /* MFNotificationView.h */,
-				48185D581B3094DE00B4EE08 /* MFNotificationView.m */,
+				48185D571B3094DE00B4EE08 /* MFSidebarView.h */,
+				48185D581B3094DE00B4EE08 /* MFSidebarView.m */,
+				48E968341C765EC900E1B23D /* MFNotificationsView.h */,
+				48E968351C765EC900E1B23D /* MFNotificationsView.m */,
 				4877610E1C59D5CB006E5454 /* MFPostMessageView.h */,
 				4877610F1C59D5CB006E5454 /* MFPostMessageView.m */,
 				4852DB7C1C60653700679E4F /* MFInstructionsView.h */,
@@ -1074,6 +1085,7 @@
 				48185D1E1B28BF8F00B4EE08 /* face3@2x.png in Resources */,
 				48028CBB1C6BA6A60060A4E8 /* Lightning.png in Resources */,
 				485AB36D1C20BA2C0035C79D /* grayadd.png in Resources */,
+				4813CFAE1C750C980060F53D /* match.png in Resources */,
 				48028D591C6E7AF70060A4E8 /* camera.png in Resources */,
 				485AB3721C20BA2C0035C79D /* smallmenu.png in Resources */,
 				48028CDD1C6BA6A60060A4E8 /* Telescope.png in Resources */,
@@ -1111,6 +1123,7 @@
 				4852DB8C1C617B2800679E4F /* circles1.png in Resources */,
 				48028CFA1C6BF6D80060A4E8 /* launch@2x.png in Resources */,
 				48028CCA1C6BA6A60060A4E8 /* Pizza.png in Resources */,
+				4813CFB01C751A640060F53D /* questionmark.png in Resources */,
 				48C102261C698B91005216A0 /* solidgrayface4.png in Resources */,
 				48028CAA1C6BA6A60060A4E8 /* Dj.png in Resources */,
 				48C102251C698B91005216A0 /* solidgrayface3.png in Resources */,
@@ -1209,6 +1222,7 @@
 				48A82A4A1B0D203000A8E978 /* MFCreateView.m in Sources */,
 				4843EA2D1B163D6F00C510B4 /* MFLocationSelectView.m in Sources */,
 				48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */,
+				48E968361C765EC900E1B23D /* MFNotificationsView.m in Sources */,
 				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				485AB37C1C2348130035C79D /* EventGoing.m in Sources */,
@@ -1226,7 +1240,7 @@
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,
 				48C1020D1C6539CE005216A0 /* MFAddButtonView.m in Sources */,
-				48185D591B3094DE00B4EE08 /* MFNotificationView.m in Sources */,
+				48185D591B3094DE00B4EE08 /* MFSidebarView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
 				4886CA1F1B0BCB7000909747 /* Event.m in Sources */,
 				48C5BF011C33922B0036C9B1 /* GroupUsers.m in Sources */,
@@ -1358,8 +1372,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Will Parks (46L98M5GXM)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Will Parks (46L98M5GXM)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1373,7 +1387,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Pow-Wow";
 				PRODUCT_NAME = "Pow Wow";
-				PROVISIONING_PROFILE = "15097e4c-088b-44d0-a4fd-9df07c40c9d7";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1383,8 +1397,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Will Parks (46L98M5GXM)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Will Parks (46L98M5GXM)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1398,7 +1412,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Pow-Wow";
 				PRODUCT_NAME = "Pow Wow";
-				PROVISIONING_PROFILE = "15097e4c-088b-44d0-a4fd-9df07c40c9d7";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

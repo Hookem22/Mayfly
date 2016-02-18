@@ -240,6 +240,31 @@
     [timeLabel setFont:[UIFont systemFontOfSize:18]];
     [timeLabelContainer addSubview:timeLabel];
     
+    UIView *litView = [[UIView alloc] initWithFrame:CGRectMake((wd*3)/5 - 36, 30, (wd*2)/5, 40)];
+    [eventView addSubview:litView];
+    
+    int goingCt = (int)event.going.count;
+    if(goingCt > 4) {
+        UIImageView *litImageView = [[UIImageView alloc] initWithFrame:CGRectMake((wd*2)/5, 0, 40, 40)];
+        [litImageView setImage:[UIImage imageNamed:@"match"]];
+        [litView addSubview:litImageView];
+    }
+    if(goingCt > 9) {
+        UIImageView *litImageView = [[UIImageView alloc] initWithFrame:CGRectMake((wd*2)/5 - 22, 0, 40, 40)];
+        [litImageView setImage:[UIImage imageNamed:@"match"]];
+        [litView addSubview:litImageView];
+    }
+    if(goingCt > 19) {
+        UIImageView *litImageView = [[UIImageView alloc] initWithFrame:CGRectMake((wd*2)/5 - 44, 0, 40, 40)];
+        [litImageView setImage:[UIImage imageNamed:@"match"]];
+        [litView addSubview:litImageView];
+    }
+    if(goingCt > 39) {
+        UIImageView *litImageView = [[UIImageView alloc] initWithFrame:CGRectMake((wd*2)/5 - 66, 0, 40, 40)];
+        [litImageView setImage:[UIImage imageNamed:@"match"]];
+        [litView addSubview:litImageView];
+    }
+    
 //    int goingWd = (int)(wd*2)/5;
 //    UIView *goingContainer = [[UIView alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 42, goingWd, 20)];
 //    [eventView addSubview:goingContainer];
@@ -344,18 +369,25 @@
         return;
     }
 
-    MFDetailView *detailView = [[MFDetailView alloc] init:event];
-    [MFHelpers openFromRight:detailView onView:self.superview];
+    [self openEvent:event];
     
     for(UIView *subview in button.subviews) {
         if(subview.tag == 1) {
             [subview removeFromSuperview];
         }
     }
-    
 }
 
+-(void)goToEvent:(NSString *)eventId {
+    [Event get:eventId completion:^(Event *event) {
+        [self openEvent:event];
+    }];
+}
 
+-(void)openEvent:(Event *)event {
+    MFDetailView *detailView = [[MFDetailView alloc] init:event];
+    [MFHelpers openFromRight:detailView onView:self.superview];
+}
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     
@@ -363,7 +395,8 @@
     if(point.y < -70)
     {
         [MFHelpers showProgressView:self.superview];
-        [self loadEvents];
+        MFView *view = (MFView *)self.superview;
+        [view refreshEvents];
     }
 }
 

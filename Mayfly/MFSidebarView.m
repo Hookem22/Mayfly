@@ -6,19 +6,21 @@
 //  Copyright (c) 2015 Mayfly. All rights reserved.
 //
 
-#import "MFNotificationView.h"
+#import "MFSidebarView.h"
 
-@interface MFNotificationView ()
+@interface MFSidebarView ()
 
 //@property (nonatomic, strong) UIScrollView *notificationsView;
 //@property (nonatomic, strong) NSArray *notifications;
 
 @property (nonatomic, strong) UIButton *eventsButton;
 @property (nonatomic, strong) UIButton *interestsButton;
+@property (nonatomic, strong) UIButton *notificationsButton;
+@property (nonatomic, strong) UILabel *pointsLabel;
 
 @end
 
-@implementation MFNotificationView
+@implementation MFSidebarView
 
 -(id)init
 {
@@ -66,6 +68,21 @@
     nameLabel.textAlignment = NSTextAlignmentCenter;
     [userView addSubview:nameLabel];
     
+    self.pointsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, wd - 70, 20)];
+    self.pointsLabel.text = @"0";
+    self.pointsLabel.textAlignment = NSTextAlignmentRight;
+    [self.pointsLabel setFont:[UIFont systemFontOfSize:24.0]];
+    [userView addSubview:self.pointsLabel];
+    
+    UIImageView *litImage = [[UIImageView alloc] initWithFrame:CGRectMake(wd - 85, 15, 80, 80)];
+    [litImage setImage:[UIImage imageNamed:@"match"]];
+    [userView addSubview:litImage];
+    
+    UIButton *questionButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 25, 5, 20, 20)];
+    [questionButton setImage:[UIImage imageNamed:@"questionmark"] forState:UIControlStateNormal];
+    [questionButton addTarget:self action:@selector(questionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [userView addSubview:questionButton];
+    
     UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, userView.frame.size.height - 1, wd, 1)];
     borderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:borderView];
@@ -94,6 +111,18 @@
     interestsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:interestsBorderView];
     
+    UIButton *notificationsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 260, wd, 60)];
+    [notificationsButton setTitle:@"Notifications" forState:UIControlStateNormal];
+    [notificationsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [notificationsButton addTarget:self action:@selector(notificationsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [notificationsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    self.notificationsButton = notificationsButton;
+    [view addSubview:notificationsButton];
+    
+    UIView *notificationsBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, notificationsButton.frame.origin.y + notificationsButton.frame.size.height - 1, wd, 1)];
+    notificationsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [view addSubview:notificationsBorderView];
+    
     UIButton *settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, ht - 100, wd, 40)];
     [settingsButton setTitle:@"Settings" forState:UIControlStateNormal];
     [settingsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
@@ -112,10 +141,22 @@
     //[self loadNotifications];
 }
 
+-(void)loadUserPoints {
+    if([self.pointsLabel.text isEqualToString:@"0"]) {
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        [currentUser getPoints:^(int points) {
+            NSNumberFormatter *formatter = [NSNumberFormatter new];
+            [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+            self.pointsLabel.text = [formatter stringFromNumber:[NSNumber numberWithInteger:points]];
+        }];
+    }
+}
+
 -(void)eventsButtonClick:(id)sender
 {
     [self.eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
     [self.interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [self.notificationsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self cancelButtonClick:sender];
     
     if([self.superview isMemberOfClass:[MFView class]]) {
@@ -128,11 +169,38 @@
 {
     [self.eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [self.notificationsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self cancelButtonClick:sender];
     
     if([self.superview isMemberOfClass:[MFView class]]) {
         MFView *mfView = (MFView *)self.superview;
         [mfView interestsButtonClick];
+    }
+}
+
+-(void)notificationsButtonClick:(id)sender
+{
+    [self.eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [self.interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [self.notificationsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [self cancelButtonClick:sender];
+    
+    if([self.superview isMemberOfClass:[MFView class]]) {
+        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+        NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+        
+        MFView *mfView = (MFView *)self.superview;
+        for(UIView *subview in mfView.subviews) {
+            if([subview isMemberOfClass:[MFNotificationsView class]]) {
+                MFNotificationsView *notificationsView = (MFNotificationsView *)subview;
+                [notificationsView loadNotifications];
+                [UIView animateWithDuration:0.3
+                                 animations:^{
+                                     notificationsView.frame = CGRectMake(0, 60, wd, ht - 60);
+                                 }
+                                 completion:^(BOOL finished){ }];
+            }
+        }
     }
 }
 
@@ -142,6 +210,15 @@
     [self cancelButtonClick:sender];
 }
 
+-(void)questionButtonClick:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lit Points"
+                                                    message:@"Create events to get points. The more people that join your event, the more points you get!"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 -(void)cancelButtonClick:(id)sender
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
@@ -149,12 +226,15 @@
     
     MFEventsView *eventsView;
     MFGroupView *groupView;
+    MFNotificationsView *notificationsView;
     for(UIView *subview in self.superview.subviews)
     {
         if([subview isMemberOfClass:[MFEventsView class]])
             eventsView = (MFEventsView *)subview;
         else if([subview isMemberOfClass:[MFGroupView class]])
             groupView = (MFGroupView *)subview;
+        else if([subview isMemberOfClass:[MFNotificationsView class]])
+            notificationsView = (MFNotificationsView *)subview;
     }
     MFView *mfView = (MFView *)self.superview;
     
@@ -167,6 +247,9 @@
                          if(groupView.frame.origin.x < wd) {
                              groupView.frame = CGRectMake(0, 60, wd, ht - 60);
                          }
+                         if(notificationsView.frame.origin.x < wd) {
+                             notificationsView.frame = CGRectMake(0, 60, wd, ht - 60);
+                         }
                      }
                      completion:^(BOOL finished){
                          self.backgroundColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:0.75];
@@ -177,142 +260,6 @@
 -(void)nothing:(id)sender {
     
 }
-
-//-(void)loadNotifications
-//{
-//    for(UIView *subview in self.notificationsView.subviews)
-//        [subview removeFromSuperview];
-//    
-//    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
-//    wd = (wd * 3) / 4;
-//    int viewY = 0;
-//    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-//    
-//    //Add Groups
-//    UIView *grouTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
-//    grouTitleView.backgroundColor = [UIColor colorWithRed:67.0/255.0 green:74.0/255.0 blue:94.0/255.0 alpha:1.0];
-//    [self.notificationsView addSubview:grouTitleView];
-//    viewY += 10;
-//    
-//    UILabel *groupTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, viewY, wd, 20)];
-//    groupTitleLabel.text = @"MY INTERESTS";
-//    groupTitleLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
-//    [groupTitleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-//    [self.notificationsView addSubview:groupTitleLabel];
-//    viewY += 30;
-//    
-//    for(int i = 0; i < currentUser.groups.count; i++) {
-//        Group *group = currentUser.groups[i];
-//        
-//        UIControl *groupView = [[UIControl alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
-//        [groupView addTarget:self action:@selector(groupClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        groupView.tag = i;
-//        
-//        UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, wd, 20)];
-//        groupLabel.text = [NSString stringWithFormat:@"%@", group.name];
-//        groupLabel.textColor = [UIColor whiteColor];
-//        [groupLabel setFont:[UIFont boldSystemFontOfSize:16]];
-//        [groupView addSubview:groupLabel];
-//        
-//        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, groupView.frame.size.height - 1.0f, groupView.frame.size.width, 1)];
-//        bottomBorder.backgroundColor = [UIColor colorWithRed:63.0/255.0 green:69.0/255.0 blue:82.0/255.0 alpha:1.0];
-//        [groupView addSubview:bottomBorder];
-//        
-//        [self.notificationsView addSubview:groupView];
-//        viewY += 40;
-//    }
-//    
-//    
-//    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 40)];
-//    titleView.backgroundColor = [UIColor colorWithRed:67.0/255.0 green:74.0/255.0 blue:94.0/255.0 alpha:1.0];
-//    [self.notificationsView addSubview:titleView];
-//    viewY += 10;
-//                         
-//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, viewY, wd, 20)];
-//    titleLabel.text = @"NOTIFICATIONS";
-//    titleLabel.textColor = [UIColor colorWithRed:156.0/255.0 green:164.0/255.0 blue:179.0/255.0 alpha:1.0];
-//    [titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-//    [self.notificationsView addSubview:titleLabel];
-//    viewY += 30;
-//    
-//    [Notification get:currentUser.userId completion:^(NSArray *notifications)
-//     {
-//         int newViewY = viewY;
-//         self.notifications = notifications;
-//         for(int i = 0; i < [notifications count]; i++)
-//         {
-//             Notification *notification = (Notification *)[notifications objectAtIndex:i];
-//             
-//             UIControl *notificationView = [[UIControl alloc] initWithFrame:CGRectMake(0, newViewY, wd, 60)];
-//             [notificationView addTarget:self action:@selector(notificationClicked:) forControlEvents:UIControlEventTouchUpInside];
-//             notificationView.tag = i;
-//             
-//             UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, wd, 20)];
-//             messageLabel.text = [NSString stringWithFormat:@"%@", notification.message];
-//             messageLabel.textColor = [UIColor whiteColor];
-//             [messageLabel setFont:[UIFont boldSystemFontOfSize:16]];
-//             [notificationView addSubview:messageLabel];
-//             
-//             UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, wd, 20)];
-//             timeLabel.text = [MFHelpers dateDiffBySeconds:notification.secondsSince];
-//             [timeLabel setFont:[UIFont systemFontOfSize:16]];
-//             timeLabel.textColor = [UIColor whiteColor];
-//             [notificationView addSubview:timeLabel];
-//             
-//             UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, notificationView.frame.size.height - 1.0f, notificationView.frame.size.width, 1)];
-//             bottomBorder.backgroundColor = [UIColor colorWithRed:63.0/255.0 green:69.0/255.0 blue:82.0/255.0 alpha:1.0];
-//             [notificationView addSubview:bottomBorder];
-//             
-//             [self.notificationsView addSubview:notificationView];
-//             newViewY += 60;
-//         }
-//         
-//         self.notificationsView.contentSize = CGSizeMake(wd, newViewY + 70);
-//     }];
-//}
-
-//-(void)groupClicked:(id)sender
-//{
-//    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-//    
-//    UIButton *button = (UIButton *)sender;
-//    Group *group = currentUser.groups[button.tag];
-//    
-//    MFGroupDetailView *groupView = [[MFGroupDetailView alloc] init:group];
-//    [MFHelpers openFromRight:groupView onView:self.superview];
-//    
-//    [self cancelButtonClick:self];
-//}
-//
-//-(void)notificationClicked:(id)sender
-//{
-//    UIButton *button = (UIButton *)sender;
-//    Notification *notification = (Notification *)[self.notifications objectAtIndex:button.tag];
-//    
-//    NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
-//    Event *event;
-//    for(Event *e in currentEvents) {
-//        if([e.eventId isEqualToString:notification.eventId]){
-//            event = e;
-//            break;
-//        }
-//    }
-//    
-//    if(event == nil || [event.eventId isEqualToString:@""])
-//    {
-//        [Event get:notification.eventId completion:^(Event *e) {
-//            MFDetailView *detailView = [[MFDetailView alloc] init:e];
-//            [MFHelpers openFromRight:detailView onView:self.superview];
-//        }];
-//    }
-//    else {
-//        MFDetailView *detailView = [[MFDetailView alloc] init:event];
-//        [MFHelpers openFromRight:detailView onView:self.superview];
-//    }
-//        
-//    [self cancelButtonClick:self];
-//}
-
 
 
 @end
