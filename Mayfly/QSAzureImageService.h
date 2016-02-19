@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "/Users/willparks/Documents/Azure Storage Client Library.framework/Headers/Azure_Storage_Client_Library.h"
+#import "Azure_Storage_Client_Library.h"
 
 #define AZURE_STORAGE_CONNECTION_STRING @"DefaultEndpointsProtocol=https://mayflyapp.blob.core.windows.net/;AccountName=mayflyapp;AccountKey=XBvMbjU3maNmSetq/xF3nXxmVG93RVio8MoI4lzYQIab5EfB1aapemG15Q06kGxSnIpWQIPWiTR3vOdkkJsLgw=="
 
