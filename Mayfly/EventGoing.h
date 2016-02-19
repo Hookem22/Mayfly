@@ -17,10 +17,12 @@
 @property (nonatomic, assign) BOOL isAdmin;
 @property (nonatomic, copy) NSString *firstName;
 @property (nonatomic, copy) NSString *facebookId;
+@property (nonatomic, assign) BOOL isMuted;
 
 -(id)init:(NSDictionary *)dict;
 +(void)getByEventId:(NSString *)eventId completion:(QSCompletionBlock)completion;
 +(void)getByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
 +(void)joinEvent:(NSString *)eventId userId:(NSString *)userId isAdmin:(BOOL)isAdmin completion:(QSCompletionBlock)completion;
+-(void)save:(QSCompletionBlock)completion;
 
 @end

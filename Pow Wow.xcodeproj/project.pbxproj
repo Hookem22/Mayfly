@@ -233,6 +233,7 @@
 		48DF69611B60126B00DCCE58 /* Branch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DF69601B60126B00DCCE58 /* Branch.framework */; };
 		48DF69631B6012A600DCCE58 /* Branch-SDK in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69621B6012A600DCCE58 /* Branch-SDK */; };
 		48E968361C765EC900E1B23D /* MFNotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E968351C765EC900E1B23D /* MFNotificationsView.m */; };
+		48E968591C77A8F800E1B23D /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = 48E968581C77A8F800E1B23D /* mute.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -546,6 +547,7 @@
 		48E968551C76837C00E1B23D /* AZSStorageCredentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZSStorageCredentials.h; sourceTree = "<group>"; };
 		48E968561C76837C00E1B23D /* AZSStorageUri.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZSStorageUri.h; sourceTree = "<group>"; };
 		48E968571C76837C00E1B23D /* Azure_Storage_Client_Library.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Azure_Storage_Client_Library.h; sourceTree = "<group>"; };
+		48E968581C77A8F800E1B23D /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mute.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -762,6 +764,7 @@
 				48CC805F1B3B50F70098412E /* invited@2x.png */,
 				48185D241B28C2B600B4EE08 /* check@2x.png */,
 				4813CFAD1C750C980060F53D /* match.png */,
+				48E968581C77A8F800E1B23D /* mute.png */,
 				4813CFAF1C751A640060F53D /* questionmark.png */,
 				48C102211C698B91005216A0 /* solidgraylock.png */,
 				4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */,
@@ -1190,6 +1193,7 @@
 				48028CAA1C6BA6A60060A4E8 /* Dj.png in Resources */,
 				48C102251C698B91005216A0 /* solidgrayface3.png in Resources */,
 				48028CBD1C6BA6A60060A4E8 /* Microphone.png in Resources */,
+				48E968591C77A8F800E1B23D /* mute.png in Resources */,
 				48DF69551B585A5A00DCCE58 /* greenCheck@2x.png in Resources */,
 				48185D401B2A2DF900B4EE08 /* grayface5@2x.png in Resources */,
 				48028CBA1C6BA6A60060A4E8 /* Karate.png in Resources */,

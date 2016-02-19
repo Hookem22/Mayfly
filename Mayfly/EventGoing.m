@@ -16,6 +16,7 @@
 @synthesize isAdmin = _isAdmin;
 @synthesize firstName = _firstName;
 @synthesize facebookId = _facebookId;
+@synthesize isMuted = _isMuted;
 
 -(id)init:(NSDictionary *)dict {
     self = [super init];
@@ -23,11 +24,12 @@
         self.eventGoingId = [dict valueForKey:@"id"];
         self.eventId = [dict objectForKey:@"eventid"];
         self.userId = [dict objectForKey:@"userid"];
-        self.isAdmin = [[dict objectForKey:@"isadmin"] isMemberOfClass:[NSNull class]] ? 0 : [[dict objectForKey:@"isadmin"] boolValue];
+        self.isAdmin = [[dict objectForKey:@"isadmin"] isMemberOfClass:[NSNull class]] ? NO : [[dict objectForKey:@"isadmin"] boolValue];
         self.firstName = [dict objectForKey:@"firstname"];
         if(self.firstName == nil)
             self.firstName = [dict objectForKey:@"name"];
         self.facebookId = [dict objectForKey:@"facebookid"];
+        self.isMuted = [[dict objectForKey:@"ismuted"] isMemberOfClass:[NSNull class]] ? NO : [[dict objectForKey:@"ismuted"] boolValue];
     }
     return self;
 }
@@ -81,13 +83,38 @@
         }
         else
         {
-            NSDictionary *going = @{@"eventid": eventId, @"userid": userId, @"isadmin": [NSNumber numberWithBool:isAdmin] };
+            NSDictionary *going = @{@"eventid": eventId, @"userid": userId, @"isadmin": [NSNumber numberWithBool:isAdmin], @"ismuted": [NSNumber numberWithBool:NO] };
             [service addItem:going completion:^(NSDictionary *item)
              {
                  completion(item);
              }];
         }
     }];
+}
+
+-(void)save:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
+    
+    NSDictionary *going = @{@"eventid": self.eventId, @"userid": self.userId, @"isadmin": [NSNumber numberWithBool:self.isAdmin], @"ismuted": [NSNumber numberWithBool:self.isMuted] };
+    
+    if([self.eventGoingId length] > 0) { //Update
+        NSMutableDictionary *mutableGoing = [going mutableCopy];
+        [mutableGoing setObject:self.eventGoingId forKey:@"id"];
+        [service updateItem:mutableGoing completion:^(NSDictionary *item)
+         {
+             completion(self);
+         }];
+    }
+    else //Add
+    {
+        [service addItem:going completion:^(NSDictionary *item)
+         {
+             self.eventGoingId = [item objectForKey:@"id"];
+             completion(self);
+         }];
+    }
+    
 }
 
 

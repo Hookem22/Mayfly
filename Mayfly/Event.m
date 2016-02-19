@@ -92,14 +92,20 @@
 -(void)getCompleted:(QSCompletionBlock)completion {
     [self getEventGoing:^(NSArray *goings) {
         self.going = [NSArray arrayWithArray:goings];
+        self.isAdmin = NO;
+        self.isMuted = NO;
+        User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+        for(EventGoing *going in goings) {
+            if([going.userId isEqualToString:currentUser.userId]) {
+                self.isAdmin = going.isAdmin;
+                self.isMuted = going.isMuted;
+            }
+        }
         [self getEventInvited:^(NSArray *invited) {
             self.invited = [NSArray arrayWithArray:invited];
             [self getMessages:^(NSArray *messages) {
                 self.messages = [NSArray arrayWithArray:messages];
-                [self getIsAdmin:^(EventGoing *eventGoing) {
-                    self.isAdmin = eventGoing.isAdmin;
-                    completion(self);
-                }];
+                completion(self);
             }];
         }];
     }];
@@ -391,30 +397,32 @@
     return NO;
 }
 
--(void)getIsAdmin:(QSCompletionBlock)completion {
-    QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
-    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-    NSString *whereStatement = [NSString stringWithFormat:@"userid = '%@' AND eventid = '%@'", currentUser.userId, self.eventId];
-    
-    [service getByWhere:whereStatement completion:^(NSArray *results) {
-        for(id item in results) {
-            EventGoing *eventGoing = [[EventGoing alloc] init:item];
-            completion(eventGoing);
-            return;
-        }
-        EventGoing *eventGoing = [[EventGoing alloc] init];
-        eventGoing.isAdmin = false;
-        completion(eventGoing);
-    }];
-}
+//-(void)getGoing:(QSCompletionBlock)completion {
+//    QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];
+//    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+//    NSString *whereStatement = [NSString stringWithFormat:@"userid = '%@' AND eventid = '%@'", currentUser.userId, self.eventId];
+//    
+//    [service getByWhere:whereStatement completion:^(NSArray *results) {
+//        for(id item in results) {
+//            EventGoing *eventGoing = [[EventGoing alloc] init:item];
+//            completion(eventGoing);
+//            return;
+//        }
+//        EventGoing *eventGoing = [[EventGoing alloc] init];
+//        eventGoing.isAdmin = NO;
+//        eventGoing.isMuted = NO;
+//        completion(eventGoing);
+//    }];
+//}
 
 -(void)sendMessageToEvent:(NSString *)message info:(NSString *)info
 {
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
     for(EventGoing *eg in self.going) {
         if(![eg.userId isEqualToString:currentUser.userId]) {
-            [PushMessage push:eg.userId message:message info:info];
-            
+            if(eg.isMuted == NO) {
+                [PushMessage push:eg.userId message:message info:info];
+            }
             Notification *notification = [[Notification alloc] init: @{ @"userid": eg.userId, @"eventid": eg.eventId, @"message": message }];
             [notification save:^(Notification *notification) { }];
         }

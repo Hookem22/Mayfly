@@ -182,7 +182,7 @@
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:headerLabel.font, NSFontAttributeName, nil];
     int titleWidth = [[[NSAttributedString alloc] initWithString:headerLabel.text attributes:attributes] size].width;
     if(titleWidth > wd - 90)
-        headerLabel.frame = CGRectMake(45, 10, wd - 50, 60);
+        headerLabel.frame = CGRectMake(45, 10, wd - 70, 60);
 }
 
 +(CGFloat)heightForText:(UITextView *)textView width:(NSUInteger)width

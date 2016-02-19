@@ -18,6 +18,9 @@
 @property (nonatomic, strong) UIView *menuView;
 @property (nonatomic, strong) UIView *messagesView;
 @property (nonatomic, strong) NSMutableDictionary *messageImageViews;
+@property (nonatomic, strong) UIButton *menuButton;
+@property (nonatomic, strong) UIButton *muteButton;
+@property (nonatomic, strong) UIImageView *muteImage;
 
 @end
 
@@ -145,13 +148,17 @@
 
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     
-    if(event.isAdmin == true) {
-        UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 30, 28, 25, 25)];
-        [menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
-        [menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:menuButton];
-    }
+
+    self.menuButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 30, 28, 25, 25)];
+    [self.menuButton setImage:[UIImage imageNamed:@"smallmenu"] forState:UIControlStateNormal];
+    [self.menuButton addTarget:self action:@selector(menuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.menuButton];
     
+    self.muteImage = [[UIImageView alloc] initWithFrame:CGRectMake(wd - 45, 20, 20, 20)];
+    [self.muteImage setImage:[UIImage imageNamed:@"mute"]];
+    [self.detailView addSubview:self.muteImage];
+    [self updateIsMuted];
+
     UIScrollView *detailView = self.detailView;
     int viewY = self.initialHeight;
     
@@ -449,6 +456,14 @@
     NSString *goingText = [NSString stringWithFormat:@"Going: %lu | Invited: %i", (unsigned long)self.event.going.count, invitedCt];
     self.goingLabel.text = goingText;
     
+    if(self.event.isGoing) {
+        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+        self.menuButton.frame = CGRectMake(wd - 30, 28, 25, 25);
+    }
+    else {
+        self.menuButton.frame = CGRectMake(0, 0, 0, 0);
+    }
+    
 }
 
 -(void)joinButtonClick:(id)sender
@@ -545,14 +560,51 @@
     UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeMenu)];
     [self.menuView addGestureRecognizer:singleTap];
     
-    UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [editButton setTitle:@"Edit Event" forState:UIControlStateNormal];
-    [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    editButton.frame = CGRectMake(20, ht - 60, wd - 40, 40);
-    editButton.backgroundColor = [UIColor whiteColor];
-    [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
-    editButton.layer.cornerRadius = 5;
-    [self.menuView addSubview:editButton];
+    if(self.event.isAdmin) {
+        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(20, ht - 180, wd - 40, 100)];
+        backgroundView.backgroundColor = [UIColor whiteColor];
+        backgroundView.layer.cornerRadius = 5;
+        [self.menuView addSubview:backgroundView];
+        
+        UIButton *muteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [muteButton addTarget:self action:@selector(muteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        muteButton.frame = CGRectMake(5, 0, backgroundView.frame.size.width - 10, 50);
+        [muteButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        self.muteButton = muteButton;
+        [backgroundView addSubview:muteButton];
+        
+        UIButton *editButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [editButton setTitle:@"Edit Event" forState:UIControlStateNormal];
+        [editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        editButton.frame = CGRectMake(5, 50, backgroundView.frame.size.width - 10, 50);
+        [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        [backgroundView addSubview:editButton];
+        
+        UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0, 50, backgroundView.frame.size.width, 1)];
+        border.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [backgroundView addSubview:border];
+    }
+    else {
+        UIButton *muteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [muteButton addTarget:self action:@selector(muteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        muteButton.frame = CGRectMake(20, ht - 130, wd - 40, 50);
+        [muteButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        muteButton.backgroundColor = [UIColor whiteColor];
+        muteButton.layer.cornerRadius = 5.0;
+        self.muteButton = muteButton;
+        [self.menuView addSubview:muteButton];
+    }
+    
+    [self updateIsMuted];
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(closeMenu) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.frame = CGRectMake(20, ht - 70, wd - 40, 50);
+    cancelButton.backgroundColor = [UIColor whiteColor];
+    [cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    cancelButton.layer.cornerRadius = 5;
+    [self.menuView addSubview:cancelButton];
     
 }
 
@@ -566,6 +618,33 @@
     MFCreateView *createView = [[MFCreateView alloc] init:self.event];
     [MFHelpers open:createView onView:self];
     [self closeMenu];
+}
+
+-(void)muteButtonClick:(id)sender {
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    for(EventGoing *going in self.event.going) {
+        if([going.userId isEqualToString:currentUser.userId]) {
+            going.isMuted = !going.isMuted;
+            [going save:^(EventGoing *going) { }];
+        }
+    }
+    
+    self.event.isMuted = !self.event.isMuted;
+    [self updateIsMuted];
+    [self closeMenu];
+}
+
+-(void)updateIsMuted {
+    NSString *muteText = self.event.isMuted ? @"Unmute Event" : @"Mute Event";
+    [self.muteButton setTitle:muteText forState:UIControlStateNormal];
+    
+    if(self.event.isMuted) {
+        NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+        self.muteImage.frame = CGRectMake(wd - 45, 20, 20, 20);
+    }
+    else {
+        self.muteImage.frame = CGRectMake(0, 0, 0, 0);
+    }
 }
 
 -(void)addGroupsToEvent:(NSArray *)groups {
