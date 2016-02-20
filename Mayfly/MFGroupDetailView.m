@@ -126,7 +126,7 @@
     int i = 0;
     NSArray *events = (NSArray *)[Session sessionVariables][@"currentEvents"];
     for(Event *event in events) {
-        if([event.groupId rangeOfString:group.groupId].location != NSNotFound)
+        if(![event.primaryGroupId isMemberOfClass:[NSNull class]] && [event.primaryGroupId isEqualToString:group.groupId])
         {
             [self.Events addObject:event];
             

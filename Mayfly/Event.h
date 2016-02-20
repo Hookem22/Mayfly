@@ -34,6 +34,7 @@
 @property (nonatomic, assign) BOOL isAdmin;
 @property (nonatomic, assign) BOOL isMuted;
 @property (nonatomic, assign) int tagId;
+@property (nonatomic, assign) NSString *primaryGroupId;
 
 @property (nonatomic, copy) NSArray *going;
 @property (nonatomic, copy) NSArray *invited;

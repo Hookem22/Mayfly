@@ -40,12 +40,12 @@
 -(void)populateAllEvents
 {
     NSArray *currentEvents = (NSArray *)[Session sessionVariables][@"currentEvents"];
-     NSMutableArray *events = [[NSMutableArray alloc] init];
-     for(Event *event in currentEvents) {
-         if(!event.isPrivate)
-             [events addObject:event];
-     }
-     [self populateEvents:events];
+    NSMutableArray *events = [[NSMutableArray alloc] init];
+    for(Event *event in currentEvents) {
+        if(!event.isPrivate)
+            [events addObject:event];
+    }
+    [self populateEvents:events];
 }
 
 
@@ -317,6 +317,26 @@
     
     
     int groupHeight = 0;
+    if(![event.primaryGroupId isKindOfClass:[NSNull class]] && event.primaryGroupId.length > 0) {
+        NSString *groupName = @"";
+        for(int i = 0; i < [event.groupName componentsSeparatedByString: @"|"].count; i++) {
+            NSString *groupId = [event.groupId componentsSeparatedByString: @"|"][i];
+            if([groupId isEqualToString:event.primaryGroupId]) {
+                groupName = [event.groupName componentsSeparatedByString: @"|"][i];
+            }
+        }
+        groupHeight = 25;
+        int top = eventView.frame.size.height - groupHeight;
+        if(nameHeight + groupHeight + 30 > eventView.frame.size.height)
+            top = nameHeight + groupHeight + 5;
+        UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, top, wd, 20)];
+        [groupLabel setText:groupName];
+        groupLabel.textColor = [UIColor colorWithRed:119.0/255.0 green:119.0/255.0 blue:119.0/255.0 alpha:1.0];
+        [groupLabel setFont:[UIFont boldSystemFontOfSize:14]];
+        groupLabel.textAlignment = NSTextAlignmentCenter;
+        [eventView addSubview:groupLabel];
+    }
+    
 //    if(![event.groupName isKindOfClass:[NSNull class]] && event.groupName.length > 0) {
 //        NSString *groupText = @"";
 //        NSArray *groups = [event.groupName componentsSeparatedByString: @"|"];

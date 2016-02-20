@@ -25,6 +25,8 @@
 @property (nonatomic, strong) NSArray *eventIcons;
 @property (nonatomic, strong) UIView *selectedView;
 @property (nonatomic, strong) NSString *selectedImage;
+@property (nonatomic, strong) UIView *primaryGroupView;
+@property (nonatomic, strong) NSString *primaryGroupId;
 
 @end
 
@@ -134,6 +136,10 @@
         [deleteButton.titleLabel setFont:[UIFont systemFontOfSize:20.f]];
         [createView addSubview:deleteButton];
         
+        if(self.event.groupId.length > 0) {
+            [self populateGroups];
+        }
+        
     }
     else
     {
@@ -172,6 +178,28 @@
     saveButton.layer.backgroundColor = [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:197.0/255.0 alpha:1.0].CGColor;
     self.saveButton = saveButton;
     [createView addSubview:saveButton];
+}
+
+-(void)populateGroups {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.createView.frame.size.height - 137, wd, 80)];
+    peopleView.tag = 2;
+    [self.createView addSubview:peopleView];
+    
+    self.groupsList = [[NSArray alloc] init];
+    NSArray *groupIds = [self.event.groupId componentsSeparatedByString: @"|"];
+    for (NSString *groupId in groupIds) {
+        [Group get:groupId completion:^(Group *group) {
+            NSMutableArray *groups = [NSMutableArray arrayWithArray:self.groupsList];
+            [groups addObject:group];
+            self.groupsList = groups;
+            if(groups.count == groupIds.count) {
+                [self addGroups:self.event.primaryGroupId];
+                self.primaryGroupId = self.event.primaryGroupId;
+            }
+        }];
+    }
 }
 
 -(void)populateIcons {
@@ -275,37 +303,24 @@
     
     UIScrollView *peopleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.createView.frame.size.height - 137, wd, 80)];
     peopleView.tag = 2;
+    [self.createView addSubview:peopleView];
     
     //Groups
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    
     NSMutableArray *groups = [[NSMutableArray alloc] init];
     int viewX = 0;
     for (Group *group in currentUser.groups) {
         if(group.isInvitedtoEvent) {
             [groups addObject:group];
-            
-            UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(viewX, 0, 60, 80)];
-            
-            if([group.pictureUrl isKindOfClass:[NSNull class]] || group.pictureUrl.length <= 0) {
-                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-                [icon setImage:[UIImage imageNamed:@"group"]];
-                [groupView addSubview:icon];
-            }
-            else {
-                MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(0, 0, 50, 50) url:group.pictureUrl];
-                [groupView addSubview:pic];
-            }
-            
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
-            label.text = group.name;
-            label.textAlignment = NSTextAlignmentCenter;
-            [groupView addSubview:label];
-            
-            [peopleView addSubview:groupView];
             viewX += 60;
         }
     }
     self.groupsList = groups;
+    if(groups.count > 0) {
+        [self addGroups:nil];
+        [self selectPrimaryGroup];
+    }
     
     //Contacts
     self.contactsList = contactsList;
@@ -316,18 +331,18 @@
         NSString *facebookId = [contact objectForKey:@"id"];
         if(facebookId != nil)
         {
-            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(0, 0, 50, 50) facebookId:facebookId];
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(5, 5, 50, 50) facebookId:facebookId];
             [personView addSubview:pic];
         }
         else
         {
-            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(-5, -5, 60, 60)];
+            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
             int faceNumber = (arc4random() % 8);
             [pic setImage:[UIImage imageNamed:[NSString stringWithFormat:@"face%d", faceNumber]]];
             [personView addSubview:pic];
         }
 
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-6, 50, 62, 20)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-2, 55, 62, 20)];
         label.text = [contact objectForKey:@"firstName"];
         label.textAlignment = NSTextAlignmentCenter;
         [personView addSubview:label];
@@ -338,10 +353,192 @@
     viewX += 30;
     peopleView.contentSize = CGSizeMake(viewX, 80);
     peopleView.contentOffset = CGPointMake(-30, 0);
-    [self.createView addSubview:peopleView];
-
 }
 
+-(void)addGroups:(NSString *)primaryGroupId {
+    for(UIView *subview in self.createView.subviews)
+    {
+        if([subview isMemberOfClass:[UIScrollView class]] && subview.tag == 2) {
+            UIScrollView *peopleView = (UIScrollView *)subview;
+            int viewX = 0;
+            for (Group *group in self.groupsList) {
+                UIButton *groupButton = [[UIButton alloc] initWithFrame:CGRectMake(viewX, 0, 60, 76)];
+                [groupButton addTarget:self action:@selector(selectPrimaryGroup) forControlEvents:UIControlEventTouchUpInside];
+                groupButton.layer.cornerRadius = 5.0;
+                
+                if([group.pictureUrl isKindOfClass:[NSNull class]] || group.pictureUrl.length <= 0) {
+                    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 50, 50)];
+                    [icon setImage:[UIImage imageNamed:@"group"]];
+                    [groupButton addSubview:icon];
+                }
+                else {
+                    MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(5, 5, 50, 50) url:group.pictureUrl];
+                    [groupButton addSubview:pic];
+                }
+                
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-2, 55, 62, 20)];
+                label.text = group.name;
+                label.textAlignment = NSTextAlignmentCenter;
+                [groupButton addSubview:label];
+                
+                if(primaryGroupId.length > 0 && [primaryGroupId isEqualToString:group.groupId]) {
+                    groupButton.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+                    label.textColor = [UIColor whiteColor];
+                }
+                
+                [peopleView addSubview:groupButton];
+                viewX += 60;
+            }
+            peopleView.contentSize = CGSizeMake(viewX, 80);
+            peopleView.contentOffset = CGPointMake(-30, 0);
+        }
+    }
+}
+
+-(void)selectPrimaryGroup {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    NSArray *groups = self.groupsList;
+    
+    self.primaryGroupView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+    self.primaryGroupView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
+    [self addSubview:self.primaryGroupView];
+    
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closePrimaryGroup)];
+    [self.primaryGroupView addGestureRecognizer:singleTap];
+    
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(20, ht - (groups.count * 50) - 105, wd - 40, (groups.count * 50) + 40)];
+    backgroundView.backgroundColor = [UIColor whiteColor];
+    backgroundView.layer.cornerRadius = 5.0;
+    [self.primaryGroupView addSubview:backgroundView];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, backgroundView.frame.size.width - 20, 20)];
+    titleLabel.text = @"SELECT PRIMARY INTEREST";
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [backgroundView addSubview:titleLabel];
+    
+    UIButton *questionButton = [[UIButton alloc] initWithFrame:CGRectMake(backgroundView.frame.size.width - 25, 10, 20, 20)];
+    [questionButton setImage:[UIImage imageNamed:@"questionmark"] forState:UIControlStateNormal];
+    [questionButton addTarget:self action:@selector(questionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [backgroundView addSubview:questionButton];
+    
+    int viewY = 40;
+    for (int i = 0; i < groups.count; i++) {
+        Group *group = [groups objectAtIndex:i];
+        UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(5, viewY, backgroundView.frame.size.width - 10, 50)];
+        
+        if([group.pictureUrl isKindOfClass:[NSNull class]] || group.pictureUrl.length <= 0) {
+            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5, 40, 40)];
+            [icon setImage:[UIImage imageNamed:@"group"]];
+            [groupView addSubview:icon];
+        }
+        else {
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(0, 5, 40, 40) url:group.pictureUrl];
+            [groupView addSubview:pic];
+        }
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.frame = CGRectMake(60, 0, backgroundView.frame.size.width - 60, 50);
+        [button addTarget:self action:@selector(primaryGroupSelected:) forControlEvents:UIControlEventTouchUpInside];
+        [button setTitle:group.name forState:UIControlStateNormal];
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+        [button.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        button.tag = i;
+        [groupView addSubview:button];
+        
+        UIView *border = [[UIView alloc] initWithFrame:CGRectMake(-5, 0, backgroundView.frame.size.width, 1)];
+        border.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [groupView addSubview:border];
+        
+        [backgroundView addSubview:groupView];
+        viewY += 50;
+    }
+    
+    UIButton *noneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    noneButton.frame = CGRectMake(20, ht - 60, wd - 40, 50);
+    [noneButton addTarget:self action:@selector(noneSelected:) forControlEvents:UIControlEventTouchUpInside];
+    [noneButton setTitle:@"None" forState:UIControlStateNormal];
+    noneButton.backgroundColor = [UIColor whiteColor];
+    [noneButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    noneButton.layer.cornerRadius = 5.0;
+    [self.primaryGroupView addSubview:noneButton];
+    
+}
+
+-(void)primaryGroupSelected:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    [self clearPrimaryGroupSelected];
+    [self setPrimaryGroup:button.tag];
+    [self closePrimaryGroup];
+}
+
+-(void)setPrimaryGroup:(NSUInteger)idx {
+    Group *group = [self.groupsList objectAtIndex:idx];
+    self.primaryGroupId = group.groupId;
+
+    for(UIView *peopleView in self.createView.subviews)
+    {
+        if([peopleView isMemberOfClass:[UIScrollView class]] && peopleView.tag == 2) {
+            int i = 0;
+            for(UIView *subview in peopleView.subviews) {
+                if([subview isMemberOfClass:[UIButton class]] && i == (int)idx) {
+                    UIButton *selectedButton = (UIButton *)subview;
+                    selectedButton.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
+                    for(UIView *labelView in selectedButton.subviews) {
+                        if([labelView isMemberOfClass:[UILabel class]]) {
+                            UILabel *label = (UILabel *)labelView;
+                            label.textColor = [UIColor whiteColor];
+                        }
+                    }
+                    
+                }
+                i++;
+            }
+        }
+    }
+}
+
+-(void)clearPrimaryGroupSelected {
+    for(UIView *peopleView in self.createView.subviews)
+    {
+        if([peopleView isMemberOfClass:[UIScrollView class]] && peopleView.tag == 2) {
+            for(UIView *subview in peopleView.subviews) {
+                if([subview isMemberOfClass:[UIButton class]]) {
+                    UIButton *selectedButton = (UIButton *)subview;
+                    selectedButton.backgroundColor = [UIColor whiteColor];
+                    for(UIView *labelView in selectedButton.subviews) {
+                        if([labelView isMemberOfClass:[UILabel class]]) {
+                            UILabel *label = (UILabel *)labelView;
+                            label.textColor = [UIColor blackColor];
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+-(void)noneSelected:(id)sender {
+    self.primaryGroupId = @"";
+    [self clearPrimaryGroupSelected];
+    [self closePrimaryGroup];
+}
+
+-(void)closePrimaryGroup {
+    [self.primaryGroupView removeFromSuperview];
+}
+
+-(void)questionButtonClick:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Primary Interest"
+                                                    message:@"If there is a group or club throwing this event, select it as the primary interest."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 -(void)cancelButtonClick:(id)sender
 {
@@ -408,17 +605,17 @@
     event.groupId = self.event == nil ? @"" : event.groupId;
     event.groupName = self.event == nil ? @"" : event.groupName;
     event.groupPictureUrl = self.selectedImage;
-    int privateCt = 0;
+    event.groupIsPublic = YES;
+    event.primaryGroupId = self.primaryGroupId == nil ? @"" : self.primaryGroupId;
     for(Group *group in self.groupsList) {
-        event.groupId = event.groupId.length == 0 ? group.groupId : [NSString stringWithFormat:@"%@|%@", event.groupId, group.groupId];
-        event.groupName = event.groupName.length == 0 ? group.name : [NSString stringWithFormat:@"%@|%@", event.groupName, group.name];
-//        if(event.groupPictureUrl.length == 0 && group.pictureUrl.length > 0)
-//            event.groupPictureUrl = group.pictureUrl;
-        if(group.isPublic == false)
-            privateCt++;
+        if(self.event == nil) {
+            event.groupId = event.groupId.length == 0 ? group.groupId : [NSString stringWithFormat:@"%@|%@", event.groupId, group.groupId];
+            event.groupName = event.groupName.length == 0 ? group.name : [NSString stringWithFormat:@"%@|%@", event.groupName, group.name];
+        }
+        if([group.groupId isEqualToString:self.primaryGroupId]) {
+            event.groupIsPublic = group.isPublic;
+        }
     }
-    event.groupIsPublic = privateCt == 0 || privateCt != self.groupsList.count;
-
     
     [self save:event];
     [Group clearIsInvitedToEvent];

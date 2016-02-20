@@ -30,6 +30,7 @@
 @synthesize invited = _invited;
 @synthesize messages = _messages;
 @synthesize tagId = _tagId;
+@synthesize primaryGroupId = _primaryGroupId;
 
 -(id)init:(NSDictionary *)event {
     self = [super init];
@@ -53,6 +54,7 @@
         self.dayOfWeek = [[event objectForKey:@"dayofweek"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"dayofweek"] intValue];
         self.localTime = [event objectForKey:@"localtime"];
         self.schoolId = [event objectForKey:@"schoolid"];
+        self.primaryGroupId = [[event objectForKey:@"primarygroupid"] isMemberOfClass:[NSNull class]] ? @"" : [event objectForKey:@"primarygroupid"];
     }
     return self;
 }
@@ -216,7 +218,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Event"];
        
-    NSDictionary *event = @{@"name": self.name, @"description": self.description, @"groupid": self.groupId, @"groupname": self.groupName, @"grouppictureurl": self.groupPictureUrl, @"groupispublic": [NSNumber numberWithBool:self.groupIsPublic], @"referenceid": [NSNumber numberWithInt:(int)self.referenceId], @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude], @"minparticipants": [NSNumber numberWithInt:(int)self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:(int)self.maxParticipants], @"starttime": self.startTime, @"dayofweek": [NSNumber numberWithInt:(int)self.dayOfWeek], @"localtime": self.localTime, @"schoolid": self.schoolId };
+    NSDictionary *event = @{@"name": self.name, @"description": self.description, @"groupid": self.groupId, @"groupname": self.groupName, @"grouppictureurl": self.groupPictureUrl, @"groupispublic": [NSNumber numberWithBool:self.groupIsPublic], @"referenceid": [NSNumber numberWithInt:(int)self.referenceId], @"locationname": self.location.name, @"locationaddress": self.location.address, @"locationlatitude": [NSNumber numberWithDouble:self.location.latitude], @"locationlongitude": [NSNumber numberWithDouble:self.location.longitude], @"minparticipants": [NSNumber numberWithInt:(int)self.minParticipants], @"maxparticipants": [NSNumber numberWithInt:(int)self.maxParticipants], @"starttime": self.startTime, @"dayofweek": [NSNumber numberWithInt:(int)self.dayOfWeek], @"localtime": self.localTime, @"schoolid": self.schoolId, @"primarygroupid": self.primaryGroupId };
     
     if([self.eventId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [event mutableCopy];
