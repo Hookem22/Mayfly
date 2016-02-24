@@ -234,6 +234,8 @@
 		48DF69631B6012A600DCCE58 /* Branch-SDK in Resources */ = {isa = PBXBuildFile; fileRef = 48DF69621B6012A600DCCE58 /* Branch-SDK */; };
 		48E968361C765EC900E1B23D /* MFNotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E968351C765EC900E1B23D /* MFNotificationsView.m */; };
 		48E968591C77A8F800E1B23D /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = 48E968581C77A8F800E1B23D /* mute.png */; };
+		48F847181C7D2F980090DE7A /* launch2.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F847171C7D2F980090DE7A /* launch2.png */; };
+		48F8471A1C7D2F9D0090DE7A /* launch1.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F847191C7D2F9D0090DE7A /* launch1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -548,6 +550,8 @@
 		48E968561C76837C00E1B23D /* AZSStorageUri.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZSStorageUri.h; sourceTree = "<group>"; };
 		48E968571C76837C00E1B23D /* Azure_Storage_Client_Library.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Azure_Storage_Client_Library.h; sourceTree = "<group>"; };
 		48E968581C77A8F800E1B23D /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mute.png; sourceTree = "<group>"; };
+		48F847171C7D2F980090DE7A /* launch2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch2.png; sourceTree = "<group>"; };
+		48F847191C7D2F9D0090DE7A /* launch1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -779,6 +783,8 @@
 				48028D111C6C0A340060A4E8 /* appscreenshot1.png */,
 				48028D121C6C0A340060A4E8 /* appscreenshot2.png */,
 				48028D131C6C0A340060A4E8 /* appscreenshot3.png */,
+				48F847191C7D2F9D0090DE7A /* launch1.png */,
+				48F847171C7D2F980090DE7A /* launch2.png */,
 				48B6F97F1C6F067A00688E17 /* portrait.png */,
 				48028CF41C6BF3740060A4E8 /* old */,
 			);
@@ -1133,6 +1139,7 @@
 				48028C951C6BA6A60060A4E8 /* Beermug.png in Resources */,
 				48028D0B1C6BFAE10060A4E8 /* logo76@2x.png in Resources */,
 				48028C9B1C6BA6A60060A4E8 /* Candycane.png in Resources */,
+				48F8471A1C7D2F9D0090DE7A /* launch1.png in Resources */,
 				48028CC21C6BA6A60060A4E8 /* MovieSlate.png in Resources */,
 				48185D221B28BF8F00B4EE08 /* face7@2x.png in Resources */,
 				48028C961C6BA6A60060A4E8 /* BirthdayCake.png in Resources */,
@@ -1214,6 +1221,7 @@
 				48028CFC1C6BF6D80060A4E8 /* launch640x960@2x.png in Resources */,
 				48A075611B34A097008E4994 /* arrowplus@2x.png in Resources */,
 				48C102221C698B91005216A0 /* solidgrayface0.png in Resources */,
+				48F847181C7D2F980090DE7A /* launch2.png in Resources */,
 				48028CB91C6BA6A60060A4E8 /* Joystick.png in Resources */,
 				4852DB8A1C617AA400679E4F /* circles3.png in Resources */,
 				48C102231C698B91005216A0 /* solidgrayface1.png in Resources */,

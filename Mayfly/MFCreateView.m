@@ -108,6 +108,11 @@
     self.descText = descText;
     [createView addSubview:descText];
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardOpened:)
+//                                                 name:UIKeyboardDidShowNotification
+//                                               object:nil];
+    
     UIView *topBorder1 = [[UIView alloc] initWithFrame:CGRectMake(0, createView.frame.size.height - 180, wd, 1)];
     topBorder1.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [createView addSubview:topBorder1];
@@ -755,6 +760,20 @@
 -(void)dismissKeyboard:(id)sender
 {
     [self endEditing:YES];
+    
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[UINavigationBar class]])
+        {
+            [UIView animateWithDuration: 0.2
+                             animations: ^{
+                                 subview.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 38);
+                             }
+                             completion: ^(BOOL finished) {
+                                 [subview removeFromSuperview];
+                             }];
+        }
+    }
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -773,6 +792,44 @@
         textView.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     }
     [textView resignFirstResponder];
+}
+
+- (void)keyboardOpened:(NSNotification*)notification
+{
+    for(UIView *subview in self.subviews) {
+        if([subview isMemberOfClass:[UINavigationBar class]])
+            [subview removeFromSuperview];
+    }
+    
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSLog(@"%@", keyboardInfo);
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, keyboardFrameBeginRect.origin.y - keyboardFrameBeginRect.size.height, self.frame.size.width, 38)];
+    navBar.backgroundColor = [UIColor whiteColor];
+
+    UINavigationItem *navItem = [[UINavigationItem alloc] init];
+//    navItem.title = @"Navigation Bar title here";
+
+//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Left" style:UIBarButtonItemStylePlain target:self action:@selector(yourMethod:)];
+//    navItem.leftBarButtonItem = leftButton;
+
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(dismissKeyboard:)];
+    navItem.rightBarButtonItem = rightButton;
+
+    navBar.items = @[ navItem ];
+    
+    [self addSubview:navBar];
+    
+    [UIView animateWithDuration: 0.2
+                     animations: ^{
+                         navBar.frame = CGRectMake(0, keyboardFrameBeginRect.origin.y - keyboardFrameBeginRect.size.height - 32, self.frame.size.width, 38);
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                     }];
+
 }
 
 -(void)nothing:(id)sender {

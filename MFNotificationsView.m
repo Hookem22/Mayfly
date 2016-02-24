@@ -43,7 +43,7 @@
     [self addSubview:notificationsLabelView];
     
     UILabel *notificationsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, wd - 25, 30)];
-    notificationsLabel.text = @"Notifications";
+    notificationsLabel.text = @"NOTIFICATIONS";
     notificationsLabel.textColor = [UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0];
     notificationsLabel.font = [UIFont boldSystemFontOfSize:18];
     notificationsLabel.textAlignment = NSTextAlignmentCenter;

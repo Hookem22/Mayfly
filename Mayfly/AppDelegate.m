@@ -12,7 +12,7 @@
 
 @interface AppDelegate ()
 
-
+@property (nonatomic, assign) BOOL appInBackground;
 
 @end
 
@@ -55,6 +55,7 @@
 //    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 //    [[UIApplication sharedApplication] registerForRemoteNotifications];
 //
+   
     //Send to event on app launch
     if (launchOptions) {
         NSDictionary *userInfo = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -72,7 +73,7 @@
 }
 
 -(void)applicationDidBecomeActive:(UIApplication *)application {
-    
+    self.appInBackground = NO;
     self.hasNotifications = application.applicationIconBadgeNumber > 0;
     //self.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     application.applicationIconBadgeNumber = 0;
@@ -205,6 +206,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {
 //    NSLog(@"%@", userInfo);
 //    
+    
     NSDictionary *message = [userInfo objectForKey:@"aps"];
     if(message)
     {
@@ -214,7 +216,12 @@
             NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
             self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
             
-            [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+            if(self.appInBackground == YES) {
+                [self openEvent];
+            }
+            else {
+                [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+            }
         }
     }
 }
@@ -291,6 +298,7 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    self.appInBackground = YES;
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
