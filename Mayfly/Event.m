@@ -196,6 +196,25 @@
                 }
             }];
         }
+        if(results.count == 0) {
+            completion(events);
+        }
+    }];
+}
+
++(void)getByUserId:(NSString *)userId completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"Event"];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:[NSString stringWithFormat:@"%@", userId] forKey:@"userid"];
+    
+    [service getByProc:@"getgoingbyuser" params:params completion:^(NSArray *results) {
+        NSMutableArray *events = [[NSMutableArray alloc] init];
+        for(id item in results) {
+            [events addObject:[[Event alloc] init:item]];
+        }
+        completion(events);
     }];
 }
 
@@ -238,13 +257,6 @@
          }];
     }
 
-}
-
-+(void)getGoingByUserId:(NSString *)userId completion:(QSCompletionBlock)completion
-{
-    [EventGoing getByUserId:userId completion:^(NSArray *eventIds) {
-        completion(eventIds);
-    }];
 }
 
 -(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin
@@ -371,7 +383,7 @@
                           [invites addObject:invite];
                       }
                       self.invited = [NSArray arrayWithArray:invites];
-                      completion(item);
+                      completion(eventGoing);
                       
                       [PushMessage inviteFriend:user.pushDeviceToken deviceId:user.deviceId from:currentUser.firstName event:self];
                   }];

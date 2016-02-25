@@ -120,7 +120,6 @@
 
 -(void)populateMessages
 {
-    [MFHelpers showProgressView:self.messageView];
     [Message get:self.event.eventId completion:^(NSArray *messages)
     {
         for(UIView *subview in self.messageView.subviews)
@@ -150,7 +149,6 @@
             [self.messageView setContentOffset:bottomOffset animated:NO];
         }
         
-        [MFHelpers hideProgressView:self.messageView];
     }];
 }
 

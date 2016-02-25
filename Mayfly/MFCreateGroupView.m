@@ -241,7 +241,7 @@
     group.pictureUrl = @"";
     group.hasImage = self.pictureView != nil;
     
-    [MFHelpers showProgressView:self];
+    [MFHelpers showDisableView:self];
     [group save:^(Group *group) {
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         [group addMember:currentUser.userId isAdmin:YES];
@@ -273,7 +273,6 @@
         }
     }
     [MFHelpers closeRight:self];
-    [MFHelpers hideProgressView:self];
 }
 
 -(void)cancelButtonClick:(id)sender

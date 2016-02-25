@@ -683,56 +683,34 @@
             
             [Group clearIsInvitedToEvent];
         }
-
     }
     
-    NSMutableArray *contacts = [[NSMutableArray alloc] init];
-    //NSMutableArray *facebookIds = [[NSMutableArray alloc] init];
-    NSString *pushMessageContacts = @"";
+    NSMutableArray *invites = [[NSMutableArray alloc] init];
     for(int i = 0; i < [self.friendList count]; i++)
     {
         NSDictionary *contact = [self.friendList objectAtIndex:i];
         NSString *invited = [contact objectForKey:@"invited"];
         if(![invited isEqualToString:@"NO"]) {
-            [contacts addObject:contact];
+            EventGoing *invite = [[EventGoing alloc] init];
+            invite.facebookId = [contact valueForKey:@"id"];
+            invite.firstName = [contact valueForKey:@"firstName"];
+            [invites addObject:invite];
             
-            NSString *facebookId = [contact valueForKey:@"id"];
-            NSString *firstName = [contact valueForKey:@"firstName"];
-            
-            //[facebookIds addObject:fb];
-            pushMessageContacts = [NSString stringWithFormat:@"%@, %@", firstName, pushMessageContacts];
-            
-            [self.event addInvite:facebookId name:firstName completion:^(EventGoing *invited) {
-                [detailView refreshGoing];
+            [self.event addInvite:invite.facebookId name:invite.firstName completion:^(EventGoing *invited) {
+
             }];
-            
-            //Add to invited
-//            NSString *person = [NSString stringWithFormat:@"%@:%@", fb, firstName];
-            
-//            if([self.event.invited rangeOfString:fb].location == NSNotFound)
-//                self.event.invited = [self.event.invited length] <= 0 ? person : [NSString stringWithFormat:@"%@|%@", self.event.invited, person];
         }
     }
-    if([contacts count] > 0)
+    if(invites.count > 0)
     {
-//        ViewController *vc = (ViewController *)self.window.rootViewController;
-//        [self.event save:^(Event *event) {
-        
-//            [vc.mainView goToEvent:event.referenceId];
-//            if([[self superview] isMemberOfClass:[MFDetailView class]])
-//            {
-//                MFDetailView *detailView = (MFDetailView *)[self superview];
-//                [detailView refreshGoing];
-//            }
- //       }];
-        
-        //User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
-        //[PushMessage inviteFriends:facebookIds from:currentUser.name event:self.event];
+        NSString *pushMessageContacts = @"";
+        for(EventGoing *invite in invites)
+            pushMessageContacts = [NSString stringWithFormat:@"%@, %@", invite.firstName, pushMessageContacts];
         
         pushMessageContacts = [pushMessageContacts substringToIndex:[pushMessageContacts length] - 2];
         
         NSString *message = [NSString stringWithFormat:@"%@ have been invited to %@", pushMessageContacts, self.event.name];
-        if([contacts count] == 1)
+        if(invites.count == 1)
             message = [NSString stringWithFormat:@"%@ has been invited to %@", pushMessageContacts, self.event.name];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invites Sent"
@@ -741,6 +719,26 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
+        
+        if([[self superview] isMemberOfClass:[MFDetailView class]])
+        {
+            NSMutableArray *invited = [[NSMutableArray alloc] init];
+            for(EventGoing *invite in self.event.invited)
+                [invited addObject:invite];
+            for(EventGoing *invite in invites) {
+                BOOL isInvited = NO;
+                for(EventGoing *alreadyInvited in invited) {
+                    if([alreadyInvited.facebookId isEqualToString:invite.facebookId])
+                       isInvited = YES;
+                }
+                if(!isInvited)
+                    [invited addObject:invite];
+            }
+            
+            self.event.invited = [NSArray arrayWithArray:invited];
+            MFDetailView *detailView = (MFDetailView *)[self superview];
+            [detailView refreshGoing];
+        }
     }
     
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
@@ -756,11 +754,6 @@
                 [phoneNumbers addObject:phone];
                 NSString *firstName = [contact valueForKey:@"firstName"];
                 [firstNames addObject:firstName];
-                //NSString *invitedPhone = [NSString stringWithFormat:@"p%@", phone];
-                
-                
-//                if([self.event.invited rangeOfString:invitedPhone].location == NSNotFound)
-//                    self.event.invited = [NSString stringWithFormat:@"%@|%@:%@", self.event.invited, invitedPhone, [contact valueForKey:@"firstName"]];
             }
         }
     }

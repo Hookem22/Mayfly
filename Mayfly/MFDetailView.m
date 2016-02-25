@@ -414,7 +414,7 @@
         BOOL isGoing = NO;
         for(EventGoing *going in self.event.going)
         {
-            if([going.userId isEqualToString:person.userId]) {
+            if([going.userId isEqualToString:person.userId] || [going.facebookId isEqualToString:person.facebookId]) {
                 isGoing = YES;
                 break;
             }

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MFProfilePicView : UIImageView
+@interface MFProfilePicView : UIButton
 
 -(id)initWithFrame:(CGRect)frame facebookId:(NSString *)facebookId;
 -(id)initWithUrl:(CGRect)frame url:(NSString *)url;

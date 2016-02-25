@@ -20,6 +20,7 @@
 
 +(void)showProgressView:(UIView *)view;
 +(void)hideProgressView:(UIView *)view;
++(void)showDisableView:(UIView *)view;
 +(void)open:(UIView *)view onView:(UIView *)onView;
 +(void)openFromRight:(UIView *)view onView:(UIView *)onView;
 +(void)close:(UIView *)view;

@@ -628,7 +628,7 @@
 
 -(void)save:(Event *)event
 {
-    [MFHelpers showProgressView:self];
+    [MFHelpers showDisableView:self];
     
     [event save:^(Event *event)
     {
@@ -652,7 +652,6 @@
         
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         [event addGoing:currentUser.userId isAdmin:YES];
-        [MFHelpers hideProgressView:self];
         
         MFCalendarAccess *addToCalendar = [[MFCalendarAccess alloc] init];
         [self.superview addSubview:addToCalendar];
@@ -735,7 +734,7 @@
 
 -(void)deleteEvent{
     
-    [MFHelpers showProgressView:self];
+    [MFHelpers showDisableView:self];
     [self.event deleteEvent:^(NSDictionary *item) {
         if([self.superview.superview isMemberOfClass:[MFView class]])
         {
@@ -747,7 +746,6 @@
             [self.superview removeFromSuperview];
         }
         
-        [MFHelpers hideProgressView:self];
         [self cancelButtonClick:nil];
     }];
 }

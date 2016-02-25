@@ -93,7 +93,7 @@
 {
     if([self.messageText.text length] > 0 || self.imageView != nil)
     {
-        [MFHelpers showProgressView:self];
+        [MFHelpers showDisableView:self];
         
         User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
         
@@ -139,7 +139,6 @@
         }
     }
 
-    [MFHelpers hideProgressView:self];
     [MFHelpers close:self];
     
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];

@@ -85,7 +85,7 @@
 -(bool)isViewed {
     User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
 
-    if(currentUser == nil) {
+    if([currentUser isKindOfClass:[NSNull class]] || currentUser == nil || currentUser.userId.length == 0 || [self isKindOfClass:[NSNull class]] || self.viewedBy.length == 0) {
         return NO;
     } else if([self.viewedBy rangeOfString:currentUser.userId].location != NSNotFound) {
         return YES;

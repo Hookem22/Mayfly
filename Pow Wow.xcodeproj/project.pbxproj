@@ -157,6 +157,7 @@
 		4835C5B31C31DACF00BB8962 /* MFGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4835C5B21C31DACF00BB8962 /* MFGroupView.m */; };
 		4835C5B61C33109200BB8962 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 4835C5B51C33109200BB8962 /* Group.m */; };
 		4835C5B81C33250F00BB8962 /* group.png in Resources */ = {isa = PBXBuildFile; fileRef = 4835C5B71C33250F00BB8962 /* group.png */; };
+		483E52AF1C7E4A9F00EA80CB /* MFProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 483E52AE1C7E4A9F00EA80CB /* MFProfileView.m */; };
 		4843EA1C1B0F963500C510B4 /* fbLoginButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */; };
 		4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA1E1B0FA78100C510B4 /* MFAddressBook.m */; };
 		4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4843EA261B14ECE700C510B4 /* MFMapView.m */; };
@@ -415,6 +416,8 @@
 		4835C5B41C33109200BB8962 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		4835C5B51C33109200BB8962 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
 		4835C5B71C33250F00BB8962 /* group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group.png; sourceTree = "<group>"; };
+		483E52AD1C7E4A9F00EA80CB /* MFProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFProfileView.h; sourceTree = "<group>"; };
+		483E52AE1C7E4A9F00EA80CB /* MFProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFProfileView.m; sourceTree = "<group>"; };
 		4843EA1B1B0F963500C510B4 /* fbLoginButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fbLoginButton@2x.png"; sourceTree = "<group>"; };
 		4843EA1D1B0FA78100C510B4 /* MFAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFAddressBook.h; sourceTree = "<group>"; };
 		4843EA1E1B0FA78100C510B4 /* MFAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFAddressBook.m; sourceTree = "<group>"; };
@@ -851,6 +854,8 @@
 				4852DB7D1C60653700679E4F /* MFInstructionsView.m */,
 				48C1023B1C6A6E45005216A0 /* MFSettingsView.h */,
 				48C1023C1C6A6E45005216A0 /* MFSettingsView.m */,
+				483E52AD1C7E4A9F00EA80CB /* MFProfileView.h */,
+				483E52AE1C7E4A9F00EA80CB /* MFProfileView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
@@ -1297,6 +1302,7 @@
 				4843EA2D1B163D6F00C510B4 /* MFLocationSelectView.m in Sources */,
 				48185D2C1B28D81200B4EE08 /* MFClockView.m in Sources */,
 				48E968361C765EC900E1B23D /* MFNotificationsView.m in Sources */,
+				483E52AF1C7E4A9F00EA80CB /* MFProfileView.m in Sources */,
 				48185D2F1B28DF0600B4EE08 /* MFLocationView.m in Sources */,
 				4886C9E11B0BBAA900909747 /* main.m in Sources */,
 				485AB37C1C2348130035C79D /* EventGoing.m in Sources */,

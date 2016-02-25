@@ -51,22 +51,6 @@
     }];
 }
 
-+(void)getByUserId:(NSString *)userId completion:(QSCompletionBlock)completion
-{
-    QSAzureService *service = [QSAzureService defaultService:@"Event"];
-    
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:[NSString stringWithFormat:@"%@", userId] forKey:@"userid"];
-    
-    [service getByProc:@"getgoingbyuser" params:params completion:^(NSArray *results) {
-        NSMutableArray *goingEventIds = [[NSMutableArray alloc] init];
-        for(id item in results) {
-            [goingEventIds addObject:[item objectForKey:@"eventid"]];
-        }
-        completion(goingEventIds);
-    }];
-}
-
 +(void)joinEvent:(NSString *)eventId userId:(NSString *)userId isAdmin:(BOOL)isAdmin completion:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"EventGoing"];

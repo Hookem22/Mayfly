@@ -238,7 +238,6 @@
     else {
         [self openGroup:group];
     }
-
 }
 
 -(void)openGroup:(Group *)group {

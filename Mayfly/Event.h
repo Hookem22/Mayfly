@@ -44,11 +44,11 @@
 -(id)initFromUrl:(NSString *)url;
 +(void)get:(QSCompletionBlock)completion;
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
++(void)getByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
 +(void)getByReferenceId:(NSString *)referenceId completion:(QSCompletionBlock)completion;
 +(void)getBySchool:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 
-+(void)getGoingByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)addGoing:(NSString *)userId isAdmin:(BOOL)isAdmin;
 -(void)removeGoing:(NSString *)userId;
 +(void)getInvitedByUserId:(NSString *)userId completion:(QSCompletionBlock)completion;

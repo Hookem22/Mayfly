@@ -95,7 +95,7 @@
 -(void)getUserValues:(QSCompletionBlock)completion {
     [self getUserGroups:^(NSArray *groups) {
         self.groups = [groups mutableCopy];
-        [self getUserGoing:^(NSArray *going) {
+        [self getUserGoingIds:^(NSArray *going) {
             self.goingEventIds = [going mutableCopy];
             [self getUserInvited:^(NSArray *invited) {
                 self.invitedEventIds = [invited mutableCopy];
@@ -113,8 +113,18 @@
 }
 
 -(void)getUserGoing:(QSCompletionBlock)completion {
-    [Event getGoingByUserId:self.userId completion:^(NSArray *going) {
-        completion(going);
+    [Event getByUserId:self.userId completion:^(NSArray *events) {
+        completion(events);
+    }];
+}
+
+-(void)getUserGoingIds:(QSCompletionBlock)completion {
+    [self getUserGoing:^(NSArray *events) {
+        NSMutableArray *ids = [[NSMutableArray alloc] init];
+        for(Event *event in events) {
+            [ids addObject:event.eventId];
+        }
+        completion(ids);
     }];
 }
 
