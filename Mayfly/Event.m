@@ -53,6 +53,7 @@
         self.startTime = [event objectForKey:@"starttime"];
         self.dayOfWeek = [[event objectForKey:@"dayofweek"] isMemberOfClass:[NSNull class]] ? 0 : [[event objectForKey:@"dayofweek"] intValue];
         self.localTime = [event objectForKey:@"localtime"];
+        //self.schoolId = [[event objectForKey:@"schoolid"] isMemberOfClass:[NSNull class]] ? @"" : [event objectForKey:@"schoolid"];
         self.schoolId = [event objectForKey:@"schoolid"];
         self.primaryGroupId = [[event objectForKey:@"primarygroupid"] isMemberOfClass:[NSNull class]] ? @"" : [event objectForKey:@"primarygroupid"];
     }
