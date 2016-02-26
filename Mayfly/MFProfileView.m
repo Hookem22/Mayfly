@@ -548,7 +548,7 @@
     
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closePicture:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-    [self addGestureRecognizer:recognizer];
+    [pictureView addGestureRecognizer:recognizer];
     
 }
 

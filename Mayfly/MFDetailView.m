@@ -261,7 +261,7 @@
     for(UIView *subview in self.messagesView.subviews) {
         [subview removeFromSuperview];
     }
-    
+
     int viewY = 0;
     for(Message *message in self.event.messages) {
         UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY, wd, 120)];
@@ -282,12 +282,6 @@
         
         MFProfilePicView *messagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 22, 50, 50) facebookId:message.facebookId];
         [messageView addSubview:messagePic];
-        
-//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        btn.frame = CGRectMake(0, 0, wd, 30);
-//        [btn setTitle:@"Hello" forState:UIControlStateNormal];
-//        [btn addTarget:self action:@selector(Test:) forControlEvents:UIControlEventTouchUpInside];
-//        [messageView addSubview:btn];
         
         UILabel *nameMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 27, wd - 90, 20)];
         nameMessageLabel.text = message.name;
@@ -338,11 +332,8 @@
     }
     
     self.detailView.contentSize = CGSizeMake(wd, self.initialHeight + viewY);
+    self.messagesView.frame = CGRectMake(0, self.messagesView.frame.origin.y, self.messagesView.frame.size.width, viewY);
 }
-
-//-(void)Test:(id)sender {
-//    NSLog(@"Test");
-//}
 
 -(void)refreshMessageImages {
     int viewY = 0;
@@ -380,6 +371,7 @@
     }
     
     self.detailView.contentSize = CGSizeMake(self.detailView.frame.size.width, self.initialHeight + viewY);
+    self.messagesView.frame = CGRectMake(0, self.messagesView.frame.origin.y, self.messagesView.frame.size.width, viewY);
 }
 
 -(void)refreshGoing
