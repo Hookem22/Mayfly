@@ -408,7 +408,7 @@
 
 -(void)eventsButtonClicked:(id)sender {
     UIButton *button = (UIButton *)sender;
-    [self eventsSwitch:button.tag];
+    [self eventsSwitch:(int)button.tag];
 }
 
 -(void)eventsScrollToPast:(id)sender {
@@ -432,7 +432,7 @@
                                  }
                                  completion:^(BOOL finished){ }];
             } else {
-                int newWd = scrollView.tag == 1 ? -1 * wd : wd;
+                int newWd = scrollView.tag == 1 ? -1 * (int)wd : (int)wd;
                 [UIView animateWithDuration:0.5
                                  animations:^{
                                      scrollView.frame = CGRectMake(newWd, scrollView.frame.origin.y, scrollView.frame.size.width, scrollView.frame.size.height);
@@ -486,7 +486,7 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
-    int picWd = wd / 3 - 2;
+    int picWd = (int)wd / 3 - 2;
     self.picturesView = [[UIScrollView alloc] initWithFrame:CGRectMake(wd, self.origViewY, wd, ht - self.origViewY - 110)];
     self.picturesView.backgroundColor = [UIColor whiteColor];
     [self.userView addSubview:self.picturesView];
@@ -494,13 +494,13 @@
     UIButton *profilePic = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, picWd, picWd)];
     [profilePic addTarget:self action:@selector(pictureClicked:) forControlEvents:UIControlEventTouchUpInside];
     profilePic.tag = 0;
-    [self loadMessagePicture:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=%i&height=%i", user.facebookId, wd, wd] imgButton:profilePic];
+    [self loadMessagePicture:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=%lu&height=%lu", user.facebookId, (unsigned long)wd, (unsigned long)wd] imgButton:profilePic];
     [self.picturesView addSubview:profilePic];
 
     int tag = 1;
     NSString *messagePath = @"https://mayflyapp.blob.core.windows.net/messages/";
     for(Message *message in messages) {
-        int picX = (tag % 3 * wd) / 3 + (tag % 3);
+        int picX = (tag % 3 * (int)wd) / 3 + (tag % 3);
         int picY = (floor(tag / 3) * wd) / 3 + floor(tag / 3) * 2;
         UIButton *pic = [[UIButton alloc] initWithFrame:CGRectMake(picX, picY, picWd, picWd)];
         [pic addTarget:self action:@selector(pictureClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -538,7 +538,7 @@
     UIImage *img = [button imageForState:UIControlStateNormal];
     
     int picHt = (wd / img.size.width) * img.size.height;
-    int picY = (ht - picHt) / 2;
+    int picY = ((int)ht - picHt) / 2;
     if(picY == 0)
         picY = 0;
     
@@ -827,7 +827,7 @@
         [picturesPic setImage:[UIImage imageNamed:@"menucameraselected"] forState:UIControlStateNormal];
         [interestsPic setImage:[UIImage imageNamed:@"menustar"] forState:UIControlStateNormal];
         
-        self.eventsView.frame = CGRectMake(wd, self.eventsView.frame.origin.y, self.eventsView.frame.size.width, self.eventsView.frame.size.height);
+        self.eventsView.frame = CGRectMake(2 * wd, self.eventsView.frame.origin.y, self.eventsView.frame.size.width, self.eventsView.frame.size.height);
         self.picturesView.frame = CGRectMake(0, self.picturesView.frame.origin.y, self.picturesView.frame.size.width, self.picturesView.frame.size.height);
         self.interestsView.frame = CGRectMake(wd, self.interestsView.frame.origin.y, self.interestsView.frame.size.width, self.interestsView.frame.size.height);
     } else {
@@ -835,7 +835,7 @@
         [picturesPic setImage:[UIImage imageNamed:@"menucamera"] forState:UIControlStateNormal];
         [interestsPic setImage:[UIImage imageNamed:@"menustarselected"] forState:UIControlStateNormal];
         
-        self.eventsView.frame = CGRectMake(wd, self.eventsView.frame.origin.y, self.eventsView.frame.size.width, self.eventsView.frame.size.height);
+        self.eventsView.frame = CGRectMake(2 * wd, self.eventsView.frame.origin.y, self.eventsView.frame.size.width, self.eventsView.frame.size.height);
         self.picturesView.frame = CGRectMake(wd, self.picturesView.frame.origin.y, self.picturesView.frame.size.width, self.picturesView.frame.size.height);
         self.interestsView.frame = CGRectMake(0, self.interestsView.frame.origin.y, self.interestsView.frame.size.width, self.interestsView.frame.size.height);
     }
