@@ -281,6 +281,12 @@
         MFProfilePicView *messagePic = [[MFProfilePicView alloc] initWithFrame:CGRectMake(30, 22, 50, 50) facebookId:message.facebookId];
         [messageView addSubview:messagePic];
         
+//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        btn.frame = CGRectMake(0, 0, wd, 30);
+//        [btn setTitle:@"Hello" forState:UIControlStateNormal];
+//        [btn addTarget:self action:@selector(Test:) forControlEvents:UIControlEventTouchUpInside];
+//        [messageView addSubview:btn];
+        
         UILabel *nameMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 27, wd - 90, 20)];
         nameMessageLabel.text = message.name;
         [messageView addSubview:nameMessageLabel];
@@ -331,6 +337,10 @@
     
     self.detailView.contentSize = CGSizeMake(wd, self.initialHeight + viewY);
 }
+
+//-(void)Test:(id)sender {
+//    NSLog(@"Test");
+//}
 
 -(void)refreshMessageImages {
     int viewY = 0;

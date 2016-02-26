@@ -58,6 +58,22 @@
     }];
 }
 
++(void)getImageByUser:(NSString *)userId completion:(QSCompletionBlock)completion
+{
+    QSAzureService *service = [QSAzureService defaultService:@"Message"];
+    
+    NSString *whereStatement = [NSString stringWithFormat:@"userid = '%@' AND hasimage = true", userId];
+    
+    [service getByWhere:whereStatement completion:^(NSArray *results) {
+        NSMutableArray *messages = [[NSMutableArray alloc] init];
+        for(id item in results) {
+            [messages addObject:[[Message alloc] init:item]];
+        }
+        completion(messages);
+    }];
+}
+
+
 -(void)save:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Message"];

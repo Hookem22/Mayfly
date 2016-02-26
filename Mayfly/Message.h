@@ -26,6 +26,7 @@
 
 -(id)init:(NSDictionary *)message;
 +(void)get:(NSString *)eventId completion:(QSCompletionBlock)completion;
++(void)getImageByUser:(NSString *)userId completion:(QSCompletionBlock)completion;
 -(void)save:(QSCompletionBlock)completion;
 -(bool)isViewed;
 -(void)markViewed;

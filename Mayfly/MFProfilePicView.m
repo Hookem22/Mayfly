@@ -24,6 +24,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.facebookId = facebookId;
+        [self addTarget:self action:@selector(facebookPicClicked:) forControlEvents:UIControlEventTouchUpInside];
+
         dispatch_queue_t queue = dispatch_queue_create("Facebook Profile Image Queue", NULL);
         
         dispatch_async(queue, ^{
@@ -32,7 +34,6 @@
             UIImage *img = [UIImage imageWithData:data];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self setImage:img forState:UIControlStateNormal];
-                [self addTarget:self action:@selector(facebookPicClicked:) forControlEvents:UIControlEventTouchUpInside];
                 self.layer.cornerRadius = frame.size.width / 2;
                 self.clipsToBounds = YES;
             });
