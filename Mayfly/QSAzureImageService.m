@@ -13,8 +13,11 @@
 
 +(void)uploadImage:(NSString *)container image:(UIImage *)image name:(NSString *)name completionHandler:(void(^)(NSURL *url))completionHandler {
     // Get the image data (JPEG)
-    NSData *data = UIImageJPEGRepresentation(image, 1.0f);
+    //NSData *data = UIImageJPEGRepresentation(image, 1.0f);
     
+    //NSLog(@"Old Size of Image(bytes):%d",data.length);
+    NSData *data = [self compressImage:image];
+
     // Create the blob name (*.jpeg)
     NSString *blobName = [NSString stringWithFormat:@"%@.jpeg", name];
     
@@ -53,6 +56,55 @@
                         : nil);
     }];
                                   //}];
+}
+
++(NSData *)compressImage:(UIImage *)image
+{
+    // Determine output size
+    CGFloat maxSize = 1024.0f;
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height;
+    CGFloat newWidth = width;
+    CGFloat newHeight = height;
+    
+    // If any side exceeds the maximun size, reduce the greater side to 1200px and proportionately the other one
+    if (width > maxSize || height > maxSize) {
+        if (width > height) {
+            newWidth = maxSize;
+            newHeight = (height*maxSize)/width;
+        } else {
+            newHeight = maxSize;
+            newWidth = (width*maxSize)/height;
+        }
+    }
+    
+    // Resize the image
+    CGSize newSize = CGSizeMake(newWidth, newHeight);
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // Set maximun compression in order to decrease file size and enable faster uploads & downloads
+    NSData *imageData = UIImageJPEGRepresentation(newImage, 1.0f);
+    //NSLog(@"New Size of Image(bytes):%d",imageData.length);
+    
+    int maxBytes = 150000;
+    if(imageData.length > maxBytes) {
+        for (float compression = 1.0; compression >= 0.0; compression -= .1) {
+            imageData = UIImageJPEGRepresentation(newImage, compression);
+            NSInteger imageLength = imageData.length;
+            //NSLog(@"Compressed:%f Bytes:%d",compression, imageData.length);
+            if (imageLength < maxBytes) {
+                break;
+            }
+        }
+        //UIImage *finalImage = [UIImage imageWithData:imageData];
+    
+    }
+    //UIImage *processedImage = [UIImage imageWithData:imageData];
+    
+    return imageData;
 }
 
 //

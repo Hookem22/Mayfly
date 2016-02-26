@@ -29,6 +29,8 @@
     UIView *disableView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
     disableView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
     [view addSubview:disableView];
+    
+    [MBProgressHUD showHUDAddedTo:view animated:YES];
 }
 
 +(void)open:(UIView *)view onView:(UIView *)onView

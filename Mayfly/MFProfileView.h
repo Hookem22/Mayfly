@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MFDetailView.h"
 #import "MFHelpers.h"
+#import "TiledImageView.h"
 
 @interface MFProfileView : UIView
 

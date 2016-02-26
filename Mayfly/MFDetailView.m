@@ -241,6 +241,8 @@
                 NSData *data = [NSData dataWithContentsOfURL:nsurl];
                 UIImage *img = [UIImage imageWithData:data];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if(img == nil)
+                        return;
                     [imageView setImage:img];
                     float imgWd = wd - 60;
                     float imgHt = (imgWd / img.size.width) * img.size.height;
