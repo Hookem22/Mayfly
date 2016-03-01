@@ -132,7 +132,7 @@
         dateMessageLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         [postView addSubview:dateMessageLabel];
         
-        UIButton *upVoteButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 70, 15, 40, 40)];
+        UIButton *upVoteButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 70, 14, 40, 40)];
         NSString *upImg = [post.upVotes containsObject:currentUser.userId] ? @"arrowupselected" : @"arrowup";
         [upVoteButton setImage:[UIImage imageNamed:upImg] forState:UIControlStateNormal];
         [upVoteButton addTarget:self action:@selector(upVoteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -140,7 +140,7 @@
         [self.arrowUpButtons addObject:upVoteButton];
         [postView addSubview:upVoteButton];
         
-        UILabel *votesLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd - 89, 38, 80, 40)];
+        UILabel *votesLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd - 89, 34, 80, 40)];
         votesLabel.text = [NSString stringWithFormat:@"%i", post.votes];
         votesLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         votesLabel.font = [UIFont boldSystemFontOfSize:24.f];
@@ -148,7 +148,7 @@
         [self.votesLabels addObject:votesLabel];
         [postView addSubview:votesLabel];
         
-        UIButton *downVoteButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 70, 64, 40, 40)];
+        UIButton *downVoteButton = [[UIButton alloc] initWithFrame:CGRectMake(wd - 70, 56, 40, 40)];
         NSString *downImg = [post.downVotes containsObject:currentUser.userId] ? @"arrowdownselected" : @"arrowdown";
         [downVoteButton setImage:[UIImage imageNamed:downImg] forState:UIControlStateNormal];
         [downVoteButton addTarget:self action:@selector(downVoteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -267,7 +267,7 @@
     NSString *downImg = [post.downVotes containsObject:currentUser.userId] ? @"arrowdownselected" : @"arrowdown";
     [downButton setImage:[UIImage imageNamed:downImg] forState:UIControlStateNormal];
     
-    post.votes = post.upVotes.count - post.downVotes.count;
+    post.votes = (int)post.upVotes.count - (int)post.downVotes.count;
     UILabel *voteLabel = (UILabel *)self.votesLabels[button.tag];
     voteLabel.text = [NSString stringWithFormat:@"%i", post.votes];
     
@@ -304,7 +304,7 @@
     NSString *downImg = [post.downVotes containsObject:currentUser.userId] ? @"arrowdownselected" : @"arrowdown";
     [downButton setImage:[UIImage imageNamed:downImg] forState:UIControlStateNormal];
     
-    post.votes = post.upVotes.count - post.downVotes.count;
+    post.votes = (int)post.upVotes.count - (int)post.downVotes.count;
     UILabel *voteLabel = (UILabel *)self.votesLabels[button.tag];
     voteLabel.text = [NSString stringWithFormat:@"%i", post.votes];
     

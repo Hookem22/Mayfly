@@ -43,7 +43,7 @@
         NSString *down = [[post objectForKey:@"downvotes"] isMemberOfClass:[NSNull class]] ? @"" : [post objectForKey:@"downvotes"];
         self.downVotes = [[down componentsSeparatedByString: @"|"] mutableCopy];
         
-        self.votes = self.upVotes.count - self.downVotes.count;
+        self.votes = (int)self.upVotes.count - (int)self.downVotes.count;
     }
     return self;
 }
