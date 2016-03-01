@@ -17,15 +17,17 @@
 #import "MFGroupView.h"
 #import "MFInstructionsView.h"
 #import "MFAddButtonView.h"
+#import "MFPostsView.h"
 
 @interface MFView : UIView
 
 @property (nonatomic, strong) UIView *addView;
 
 -(void)setup;
--(void)refreshEvents;
+-(void)refresh;
 -(void)scrollUp;
 -(void)scrollDown;
+-(void)postsButtonClick;
 -(void)eventsButtonClick;
 -(void)interestsButtonClick;
 -(void)goToEvent:(NSString *)eventId;

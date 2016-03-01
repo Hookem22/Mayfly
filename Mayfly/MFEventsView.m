@@ -416,7 +416,7 @@
     {
         [MFHelpers showProgressView:self.superview];
         MFView *view = (MFView *)self.superview;
-        [view refreshEvents];
+        [view refresh];
     }
 }
 

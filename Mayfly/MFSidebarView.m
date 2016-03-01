@@ -13,6 +13,7 @@
 //@property (nonatomic, strong) UIScrollView *notificationsView;
 //@property (nonatomic, strong) NSArray *notifications;
 
+@property (nonatomic, strong) UIButton *postsButton;
 @property (nonatomic, strong) UIButton *eventsButton;
 @property (nonatomic, strong) UIButton *interestsButton;
 @property (nonatomic, strong) UIButton *notificationsButton;
@@ -87,11 +88,23 @@
     borderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:borderView];
     
-    UIButton *eventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 140, wd, 60)];
+    UIButton *postsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 140, wd, 60)];
+    [postsButton setTitle:@"Home" forState:UIControlStateNormal];
+    [postsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [postsButton addTarget:self action:@selector(postsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [postsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    self.postsButton = postsButton;
+    [view addSubview:postsButton];
+    
+    UIView *postsBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, postsButton.frame.origin.y + postsButton.frame.size.height - 1, wd, 1)];
+    postsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [view addSubview:postsBorderView];
+    
+    UIButton *eventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 200, wd, 60)];
     [eventsButton setTitle:@"Events" forState:UIControlStateNormal];
     [eventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [eventsButton addTarget:self action:@selector(eventsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     self.eventsButton = eventsButton;
     [view addSubview:eventsButton];
     
@@ -99,7 +112,7 @@
     eventsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:eventsBorderView];
     
-    UIButton *interestsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 200, wd, 60)];
+    UIButton *interestsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 260, wd, 60)];
     [interestsButton setTitle:@"Interests" forState:UIControlStateNormal];
     [interestsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [interestsButton addTarget:self action:@selector(interestsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -111,7 +124,7 @@
     interestsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:interestsBorderView];
     
-    UIButton *notificationsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 260, wd, 60)];
+    UIButton *notificationsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 320, wd, 60)];
     [notificationsButton setTitle:@"Notifications" forState:UIControlStateNormal];
     [notificationsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [notificationsButton addTarget:self action:@selector(notificationsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -152,8 +165,23 @@
     }
 }
 
+-(void)postsButtonClick:(id)sender
+{
+    [self.postsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [self.eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [self.interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [self.notificationsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [self cancelButtonClick:sender];
+    
+    if([self.superview isMemberOfClass:[MFView class]]) {
+        MFView *mfView = (MFView *)self.superview;
+        [mfView postsButtonClick];
+    }
+}
+
 -(void)eventsButtonClick:(id)sender
 {
+    [self.postsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
     [self.interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.notificationsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
@@ -167,6 +195,7 @@
 
 -(void)interestsButtonClick:(id)sender
 {
+    [self.postsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
     [self.notificationsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
@@ -180,6 +209,7 @@
 
 -(void)notificationsButtonClick:(id)sender
 {
+    [self.postsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.interestsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
     [self.notificationsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
@@ -224,12 +254,15 @@
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
+    MFPostsView *postsView;
     MFEventsView *eventsView;
     MFGroupView *groupView;
     MFNotificationsView *notificationsView;
     for(UIView *subview in self.superview.subviews)
     {
-        if([subview isMemberOfClass:[MFEventsView class]])
+        if([subview isMemberOfClass:[MFPostsView class]])
+            postsView = (MFPostsView *)subview;
+        else if([subview isMemberOfClass:[MFEventsView class]])
             eventsView = (MFEventsView *)subview;
         else if([subview isMemberOfClass:[MFGroupView class]])
             groupView = (MFGroupView *)subview;
@@ -242,8 +275,14 @@
     [UIView animateWithDuration:0.3
                      animations:^{
                          self.frame = CGRectMake((int)(-1 * wd), 60, wd, ht - 60);
-                         eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
                          mfView.addView.frame = CGRectMake(0, ht - 60, wd, 60);
+                         
+                         if(postsView.frame.origin.x < wd) {
+                             postsView.frame = CGRectMake(0, 60, wd, ht - 60);
+                         }
+                         if(eventsView.frame.origin.x < wd) {
+                             eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
+                         }
                          if(groupView.frame.origin.x < wd) {
                              groupView.frame = CGRectMake(0, 60, wd, ht - 60);
                          }

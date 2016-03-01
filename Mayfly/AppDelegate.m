@@ -200,7 +200,7 @@
 {
     ViewController *vc = (ViewController *)self.window.rootViewController;
     MFView *mfView = (MFView *)vc.mainView;
-    [mfView refreshEvents];
+    [mfView refresh];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification: (NSDictionary *)userInfo {

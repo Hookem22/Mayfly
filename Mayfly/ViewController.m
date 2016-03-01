@@ -197,7 +197,7 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.mainView setup];
-    [self.mainView refreshEvents];
+    [self.mainView refresh];
     //[self.mainView loadWebsite];
 }
 
@@ -221,6 +221,10 @@
         }
         else if([subview isMemberOfClass:[MFCreateGroupView class]]) {
             MFCreateGroupView *view = (MFCreateGroupView *)subview;
+            [view newImage:chosenImage];
+        }
+        else if([subview isMemberOfClass:[MFCreatePostView class]]) {
+            MFCreatePostView *view = (MFCreatePostView *)subview;
             [view newImage:chosenImage];
         }
     }

@@ -11,9 +11,11 @@
 @interface MFAddButtonView()
 
 @property (nonatomic, strong) UIButton* eventButton;
+@property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) UIButton* interestButton;
 @property (nonatomic, strong) UIButton* closeButton;
 @property (nonatomic, strong) UILabel* eventLabel;
+@property (nonatomic, strong) UILabel* postLabel;
 @property (nonatomic, strong) UILabel* interestLabel;
 
 @end
@@ -49,10 +51,21 @@
     [self addSubview:self.eventButton];
     
     self.eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd/4, ht, wd/2, 20)];
-    self.eventLabel.text = @"Add Event";
+    self.eventLabel.text = @"Event";
     self.eventLabel.textColor = [UIColor whiteColor];
     self.eventLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.eventLabel];
+    
+    self.postButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-60, 60, 60)];
+    [self.postButton setImage:[UIImage imageNamed:@"addpost"] forState:UIControlStateNormal];
+    [self.postButton addTarget:self action:@selector(postButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.postButton];
+    
+    self.postLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd/4, ht, wd/2, 20)];
+    self.postLabel.text = @"Post";
+    self.postLabel.textColor = [UIColor whiteColor];
+    self.postLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:self.postLabel];
     
     self.interestButton = [[UIButton alloc] initWithFrame:CGRectMake((wd / 2) - 30, ht-60, 60, 60)];
     [self.interestButton setImage:[UIImage imageNamed:@"addgroup"] forState:UIControlStateNormal];
@@ -60,7 +73,7 @@
     [self addSubview:self.interestButton];
     
     self.interestLabel = [[UILabel alloc] initWithFrame:CGRectMake(wd/4, ht, wd/2, 20)];
-    self.interestLabel.text = @"Add Interest";
+    self.interestLabel.text = @"Interest";
     self.interestLabel.textColor = [UIColor whiteColor];
     self.interestLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.interestLabel];
@@ -80,8 +93,10 @@
     [UIView animateWithDuration: 0.3
                      animations: ^{
                          self.eventButton.frame = CGRectMake(wd / 4 - 30, ht - 160, 60, 60);
+                         self.postButton.frame = CGRectMake(wd / 2 - 30, ht - 200, 60, 60);
                          self.interestButton.frame = CGRectMake((wd * 3) / 4 - 30, ht - 160, 60, 60);
                          self.eventLabel.frame = CGRectMake(0, ht - 95, wd/2, 20);
+                         self.postLabel.frame = CGRectMake(wd/4, ht - 135, wd/2, 20);
                          self.interestLabel.frame = CGRectMake(wd/2, ht - 95, wd/2, 20);
                          self.closeButton.transform = CGAffineTransformRotate(self.closeButton.transform, M_PI * (-0.75));
                      }
@@ -96,7 +111,8 @@
     if(![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] init];
-        [MFHelpers open:loginView onView:self];
+        [MFHelpers open:loginView onView:self.superview];
+        [self removeFromSuperview];
         return;
     }
     
@@ -105,12 +121,27 @@
     [MFHelpers close:self];
 }
 
+-(void)postButtonClick:(id)sender {
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        MFLoginView *loginView = [[MFLoginView alloc] init];
+        [MFHelpers open:loginView onView:self.superview];
+        [self removeFromSuperview];
+        return;
+    }
+    
+    MFCreatePostView *createPostView = [[MFCreatePostView alloc] init];
+    [MFHelpers open:createPostView onView:self.superview];
+    [MFHelpers close:self];
+}
+
 -(void)interestButtonClick:(id)sender
 {
     if(![FBSDKAccessToken currentAccessToken])
     {
         MFLoginView *loginView = [[MFLoginView alloc] init];
-        [MFHelpers open:loginView onView:self];
+        [MFHelpers open:loginView onView:self.superview];
+        [self removeFromSuperview];
         return;
     }
     
@@ -128,8 +159,10 @@
     [UIView animateWithDuration: 0.3
                      animations: ^{
                          self.eventButton.frame = CGRectMake((wd / 2) - 30, ht-60, 60, 60);
+                         self.postButton.frame = CGRectMake((wd / 2) - 30, ht-60, 60, 60);
                          self.interestButton.frame = CGRectMake((wd / 2) - 30, ht-60, 60, 60);
                          self.eventLabel.frame = CGRectMake(wd/4, ht, wd/2, 20);
+                         self.postLabel.frame = CGRectMake(wd/4, ht, wd/2, 20);
                          self.interestLabel.frame = CGRectMake(wd/4, ht, wd/2, 20);
                          self.closeButton.transform = CGAffineTransformRotate(self.closeButton.transform, M_PI * (0.75));
                      }

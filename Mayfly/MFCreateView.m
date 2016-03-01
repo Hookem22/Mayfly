@@ -642,7 +642,7 @@
                  if([self.superview.superview isMemberOfClass:[MFView class]])
                  {
                      MFView *view = (MFView *)self.superview.superview;
-                     [view refreshEvents];
+                     [view refresh];
                  }
              }
 
@@ -704,7 +704,7 @@
              if([self.superview isMemberOfClass:[MFView class]])
              {
                  MFView *view = (MFView *)self.superview;
-                 [view refreshEvents];
+                 [view refresh];
              }
              [MFHelpers close:self];
          }
@@ -739,7 +739,7 @@
         if([self.superview.superview isMemberOfClass:[MFView class]])
         {
             MFView *view = (MFView *)self.superview.superview;
-            [view refreshEvents];
+            [view refresh];
         }
         if([self.superview isMemberOfClass:[MFDetailView class]])
         {

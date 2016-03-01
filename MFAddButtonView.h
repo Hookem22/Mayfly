@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MFCreateView.h"
+#import "MFCreatePostView.h"
 
 @interface MFAddButtonView : UIView
 

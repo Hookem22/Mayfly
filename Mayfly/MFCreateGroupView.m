@@ -328,7 +328,7 @@
     {
         MFView *view = (MFView *)self.superview;
         [view setup];
-        [view refreshEvents];
+        [view refresh];
     }
     [MFHelpers close:self];
 }

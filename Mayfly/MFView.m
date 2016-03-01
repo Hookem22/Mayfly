@@ -37,7 +37,10 @@
     for(UIView *subview in self.subviews)
         [subview removeFromSuperview];
     
-    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+    MFPostsView *postsView = [[MFPostsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
+    [self addSubview:postsView];
+    
+    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(wd, 60, wd, ht - 60)];
     //[eventsView loadEvents];
     [self addSubview:eventsView];
     
@@ -115,11 +118,16 @@
     */
 }
 
--(void)refreshEvents
+-(void)refresh
 {
     for(UIView *subview in self.subviews)
     {
-        if([subview isMemberOfClass:[MFEventsView class]])
+        if([subview isMemberOfClass:[MFPostsView class]])
+        {
+            MFPostsView *postsView = (MFPostsView *)subview;
+            [postsView loadPosts];
+        }
+        else if([subview isMemberOfClass:[MFEventsView class]])
         {
             MFEventsView *eventsView = (MFEventsView *)subview;
             [eventsView loadEvents];
@@ -138,7 +146,7 @@
     MFAddButtonView *addButtonView = [[MFAddButtonView alloc] init];
     [MFHelpers open:addButtonView onView:self];  
 }
-
+/*
 //-(void)groupButtonClick:(id)sender
 //{
 //    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
@@ -197,7 +205,7 @@
 //                         }
 //                     }];
 //}
-
+*/
 -(void)menuButtonClick:(id)sender
 {
     if(![FBSDKAccessToken currentAccessToken])
@@ -211,13 +219,16 @@
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     MFSidebarView *sidebarView;
-    MFGroupView *groupView;
+    MFPostsView *postsView;
     MFEventsView *eventsView;
+    MFGroupView *groupView;
     MFNotificationsView *notificationsView;
     for(UIView *subview in self.subviews)
     {
         if([subview isMemberOfClass:[MFSidebarView class]])
             sidebarView = (MFSidebarView *)subview;
+        else if([subview isMemberOfClass:[MFPostsView class]])
+            postsView = (MFPostsView *)subview;
         else if([subview isMemberOfClass:[MFEventsView class]])
             eventsView = (MFEventsView *)subview;
         else if([subview isMemberOfClass:[MFGroupView class]])
@@ -239,8 +250,13 @@
     [UIView animateWithDuration:0.3
                      animations:^{
                          sidebarView.frame = sidebarFrame;
-                         eventsView.frame = eventFrame;
                          self.addView.frame = addFrame;
+                         if(postsView.frame.origin.x < wd) {
+                             postsView.frame = eventFrame;
+                         }
+                         if(eventsView.frame.origin.x < wd) {
+                             eventsView.frame = eventFrame;
+                         }
                          if(groupView.frame.origin.x < wd) {
                              groupView.frame = eventFrame;
                          }
@@ -262,7 +278,7 @@
     view.frame = CGRectMake(0, 0, wd, ht);
     [self addSubview:view];
 }
-
+/*
 //-(void)addFilterButtons
 //{
 //    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
@@ -300,7 +316,7 @@
 //    selected.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:133.0/255.0 blue:244.0/255.0 alpha:1.0];
 //    [self.filterButtonsView addSubview:selected];
 //}
-
+*/
 -(void)addAddView
 {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
@@ -315,7 +331,7 @@
     [addView addSubview:backgroundView];
     
     UIButton *allButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, wd/2 -25, 40)];
-    [allButton setTitle:@"UPCOMING" forState:UIControlStateNormal];
+    [allButton setTitle:@"ST. EDWARD'S" forState:UIControlStateNormal];
     [allButton addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [allButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [allButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
@@ -323,7 +339,7 @@
     [addView addSubview:allButton];
     
     UIButton *myButton = [[UIButton alloc] initWithFrame:CGRectMake(wd/2 + 25, 20, wd/2 - 25, 40)];
-    [myButton setTitle:@"MY EVENTS" forState:UIControlStateNormal];
+    [myButton setTitle:@"FRIENDS" forState:UIControlStateNormal];
     [myButton addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [myButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [myButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
@@ -362,8 +378,9 @@
         }
     }
     
-    MFGroupView *groupView;
+    MFPostsView *postsView;
     MFEventsView *eventsView;
+    MFGroupView *groupView;
     for(UIView *subview in self.subviews)
     {
         if([subview isMemberOfClass:[MFEventsView class]])
@@ -389,12 +406,66 @@
     }
 }
 
+-(void)postsButtonClick {
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFPostsView class]]) {
+            MFPostsView *postsView = (MFPostsView *)subview;
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 postsView.frame = CGRectMake(0, 60, wd, ht - 60);
+                             }
+                             completion:^(BOOL finished){ }];
+        }
+        if([subview isMemberOfClass:[MFEventsView class]]) {
+            MFEventsView *eventsView = (MFEventsView *)subview;
+            eventsView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
+        if([subview isMemberOfClass:[MFGroupView class]]) {
+            MFGroupView *groupView = (MFGroupView *)subview;
+            groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
+        if([subview isMemberOfClass:[MFNotificationsView class]]) {
+            MFNotificationsView *notificationsView = (MFNotificationsView *)subview;
+            notificationsView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
+    }
+    for(UIView *subview in self.addView.subviews)
+    {
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+            UIButton *allButton = (UIButton *)subview;
+            [allButton setTitle:@"ST. EDWARD'S" forState:UIControlStateNormal];
+        }
+        else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+            UIButton *myButton = (UIButton *)subview;
+            [myButton setTitle:@"FRIENDS" forState:UIControlStateNormal];
+        }
+    }
+    
+    [self filter:0];
+}
+
 -(void)eventsButtonClick {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
     NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
     
     for(UIView *subview in self.subviews)
     {
+        if([subview isMemberOfClass:[MFPostsView class]]) {
+            MFPostsView *postsView = (MFPostsView *)subview;
+            postsView.frame = CGRectMake(wd, 60, wd, ht - 60);
+        }
+        if([subview isMemberOfClass:[MFEventsView class]]) {
+            MFEventsView *eventsView = (MFEventsView *)subview;
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
+                             }
+                             completion:^(BOOL finished){ }];
+        }
         if([subview isMemberOfClass:[MFGroupView class]]) {
             MFGroupView *groupView = (MFGroupView *)subview;
             groupView.frame = CGRectMake(wd, 60, wd, ht - 60);
@@ -462,7 +533,7 @@
         }
     }
 }
-
+/*
 //-(void)eventsButtonClick:(id)sender {
 //    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
 //    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
@@ -508,7 +579,7 @@
 //                     }];
 //    
 //}
-
+*/
 
 -(void)scrollDown {
     NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
@@ -535,7 +606,7 @@
 //////////////////////
 ///// Website ////////
 //////////////////////
-
+/*
 //-(void)loadWebsite
 //{
 //    NSUInteger referenceId = [[Session sessionVariables][@"referenceId"] integerValue];
@@ -603,7 +674,7 @@
 //        
 //        return NO;
 //    }
-//    /*
+//
 //    if ([[[request URL] absoluteString] hasPrefix:@"ios:InviteFromCreate"]) {
 //        
 //        NSString *urlString = [[request URL] absoluteString];
@@ -628,7 +699,7 @@
 //        
 //        return NO;
 //    }
-//    */
+//
 //    if ([[[request URL] absoluteString] hasPrefix:@"ios:SendSMS"]) {
 //        
 //        NSString *urlString = [[request URL] absoluteString];
@@ -666,12 +737,12 @@
 //
 //-(void)returnAddressList:(NSString *)params
 //{
-//        /*
+//
 //        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contactList options:NSJSONWritingPrettyPrinted error:nil];
 //        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 //        jsonString = [self urlEncodeJSON:jsonString];
 //        params = [NSString stringWithFormat:@"%@&contactList=%@", params, jsonString];
-//        */
+//
 //        NSString *urlAddress = [NSString stringWithFormat:@"http://joinpowwow.azurewebsites.net/App/%@", params];
 //        NSURLRequest *requestObj = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:urlAddress]];
 //        [self.webView loadRequest:requestObj];
@@ -735,7 +806,7 @@
 //    if(!webView.loading)
 //        [self sendLatLngToWeb];
 //}
-
+*/
 
 
 

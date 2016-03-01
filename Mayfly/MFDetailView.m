@@ -689,7 +689,7 @@
     if([[self superview] isMemberOfClass:[MFView class]])
     {
         MFView *mfView = (MFView *)[self superview];
-        [mfView refreshEvents];
+        [mfView refresh];
     }
 }
 
