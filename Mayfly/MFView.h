@@ -31,5 +31,6 @@
 -(void)eventsButtonClick;
 -(void)interestsButtonClick;
 -(void)goToEvent:(NSString *)eventId;
+-(void)goToPost:(NSString *)postId;
 
 @end

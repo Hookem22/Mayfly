@@ -40,15 +40,26 @@
     MFPostsView *postsView = [[MFPostsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [self addSubview:postsView];
     
-    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(wd, 60, wd, ht - 60)];
-    //[eventsView loadEvents];
+    MFEventsView *eventsView = [[MFEventsView alloc] init];
     [self addSubview:eventsView];
     
+    if([FBSDKAccessToken currentAccessToken]) {
+        eventsView.frame =  CGRectMake(wd, 60, wd, ht - 60);
+     }
+     else {
+         eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
+     }
+     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if(appDelegate.eventId.length > 0) {
         [eventsView goToEvent:appDelegate.eventId];
         [MFHelpers hideProgressView:self.superview];
         appDelegate.eventId = @"";
+    }
+    if(appDelegate.postId.length > 0) {
+        [postsView goToPost:appDelegate.postId];
+        [MFHelpers hideProgressView:self.superview];
+        appDelegate.postId = @"";
     }
     
     MFGroupView *groupView = [[MFGroupView alloc] init];
@@ -136,6 +147,20 @@
         {
             MFSidebarView *sidebarView = (MFSidebarView *)subview;
             [sidebarView setup];
+        }
+    }
+    
+    //Reload all
+    for(UIView *subview in self.addView.subviews){
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == 0) {
+            UIButton *interestsButton = (UIButton *)subview;
+            [interestsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [interestsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+        }
+        if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
+            UIButton *eventsButton = (UIButton *)subview;
+            [eventsButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
         }
     }
 }
@@ -339,7 +364,7 @@
     [addView addSubview:allButton];
     
     UIButton *myButton = [[UIButton alloc] initWithFrame:CGRectMake(wd/2 + 25, 20, wd/2 - 25, 40)];
-    [myButton setTitle:@"FRIENDS" forState:UIControlStateNormal];
+    [myButton setTitle:@"MY INTERESTS" forState:UIControlStateNormal];
     [myButton addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [myButton setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [myButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
@@ -383,10 +408,20 @@
     MFGroupView *groupView;
     for(UIView *subview in self.subviews)
     {
-        if([subview isMemberOfClass:[MFEventsView class]])
+        if([subview isMemberOfClass:[MFPostsView class]])
+            postsView = (MFPostsView *)subview;
+        else if([subview isMemberOfClass:[MFEventsView class]])
             eventsView = (MFEventsView *)subview;
         else if([subview isMemberOfClass:[MFGroupView class]])
             groupView = (MFGroupView *)subview;
+    }
+    if(eventsView.frame.origin.x > 0 && groupView.frame.origin.x > 0) { //Posts
+        if(tagId == 0) {
+            [postsView populateAll];
+        }
+        else if(tagId == 1) {
+            [postsView populateMyInterests];
+        }
     }
     if(groupView.frame.origin.x > 0) { //Events
         if(tagId == 0) {
@@ -441,7 +476,7 @@
         }
         else if([subview isMemberOfClass:[UIButton class]] && subview.tag == 1) {
             UIButton *myButton = (UIButton *)subview;
-            [myButton setTitle:@"FRIENDS" forState:UIControlStateNormal];
+            [myButton setTitle:@"MY INTERESTS" forState:UIControlStateNormal];
         }
     }
     
@@ -530,6 +565,15 @@
         if([subview isMemberOfClass:[MFEventsView class]]) {
             MFEventsView *eventsView = (MFEventsView *)subview;
             [eventsView goToEvent:eventId];
+        }
+    }
+}
+-(void)goToPost:(NSString *)postId {
+    for(UIView *subview in self.subviews)
+    {
+        if([subview isMemberOfClass:[MFPostsView class]]) {
+            MFPostsView *postsView = (MFPostsView *)subview;
+            [postsView goToPost:postId];
         }
     }
 }

@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSString *fbAccessToken;
 @property (assign, nonatomic) BOOL hasNotifications;
 @property (nonatomic, strong) NSString *eventId;
+@property (nonatomic, strong) NSString *postId;
 
 @end
 

@@ -55,19 +55,19 @@
     [self addSubview:view1];
     
     UILabel *text1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 22)];
-    text1.text = @"Find and join activities";
+    text1.text = @"See what's happining";
     [text1 setFont:[UIFont systemFontOfSize:20]];
     text1.textAlignment = NSTextAlignmentCenter;
     [view1 addSubview:text1];
     
     UILabel *text2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, wd, 22)];
-    text2.text = @"at St. Edward's";
+    text2.text = @"around St. Edward's";
     [text2 setFont:[UIFont systemFontOfSize:20]];
     text2.textAlignment = NSTextAlignmentCenter;
     [view1 addSubview:text2];
     
     UIImageView *appPic1 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic1 setImage:[UIImage imageNamed:@"appscreenshot1"]];
+    [appPic1 setImage:[UIImage imageNamed:@"appscreenshot5"]];
     [view1 addSubview:appPic1];
     
     UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(wd, 80, wd, ht - 100)];
@@ -75,19 +75,19 @@
     [self addSubview:view2];
     
     UILabel *text3 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 22)];
-    text3.text = @"Create your own activites";
+    text3.text = @"Find and join activities";
     [text3 setFont:[UIFont systemFontOfSize:20]];
     text3.textAlignment = NSTextAlignmentCenter;
     [view2 addSubview:text3];
     
     UILabel *text4 = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, wd, 22)];
-    text4.text = @"and invite your friends";
+    text4.text = @"at St. Edward's";
     [text4 setFont:[UIFont systemFontOfSize:20]];
     text4.textAlignment = NSTextAlignmentCenter;
     [view2 addSubview:text4];
     
     UIImageView *appPic2 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic2 setImage:[UIImage imageNamed:@"appscreenshot2"]];
+    [appPic2 setImage:[UIImage imageNamed:@"appscreenshot6"]];
     [view2 addSubview:appPic2];
     
     UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(wd, 80, wd, ht - 100)];
@@ -95,19 +95,19 @@
     [self addSubview:view3];
     
     UILabel *text5 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, wd, 22)];
-    text5.text = @"Add interests to hear";
+    text5.text = @"Create your own activities";
     [text5 setFont:[UIFont systemFontOfSize:20]];
     text5.textAlignment = NSTextAlignmentCenter;
     [view3 addSubview:text5];
     
     UILabel *text6 = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, wd, 22)];
-    text6.text = @"when they post new events";
+    text6.text = @"and invite your friends";
     [text6 setFont:[UIFont systemFontOfSize:20]];
     text6.textAlignment = NSTextAlignmentCenter;
     [view3 addSubview:text6];
     
     UIImageView *appPic3 = [[UIImageView alloc] initWithFrame:CGRectMake(75, 60, wd - 150, ht - 230)];
-    [appPic3 setImage:[UIImage imageNamed:@"appscreenshot3"]];
+    [appPic3 setImage:[UIImage imageNamed:@"appscreenshot2"]];
     [view3 addSubview:appPic3];
     
     UIImageView *circles = [[UIImageView alloc] initWithFrame:CGRectMake((wd / 2) - 27, ht - 84, 54, 14)];

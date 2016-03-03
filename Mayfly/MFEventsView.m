@@ -264,7 +264,7 @@
         [litImageView setImage:[UIImage imageNamed:@"match"]];
         [litView addSubview:litImageView];
     }
-    
+/*
 //    int goingWd = (int)(wd*2)/5;
 //    UIView *goingContainer = [[UIView alloc] initWithFrame:CGRectMake((wd*3)/5 - 10, 42, goingWd, 20)];
 //    [eventView addSubview:goingContainer];
@@ -314,7 +314,7 @@
 //    invitedLabel.textColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
 //    [invitedLabel setFont:[UIFont systemFontOfSize:18]];
 //    [goingContainer addSubview:invitedLabel];
-    
+*/    
     
     int groupHeight = 0;
     if(![event.primaryGroupId isKindOfClass:[NSNull class]] && event.primaryGroupId.length > 0) {

@@ -63,8 +63,14 @@
         
         if (apsInfo) {
             
-            NSString *event = [apsInfo valueForKey:@"message"];
-            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+            NSString *message = [apsInfo valueForKey:@"message"];
+            NSString *header = [message substringToIndex:[message rangeOfString:@"|"].location];
+            if([header isEqualToString:@"Post"]) {
+                self.postId = [message substringFromIndex:[message rangeOfString:@"|"].location + 1];
+            }
+            else {
+                self.eventId = [message substringFromIndex:[message rangeOfString:@"|"].location + 1];
+            }
         }
     }
 
@@ -214,13 +220,25 @@
         if(event && [event rangeOfString:@"|"].location != NSNotFound)
         {
             NSString *header = [event substringToIndex:[event rangeOfString:@"|"].location];
-            self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
-            
-            if(self.appInBackground == YES) {
-                [self openEvent];
+            if([header isEqualToString:@"Post"]) {
+                self.postId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+                if(self.appInBackground == YES) {
+                    [self openPost];
+                }
+                else {
+                    [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+                }
             }
-            else {
-                [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+            else
+            {
+                self.eventId = [event substringFromIndex:[event rangeOfString:@"|"].location + 1];
+                
+                if(self.appInBackground == YES) {
+                    [self openEvent];
+                }
+                else {
+                    [self MessageBox:header message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+                }
             }
         }
     }
@@ -242,7 +260,10 @@
         case 0: //"No" pressed
             break;
         case 1: //"Yes" pressed
-            [self openEvent];
+            if(![self.eventId isMemberOfClass:[NSNull class]] && self.eventId != nil && self.eventId.length > 0)
+                [self openEvent];
+            else
+                [self openPost];
             break;
     }
 }
@@ -263,6 +284,14 @@
 //        [mfView goToEvent:event.referenceId];
 //    }];
     
+}
+
+-(void)openPost
+{
+    ViewController *vc = (ViewController *)self.window.rootViewController;
+    MFView *mfView = (MFView *)vc.mainView;
+    [mfView goToPost:self.postId];
+    self.postId = @"";
 }
 
 // We are registered, so now store the device token (as a string) on the AppDelegate instance

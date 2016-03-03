@@ -38,7 +38,7 @@
     [self addSubview:cancelButton];
 
     UIImageView *appPic = [[UIImageView alloc] initWithFrame:CGRectMake(70, 80, wd - 140, ht - 200)];
-    [appPic setImage:[UIImage imageNamed:@"appscreenshot1"]];
+    [appPic setImage:[UIImage imageNamed:@"appscreenshot6"]];
     [self addSubview:appPic];
     
     UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(20, ht - 110, wd - 40, 60)];
@@ -83,7 +83,10 @@
             // Handle cancellations
             [self removeFromSuperview];
         } else {
-            
+            if([self.superview isMemberOfClass:[MFView class]]) {
+                MFView *view = (MFView *)self.superview;
+                [view postsButtonClick];
+            }
             
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing

@@ -11,8 +11,12 @@
 @interface MFCreatePostView()
 
 @property (atomic, strong) UIScrollView *contentView;
+@property (atomic, strong) UITextField *interestText;
 @property (atomic, strong) UITextView *messageText;
 @property (atomic, strong) UIImageView *imageView;
+@property (atomic, strong) UIScrollView *interestView;
+@property (atomic, strong) NSMutableArray *groups;
+@property (atomic, strong) Group *selectedGroup;
 
 @end
 
@@ -64,7 +68,19 @@
     [imageButton setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
     [imageButton addTarget:self action:@selector(imageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:imageButton];
-    viewY += 55;
+    viewY += 45;
+    
+    UITextField *interestText = [[UITextField alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 30)];
+    [interestText addTarget:self action:@selector(openInterestSelect:) forControlEvents:UIControlEventEditingDidBegin];
+    interestText.borderStyle = UITextBorderStyleRoundedRect;
+    interestText.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
+    interestText.font = [UIFont systemFontOfSize:15];
+    interestText.placeholder = @"Post to Interest";
+    UIView* dummyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    interestText.inputView = dummyView;
+    self.interestText = interestText;
+    [self.contentView addSubview:interestText];
+    viewY += 40;
     
     UITextView *messageText = [[UITextView alloc] initWithFrame:CGRectMake(30, viewY, wd - 60, 120)];
     [messageText.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.2] CGColor]];
@@ -87,8 +103,119 @@
     [self.contentView addSubview:postButton];
 }
 
+-(void)openInterestSelect:(id)sender
+{
+    NSUInteger wd = [[UIScreen mainScreen] bounds].size.width;
+    NSUInteger ht = [[UIScreen mainScreen] bounds].size.height;
+    
+    self.interestView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, wd, ht)];
+    self.interestView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
+    [self addSubview:self.interestView];
+    
+    UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeInterest)];
+    [self.interestView addGestureRecognizer:singleTap];
+    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    self.groups = [[NSMutableArray alloc] init];
+    
+    NSDictionary *stEdsDict = @{@"id": @"374D1035-CB60-4B44-9D1B-972834814ED6", @"name": @"St. Edward's Events", @"pictureurl": @"http://www.collegeatlas.org/wp-content/uploads/2014/04/st-edwards-university.gif" };
+    Group *stEdsGroup = [[Group alloc] init:stEdsDict];
+    [self.groups addObject:stEdsGroup];
+    for(Group *group in currentUser.groups) {
+        if(![group.groupId isEqualToString:@"374D1035-CB60-4B44-9D1B-972834814ED6"]) {
+            [self.groups addObject:group];
+        }
+    }
+    
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(20, ht - (self.groups.count * 50) - 105, wd - 40, (self.groups.count * 50) + 40)];
+    if((self.groups.count * 50) - 105 > ht) {
+        backgroundView.frame = CGRectMake(20, 50, wd - 40, (self.groups.count * 50) + 40);
+        self.interestView.contentSize = CGSizeMake(wd, (self.groups.count * 50) + 160);
+    }
+    backgroundView.backgroundColor = [UIColor whiteColor];
+    backgroundView.layer.cornerRadius = 5.0;
+    [self.interestView addSubview:backgroundView];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, backgroundView.frame.size.width - 20, 20)];
+    titleLabel.text = @"SELECT INTEREST";
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [backgroundView addSubview:titleLabel];
+    
+    UIButton *questionButton = [[UIButton alloc] initWithFrame:CGRectMake(backgroundView.frame.size.width - 25, 10, 20, 20)];
+    [questionButton setImage:[UIImage imageNamed:@"questionmark"] forState:UIControlStateNormal];
+    [questionButton addTarget:self action:@selector(questionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [backgroundView addSubview:questionButton];
+    
+    int viewY = 40;
+    for (int i = 0; i < self.groups.count; i++) {
+        Group *group = [self.groups objectAtIndex:i];
+        UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(5, viewY, backgroundView.frame.size.width - 10, 50)];
+        
+        if([group.pictureUrl isKindOfClass:[NSNull class]] || group.pictureUrl.length <= 0) {
+            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5, 40, 40)];
+            [icon setImage:[UIImage imageNamed:@"group"]];
+            [groupView addSubview:icon];
+        }
+        else {
+            MFProfilePicView *pic = [[MFProfilePicView alloc] initWithUrl:CGRectMake(0, 5, 40, 40) url:group.pictureUrl];
+            [groupView addSubview:pic];
+        }
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.frame = CGRectMake(50, 0, backgroundView.frame.size.width - 60, 50);
+        [button addTarget:self action:@selector(interestSelected:) forControlEvents:UIControlEventTouchUpInside];
+        [button setTitle:group.name forState:UIControlStateNormal];
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+        [button.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+        button.tag = i;
+        [groupView addSubview:button];
+        
+        UIView *border = [[UIView alloc] initWithFrame:CGRectMake(-5, 0, backgroundView.frame.size.width, 1)];
+        border.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+        [groupView addSubview:border];
+        
+        [backgroundView addSubview:groupView];
+        viewY += 50;
+    }
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    int btnHt = backgroundView.frame.size.height > ht ? backgroundView.frame.size.height + 60 : (int)ht - 60;
+    cancelButton.frame = CGRectMake(20, btnHt, wd - 40, 50);
+    [cancelButton addTarget:self action:@selector(closeInterest) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    cancelButton.backgroundColor = [UIColor whiteColor];
+    [cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20.f]];
+    cancelButton.layer.cornerRadius = 5.0;
+    [self.interestView addSubview:cancelButton];
+}
+
+-(void)interestSelected:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    self.selectedGroup = self.groups[button.tag];
+    self.interestText.text = self.selectedGroup.name;
+    [self closeInterest];
+}
+
+-(void)questionButtonClick:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Interests"
+                                                    message:@"Start a conversation in an interest. Join more interests to post to them."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 -(void)postButtonClick:(id)sender
 {
+    if(self.interestText.text.length == 0) {
+        self.interestText.layer.borderColor=[[UIColor redColor] CGColor];
+        self.interestText.layer.cornerRadius=8.0f;
+        self.interestText.layer.borderWidth= 1.0f;
+        return;
+    }
+    
     if([self.messageText.text length] > 0 || self.imageView != nil)
     {
         [MFHelpers showDisableView:self];
@@ -101,6 +228,9 @@
         post.facebookId = currentUser.facebookId;
         post.name = currentUser.firstName;
         post.message = self.messageText.text;
+        post.groupId = self.selectedGroup.groupId;
+        post.groupName = self.selectedGroup.name;
+        post.groupIsPublic = self.selectedGroup.isPublic;
         post.schoolId = currentSchool.schoolId;
         post.sentDate = [NSDate date];
         post.hasImage = self.imageView != nil;
@@ -115,6 +245,8 @@
              else {
                  [self refreshPosts:post];
              }
+             
+             //TODO: Add Notification
          }];
     }
     
@@ -149,6 +281,11 @@
     [self.imageView setFrame:CGRectMake(30, 330, imgWd, imgHt)];
     [self.contentView addSubview:self.imageView];
     self.contentView.contentSize = CGSizeMake(imgWd + 60, imgHt + 350);
+}
+
+-(void)closeInterest {
+    [self.interestView removeFromSuperview];
+    [self endEditing:YES];
 }
 
 -(void)dismissKeyboard:(id)sender {

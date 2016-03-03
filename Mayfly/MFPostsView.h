@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MFView.h"
+#import "MFPostDetailView.h"
 #import "MFHelpers.h"
 #import "MFProfilePicView.h"
 #import "Post.h"
@@ -16,5 +17,8 @@
 
 -(void)addPost:(Post *)post;
 -(void)loadPosts;
+-(void)populateAll;
+-(void)populateMyInterests;
+-(void)goToPost:(NSString *)postId;
 
 @end

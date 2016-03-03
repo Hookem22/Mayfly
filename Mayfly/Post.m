@@ -15,6 +15,9 @@
 @synthesize facebookId = _facebookId;
 @synthesize name = _name;
 @synthesize message = _message;
+@synthesize groupId = _groupId;
+@synthesize groupName = _groupName;
+@synthesize groupIsPublic = _groupIsPublic;
 @synthesize schoolId = _schoolId;
 @synthesize secondsSince = _secondsSince;
 @synthesize sentDate = _sentDate;
@@ -22,6 +25,7 @@
 @synthesize upVotes = _upVotes;
 @synthesize downVotes = _downVotes;
 @synthesize votes = _votes;
+@synthesize comments = _comments;
 
 -(id)init:(NSDictionary *)post
 {
@@ -32,6 +36,9 @@
         self.facebookId = [post objectForKey:@"facebookid"];
         self.name = [post objectForKey:@"name"];
         self.message = [post objectForKey:@"message"];
+        self.groupId = [[post objectForKey:@"groupid"] isMemberOfClass:[NSNull class]] ? @"" : [post objectForKey:@"groupid"];
+        self.groupName = [[post objectForKey:@"groupname"] isMemberOfClass:[NSNull class]] ? @"" : [post objectForKey:@"groupname"];
+        self.groupIsPublic = [[post objectForKey:@"groupispublic"] isMemberOfClass:[NSNull class]] ? NO : [[post objectForKey:@"groupispublic"] boolValue];
         self.schoolId = [post objectForKey:@"schoolid"];
         self.secondsSince = [[post objectForKey:@"Seconds"] isMemberOfClass:[NSNull class]] ? 0 : [[post objectForKey:@"Seconds"] intValue];
         self.sentDate = [post objectForKey:@"__createdAt"];
@@ -48,6 +55,18 @@
     return self;
 }
 
++(void)get:(NSString *)postId completion:(QSCompletionBlock)completion {
+    QSAzureService *service = [QSAzureService defaultService:@"Post"];
+    
+    [service get:postId completion:^(NSDictionary *item) {
+        Post *post = [[Post alloc] init:item];
+        [post getComments:^(NSArray *comments) {
+            post.comments = [comments mutableCopy];
+            completion(post);
+        }];
+    }];
+}
+
 +(void)get:(QSCompletionBlock)completion
 {
     QSAzureService *service = [QSAzureService defaultService:@"Post"];
@@ -60,10 +79,25 @@
         NSMutableArray *array = [[NSMutableArray alloc] init];
         for(id item in results) {
             Post *post = [[Post alloc] init:item];
-            [array addObject:post];
+            [post getComments:^(NSArray *comments) {
+                post.comments = [comments mutableCopy];
+                [array addObject:post];
+                if(array.count == results.count) {
+                    [array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"votes" ascending:NO]]];
+                    completion(array);
+                }
+            }];
         }
         [array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"votes" ascending:NO]]];
-        completion(array);
+        if(results.count == 0) {
+            completion(array);
+        }
+    }];
+}
+
+-(void)getComments:(QSCompletionBlock)completion {
+    [Comment get:self.postId completion:^(NSArray *comments) {
+        completion(comments);
     }];
 }
 
@@ -72,7 +106,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Post"];
     
-    NSDictionary *dict = @{@"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"schoolid": self.schoolId, @"hasimage": [NSNumber numberWithBool:self.hasImage], @"upvotes":[self listToString:self.upVotes], @"downvotes":[self listToString:self.downVotes] };
+    NSDictionary *dict = @{@"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"groupid": self.groupId, @"groupname": self.groupName, @"schoolid": self.schoolId, @"hasimage": [NSNumber numberWithBool:self.hasImage], @"upvotes":[self listToString:self.upVotes], @"downvotes":[self listToString:self.downVotes] };
     
     if([self.postId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [dict mutableCopy];
@@ -96,6 +130,29 @@
     [QSAzureImageService uploadImage:@"posts" image:image name:self.postId completionHandler:^(NSURL *url) {
         completion([NSString stringWithFormat:@"%@", url]);
     }];
+}
+
+-(BOOL)isPrivate {
+    
+    if(self.groupIsPublic == true) {
+        return NO;
+    }
+    
+    User *currentUser = (User *)[Session sessionVariables][@"currentUser"];
+    for(Group *group in currentUser.groups) {
+        if([group.groupId isEqualToString:self.groupId]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+-(void)deletePost:(QSCompletionBlock)completion {
+    QSAzureService *service = [QSAzureService defaultService:@"Post"];
+    [service deleteItem:self.postId completion:^(NSDictionary *item)
+     {
+         completion(item);
+     }];
 }
 
 -(NSString *)listToString:(NSMutableArray *)list

@@ -214,6 +214,13 @@
 		48A894991C855C0000DE5037 /* arrowup.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A894971C855C0000DE5037 /* arrowup.png */; };
 		48A8949B1C85688900DE5037 /* arrowupselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8949A1C85688900DE5037 /* arrowupselected.png */; };
 		48A8949D1C85689900DE5037 /* arrowdownselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8949C1C85689900DE5037 /* arrowdownselected.png */; };
+		48A894A41C8639D200DE5037 /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A894A31C8639D200DE5037 /* comment.png */; };
+		48A894A71C8645B900DE5037 /* MFPostDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A894A61C8645B900DE5037 /* MFPostDetailView.m */; };
+		48A894AA1C875CC100DE5037 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A894A91C875CC100DE5037 /* Comment.m */; };
+		48A894AD1C876D1900DE5037 /* MFCreateCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A894AC1C876D1900DE5037 /* MFCreateCommentView.m */; };
+		48A894B11C87B3FD00DE5037 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A894B01C87B3FD00DE5037 /* delete.png */; };
+		48A894B31C87FB9800DE5037 /* appscreenshot5.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A894B21C87FB9800DE5037 /* appscreenshot5.png */; };
+		48A894B51C87FDBF00DE5037 /* appscreenshot6.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A894B41C87FDBF00DE5037 /* appscreenshot6.png */; };
 		48B6F9801C6F067A00688E17 /* portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B6F97F1C6F067A00688E17 /* portrait.png */; };
 		48C1020D1C6539CE005216A0 /* MFAddButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1020C1C6539CE005216A0 /* MFAddButtonView.m */; };
 		48C102221C698B91005216A0 /* solidgrayface0.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C102181C698B91005216A0 /* solidgrayface0.png */; };
@@ -515,6 +522,16 @@
 		48A894971C855C0000DE5037 /* arrowup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowup.png; sourceTree = "<group>"; };
 		48A8949A1C85688900DE5037 /* arrowupselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowupselected.png; sourceTree = "<group>"; };
 		48A8949C1C85689900DE5037 /* arrowdownselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowdownselected.png; sourceTree = "<group>"; };
+		48A894A31C8639D200DE5037 /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
+		48A894A51C8645B900DE5037 /* MFPostDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFPostDetailView.h; sourceTree = "<group>"; };
+		48A894A61C8645B900DE5037 /* MFPostDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFPostDetailView.m; sourceTree = "<group>"; };
+		48A894A81C875CC100DE5037 /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
+		48A894A91C875CC100DE5037 /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Comment.m; sourceTree = "<group>"; };
+		48A894AB1C876D1900DE5037 /* MFCreateCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCreateCommentView.h; sourceTree = "<group>"; };
+		48A894AC1C876D1900DE5037 /* MFCreateCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCreateCommentView.m; sourceTree = "<group>"; };
+		48A894B01C87B3FD00DE5037 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		48A894B21C87FB9800DE5037 /* appscreenshot5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appscreenshot5.png; sourceTree = "<group>"; };
+		48A894B41C87FDBF00DE5037 /* appscreenshot6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appscreenshot6.png; sourceTree = "<group>"; };
 		48B6F97F1C6F067A00688E17 /* portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portrait.png; path = ../../Downloads/portrait.png; sourceTree = "<group>"; };
 		48C1020B1C6539CD005216A0 /* MFAddButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MFAddButtonView.h; path = ../MFAddButtonView.h; sourceTree = "<group>"; };
 		48C1020C1C6539CE005216A0 /* MFAddButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MFAddButtonView.m; path = ../MFAddButtonView.m; sourceTree = "<group>"; };
@@ -812,7 +829,9 @@
 				48A894961C855C0000DE5037 /* arrowdown.png */,
 				48A8949A1C85688900DE5037 /* arrowupselected.png */,
 				48A8949C1C85689900DE5037 /* arrowdownselected.png */,
+				48A894A31C8639D200DE5037 /* comment.png */,
 				4813CFAF1C751A640060F53D /* questionmark.png */,
+				48A894B01C87B3FD00DE5037 /* delete.png */,
 				48A893731C7FA78000DE5037 /* menucamera.png */,
 				48A893741C7FA78000DE5037 /* menucameraselected.png */,
 				48A893751C7FA78000DE5037 /* menuevent.png */,
@@ -833,6 +852,8 @@
 				48028D111C6C0A340060A4E8 /* appscreenshot1.png */,
 				48028D121C6C0A340060A4E8 /* appscreenshot2.png */,
 				48028D131C6C0A340060A4E8 /* appscreenshot3.png */,
+				48A894B21C87FB9800DE5037 /* appscreenshot5.png */,
+				48A894B41C87FDBF00DE5037 /* appscreenshot6.png */,
 				48F847191C7D2F9D0090DE7A /* launch1.png */,
 				48F847171C7D2F980090DE7A /* launch2.png */,
 				48B6F97F1C6F067A00688E17 /* portrait.png */,
@@ -903,10 +924,14 @@
 				48C1023C1C6A6E45005216A0 /* MFSettingsView.m */,
 				483E52AD1C7E4A9F00EA80CB /* MFProfileView.h */,
 				483E52AE1C7E4A9F00EA80CB /* MFProfileView.m */,
-				48A894901C85203E00DE5037 /* MFCreatePostView.h */,
-				48A894911C85203E00DE5037 /* MFCreatePostView.m */,
 				48A894931C85317F00DE5037 /* MFPostsView.h */,
 				48A894941C85317F00DE5037 /* MFPostsView.m */,
+				48A894901C85203E00DE5037 /* MFCreatePostView.h */,
+				48A894911C85203E00DE5037 /* MFCreatePostView.m */,
+				48A894A51C8645B900DE5037 /* MFPostDetailView.h */,
+				48A894A61C8645B900DE5037 /* MFPostDetailView.m */,
+				48A894AB1C876D1900DE5037 /* MFCreateCommentView.h */,
+				48A894AC1C876D1900DE5037 /* MFCreateCommentView.m */,
 				4843EA181B0F952D00C510B4 /* images */,
 				4886C9E81B0BBAA900909747 /* Main.storyboard */,
 				4886C9EB1B0BBAA900909747 /* Images.xcassets */,
@@ -983,6 +1008,8 @@
 				485AB3781C20CC450035C79D /* School.m */,
 				48A8948D1C85189600DE5037 /* Post.h */,
 				48A8948E1C85189600DE5037 /* Post.m */,
+				48A894A81C875CC100DE5037 /* Comment.h */,
+				48A894A91C875CC100DE5037 /* Comment.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1189,6 +1216,7 @@
 				48028CA61C6BA6A60060A4E8 /* Coffee.png in Resources */,
 				485AB3731C20BA2C0035C79D /* whitebackarrow.png in Resources */,
 				48028CA01C6BA6A60060A4E8 /* Castle.png in Resources */,
+				48A894B11C87B3FD00DE5037 /* delete.png in Resources */,
 				48A894981C855C0000DE5037 /* arrowdown.png in Resources */,
 				48028CD91C6BA6A60060A4E8 /* Sunglasses.png in Resources */,
 				48028CC81C6BA6A60060A4E8 /* PingPong.png in Resources */,
@@ -1256,8 +1284,10 @@
 				48028CD11C6BA6A60060A4E8 /* Segway.png in Resources */,
 				48028CD21C6BA6A60060A4E8 /* Snooker.png in Resources */,
 				48A8937B1C7FA78000DE5037 /* menuevent.png in Resources */,
+				48A894A41C8639D200DE5037 /* comment.png in Resources */,
 				48028CA51C6BA6A60060A4E8 /* Cocktail.png in Resources */,
 				4852DB8C1C617B2800679E4F /* circles1.png in Resources */,
+				48A894B31C87FB9800DE5037 /* appscreenshot5.png in Resources */,
 				48028CFA1C6BF6D80060A4E8 /* launch@2x.png in Resources */,
 				48028CCA1C6BA6A60060A4E8 /* Pizza.png in Resources */,
 				4813CFB01C751A640060F53D /* questionmark.png in Resources */,
@@ -1287,6 +1317,7 @@
 				48028CB61C6BA6A60060A4E8 /* Helmet.png in Resources */,
 				48A8937C1C7FA78000DE5037 /* menueventselected.png in Resources */,
 				48028CFC1C6BF6D80060A4E8 /* launch640x960@2x.png in Resources */,
+				48A894B51C87FDBF00DE5037 /* appscreenshot6.png in Resources */,
 				48A075611B34A097008E4994 /* arrowplus@2x.png in Resources */,
 				48C102221C698B91005216A0 /* solidgrayface0.png in Resources */,
 				48F847181C7D2F980090DE7A /* launch2.png in Resources */,
@@ -1358,6 +1389,7 @@
 				4843EA301B1653FD00C510B4 /* Location.m in Sources */,
 				4886C9E41B0BBAA900909747 /* AppDelegate.m in Sources */,
 				4886CA1C1B0BC41100909747 /* Session.m in Sources */,
+				48A894AA1C875CC100DE5037 /* Comment.m in Sources */,
 				48185D111B277BAE00B4EE08 /* MFProfilePicView.m in Sources */,
 				48C1023A1C6A5267005216A0 /* MFCalendarAccess.m in Sources */,
 				48A8948F1C85189600DE5037 /* Post.m in Sources */,
@@ -1385,7 +1417,9 @@
 				4886CA081B0BBBF700909747 /* QSAzureService.m in Sources */,
 				4886CA191B0BC0CC00909747 /* MFView.m in Sources */,
 				4843EA271B14ECE700C510B4 /* MFMapView.m in Sources */,
+				48A894A71C8645B900DE5037 /* MFPostDetailView.m in Sources */,
 				48A894921C85203E00DE5037 /* MFCreatePostView.m in Sources */,
+				48A894AD1C876D1900DE5037 /* MFCreateCommentView.m in Sources */,
 				48C1020D1C6539CE005216A0 /* MFAddButtonView.m in Sources */,
 				48185D591B3094DE00B4EE08 /* MFSidebarView.m in Sources */,
 				4843EA1F1B0FA78100C510B4 /* MFAddressBook.m in Sources */,
