@@ -83,10 +83,10 @@
             // Handle cancellations
             [self removeFromSuperview];
         } else {
-            if([self.superview isMemberOfClass:[MFView class]]) {
-                MFView *view = (MFView *)self.superview;
-                [view postsButtonClick];
-            }
+//            if([self.superview isMemberOfClass:[MFView class]]) {
+//                MFView *view = (MFView *)self.superview;
+//                [view postsButtonClick];
+//            }
             
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing

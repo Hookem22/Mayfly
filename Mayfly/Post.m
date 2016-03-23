@@ -106,7 +106,7 @@
 {
     QSAzureService *service = [QSAzureService defaultService:@"Post"];
     
-    NSDictionary *dict = @{@"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"groupid": self.groupId, @"groupname": self.groupName, @"schoolid": self.schoolId, @"hasimage": [NSNumber numberWithBool:self.hasImage], @"upvotes":[self listToString:self.upVotes], @"downvotes":[self listToString:self.downVotes] };
+    NSDictionary *dict = @{@"userid":self.userId, @"facebookid":self.facebookId, @"name": self.name, @"message": self.message, @"groupid": self.groupId, @"groupname": self.groupName, @"groupispublic": [NSNumber numberWithBool:self.groupIsPublic], @"schoolid": self.schoolId, @"hasimage": [NSNumber numberWithBool:self.hasImage], @"upvotes":[self listToString:self.upVotes], @"downvotes":[self listToString:self.downVotes] };
     
     if([self.postId length] > 0) { //Update
         NSMutableDictionary *mutableEvent = [dict mutableCopy];

@@ -200,7 +200,7 @@
 
 -(void)questionButtonClick:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Interests"
-                                                    message:@"Start a conversation in an interest. Join more interests to post to them."
+                                                    message:@"What's up? Post what's going on around St. Edward's"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
@@ -209,12 +209,12 @@
 
 -(void)postButtonClick:(id)sender
 {
-    if(self.interestText.text.length == 0) {
-        self.interestText.layer.borderColor=[[UIColor redColor] CGColor];
-        self.interestText.layer.cornerRadius=8.0f;
-        self.interestText.layer.borderWidth= 1.0f;
-        return;
-    }
+//    if(self.interestText.text.length == 0) {
+//        self.interestText.layer.borderColor=[[UIColor redColor] CGColor];
+//        self.interestText.layer.cornerRadius=8.0f;
+//        self.interestText.layer.borderWidth= 1.0f;
+//        return;
+//    }
     
     if([self.messageText.text length] > 0 || self.imageView != nil)
     {
@@ -228,9 +228,9 @@
         post.facebookId = currentUser.facebookId;
         post.name = currentUser.firstName;
         post.message = self.messageText.text;
-        post.groupId = self.selectedGroup.groupId;
-        post.groupName = self.selectedGroup.name;
-        post.groupIsPublic = self.selectedGroup.isPublic;
+        post.groupId = self.selectedGroup == nil ? @"" : self.selectedGroup.groupId;
+        post.groupName = self.selectedGroup == nil ? @"" : self.selectedGroup.name;
+        post.groupIsPublic = self.selectedGroup == nil ? YES : self.selectedGroup.isPublic;
         post.schoolId = currentSchool.schoolId;
         post.sentDate = [NSDate date];
         post.hasImage = self.imageView != nil;

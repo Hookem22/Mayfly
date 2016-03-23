@@ -37,19 +37,12 @@
     for(UIView *subview in self.subviews)
         [subview removeFromSuperview];
     
-    MFPostsView *postsView = [[MFPostsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
-    [self addSubview:postsView];
-    
-    MFEventsView *eventsView = [[MFEventsView alloc] init];
+    MFEventsView *eventsView = [[MFEventsView alloc] initWithFrame:CGRectMake(0, 60, wd, ht - 60)];
     [self addSubview:eventsView];
     
-    if([FBSDKAccessToken currentAccessToken]) {
-        eventsView.frame =  CGRectMake(wd, 60, wd, ht - 60);
-     }
-     else {
-         eventsView.frame = CGRectMake(0, 60, wd, ht - 60);
-     }
-     
+    MFPostsView *postsView = [[MFPostsView alloc] initWithFrame:CGRectMake(wd, 60, wd, ht - 60)];
+    [self addSubview:postsView];
+    
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if(appDelegate.eventId.length > 0) {
         [eventsView goToEvent:appDelegate.eventId];
@@ -133,15 +126,15 @@
 {
     for(UIView *subview in self.subviews)
     {
-        if([subview isMemberOfClass:[MFPostsView class]])
-        {
-            MFPostsView *postsView = (MFPostsView *)subview;
-            [postsView loadPosts];
-        }
-        else if([subview isMemberOfClass:[MFEventsView class]])
+        if([subview isMemberOfClass:[MFEventsView class]])
         {
             MFEventsView *eventsView = (MFEventsView *)subview;
             [eventsView loadEvents];
+        }
+        else if([subview isMemberOfClass:[MFPostsView class]])
+        {
+            MFPostsView *postsView = (MFPostsView *)subview;
+            [postsView loadPosts];
         }
         else if([subview isMemberOfClass:[MFSidebarView class]])
         {

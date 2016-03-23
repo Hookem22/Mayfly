@@ -164,7 +164,7 @@
         [postView addSubview:bottomBorder];
         
         UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 22, wd, 20)];
-        groupLabel.text = post.groupName;
+        groupLabel.text = [post.groupName isEqualToString:@""] ? @"St. Edward's" : post.groupName;
         groupLabel.textAlignment = NSTextAlignmentCenter;
         groupLabel.font = [UIFont boldSystemFontOfSize:16];
         [postView addSubview:groupLabel];
@@ -298,7 +298,7 @@
         [postView addSubview:nameMessageLabel];
         
         UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 130, wd - 60, 20)];
-        messageLabel.text = @"You do not have anything going on in your interests currently. Join more interests to see what's going on around St. Edward's";
+        messageLabel.text = @"What's up? Post what's going on around St. Edward's";
         messageLabel.numberOfLines = 0;
         messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
         messageLabel.tag = 1;

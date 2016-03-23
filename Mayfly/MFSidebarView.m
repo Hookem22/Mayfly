@@ -88,29 +88,29 @@
     borderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:borderView];
     
-    UIButton *postsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 140, wd, 60)];
-    [postsButton setTitle:@"Home" forState:UIControlStateNormal];
-    [postsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [postsButton addTarget:self action:@selector(postsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [postsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
-    self.postsButton = postsButton;
-    [view addSubview:postsButton];
-    
-    UIView *postsBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, postsButton.frame.origin.y + postsButton.frame.size.height - 1, wd, 1)];
-    postsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
-    [view addSubview:postsBorderView];
-    
-    UIButton *eventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 200, wd, 60)];
+    UIButton *eventsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 140, wd, 60)];
     [eventsButton setTitle:@"Events" forState:UIControlStateNormal];
     [eventsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [eventsButton addTarget:self action:@selector(eventsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [eventsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    [eventsButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
     self.eventsButton = eventsButton;
     [view addSubview:eventsButton];
     
     UIView *eventsBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, eventsButton.frame.origin.y + eventsButton.frame.size.height - 1, wd, 1)];
     eventsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
     [view addSubview:eventsBorderView];
+    
+    UIButton *postsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 200, wd, 60)];
+    [postsButton setTitle:@"Posts" forState:UIControlStateNormal];
+    [postsButton setTitleColor:[UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [postsButton addTarget:self action:@selector(postsButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [postsButton.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
+    self.postsButton = postsButton;
+    [view addSubview:postsButton];
+    
+    UIView *postsBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, postsButton.frame.origin.y + postsButton.frame.size.height - 1, wd, 1)];
+    postsBorderView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
+    [view addSubview:postsBorderView];
     
     UIButton *interestsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 260, wd, 60)];
     [interestsButton setTitle:@"Interests" forState:UIControlStateNormal];

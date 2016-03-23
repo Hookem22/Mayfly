@@ -222,8 +222,8 @@
         }
         if(!self.isCurrentUser) {
             NSDate *now = [NSDate date];
-            NSDate *fourteenDaysAgo = [now dateByAddingTimeInterval:-14*24*60*60];
-            if ([event.startTime compare:fourteenDaysAgo] == NSOrderedAscending) {
+            NSDate *fourtyfiveDaysAgo = [now dateByAddingTimeInterval:-45*24*60*60];
+            if ([event.startTime compare:fourtyfiveDaysAgo] == NSOrderedAscending) {
                 continue;
             }
         }
